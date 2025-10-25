@@ -33,7 +33,7 @@ final class SingleYamlConfigurationImpl {
     SingleYamlConfigurationImpl configuration = new SingleYamlConfigurationImpl(plugin, path);
     return (org.aincraft.config.YamlConfiguration) Proxy.newProxyInstance(
         YamlConfiguration.class.getClassLoader(),
-        new Class[]{YamlConfiguration.class},
+        new Class[]{org.aincraft.config.YamlConfiguration.class},
         (proxy, method, args) -> method.invoke(configuration.config, args));
   }
 }

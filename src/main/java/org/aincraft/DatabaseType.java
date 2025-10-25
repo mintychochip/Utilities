@@ -2,7 +2,6 @@ package org.aincraft;
 
 public enum DatabaseType {
   MYSQL("mysql"),
-  MONGO("mongo"),
   POSTGRES("postgres"),
   SQLITE("sqlite");
   private final String identifier;

@@ -12,13 +12,6 @@ public interface ConnectionSource {
 
   DatabaseType type();
 
-  interface MongoConnectionSource extends ConnectionSource{
-
-    MongoClient mongoClient();
-
-    MongoDatabase database(String name);
-  }
-
   interface SQLConnectionSource extends ConnectionSource {
 
     Connection connection() throws ConnectionException;

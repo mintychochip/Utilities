@@ -2,7 +2,8 @@ name: Release
 
 on:
   push:
-    tags: []
+    tags: ['v*.*.*']
+
 
 jobs:
   publish:
@@ -17,4 +18,10 @@ jobs:
         run: chmod +x gradlew
       - name: publish to maven
         run: |
-          ./gradlew :p
+          ./gradlew :publishAllPublicationsToCentralPortal \
+            -PmavenCentralUsername="${{ secrets.MAVEN_CENTRAL_USERNAME }}" \
+            -PmavenCentralPassword="${{ secrets.MAVEN_CENTRAL_PASSWORD }}" \
+            --no-daemon --stacktrace
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}

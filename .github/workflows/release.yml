@@ -18,7 +18,7 @@ jobs:
         run: chmod +x gradlew
       - name: publish to maven
         run: |
-          ./gradlew :publishAllPublicationsToCentralPortal \
+          ./gradlew publishAllPublicationsToCentralPortal \
             -PmavenCentralUsername="${{ secrets.MAVEN_CENTRAL_USERNAME }}" \
             -PmavenCentralPassword="${{ secrets.MAVEN_CENTRAL_PASSWORD }}" \
             --no-daemon --stacktrace

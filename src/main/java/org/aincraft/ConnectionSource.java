@@ -10,10 +10,17 @@ public interface ConnectionSource {
 
   boolean closed() throws ConnectionException;
 
-  DatabaseType type();
+  DatabaseType getType();
 
   interface SQLConnectionSource extends ConnectionSource {
 
-    Connection connection() throws ConnectionException;
+    Connection getConnection() throws ConnectionException;
+  }
+
+  interface MongoConnectionSource extends ConnectionSource {
+
+    MongoClient getClient();
+
+    MongoDatabase getDatabase(String databaseName);
   }
 }

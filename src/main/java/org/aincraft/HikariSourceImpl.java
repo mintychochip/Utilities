@@ -28,12 +28,12 @@ public final class HikariSourceImpl implements SQLConnectionSource {
   }
 
   @Override
-  public DatabaseType type() {
+  public DatabaseType getType() {
     return type;
   }
 
   @Override
-  public Connection connection() throws ConnectionException {
+  public Connection getConnection() throws ConnectionException {
     try {
       return dataSource.getConnection();
     } catch (SQLException e) {

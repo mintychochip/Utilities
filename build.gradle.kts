@@ -64,11 +64,11 @@ nmcp {
     publishAllPublicationsToCentralPortal {
         username.set(
             providers.gradleProperty("mavenCentralUsername")
-                .orElse(providers.environmentVariable("MAVEN_CENTRAL_USERNAME"))
+                .orElse(providers.environmentVariable("MAVEN_USERNAME"))
         )
         password.set(
             providers.gradleProperty("mavenCentralPassword")
-                .orElse(providers.environmentVariable("MAVEN_CENTRAL_PASSWORD"))
+                .orElse(providers.environmentVariable("MAVEN_PASSWORD"))
         )
         publishingType.set("AUTOMATIC")
     }

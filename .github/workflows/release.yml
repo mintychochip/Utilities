@@ -19,8 +19,8 @@ jobs:
       - name: publish to maven
         run: |
           ./gradlew publishAllPublicationsToCentralPortal \
-            -PmavenCentralUsername="${{ secrets.MAVEN_CENTRAL_USERNAME }}" \
-            -PmavenCentralPassword="${{ secrets.MAVEN_CENTRAL_PASSWORD }}" \
+            -PmavenCentralUsername="${{ secrets.MAVEN_USERNAME }}" \
+            -PmavenCentralPassword="${{ secrets.MAVEN_PASSWORD }}" \
             --no-daemon --stacktrace
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}

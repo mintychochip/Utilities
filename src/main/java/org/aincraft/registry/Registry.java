@@ -8,6 +8,10 @@ import org.jetbrains.annotations.NotNull;
 @AvailableSince("1.0.2")
 public sealed interface Registry<T extends Keyed> permits SimpleRegistryImpl {
 
+  static <T extends Keyed> Registry<T> create() {
+    return new SimpleRegistryImpl<>();
+  }
+
   void register(T object);
 
   @NotNull

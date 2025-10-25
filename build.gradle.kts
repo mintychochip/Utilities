@@ -25,8 +25,8 @@ mavenPublishing {
     signAllPublications() // still fine to keep; won’t hurt
 
     pom {
-        name.set("packetblocks-api")
-        description.set("PacketBlocks API")
+        name.set("utilities")
+        description.set("a utilities library for minecraft")
         url.set("https://github.com/mintychochip/PacketBlocks")
         licenses {
             license {

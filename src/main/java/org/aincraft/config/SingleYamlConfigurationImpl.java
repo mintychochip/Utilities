@@ -32,7 +32,7 @@ final class SingleYamlConfigurationImpl {
     Preconditions.checkArgument("yml".equals(extension) || "yaml".equals(extension));
     SingleYamlConfigurationImpl configuration = new SingleYamlConfigurationImpl(plugin, path);
     return (org.aincraft.config.YamlConfiguration) Proxy.newProxyInstance(
-        YamlConfiguration.class.getClassLoader(),
+        plugin.getClass().getClassLoader(),
         new Class[]{org.aincraft.config.YamlConfiguration.class},
         (proxy, method, args) -> method.invoke(configuration.config, args));
   }

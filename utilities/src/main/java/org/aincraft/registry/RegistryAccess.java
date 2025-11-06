@@ -1,5 +1,6 @@
 package org.aincraft.registry;
 
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;

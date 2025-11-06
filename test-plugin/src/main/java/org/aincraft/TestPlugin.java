@@ -1,9 +1,7 @@
-package org.example;
+package org.aincraft;
 
 import org.aincraft.config.YamlConfiguration;
-import org.aincraft.registry.Registry;
 import org.bukkit.Bukkit;
-import org.bukkit.Keyed;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TestPlugin extends JavaPlugin {

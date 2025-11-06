@@ -5,6 +5,10 @@ import org.bukkit.plugin.Plugin;
 
 public interface YamlConfiguration extends ConfigurationSection {
 
+  Plugin getPlugin();
+
+  boolean isFolder();
+  
   static YamlConfiguration single(Plugin plugin, String path) {
     return SingleYamlConfigurationImpl.single(plugin,path);
   }

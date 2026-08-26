@@ -2,7 +2,7 @@ package org.aincraft.common.datacomponent.potion;
 
 import java.util.List;
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.datacomponent.Color;
+import net.kyori.adventure.text.format.TextColor;
 
 /**
  * Common contract for potion contents, mirroring Paper's {@code PotionContents}
@@ -12,7 +12,7 @@ public interface PotionContents {
 
   Key potion();
 
-  Color customColor();
+  TextColor customColor();
 
   List<PotionEffect> customEffects();
 
@@ -20,5 +20,5 @@ public interface PotionContents {
 
   List<PotionEffect> allEffects();
 
-  Color computeEffectiveColor();
+  TextColor computeEffectiveColor();
 }

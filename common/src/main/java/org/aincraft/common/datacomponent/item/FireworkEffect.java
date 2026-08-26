@@ -1,7 +1,7 @@
 package org.aincraft.common.datacomponent.item;
 
 import java.util.List;
-import org.aincraft.common.datacomponent.Color;
+import net.kyori.adventure.text.format.TextColor;
 
 /**
  * Common contract for a single firework explosion, mirroring Bukkit's
@@ -11,9 +11,9 @@ public interface FireworkEffect {
 
   Type type();
 
-  List<Color> colors();
+  List<TextColor> colors();
 
-  List<Color> fadeColors();
+  List<TextColor> fadeColors();
 
   boolean trail();
 

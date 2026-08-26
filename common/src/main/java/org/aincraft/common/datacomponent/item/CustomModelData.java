@@ -1,7 +1,7 @@
 package org.aincraft.common.datacomponent.item;
 
 import java.util.List;
-import org.aincraft.common.datacomponent.Color;
+import net.kyori.adventure.text.format.TextColor;
 
 /**
  * Common contract for custom model data, mirroring Paper's {@code CustomModelData}.
@@ -14,5 +14,5 @@ public interface CustomModelData {
 
   List<String> strings();
 
-  List<Color> colors();
+  List<TextColor> colors();
 }

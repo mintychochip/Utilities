@@ -114,6 +114,7 @@ extra["forbiddenAincraftPrefixes"] = listOf(
     "org/aincraft/math/",
     "org/aincraft/registry/",
 )
+extra["paperFree"] = true
 
 apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
@@ -121,9 +122,9 @@ apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 dependencies {
     api(project(":common"))
     api(libs.adventure.text.serializer.legacy)
-    compileOnly(libs.paper.api)
+    compileOnly(libs.spigot.api)
 
-    testImplementation(libs.paper.api)
+    testImplementation(libs.spigot.api)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.junit.jupiter)
 }

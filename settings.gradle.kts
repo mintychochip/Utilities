@@ -3,6 +3,8 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 
@@ -15,6 +17,8 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 
@@ -27,4 +31,7 @@ include("db-paper")
 include("math")
 include("registry")
 include("math-consumer")
+include("utilities-bom")
+include("utilities-bukkit")
+include("utilities-paper")
 include("test-plugin")

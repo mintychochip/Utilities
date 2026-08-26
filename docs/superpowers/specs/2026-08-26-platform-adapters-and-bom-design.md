@@ -24,7 +24,7 @@ With pure domain-agnostic interfaces in `:common` (`World`, `Chunk`, `Block`, `E
 
 2. **`utilities-bukkit` (Bukkit Platform Adapter)**:
    - Depends on `:common` via `api(project(":common"))`.
-   - Compiles against Bukkit API (`compileOnly(libs.paper.api)`).
+   - Compiles against Bukkit/Spigot API (`compileOnly(libs.spigot.api)`).
    - Adventure text bridge: uses `net.kyori:adventure-text-serializer-legacy` (`LegacyComponentSerializer.legacySection()`) to bridge Adventure `Audience` calls (`sendMessage`, `sendActionBar`, `showTitle`, `playSound`) to standard Bukkit API calls on non-Paper Bukkit servers.
    - Package: `org.aincraft.bukkit.adapter`.
    - Provides `BukkitAdapters` bidirectional facade:

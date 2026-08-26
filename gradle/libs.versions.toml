@@ -1,5 +1,6 @@
 [versions]
 paper = "26.2.build.119-stable"
+spigot = "1.21.4-R0.1-SNAPSHOT"
 hikari = "5.0.1"
 mongodb = "5.2.0"
 junit = "5.11.3"
@@ -15,6 +16,7 @@ run-paper = "2.3.1"
 
 [libraries]
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 mongodb-sync = { module = "org.mongodb:mongodb-driver-sync", version.ref = "mongodb" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -26,6 +28,7 @@ adventure-key = { module = "net.kyori:adventure-key", version.ref = "adventure" 
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+adventure-text-serializer-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 [plugins]
 maven-publish-vanniktech = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }
 nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }

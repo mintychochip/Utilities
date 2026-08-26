@@ -10,6 +10,7 @@ dependencies {
         api(project(":common"))
         api(project(":utilities-bukkit"))
         api(project(":utilities-paper"))
+        api(project(":utilities-minestom"))
         api(project(":config"))
         api(project(":db-core"))
         api(project(":db-paper"))

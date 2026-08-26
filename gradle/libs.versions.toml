@@ -1,0 +1,33 @@
+[versions]
+paper = "26.2.build.119-stable"
+hikari = "5.0.1"
+mongodb = "5.2.0"
+junit = "5.11.3"
+sqlite = "3.45.3.0"
+guava = "33.4.8-jre"
+adventure = "4.18.0"
+annotations = "26.0.2"
+mockito = "5.14.2"
+maven-publish-plugin = "0.34.0"
+nmcp = "1.0.0"
+shadow = "8.1.1"
+run-paper = "2.3.1"
+
+[libraries]
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+mongodb-sync = { module = "org.mongodb:mongodb-driver-sync", version.ref = "mongodb" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+adventure-key = { module = "net.kyori:adventure-key", version.ref = "adventure" }
+annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+[plugins]
+maven-publish-vanniktech = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }
+nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }

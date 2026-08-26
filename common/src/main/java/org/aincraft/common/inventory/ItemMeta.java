@@ -2,6 +2,7 @@ package org.aincraft.common.inventory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.effect.Enchantment;
 import org.jetbrains.annotations.NotNull;
@@ -38,4 +39,14 @@ public interface ItemMeta {
   void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction);
 
   void removeEnchant(@NotNull Enchantment enchantment);
+
+  boolean hasData(@NotNull DataComponentType<?> type);
+
+  <T> @Nullable T getData(@NotNull DataComponentType<T> type);
+
+  <T> void setData(@NotNull DataComponentType<T> type, @Nullable T value);
+
+  void resetData(@NotNull DataComponentType<?> type);
+
+  @NotNull Set<DataComponentType<?>> dataComponentTypes();
 }

@@ -1,5 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockFace;
@@ -7,6 +9,7 @@ import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
+import org.aincraft.common.inventory.DataComponentType;
 import org.aincraft.common.inventory.Inventory;
 import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.ItemType;
@@ -21,12 +24,21 @@ import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.util.Vector;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BukkitAdaptersTest {
+
+  private static <T> DataComponentType<T> createComponentType(Key key, Class<T> clazz) {
+    return new DataComponentType<>() {
+      @Override public Key key() { return key; }
+      @Override public Class<T> type() { return clazz; }
+    };
+  }
 
   @Test
   void testVectorAndPositionAdaptation() {
@@ -79,6 +91,84 @@ class BukkitAdaptersTest {
     ItemType itemType = BukkitAdapters.adapt(stone);
     assertEquals(Key.key("minecraft", "stone"), itemType.key());
     assertEquals(stone, BukkitAdapters.toBukkit(itemType));
+  }
+
+  @Test
+  void testDataComponentTypesOnItemMeta() {
+    Map<NamespacedKey, Object> pdcStore = new HashMap<>();
+    PersistentDataContainer pdc = (PersistentDataContainer) java.lang.reflect.Proxy.newProxyInstance(
+        PersistentDataContainer.class.getClassLoader(),
+        new Class<?>[]{PersistentDataContainer.class},
+        (proxy, method, args) -> switch (method.getName()) {
+          case "has" -> pdcStore.containsKey(args[0]);
+          case "get" -> pdcStore.get(args[0]);
+          case "set" -> {
+            pdcStore.put((NamespacedKey) args[0], args[2]);
+            yield null;
+          }
+          case "remove" -> {
+            pdcStore.remove(args[0]);
+            yield null;
+          }
+          case "getKeys" -> pdcStore.keySet();
+          default -> null;
+        }
+    );
+
+    org.bukkit.inventory.meta.ItemMeta bMeta = (org.bukkit.inventory.meta.ItemMeta) java.lang.reflect.Proxy.newProxyInstance(
+        org.bukkit.inventory.meta.ItemMeta.class.getClassLoader(),
+        new Class<?>[]{org.bukkit.inventory.meta.ItemMeta.class},
+        (proxy, method, args) -> switch (method.getName()) {
+          case "hasDisplayName" -> false;
+          case "hasLore" -> false;
+          case "isUnbreakable" -> false;
+          case "hasCustomModelData" -> false;
+          case "getEnchants" -> Map.of();
+          case "getPersistentDataContainer" -> pdc;
+          case "hashCode" -> 1;
+          case "equals" -> proxy == args[0];
+          default -> null;
+        }
+    );
+
+    org.aincraft.common.inventory.ItemMeta meta1 = new BukkitItemMetaWrapper(bMeta);
+    DataComponentType<String> stringType = createComponentType(Key.key("custom", "lore"), String.class);
+    DataComponentType<Integer> intType = createComponentType(Key.key("custom", "custom_model_data"), Integer.class);
+    DataComponentType<Boolean> boolType = createComponentType(Key.key("custom", "glowing"), Boolean.class);
+
+    assertFalse(meta1.hasData(stringType));
+    assertFalse(meta1.hasData(intType));
+    assertFalse(meta1.hasData(boolType));
+
+    meta1.setData(stringType, "Legendary Blade");
+    meta1.setData(intType, 1001);
+    meta1.setData(boolType, true);
+
+    assertTrue(meta1.hasData(stringType));
+    assertTrue(meta1.hasData(intType));
+    assertTrue(meta1.hasData(boolType));
+    assertEquals("Legendary Blade", meta1.getData(stringType));
+    assertEquals(1001, meta1.getData(intType));
+    assertEquals(true, meta1.getData(boolType));
+
+    // Verify it persists into a second wrapper created on the same Bukkit ItemMeta
+    org.aincraft.common.inventory.ItemMeta meta2 = new BukkitItemMetaWrapper(bMeta);
+    assertTrue(meta2.hasData(stringType));
+    assertEquals("Legendary Blade", meta2.getData(stringType));
+    assertEquals(1001, meta2.getData(intType));
+    assertEquals(true, meta2.getData(boolType));
+    assertTrue(meta2.dataComponentTypes().stream().anyMatch(t -> t.key().equals(stringType.key())));
+
+    meta2.resetData(stringType);
+    assertFalse(meta2.hasData(stringType));
+    assertNull(meta2.getData(stringType));
+    assertFalse(meta1.hasData(stringType));
+
+    // Verify unsupported types throw UnsupportedOperationException
+    DataComponentType<Thread> unsupportedType = createComponentType(Key.key("custom", "thread"), Thread.class);
+    assertThrows(UnsupportedOperationException.class, () -> meta1.setData(unsupportedType, new Thread()));
+    assertThrows(UnsupportedOperationException.class, () -> meta1.getData(unsupportedType));
+    assertThrows(UnsupportedOperationException.class, () -> meta1.hasData(unsupportedType));
   }
 
   @Test
@@ -245,5 +335,6 @@ class BukkitAdaptersTest {
       @Override public void setOp(boolean op) {}
       @Override public net.kyori.adventure.identity.Identity identity() { return net.kyori.adventure.identity.Identity.nil(); }
     };
+    assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignSender));
   }
 }

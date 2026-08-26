@@ -20,6 +20,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.xerial:sqlite-jdbc:3.45.3.0")
 }
 
 mavenPublishing {

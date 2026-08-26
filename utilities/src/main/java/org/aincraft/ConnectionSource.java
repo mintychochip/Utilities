@@ -4,7 +4,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import java.sql.Connection;
 
-public interface ConnectionSource {
+public interface ConnectionSource extends AutoCloseable {
 
   void close() throws ConnectionException;
 

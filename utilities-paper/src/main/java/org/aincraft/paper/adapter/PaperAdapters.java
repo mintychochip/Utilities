@@ -1,6 +1,9 @@
 package org.aincraft.paper.adapter;
 
 import org.aincraft.bukkit.adapter.BukkitAdapters;
+import org.aincraft.common.attribute.Attribute;
+import org.aincraft.common.attribute.AttributeInstance;
+import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
@@ -188,5 +191,29 @@ public final class PaperAdapters {
 
   public static @NotNull BlockData toBukkit(@NotNull BlockState blockState) {
     return BukkitAdapters.toBukkit(blockState);
+  }
+
+  public static @NotNull Attribute adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
+    return BukkitAdapters.adapt(attribute);
+  }
+
+  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Attribute attribute) {
+    return BukkitAdapters.toBukkit(attribute);
+  }
+
+  public static @NotNull AttributeModifier adapt(@NotNull org.bukkit.attribute.AttributeModifier modifier) {
+    return BukkitAdapters.adapt(modifier);
+  }
+
+  public static @NotNull org.bukkit.attribute.AttributeModifier toBukkit(@NotNull AttributeModifier modifier) {
+    return BukkitAdapters.toBukkit(modifier);
+  }
+
+  public static @NotNull AttributeInstance adapt(@NotNull org.bukkit.attribute.AttributeInstance instance) {
+    return BukkitAdapters.adapt(instance);
+  }
+
+  public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(@NotNull AttributeInstance instance) {
+    return BukkitAdapters.toBukkit(instance);
   }
 }

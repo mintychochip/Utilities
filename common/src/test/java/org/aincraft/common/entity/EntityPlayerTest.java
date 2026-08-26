@@ -103,6 +103,7 @@ class EntityPlayerTest {
       @Override public void setHealth(double health) {}
       @Override public double maxHealth() { return 20.0; }
       @Override public void damage(double amount) {}
+      @Override public org.aincraft.common.attribute.AttributeInstance getAttribute(org.aincraft.common.attribute.Attribute attribute) { return null; }
       @Override public void damage(double amount, Entity source) {}
       @Override public double eyeHeight() { return 1.62; }
       @Override public Location eyeLocation() { return location; }

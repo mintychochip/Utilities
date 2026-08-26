@@ -1,5 +1,8 @@
 package org.aincraft.bukkit.adapter;
 
+import org.aincraft.common.attribute.Attribute;
+import org.aincraft.common.attribute.AttributeInstance;
+import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
@@ -294,5 +297,38 @@ public final class BukkitAdapters {
       return wrapper.getBukkitBlockData();
     }
     throw new IllegalArgumentException("Cannot unwrap foreign BlockState implementation: " + blockState.getClass().getName());
+  }
+
+  public static @NotNull Attribute adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
+    return new BukkitAttributeWrapper(attribute);
+  }
+
+  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Attribute attribute) {
+    if (attribute instanceof BukkitAttributeWrapper wrapper) {
+      return wrapper.getBukkitAttribute();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign Attribute implementation: " + attribute.getClass().getName());
+  }
+
+  public static @NotNull AttributeModifier adapt(@NotNull org.bukkit.attribute.AttributeModifier modifier) {
+    return new BukkitAttributeModifierWrapper(modifier);
+  }
+
+  public static @NotNull org.bukkit.attribute.AttributeModifier toBukkit(@NotNull AttributeModifier modifier) {
+    if (modifier instanceof BukkitAttributeModifierWrapper wrapper) {
+      return wrapper.getBukkitAttributeModifier();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign AttributeModifier implementation: " + modifier.getClass().getName());
+  }
+
+  public static @NotNull AttributeInstance adapt(@NotNull org.bukkit.attribute.AttributeInstance instance) {
+    return new BukkitAttributeInstanceWrapper(instance);
+  }
+
+  public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(@NotNull AttributeInstance instance) {
+    if (instance instanceof BukkitAttributeInstanceWrapper wrapper) {
+      return wrapper.getBukkitAttributeInstance();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign AttributeInstance implementation: " + instance.getClass().getName());
   }
 }

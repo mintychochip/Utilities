@@ -336,5 +336,43 @@ class BukkitAdaptersTest {
       @Override public net.kyori.adventure.identity.Identity identity() { return net.kyori.adventure.identity.Identity.nil(); }
     };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignSender));
+    org.aincraft.common.attribute.Attribute foreignAttr = () -> Key.key("minecraft", "generic.max_health");
+    assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignAttr));
+
+    org.aincraft.common.attribute.AttributeModifier foreignMod = new org.aincraft.common.attribute.AttributeModifier() {
+      @Override public Key key() { return Key.key("custom", "speed"); }
+      @Override public UUID id() { return UUID.randomUUID(); }
+      @Override public String name() { return "Speed"; }
+      @Override public double amount() { return 0.1; }
+      @Override public Operation operation() { return Operation.ADD_NUMBER; }
+      @Override public org.aincraft.common.inventory.EquipmentSlot slot() { return null; }
+    };
+    assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignMod));
+  }
+
+  @Test
+  void testAttributeAdaptation() {
+    org.bukkit.attribute.Attribute bAttr = (org.bukkit.attribute.Attribute) java.lang.reflect.Proxy.newProxyInstance(
+        org.bukkit.attribute.Attribute.class.getClassLoader(),
+        new Class<?>[]{org.bukkit.attribute.Attribute.class},
+        (proxy, method, args) -> switch (method.getName()) {
+          case "getKey" -> NamespacedKey.minecraft("generic.max_health");
+          case "hashCode" -> 1;
+          case "equals" -> proxy == args[0];
+          default -> null;
+        }
+    );
+    org.aincraft.common.attribute.Attribute cAttr = BukkitAdapters.adapt(bAttr);
+    assertEquals(Key.key("minecraft", "generic.max_health"), cAttr.key());
+    assertEquals(bAttr, BukkitAdapters.toBukkit(cAttr));
+
+    org.bukkit.attribute.AttributeModifier bMod = new org.bukkit.attribute.AttributeModifier(
+        NamespacedKey.minecraft("test_mod"), 5.0, org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER, org.bukkit.inventory.EquipmentSlotGroup.HEAD
+    );
+    org.aincraft.common.attribute.AttributeModifier cMod = BukkitAdapters.adapt(bMod);
+    assertEquals(Key.key("minecraft", "test_mod"), cMod.key());
+    assertEquals(5.0, cMod.amount());
+    assertEquals(org.aincraft.common.attribute.AttributeModifier.Operation.ADD_NUMBER, cMod.operation());
+    assertEquals(bMod, BukkitAdapters.toBukkit(cMod));
   }
 }

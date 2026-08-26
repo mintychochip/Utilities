@@ -18,10 +18,6 @@ public class MinestomWorldBorderWrapper implements org.aincraft.common.world.Wor
     this.world = Objects.requireNonNull(world, "world cannot be null");
   }
 
-  public @NotNull WorldBorder getMinestomWorldBorder() {
-    return instance.getWorldBorder();
-  }
-
   @Override
   public double size() {
     return instance.getWorldBorder().diameter();

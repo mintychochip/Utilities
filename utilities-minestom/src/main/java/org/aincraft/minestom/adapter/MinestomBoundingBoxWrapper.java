@@ -12,10 +12,6 @@ public class MinestomBoundingBoxWrapper implements BoundingBox {
     this.boundingBox = Objects.requireNonNull(boundingBox, "boundingBox cannot be null");
   }
 
-  public @NotNull net.minestom.server.collision.BoundingBox getMinestomBoundingBox() {
-    return boundingBox;
-  }
-
   @Override
   public double minX() {
     return boundingBox.minX();

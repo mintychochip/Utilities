@@ -7,16 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class MinestomBlockStateWrapper implements BlockState {
 
-  private final net.minestom.server.instance.block.Block block;
   private final BlockType type;
+  private final String stateString;
 
   public MinestomBlockStateWrapper(@NotNull net.minestom.server.instance.block.Block block) {
-    this.block = Objects.requireNonNull(block, "block cannot be null");
+    Objects.requireNonNull(block, "block cannot be null");
     this.type = new MinestomBlockTypeWrapper(block);
-  }
-
-  public @NotNull net.minestom.server.instance.block.Block getMinestomBlock() {
-    return block;
+    this.stateString = block.state() != null ? block.state() : block.name();
   }
 
   @Override
@@ -26,7 +23,7 @@ public class MinestomBlockStateWrapper implements BlockState {
 
   @Override
   public @NotNull String asString() {
-    return block.state() != null ? block.state() : block.name();
+    return stateString;
   }
 
   @Override

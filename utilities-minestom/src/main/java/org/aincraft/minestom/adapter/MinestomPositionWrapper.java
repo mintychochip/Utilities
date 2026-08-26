@@ -13,10 +13,6 @@ public class MinestomPositionWrapper implements Position {
     this.point = Objects.requireNonNull(point, "point cannot be null");
   }
 
-  public @NotNull Point getMinestomPoint() {
-    return point;
-  }
-
   @Override
   public double x() {
     return point.x();

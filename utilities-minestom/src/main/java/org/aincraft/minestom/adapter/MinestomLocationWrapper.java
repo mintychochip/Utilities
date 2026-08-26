@@ -19,10 +19,6 @@ public class MinestomLocationWrapper implements Location {
     this.position = new MinestomPositionWrapper(pos);
   }
 
-  public @NotNull Pos getMinestomPos() {
-    return pos;
-  }
-
   @Override
   public @NotNull World world() {
     return world;

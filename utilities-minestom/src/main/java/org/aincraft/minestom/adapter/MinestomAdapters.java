@@ -30,9 +30,6 @@ public final class MinestomAdapters {
 
   public static @NotNull Pos toMinestomPos(@NotNull Location location) {
     Objects.requireNonNull(location, "location cannot be null");
-    if (location instanceof MinestomLocationWrapper wrapper) {
-      return wrapper.getMinestomPos();
-    }
     return new Pos(location.x(), location.y(), location.z(), location.yaw(), location.pitch());
   }
 
@@ -43,9 +40,6 @@ public final class MinestomAdapters {
 
   public static @NotNull Vec toMinestomVec(@NotNull Position position) {
     Objects.requireNonNull(position, "position cannot be null");
-    if (position instanceof MinestomPositionWrapper wrapper && wrapper.getMinestomPoint() instanceof Vec vec) {
-      return vec;
-    }
     return new Vec(position.x(), position.y(), position.z());
   }
 
@@ -56,9 +50,6 @@ public final class MinestomAdapters {
 
   public static @NotNull net.minestom.server.collision.BoundingBox toMinestom(@NotNull BoundingBox box) {
     Objects.requireNonNull(box, "box cannot be null");
-    if (box instanceof MinestomBoundingBoxWrapper wrapper) {
-      return wrapper.getMinestomBoundingBox();
-    }
     return new net.minestom.server.collision.BoundingBox(
         box.maxX() - box.minX(),
         box.maxY() - box.minY(),
@@ -130,9 +121,6 @@ public final class MinestomAdapters {
 
   public static @NotNull net.minestom.server.instance.block.Block toMinestom(@NotNull BlockType blockType) {
     Objects.requireNonNull(blockType, "blockType cannot be null");
-    if (blockType instanceof MinestomBlockTypeWrapper wrapper) {
-      return wrapper.getMinestomBlock();
-    }
     net.minestom.server.instance.block.Block block =
         net.minestom.server.instance.block.Block.fromKey(blockType.key());
     if (block == null) {
@@ -148,9 +136,6 @@ public final class MinestomAdapters {
 
   public static @NotNull net.minestom.server.instance.block.Block toMinestom(@NotNull BlockState blockState) {
     Objects.requireNonNull(blockState, "blockState cannot be null");
-    if (blockState instanceof MinestomBlockStateWrapper wrapper) {
-      return wrapper.getMinestomBlock();
-    }
     net.minestom.server.instance.block.Block block =
         net.minestom.server.instance.block.Block.fromState(blockState.asString());
     if (block == null) {

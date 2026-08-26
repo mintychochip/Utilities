@@ -7,16 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class MinestomBlockTypeWrapper implements BlockType {
 
-  private final net.minestom.server.instance.block.Block block;
   private final Key key;
 
   public MinestomBlockTypeWrapper(@NotNull net.minestom.server.instance.block.Block block) {
-    this.block = Objects.requireNonNull(block, "block cannot be null");
+    Objects.requireNonNull(block, "block cannot be null");
     this.key = block.key();
-  }
-
-  public @NotNull net.minestom.server.instance.block.Block getMinestomBlock() {
-    return block;
   }
 
   @Override

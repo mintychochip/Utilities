@@ -235,6 +235,11 @@ public interface World extends Keyed, Identified, Audience {
   @NotNull UUID uid();
   @NotNull String name();
 
+  @Override
+  default @NotNull Identity identity() {
+    return Identity.identity(uid());
+  }
+
   @NotNull Block getBlockAt(int x, int y, int z);
   default @NotNull Block getBlockAt(@NotNull Position position) {
     return getBlockAt(position.blockX(), position.blockY(), position.blockZ());
@@ -300,8 +305,8 @@ public interface Entity extends Keyed, Identified {
   boolean isValid();
 
   @Override
-  default @NotNull UUID identity() {
-    return uniqueId();
+  default @NotNull Identity identity() {
+    return Identity.identity(uniqueId());
   }
 
   @Override
@@ -318,7 +323,6 @@ public interface Player extends Entity, Audience, Identified {
   boolean isOnline();
 }
 ```
-
 ## Spec Self-Review Checklist
 
 1. **Placeholder Scan**: No TODOs, TBDs, or vague placeholders.

@@ -500,6 +500,7 @@ cd /home/jlo/dev/Utilities && git add -A utilities/ && git commit -m "refactor: 
 - Move: `utilities/src/main/java/org/aincraft/SQLConnectionSourceFactoryImpl.java` → `org/aincraft/db/paper/SQLConnectionSourceFactoryImpl.java`
 - Move: `utilities/src/main/java/org/aincraft/MongoConnectionSourceFactoryImpl.java` → `org/aincraft/db/paper/MongoConnectionSourceFactoryImpl.java`
 - Create: `utilities/src/main/java/org/aincraft/db/paper/ConnectionSourceFactoryImpl.java`
+- Modify: `test-plugin/build.gradle.kts` (add sqlite-jdbc testImplementation)
 - Delete (after absorbing): `utilities/src/main/java/org/aincraft/SQLConnectionSourceFactoryImpl.java`, `utilities/src/main/java/org/aincraft/MongoConnectionSourceFactoryImpl.java`
 - (Config classes `org.aincraft.config.*` stay untouched; factory uses Bukkit `ConfigurationSection` → Paper adapter by design.)
 
@@ -531,7 +532,14 @@ Expected: no errors.
 - `ConnectionSourceFactory.java` → `package org.aincraft.db.paper;` (imports `org.aincraft.db.DatabaseType`, `org.aincraft.db.ConnectionSource`, `org.aincraft.db.ConnectionException`)
 - `SQLConnectionSourceFactoryImpl.java`, `MongoConnectionSourceFactoryImpl.java` → `package org.aincraft.db.paper;`, fix imports to `org.aincraft.db.*`
 
-- [ ] **Step 3: Write the failing test (MockBukkit — factory paths + schema, in test-plugin)**
+- [ ] **Step 3: Add sqlite-jdbc testImplementation to test-plugin**
+
+`test-plugin/build.gradle.kts`, inside the `testImplementation` block:
+```kotlin
+testImplementation("org.xerial:sqlite-jdbc:3.45.3.0")
+```
+
+- [ ] **Step 4: Write the failing test (MockBukkit — factory paths + schema, in test-plugin)**
 
 `test-plugin/src/test/java/org/aincraft/ConnectionSourceFactoryTest.java`:
 ```java

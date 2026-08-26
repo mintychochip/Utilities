@@ -183,7 +183,7 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
   }
 
   @Override
-  public void playSound(@NotNull org.aincraft.common.location.Location location, @NotNull Sound.Type sound, @org.jetbrains.annotations.Nullable org.aincraft.common.effect.SoundCategory category, float volume, float pitch) {
+  public void playSound(@NotNull org.aincraft.common.location.Location location, @NotNull Sound.Type sound, @org.jetbrains.annotations.Nullable Sound.Source source, float volume, float pitch) {
     throw new UnsupportedOperationException();
   }
 

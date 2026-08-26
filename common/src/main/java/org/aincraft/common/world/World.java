@@ -9,7 +9,6 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.effect.Particle;
-import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.location.Location;
@@ -77,7 +76,7 @@ public interface World extends Keyed, Identified, Audience {
     playSound(location, sound, null, volume, pitch);
   }
 
-  void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable SoundCategory category, float volume, float pitch);
+  void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch);
 
   default void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count) {
     spawnParticle(particle, location, count, 0.0, 0.0, 0.0, 0.0);

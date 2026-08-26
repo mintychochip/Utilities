@@ -7,7 +7,6 @@ import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.effect.Particle;
-import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.location.Location;
@@ -128,13 +127,26 @@ public class BukkitWorldWrapper implements World {
   }
 
   @Override
-  public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable SoundCategory category, float volume, float pitch) {
+  public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch) {
     org.bukkit.Sound bSound = BukkitAdapters.toBukkit(sound);
     org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
-    if (category == null) {
+    if (source == null) {
       world.playSound(bLoc, bSound, volume, pitch);
     } else {
-      world.playSound(bLoc, bSound, org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch);
+      String bukkitCategoryName = switch (source) {
+        case MASTER -> "MASTER";
+        case MUSIC -> "MUSIC";
+        case RECORD -> "RECORDS";
+        case WEATHER -> "WEATHER";
+        case BLOCK -> "BLOCKS";
+        case HOSTILE -> "HOSTILE";
+        case NEUTRAL -> "NEUTRAL";
+        case PLAYER -> "PLAYERS";
+        case AMBIENT -> "AMBIENT";
+        case VOICE -> "VOICE";
+        default -> source.name();
+      };
+      world.playSound(bLoc, bSound, org.bukkit.SoundCategory.valueOf(bukkitCategoryName), volume, pitch);
     }
   }
 

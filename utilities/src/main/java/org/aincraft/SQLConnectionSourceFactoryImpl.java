@@ -20,11 +20,12 @@ final class SQLConnectionSourceFactoryImpl implements ConnectionSourceFactory {
     Preconditions.checkArgument(type.isRelational());
     return switch (type) {
       case MYSQL, POSTGRES -> new HikariSourceImpl(new HikariDataSource(parseHikariConfig(configuration)), type);
-      case SQLITE -> SQLiteSourceImpl.create(plugin, configuration.getString("path"));
+      case SQLITE -> SQLiteConnectionSource.create(
+          plugin.getDataFolder().toPath().resolve(configuration.getString("path")));
       default -> throw new IllegalArgumentException("failed to create a source for this database type");
     };
-  }
 
+  }
   private static HikariConfig parseHikariConfig(ConfigurationSection configuration) {
     HikariConfig hikariConfig = new HikariConfig();
     String jdbcUrl = configuration.getString("jdbc-url");

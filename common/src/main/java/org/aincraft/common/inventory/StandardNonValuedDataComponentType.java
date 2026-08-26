@@ -4,10 +4,10 @@ import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A {@link NonValuedDataComponentType} backed by {@link StandardDataComponentType}.
+ * A {@link DataComponentType.NonValued} backed by {@link StandardDataComponentType}.
  */
 public final class StandardNonValuedDataComponentType
-    extends StandardDataComponentType<Void> implements NonValuedDataComponentType {
+    extends StandardDataComponentType<Void> implements DataComponentType.NonValued {
 
   public StandardNonValuedDataComponentType(@NotNull Key key) {
     super(key, Void.class);

@@ -41,8 +41,8 @@ public class DataComponentTypesTest {
   void catalogCoversAllStandardComponents() {
     Set<String> actual = new HashSet<>();
     for (Field field : DataComponentTypes.class.getDeclaredFields()) {
-      if (field.getType() == ValuedDataComponentType.class
-          || field.getType() == NonValuedDataComponentType.class) {
+      if (field.getType() == DataComponentType.Valued.class
+          || field.getType() == DataComponentType.NonValued.class) {
         actual.add(field.getName());
       }
     }
@@ -54,8 +54,8 @@ public class DataComponentTypesTest {
   @Test
   void allDescriptorsHaveMinecraftKeyAndType() {
     for (Field field : DataComponentTypes.class.getDeclaredFields()) {
-      if (field.getType() != ValuedDataComponentType.class
-          && field.getType() != NonValuedDataComponentType.class) {
+      if (field.getType() != DataComponentType.Valued.class
+          && field.getType() != DataComponentType.NonValued.class) {
         continue;
       }
       DataComponentType<?> type;

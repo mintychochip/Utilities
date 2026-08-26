@@ -3,25 +3,23 @@ plugins {
     `maven-publish`
 }
 
-extra["allowedAincraftPrefixes"] = listOf("org/aincraft/common/")
+extra["allowedAincraftPrefixes"] = listOf("org/aincraft/bukkit/")
 extra["forbiddenAincraftPrefixes"] = listOf(
+    "org/aincraft/paper/",
     "org/aincraft/config/",
     "org/aincraft/db/",
     "org/aincraft/math/",
     "org/aincraft/registry/",
 )
-extra["bukkitFree"] = true
 extra["paperFree"] = true
 
 apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 
 dependencies {
-    api(libs.annotations)
-    api(libs.adventure.api)
-    api(libs.adventure.key)
+    api(project(":common"))
+    api(libs.adventure.text.serializer.legacy)
+    compileOnly(libs.spigot.api)
 
-    testImplementation(libs.annotations)
-    testImplementation(libs.adventure.api)
-    testImplementation(libs.adventure.key)
+    testImplementation(libs.spigot.api)
 }

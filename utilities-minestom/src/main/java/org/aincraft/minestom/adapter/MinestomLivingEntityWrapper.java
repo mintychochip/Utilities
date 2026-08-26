@@ -6,8 +6,8 @@ import java.util.Objects;
 import java.util.UUID;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.LivingEntity;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.entity.attribute.Attribute;
-import net.minestom.server.entity.damage.Damage;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.effect.PotionEffect;
@@ -60,9 +60,9 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
   }
 
   @Override
-  public @Nullable AttributeInstance getAttribute(@NotNull org.aincraft.common.attribute.Attribute attribute) {
+  public @Nullable AttributeInstance getAttribute(@NotNull Key attribute) {
     Objects.requireNonNull(attribute, "attribute cannot be null");
-    Attribute mAttr = Attribute.fromKey(attribute.key());
+    Attribute mAttr = Attribute.fromKey(attribute);
     if (mAttr == null) {
       return null;
     }
@@ -72,7 +72,7 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
     }
     return new AttributeInstance() {
       @Override
-      public @NotNull org.aincraft.common.attribute.Attribute attribute() {
+      public @NotNull Key attribute() {
         return attribute;
       }
 

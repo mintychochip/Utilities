@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
+import org.aincraft.common.effect.Particle;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
-import org.aincraft.common.effect.Sound;
-import org.aincraft.common.effect.SoundCategory;
+import net.kyori.adventure.sound.Sound;
+import org.aincraft.common.effect.Particle;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.inventory.DataComponentType;
@@ -215,7 +217,8 @@ class BukkitAdaptersTest {
       @Override public org.aincraft.common.world.Difficulty difficulty() { return org.aincraft.common.world.Difficulty.NORMAL; }
       @Override public long time() { return 0; }
       @Override public long fullTime() { return 0; }
-      @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
+      @Override public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch) { throw new UnsupportedOperationException(); }
+      @Override public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) { throw new UnsupportedOperationException(); }
       @Override public java.util.Collection<? extends Player> players() { return java.util.List.of(); }
       @Override public java.util.Collection<? extends Entity> entities() { return java.util.List.of(); }
       @Override public java.util.Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
@@ -353,7 +356,7 @@ class BukkitAdaptersTest {
       @Override public net.kyori.adventure.identity.Identity identity() { return net.kyori.adventure.identity.Identity.nil(); }
     };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignSender));
-    org.aincraft.common.attribute.Attribute foreignAttr = () -> Key.key("minecraft", "generic.max_health");
+    Key foreignAttr = Key.key("minecraft", "generic.max_health");
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignAttr));
 
     org.aincraft.common.attribute.AttributeModifier foreignMod = new org.aincraft.common.attribute.AttributeModifier() {
@@ -379,7 +382,7 @@ class BukkitAdaptersTest {
           default -> null;
         }
     );
-    org.aincraft.common.attribute.Attribute cAttr = BukkitAdapters.adapt(bAttr);
+    Key cAttr = BukkitAdapters.adapt(bAttr);
     assertEquals(Key.key("minecraft", "generic.max_health"), cAttr.key());
     assertEquals(bAttr, BukkitAdapters.toBukkit(cAttr));
 

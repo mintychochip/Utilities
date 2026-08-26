@@ -15,6 +15,7 @@ import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.inventory.DataComponentType;
 import org.aincraft.common.inventory.ItemFlag;
 import org.aincraft.common.inventory.ItemMeta;
+import org.aincraft.common.inventory.ItemStack;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -95,6 +96,8 @@ public class BukkitItemMetaWrapper implements ItemMeta {
         @Override public int startLevel() { return bEnch.getStartLevel(); }
         @Override public boolean isCursed() { return bEnch.isCursed(); }
         @Override public boolean isTreasure() { return bEnch.isTreasure(); }
+        @Override public boolean conflictsWith(@NotNull Enchantment other) { return bEnch.conflictsWith(BukkitAdapters.toBukkit(other)); }
+        @Override public boolean canEnchant(@NotNull ItemStack item) { return bEnch.canEnchantItem(BukkitAdapters.toBukkit(item)); }
       }, entry.getValue());
     }
     return result;

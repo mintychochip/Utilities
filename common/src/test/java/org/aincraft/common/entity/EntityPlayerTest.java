@@ -10,8 +10,8 @@ import net.kyori.adventure.text.Component;
 import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.Particle;
 import org.aincraft.common.effect.PotionEffectType;
-import org.aincraft.common.effect.Sound;
-import org.aincraft.common.effect.SoundCategory;
+import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.inventory.Inventory;
 import org.aincraft.common.inventory.InventoryView;
@@ -90,8 +90,8 @@ class EntityPlayerTest {
       @Override public @NotNull Collection<? extends org.aincraft.common.entity.Player> players() { return List.of(); }
       @Override public @NotNull Collection<? extends Entity> entities() { return List.of(); }
       @Override public @NotNull Collection<? extends Chunk> loadedChunks() { return List.of(); }
-      @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
-      @Override public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) {}
+      @Override public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch) { throw new UnsupportedOperationException(); }
+      @Override public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) { throw new UnsupportedOperationException(); }
       @Override public @NotNull Key key() { return Key.key("minecraft", name); }
     };
   }
@@ -166,13 +166,7 @@ class EntityPlayerTest {
       @Override public boolean isOp() { return false; }
       @Override public void setOp(boolean op) {}
       @Override public PlayerInventory inventory() { return null; }
-      @Override public InventoryView openInventory() { return null; }
-      @Override public InventoryView openInventory(Inventory inventory) { return null; }
-      @Override public void closeInventory() {}
-      @Override public ItemStack itemOnCursor() { return null; }
-      @Override public void setItemOnCursor(ItemStack item) {}
       @Override public void kick(Component reason) { kicked.set(true); }
-      @Override public Server server() { return null; }
       @Override public World world() { return world; }
       @Override public Location location() { return location; }
       @Override public Position position() { return pos; }
@@ -204,7 +198,6 @@ class EntityPlayerTest {
       @Override public void customName(Component name) { customName.set(name); }
       @Override public void teleport(Location targetLocation) {}
       @Override public void remove() {}
-      @Override public @NotNull Inventory enderChest() { return null; }
       @Override public void sendMessage(Component message) { messageSent.set(true); }
     };
 

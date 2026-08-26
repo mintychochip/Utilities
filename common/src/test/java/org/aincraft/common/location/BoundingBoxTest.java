@@ -1,5 +1,6 @@
 package org.aincraft.common.location;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,5 +59,33 @@ class BoundingBoxTest {
 
     assertTrue(box1.intersects(box2));
     assertFalse(box1.intersects(box3));
+  }
+
+  @Test
+  void testExpandSymmetricDelegation() {
+    BoundingBox base = new BoundingBox() {
+      @Override public double minX() { return 0; }
+      @Override public double minY() { return 0; }
+      @Override public double minZ() { return 0; }
+      @Override public double maxX() { return 1; }
+      @Override public double maxY() { return 1; }
+      @Override public double maxZ() { return 1; }
+      @Override public @NotNull BoundingBox expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ) {
+        return createBox(minX() - negativeX, minY() - negativeY, minZ() - negativeZ, maxX() + positiveX, maxY() + positiveY, maxZ() + positiveZ);
+      }
+    };
+    BoundingBox expanded = base.expand(1, 0, 0);
+    assertEquals(-1.0, expanded.minX(), 1e-9);
+    assertEquals(2.0, expanded.maxX(), 1e-9);
+    assertEquals(0.0, expanded.minY(), 1e-9);
+    assertEquals(1.0, expanded.maxY(), 1e-9);
+
+    BoundingBox expanded2 = base.expand(1, 2, 3);
+    assertEquals(-1.0, expanded2.minX(), 1e-9);
+    assertEquals(2.0, expanded2.maxX(), 1e-9);
+    assertEquals(-2.0, expanded2.minY(), 1e-9);
+    assertEquals(3.0, expanded2.maxY(), 1e-9);
+    assertEquals(-3.0, expanded2.minZ(), 1e-9);
+    assertEquals(4.0, expanded2.maxZ(), 1e-9);
   }
 }

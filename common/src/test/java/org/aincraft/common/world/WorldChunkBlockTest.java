@@ -8,8 +8,8 @@ import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.effect.Particle;
-import org.aincraft.common.effect.Sound;
-import org.aincraft.common.effect.SoundCategory;
+import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.location.BoundingBox;
@@ -79,7 +79,7 @@ class WorldChunkBlockTest {
       @Override public Collection<? extends Player> players() { return java.util.List.of(); }
       @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
       @Override public Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
-      @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
+      @Override public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch) { throw new UnsupportedOperationException(); }
       @Override public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) { throw new UnsupportedOperationException(); }
       @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return chunkX == 0 && chunkZ == 0; }
       @Override

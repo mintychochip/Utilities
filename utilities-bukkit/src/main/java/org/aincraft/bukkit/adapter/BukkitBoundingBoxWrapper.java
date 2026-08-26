@@ -57,7 +57,12 @@ public class BukkitBoundingBoxWrapper implements BoundingBox {
         && minY() <= other.maxY() && maxY() >= other.minY()
         && minZ() <= other.maxZ() && maxZ() >= other.minZ();
   }
-
+  @Override
+  public @NotNull BoundingBox expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ) {
+    org.bukkit.util.BoundingBox expanded = boundingBox.clone();
+    expanded.expand(negativeX, negativeY, negativeZ, positiveX, positiveY, positiveZ);
+    return new BukkitBoundingBoxWrapper(expanded);
+  }
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

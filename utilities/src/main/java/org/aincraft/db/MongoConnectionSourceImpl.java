@@ -1,11 +1,9 @@
-package org.aincraft;
+package org.aincraft.db;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.aincraft.db.ConnectionException;
 import org.aincraft.db.ConnectionSource.MongoConnectionSource;
-import org.aincraft.db.DatabaseType;
 
 public final class MongoConnectionSourceImpl implements MongoConnectionSource {
 
@@ -28,7 +26,7 @@ public final class MongoConnectionSourceImpl implements MongoConnectionSource {
 
   @Override
   public boolean closed() throws ConnectionException {
-   return closed.get();
+    return closed.get();
   }
 
   @Override

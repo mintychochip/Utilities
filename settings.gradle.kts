@@ -4,6 +4,6 @@ plugins {
 
 rootProject.name = "utilities"
 
+include("common")
 include("utilities")
-
 include("test-plugin")

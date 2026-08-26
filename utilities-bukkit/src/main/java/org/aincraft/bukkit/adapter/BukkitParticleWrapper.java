@@ -17,8 +17,18 @@ public class BukkitParticleWrapper implements Particle {
   }
 
   @Override
-  public @NotNull Key key() {
-    return Key.key(particle.getKey().getNamespace(), particle.getKey().getKey());
+  public @NotNull String asString() {
+    return Key.key(particle.getKey().toString()).asString();
+  }
+
+  @Override
+  public @NotNull String namespace() {
+    return particle.getKey().getNamespace();
+  }
+
+  @Override
+  public @NotNull String value() {
+    return particle.getKey().getKey();
   }
 
   @Override

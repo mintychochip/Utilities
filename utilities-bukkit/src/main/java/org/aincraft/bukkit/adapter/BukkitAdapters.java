@@ -412,9 +412,9 @@ public final class BukkitAdapters {
     if (particle instanceof BukkitParticleWrapper wrapper) {
       return wrapper.getBukkitParticle();
     }
-    org.bukkit.Particle bParticle = org.bukkit.Registry.PARTICLE_TYPE.get(NamespacedKey.fromString(particle.key().asString()));
+    org.bukkit.Particle bParticle = org.bukkit.Registry.PARTICLE_TYPE.get(NamespacedKey.fromString(particle.asString()));
     if (bParticle == null) {
-      throw new IllegalArgumentException("Cannot resolve Particle for key: " + particle.key());
+      throw new IllegalArgumentException("Cannot resolve Particle for key: " + particle.asString());
     }
     return bParticle;
   }

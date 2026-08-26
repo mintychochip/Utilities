@@ -389,11 +389,11 @@ public final class BukkitAdapters {
     throw new IllegalArgumentException("Cannot unwrap foreign PotionEffect implementation: " + effect.getClass().getName());
   }
 
-  public static @NotNull Sound adapt(@NotNull org.bukkit.Sound sound) {
+  public static @NotNull Sound.Type adapt(@NotNull org.bukkit.Sound sound) {
     return new BukkitSoundWrapper(sound);
   }
 
-  public static @NotNull org.bukkit.Sound toBukkit(@NotNull Sound sound) {
+  public static @NotNull org.bukkit.Sound toBukkit(@NotNull Sound.Type sound) {
     if (sound instanceof BukkitSoundWrapper wrapper) {
       return wrapper.getBukkitSound();
     }

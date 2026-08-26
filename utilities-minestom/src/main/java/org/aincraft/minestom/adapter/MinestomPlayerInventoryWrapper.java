@@ -1,0 +1,145 @@
+package org.aincraft.minestom.adapter;
+
+import java.util.Objects;
+import org.aincraft.common.inventory.InventoryHolder;
+import org.aincraft.common.inventory.InventoryType;
+import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.common.inventory.PlayerInventory;
+import org.aincraft.common.location.Location;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class MinestomPlayerInventoryWrapper implements PlayerInventory {
+
+  private final net.minestom.server.inventory.PlayerInventory inventory;
+  private final InventoryHolder holder;
+
+  public MinestomPlayerInventoryWrapper(
+      @NotNull net.minestom.server.inventory.PlayerInventory inventory,
+      @Nullable InventoryHolder holder
+  ) {
+    this.inventory = Objects.requireNonNull(inventory, "inventory cannot be null");
+    this.holder = holder;
+  }
+
+  public @NotNull net.minestom.server.inventory.PlayerInventory getMinestomPlayerInventory() {
+    return inventory;
+  }
+
+  @Override
+  public int size() {
+    return net.minestom.server.inventory.PlayerInventory.INVENTORY_SIZE;
+  }
+
+  @Override
+  public @NotNull InventoryType type() {
+    return InventoryType.PLAYER;
+  }
+
+  @Override
+  public @Nullable ItemStack getItem(int slot) {
+    return null;
+  }
+
+  @Override
+  public void setItem(int slot, @Nullable ItemStack item) {
+  }
+
+  @Override
+  public @Nullable ItemStack[] contents() {
+    return new ItemStack[0];
+  }
+
+  @Override
+  public void setContents(@NotNull ItemStack[] items) {
+  }
+
+  @Override
+  public void clear() {
+    inventory.clear();
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return false;
+  }
+
+  @Override
+  public @Nullable Location location() {
+    return null;
+  }
+
+  @Override
+  public @Nullable InventoryHolder holder() {
+    return holder;
+  }
+
+  @Override
+  public @Nullable ItemStack helmet() {
+    return null;
+  }
+
+  @Override
+  public void setHelmet(@Nullable ItemStack helmet) {
+  }
+
+  @Override
+  public @Nullable ItemStack chestplate() {
+    return null;
+  }
+
+  @Override
+  public void setChestplate(@Nullable ItemStack chestplate) {
+  }
+
+  @Override
+  public @Nullable ItemStack leggings() {
+    return null;
+  }
+
+  @Override
+  public void setLeggings(@Nullable ItemStack leggings) {
+  }
+
+  @Override
+  public @Nullable ItemStack boots() {
+    return null;
+  }
+
+  @Override
+  public void setBoots(@Nullable ItemStack boots) {
+  }
+
+  @Override
+  public @Nullable ItemStack itemInMainHand() {
+    return null;
+  }
+
+  @Override
+  public void setItemInMainHand(@Nullable ItemStack item) {
+  }
+
+  @Override
+  public @Nullable ItemStack itemInOffHand() {
+    return null;
+  }
+
+  @Override
+  public void setItemInOffHand(@Nullable ItemStack item) {
+  }
+
+  @Override
+  public int heldItemSlot() {
+    if (holder instanceof MinestomPlayerWrapper playerWrapper) {
+      return playerWrapper.getMinestomPlayer().getHeldSlot();
+    }
+    return 0;
+  }
+
+  @Override
+  public void setHeldItemSlot(int slot) {
+    if (holder instanceof MinestomPlayerWrapper playerWrapper) {
+      playerWrapper.getMinestomPlayer().setHeldItemSlot((byte) slot);
+    }
+  }
+}

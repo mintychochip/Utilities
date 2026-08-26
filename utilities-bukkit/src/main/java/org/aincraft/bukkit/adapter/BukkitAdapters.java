@@ -1,17 +1,25 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.entity.Entity;
+import org.aincraft.common.entity.LivingEntity;
 import org.aincraft.common.entity.Player;
+import org.aincraft.common.inventory.Inventory;
+import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.common.inventory.ItemType;
+import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
+import org.aincraft.common.server.CommandSender;
+import org.aincraft.common.server.ConsoleCommandSender;
+import org.aincraft.common.server.Server;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
+import org.aincraft.common.world.WorldBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -21,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public final class BukkitAdapters {
 
   private BukkitAdapters() {}
+
   public static @NotNull Location adapt(@NotNull org.bukkit.Location location) {
     return new BukkitLocationWrapper(location);
   }
@@ -97,9 +106,23 @@ public final class BukkitAdapters {
     return bWorld;
   }
 
+  public static @NotNull WorldBorder adapt(@NotNull org.bukkit.WorldBorder worldBorder) {
+    return new BukkitWorldBorderWrapper(worldBorder);
+  }
+
+  public static @NotNull org.bukkit.WorldBorder toBukkit(@NotNull WorldBorder worldBorder) {
+    if (worldBorder instanceof BukkitWorldBorderWrapper wrapper) {
+      return wrapper.getBukkitWorldBorder();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign WorldBorder implementation: " + worldBorder.getClass().getName());
+  }
+
   public static @NotNull Entity adapt(@NotNull org.bukkit.entity.Entity entity) {
     if (entity instanceof org.bukkit.entity.Player player) {
       return adapt(player);
+    }
+    if (entity instanceof org.bukkit.entity.LivingEntity living) {
+      return adapt(living);
     }
     return new BukkitEntityWrapper(entity);
   }
@@ -115,6 +138,24 @@ public final class BukkitAdapters {
     return bEntity;
   }
 
+  public static @NotNull LivingEntity adapt(@NotNull org.bukkit.entity.LivingEntity entity) {
+    if (entity instanceof org.bukkit.entity.Player player) {
+      return adapt(player);
+    }
+    return new BukkitLivingEntityWrapper(entity);
+  }
+
+  public static @NotNull org.bukkit.entity.LivingEntity toBukkit(@NotNull LivingEntity entity) {
+    if (entity instanceof BukkitLivingEntityWrapper wrapper) {
+      return wrapper.getBukkitLivingEntity();
+    }
+    org.bukkit.entity.Entity bEntity = toBukkit((Entity) entity);
+    if (bEntity instanceof org.bukkit.entity.LivingEntity living) {
+      return living;
+    }
+    throw new IllegalArgumentException("Bukkit Entity is not a LivingEntity: " + bEntity.getClass().getName());
+  }
+
   public static @NotNull Player adapt(@NotNull org.bukkit.entity.Player player) {
     return new BukkitPlayerWrapper(player);
   }
@@ -128,6 +169,89 @@ public final class BukkitAdapters {
       throw new IllegalArgumentException("Cannot find Bukkit Player with UUID: " + player.uniqueId());
     }
     return bPlayer;
+  }
+
+  public static @NotNull ItemStack adapt(@NotNull org.bukkit.inventory.ItemStack item) {
+    return new BukkitItemStackWrapper(item);
+  }
+
+  public static @NotNull org.bukkit.inventory.ItemStack toBukkit(@NotNull ItemStack item) {
+    if (item instanceof BukkitItemStackWrapper wrapper) {
+      return wrapper.getBukkitItemStack();
+    }
+    Material material = Material.matchMaterial(item.type().key().asString());
+    if (material == null) {
+      throw new IllegalArgumentException("Cannot match Bukkit Material for item: " + item.type().key());
+    }
+    return new org.bukkit.inventory.ItemStack(material, item.amount());
+  }
+
+  public static @NotNull ItemType adapt(@NotNull Material material) {
+    return new BukkitItemTypeWrapper(material);
+  }
+
+  public static @NotNull Material toBukkit(@NotNull ItemType itemType) {
+    if (itemType instanceof BukkitItemTypeWrapper wrapper) {
+      return wrapper.getBukkitMaterial();
+    }
+    Material material = Material.matchMaterial(itemType.key().asString());
+    if (material == null) {
+      throw new IllegalArgumentException("Cannot match Bukkit Material for ItemType: " + itemType.key());
+    }
+    return material;
+  }
+
+  public static @NotNull Inventory adapt(@NotNull org.bukkit.inventory.Inventory inventory) {
+    if (inventory instanceof org.bukkit.inventory.PlayerInventory playerInventory) {
+      return adapt(playerInventory);
+    }
+    return new BukkitInventoryWrapper(inventory);
+  }
+
+  public static @NotNull org.bukkit.inventory.Inventory toBukkit(@NotNull Inventory inventory) {
+    if (inventory instanceof BukkitInventoryWrapper wrapper) {
+      return wrapper.getBukkitInventory();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign Inventory implementation: " + inventory.getClass().getName());
+  }
+
+  public static @NotNull PlayerInventory adapt(@NotNull org.bukkit.inventory.PlayerInventory inventory) {
+    return new BukkitPlayerInventoryWrapper(inventory);
+  }
+
+  public static @NotNull org.bukkit.inventory.PlayerInventory toBukkit(@NotNull PlayerInventory inventory) {
+    if (inventory instanceof BukkitPlayerInventoryWrapper wrapper) {
+      return wrapper.getBukkitPlayerInventory();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign PlayerInventory implementation: " + inventory.getClass().getName());
+  }
+
+  public static @NotNull Server adapt(@NotNull org.bukkit.Server server) {
+    return new BukkitServerWrapper(server);
+  }
+
+  public static @NotNull org.bukkit.Server toBukkit(@NotNull Server server) {
+    if (server instanceof BukkitServerWrapper wrapper) {
+      return wrapper.getBukkitServer();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign Server implementation: " + server.getClass().getName());
+  }
+
+  public static @NotNull CommandSender adapt(@NotNull org.bukkit.command.CommandSender sender) {
+    if (sender instanceof org.bukkit.entity.Player player) {
+      return adapt(player);
+    }
+    if (sender instanceof org.bukkit.command.ConsoleCommandSender console) {
+      return new BukkitConsoleCommandSenderWrapper(console);
+    }
+    return new BukkitCommandSenderWrapper(sender);
+  }
+
+  public static @NotNull org.bukkit.command.CommandSender toBukkit(@NotNull CommandSender sender) {
+    if (sender instanceof BukkitCommandSenderWrapper wrapper) {
+      return wrapper.getBukkitCommandSender();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign CommandSender implementation: " + sender.getClass().getName());
   }
 
   public static @NotNull BlockFace adapt(@NotNull org.bukkit.block.BlockFace face) {
@@ -178,17 +302,17 @@ public final class BukkitAdapters {
     };
   }
 
-  public static @NotNull BlockType adapt(@NotNull Material material) {
+  public static @NotNull BlockType adaptBlockMaterial(@NotNull Material material) {
     return new BukkitBlockTypeWrapper(material);
   }
 
-  public static @NotNull Material toBukkit(@NotNull BlockType blockType) {
+  public static @NotNull Material toBukkitBlockMaterial(@NotNull BlockType blockType) {
     if (blockType instanceof BukkitBlockTypeWrapper wrapper) {
       return wrapper.getBukkitMaterial();
     }
     Material material = Material.matchMaterial(blockType.key().asString());
     if (material == null) {
-      throw new IllegalArgumentException("Cannot match Bukkit Material for: " + blockType.key());
+      throw new IllegalArgumentException("Cannot match Bukkit Material for BlockType: " + blockType.key());
     }
     return material;
   }

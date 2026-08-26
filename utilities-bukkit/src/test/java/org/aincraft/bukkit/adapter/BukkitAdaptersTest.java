@@ -61,12 +61,14 @@ class BukkitAdaptersTest {
   }
 
   @Test
-  void testBlockTypeAdaptation() {
+  void testBlockTypeAndItemTypeAdaptation() {
     Material stone = Material.STONE;
-    BlockType type = BukkitAdapters.adapt(stone);
+    BlockType blockType = BukkitAdapters.adaptBlockMaterial(stone);
+    assertEquals(Key.key("minecraft", "stone"), blockType.key());
+    assertEquals(stone, BukkitAdapters.toBukkitBlockMaterial(blockType));
 
-    assertEquals(Key.key("minecraft", "stone"), type.key());
-    Material roundTrip = BukkitAdapters.toBukkit(type);
-    assertEquals(stone, roundTrip);
+    org.aincraft.common.inventory.ItemType itemType = BukkitAdapters.adapt(stone);
+    assertEquals(Key.key("minecraft", "stone"), itemType.key());
+    assertEquals(stone, BukkitAdapters.toBukkit(itemType));
   }
 }

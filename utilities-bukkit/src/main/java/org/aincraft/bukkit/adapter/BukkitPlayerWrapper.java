@@ -1,12 +1,15 @@
 package org.aincraft.bukkit.adapter;
 
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.aincraft.common.entity.Player;
+import org.aincraft.common.inventory.PlayerInventory;
+import org.aincraft.common.world.GameMode;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
+public class BukkitPlayerWrapper extends BukkitLivingEntityWrapper implements Player {
 
   private final org.bukkit.entity.Player player;
 
@@ -35,19 +38,13 @@ public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
   }
 
   @Override
-  public double health() {
-    return player.getHealth();
-  }
-
-  @Override
-  public double maxHealth() {
-    org.bukkit.attribute.AttributeInstance attr = player.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
-    return attr != null ? attr.getValue() : 20.0;
-  }
-
-  @Override
   public int foodLevel() {
     return player.getFoodLevel();
+  }
+
+  @Override
+  public void setFoodLevel(int foodLevel) {
+    player.setFoodLevel(foodLevel);
   }
 
   @Override
@@ -56,8 +53,18 @@ public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
   }
 
   @Override
+  public void setSaturation(float saturation) {
+    player.setSaturation(saturation);
+  }
+
+  @Override
   public int level() {
     return player.getLevel();
+  }
+
+  @Override
+  public void setLevel(int level) {
+    player.setLevel(level);
   }
 
   @Override
@@ -66,8 +73,29 @@ public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
   }
 
   @Override
-  public @NotNull Key gameMode() {
-    return Key.key("minecraft", player.getGameMode().name().toLowerCase(java.util.Locale.ROOT));
+  public void setExp(float exp) {
+    player.setExp(exp);
+  }
+
+  @Override
+  public @NotNull GameMode gameMode() {
+    return switch (player.getGameMode()) {
+      case SURVIVAL -> GameMode.SURVIVAL;
+      case CREATIVE -> GameMode.CREATIVE;
+      case ADVENTURE -> GameMode.ADVENTURE;
+      case SPECTATOR -> GameMode.SPECTATOR;
+    };
+  }
+
+  @Override
+  public void setGameMode(@NotNull GameMode gameMode) {
+    org.bukkit.GameMode bMode = switch (gameMode) {
+      case SURVIVAL -> org.bukkit.GameMode.SURVIVAL;
+      case CREATIVE -> org.bukkit.GameMode.CREATIVE;
+      case ADVENTURE -> org.bukkit.GameMode.ADVENTURE;
+      case SPECTATOR -> org.bukkit.GameMode.SPECTATOR;
+    };
+    player.setGameMode(bMode);
   }
 
   @Override
@@ -76,8 +104,18 @@ public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
   }
 
   @Override
+  public void setSneaking(boolean sneaking) {
+    player.setSneaking(sneaking);
+  }
+
+  @Override
   public boolean isSprinting() {
     return player.isSprinting();
+  }
+
+  @Override
+  public void setSprinting(boolean sprinting) {
+    player.setSprinting(sprinting);
   }
 
   @Override
@@ -91,13 +129,23 @@ public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
   }
 
   @Override
-  public void setSneaking(boolean sneaking) {
-    player.setSneaking(sneaking);
+  public @NotNull PlayerInventory inventory() {
+    return new BukkitPlayerInventoryWrapper(player.getInventory());
   }
 
   @Override
-  public void setSprinting(boolean sprinting) {
-    player.setSprinting(sprinting);
+  public boolean hasPermission(@NotNull String permission) {
+    return player.hasPermission(permission);
+  }
+
+  @Override
+  public boolean isOp() {
+    return player.isOp();
+  }
+
+  @Override
+  public void setOp(boolean op) {
+    player.setOp(op);
   }
 
   @Override
@@ -108,6 +156,12 @@ public class BukkitPlayerWrapper extends BukkitEntityWrapper implements Player {
   @Override
   public void sendMessage(@NotNull Component message) {
     player.sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
+  }
+
+  @Override
+  public void sendActionBar(@NotNull Component message) {
+    String legacy = LegacyComponentSerializer.legacySection().serialize(message);
+    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(legacy));
   }
 
   @Override

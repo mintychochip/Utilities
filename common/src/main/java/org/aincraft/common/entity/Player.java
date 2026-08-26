@@ -4,12 +4,18 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.inventory.InventoryHolder;
 import org.aincraft.common.inventory.PlayerInventory;
+import org.aincraft.common.server.CommandSender;
 import org.aincraft.common.world.GameMode;
 import org.jetbrains.annotations.NotNull;
 
-public interface Player extends LivingEntity, Audience, InventoryHolder {
+public interface Player extends LivingEntity, Audience, InventoryHolder, CommandSender {
 
   @NotNull String username();
+
+  @Override
+  default @NotNull String name() {
+    return username();
+  }
 
   boolean isOnline();
 

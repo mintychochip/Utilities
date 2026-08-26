@@ -9,7 +9,10 @@ import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
+import org.aincraft.common.world.Difficulty;
+import org.aincraft.common.world.Environment;
 import org.aincraft.common.world.World;
+import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitWorldWrapper implements World {
@@ -64,6 +67,29 @@ public class BukkitWorldWrapper implements World {
   @Override
   public int maxHeight() {
     return world.getMaxHeight();
+  }
+
+  @Override
+  public @NotNull WorldBorder worldBorder() {
+    return new BukkitWorldBorderWrapper(world.getWorldBorder());
+  }
+
+  @Override
+  public @NotNull Environment environment() {
+    try {
+      return Environment.valueOf(world.getEnvironment().name());
+    } catch (IllegalArgumentException e) {
+      return Environment.NORMAL;
+    }
+  }
+
+  @Override
+  public @NotNull Difficulty difficulty() {
+    try {
+      return Difficulty.valueOf(world.getDifficulty().name());
+    } catch (IllegalArgumentException e) {
+      return Difficulty.NORMAL;
+    }
   }
 
   @Override

@@ -8,6 +8,10 @@ import net.kyori.adventure.sound.SoundStop;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.aincraft.common.entity.Player;
+import org.aincraft.common.server.Server;
+import org.aincraft.common.inventory.Inventory;
+import org.aincraft.common.inventory.InventoryView;
+import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.world.GameMode;
 import org.jetbrains.annotations.NotNull;
@@ -203,4 +207,60 @@ public class MinestomPlayerWrapper extends MinestomLivingEntityWrapper implement
   public String toString() {
     return "MinestomPlayerWrapper{username=" + username() + ", uuid=" + uniqueId() + "}";
   }
+
+  @Override
+  public boolean allowFlight() {
+    return false;
+  }
+
+  @Override
+  public void setAllowFlight(boolean allow) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull net.kyori.adventure.text.Component displayName() {
+    return net.kyori.adventure.text.Component.text(username());
+  }
+
+  @Override
+  public void displayName(@NotNull net.kyori.adventure.text.Component displayName) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull org.aincraft.common.inventory.InventoryView openInventory() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull org.aincraft.common.inventory.InventoryView openInventory(@NotNull org.aincraft.common.inventory.Inventory inventory) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void closeInventory() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable org.aincraft.common.inventory.ItemStack itemOnCursor() {
+    return null;
+  }
+
+  @Override
+  public void setItemOnCursor(@org.jetbrains.annotations.Nullable org.aincraft.common.inventory.ItemStack item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull org.aincraft.common.inventory.Inventory enderChest() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull org.aincraft.common.server.Server server() {
+    throw new UnsupportedOperationException();
+  }
+
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 import org.aincraft.common.inventory.InventoryHolder;
 import org.aincraft.common.inventory.InventoryType;
 import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.common.inventory.EquipmentSlot;
 import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
@@ -142,4 +143,70 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
       playerWrapper.getMinestomPlayer().setHeldItemSlot((byte) slot);
     }
   }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable ItemStack getItem(@NotNull EquipmentSlot slot) {
+    return null;
+  }
+
+  @Override
+  public void setItem(@NotNull EquipmentSlot slot, @org.jetbrains.annotations.Nullable ItemStack item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> armorContents() {
+    return java.util.Collections.emptyList();
+  }
+
+  @Override
+  public void setArmorContents(@NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> items) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> extraContents() {
+    return java.util.Collections.emptyList();
+  }
+
+  @Override
+  public void setExtraContents(@NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> items) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull java.util.Map<Integer, ItemStack> addItem(@NotNull ItemStack... items) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull java.util.Map<Integer, ItemStack> removeItem(@NotNull ItemStack... items) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean contains(@NotNull org.aincraft.common.inventory.ItemType type) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean contains(@NotNull ItemStack item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean containsAtLeast(@NotNull ItemStack item, int amount) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int first(@NotNull ItemStack item) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int firstEmpty() {
+    throw new UnsupportedOperationException();
+  }
+
 }

@@ -2,78 +2,61 @@ package org.aincraft.common.location;
 
 import org.jetbrains.annotations.NotNull;
 
-public record BoundingBox(
-    double minX,
-    double minY,
-    double minZ,
-    double maxX,
-    double maxY,
-    double maxZ
-) {
+public interface BoundingBox {
 
-  public BoundingBox {
-    if (minX > maxX || minY > maxY || minZ > maxZ) {
-      throw new IllegalArgumentException(
-          "Minimum coordinates cannot exceed maximum coordinates: min("
-              + minX + ", " + minY + ", " + minZ + ") vs max("
-              + maxX + ", " + maxY + ", " + maxZ + ")");
-    }
+  double minX();
+
+  double minY();
+
+  double minZ();
+
+  double maxX();
+
+  double maxY();
+
+  double maxZ();
+
+  default double widthX() {
+    return maxX() - minX();
   }
 
-  public static @NotNull BoundingBox of(@NotNull Position p1, @NotNull Position p2) {
-    return new BoundingBox(
-        Math.min(p1.x(), p2.x()),
-        Math.min(p1.y(), p2.y()),
-        Math.min(p1.z(), p2.z()),
-        Math.max(p1.x(), p2.x()),
-        Math.max(p1.y(), p2.y()),
-        Math.max(p1.z(), p2.z())
-    );
+  default double heightY() {
+    return maxY() - minY();
   }
 
-  public static @NotNull BoundingBox of(
-      double x1, double y1, double z1,
-      double x2, double y2, double z2
-  ) {
-    return new BoundingBox(
-        Math.min(x1, x2),
-        Math.min(y1, y2),
-        Math.min(z1, z2),
-        Math.max(x1, x2),
-        Math.max(y1, y2),
-        Math.max(z1, z2)
-    );
+  default double depthZ() {
+    return maxZ() - minZ();
   }
 
-  public boolean contains(double x, double y, double z) {
-    return x >= minX && x <= maxX
-        && y >= minY && y <= maxY
-        && z >= minZ && z <= maxZ;
+  default double volume() {
+    return widthX() * heightY() * depthZ();
   }
 
-  public boolean contains(@NotNull Position position) {
+  default double centerX() {
+    return minX() + widthX() * 0.5;
+  }
+
+  default double centerY() {
+    return minY() + heightY() * 0.5;
+  }
+
+  default double centerZ() {
+    return minZ() + depthZ() * 0.5;
+  }
+
+  default boolean contains(double x, double y, double z) {
+    return x >= minX() && x <= maxX()
+        && y >= minY() && y <= maxY()
+        && z >= minZ() && z <= maxZ();
+  }
+
+  default boolean contains(@NotNull Position position) {
     return contains(position.x(), position.y(), position.z());
   }
 
-  public boolean intersects(@NotNull BoundingBox other) {
-    return minX <= other.maxX && maxX >= other.minX
-        && minY <= other.maxY && maxY >= other.minY
-        && minZ <= other.maxZ && maxZ >= other.minZ;
-  }
-
-  public double widthX() {
-    return maxX - minX;
-  }
-
-  public double heightY() {
-    return maxY - minY;
-  }
-
-  public double depthZ() {
-    return maxZ - minZ;
-  }
-
-  public double volume() {
-    return widthX() * heightY() * depthZ();
+  default boolean intersects(@NotNull BoundingBox other) {
+    return minX() <= other.maxX() && maxX() >= other.minX()
+        && minY() <= other.maxY() && maxY() >= other.minY()
+        && minZ() <= other.maxZ() && maxZ() >= other.minZ();
   }
 }

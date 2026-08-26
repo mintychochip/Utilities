@@ -1,5 +1,7 @@
 package org.aincraft.common.location;
 
+import org.aincraft.common.world.Block;
+import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,49 +39,19 @@ public interface Location<W extends World> {
     return position().blockZ();
   }
 
-  @NotNull Location<W> withPosition(@NotNull Position position);
-
-  default @NotNull Location<W> withPosition(double x, double y, double z) {
-    return withPosition(Position.of(x, y, z));
+  default double distanceSquared(@NotNull Location<?> other) {
+    return position().distanceSquared(other.position());
   }
 
-  @NotNull Location<W> withOrientation(float yaw, float pitch);
-
-  <T extends World> @NotNull Location<T> withWorld(@NotNull T world);
-
-  static <W extends World> @NotNull Location<W> of(
-      @NotNull W world,
-      @NotNull Position position,
-      float yaw,
-      float pitch
-  ) {
-    return new LocationImpl<>(world, position, yaw, pitch);
+  default double distance(@NotNull Location<?> other) {
+    return position().distance(other.position());
   }
 
-  static <W extends World> @NotNull Location<W> of(
-      @NotNull W world,
-      @NotNull Position position
-  ) {
-    return of(world, position, 0.0f, 0.0f);
+  default @NotNull Block block() {
+    return world().getBlockAt(blockX(), blockY(), blockZ());
   }
 
-  static <W extends World> @NotNull Location<W> of(
-      @NotNull W world,
-      double x,
-      double y,
-      double z,
-      float yaw,
-      float pitch
-  ) {
-    return of(world, Position.of(x, y, z), yaw, pitch);
-  }
-
-  static <W extends World> @NotNull Location<W> of(
-      @NotNull W world,
-      double x,
-      double y,
-      double z
-  ) {
-    return of(world, Position.of(x, y, z), 0.0f, 0.0f);
+  default @NotNull Chunk chunk() {
+    return world().getChunkAt(blockX() >> 4, blockZ() >> 4);
   }
 }

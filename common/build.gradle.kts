@@ -16,13 +16,11 @@ apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 
 dependencies {
-    compileOnly(libs.annotations)
-    compileOnly(libs.adventure.api)
-    compileOnly(libs.adventure.key)
+    api(libs.annotations)
+    api(libs.adventure.api)
+    api(libs.adventure.key)
 
     testImplementation(libs.annotations)
     testImplementation(libs.adventure.api)
     testImplementation(libs.adventure.key)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.junit.jupiter)
 }

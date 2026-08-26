@@ -33,35 +33,14 @@ public interface Position {
     return Math.sqrt(distanceSquared(other));
   }
 
-  default @NotNull Position add(double dx, double dy, double dz) {
-    return Position.of(x() + dx, y() + dy, z() + dz);
+  default double distanceSquared(double ox, double oy, double oz) {
+    double dx = x() - ox;
+    double dy = y() - oy;
+    double dz = z() - oz;
+    return dx * dx + dy * dy + dz * dz;
   }
 
-  default @NotNull Position add(@NotNull Position other) {
-    return add(other.x(), other.y(), other.z());
-  }
-
-  default @NotNull Position subtract(double dx, double dy, double dz) {
-    return Position.of(x() - dx, y() - dy, z() - dz);
-  }
-
-  default @NotNull Position subtract(@NotNull Position other) {
-    return subtract(other.x(), other.y(), other.z());
-  }
-
-  default @NotNull Position multiply(double factor) {
-    return Position.of(x() * factor, y() * factor, z() * factor);
-  }
-
-  default @NotNull Vector3d toVector() {
-    return new Vector3d(x(), y(), z());
-  }
-
-  default @NotNull Vector3i toBlockVector() {
-    return new Vector3i(blockX(), blockY(), blockZ());
-  }
-
-  static @NotNull Position of(double x, double y, double z) {
-    return new PositionImpl(x, y, z);
+  default double distance(double ox, double oy, double oz) {
+    return Math.sqrt(distanceSquared(ox, oy, oz));
   }
 }

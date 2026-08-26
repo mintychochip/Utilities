@@ -2,34 +2,33 @@ package org.aincraft.common.location;
 
 import org.jetbrains.annotations.NotNull;
 
-public record Vector3i(int x, int y, int z) {
+public interface Vector3i {
 
-  public static final Vector3i ZERO = new Vector3i(0, 0, 0);
+  int x();
 
-  public @NotNull Vector3i add(@NotNull Vector3i other) {
-    return new Vector3i(this.x + other.x, this.y + other.y, this.z + other.z);
+  int y();
+
+  int z();
+
+  default double lengthSquared() {
+    double x = x();
+    double y = y();
+    double z = z();
+    return x * x + y * y + z * z;
   }
 
-  public @NotNull Vector3i add(int dx, int dy, int dz) {
-    return new Vector3i(this.x + dx, this.y + dy, this.z + dz);
+  default double length() {
+    return Math.sqrt(lengthSquared());
   }
 
-  public @NotNull Vector3i subtract(@NotNull Vector3i other) {
-    return new Vector3i(this.x - other.x, this.y - other.y, this.z - other.z);
-  }
-
-  public @NotNull Vector3i multiply(int factor) {
-    return new Vector3i(this.x * factor, this.y * factor, this.z * factor);
-  }
-
-  public double distanceSquared(@NotNull Vector3i other) {
-    double dx = this.x - other.x;
-    double dy = this.y - other.y;
-    double dz = this.z - other.z;
+  default double distanceSquared(@NotNull Vector3i other) {
+    double dx = x() - other.x();
+    double dy = y() - other.y();
+    double dz = z() - other.z();
     return dx * dx + dy * dy + dz * dz;
   }
 
-  public double distance(@NotNull Vector3i other) {
+  default double distance(@NotNull Vector3i other) {
     return Math.sqrt(distanceSquared(other));
   }
 }

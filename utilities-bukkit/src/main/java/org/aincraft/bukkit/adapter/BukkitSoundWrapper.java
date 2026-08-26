@@ -1,10 +1,10 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.effect.Sound;
+import net.kyori.adventure.sound.Sound;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitSoundWrapper implements Sound {
+public class BukkitSoundWrapper implements Sound.Type {
 
   private final org.bukkit.Sound sound;
 

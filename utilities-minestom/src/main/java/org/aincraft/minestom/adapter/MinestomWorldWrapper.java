@@ -181,4 +181,15 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
   public String toString() {
     return "MinestomWorldWrapper{name=" + name() + ", uid=" + uid() + "}";
   }
+
+  @Override
+  public void playSound(@NotNull org.aincraft.common.location.Location location, @NotNull Sound.Type sound, @org.jetbrains.annotations.Nullable org.aincraft.common.effect.SoundCategory category, float volume, float pitch) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void spawnParticle(@NotNull org.aincraft.common.effect.Particle particle, @NotNull org.aincraft.common.location.Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) {
+    throw new UnsupportedOperationException();
+  }
+
 }

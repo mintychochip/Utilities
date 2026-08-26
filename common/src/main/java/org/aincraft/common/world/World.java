@@ -7,8 +7,8 @@ import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
+import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.effect.Particle;
-import org.aincraft.common.effect.Sound;
 import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
@@ -73,11 +73,11 @@ public interface World extends Keyed, Identified, Audience {
 
   @NotNull Collection<? extends Chunk> loadedChunks();
 
-  default void playSound(@NotNull Location location, @NotNull Sound sound, float volume, float pitch) {
+  default void playSound(@NotNull Location location, @NotNull Sound.Type sound, float volume, float pitch) {
     playSound(location, sound, null, volume, pitch);
   }
 
-  void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch);
+  void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable SoundCategory category, float volume, float pitch);
 
   default void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count) {
     spawnParticle(particle, location, count, 0.0, 0.0, 0.0, 0.0);

@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.effect.Particle;
-import org.aincraft.common.effect.Sound;
 import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
@@ -128,7 +128,7 @@ public class BukkitWorldWrapper implements World {
   }
 
   @Override
-  public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {
+  public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable SoundCategory category, float volume, float pitch) {
     org.bukkit.Sound bSound = BukkitAdapters.toBukkit(sound);
     org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
     if (category == null) {

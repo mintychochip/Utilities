@@ -9,7 +9,10 @@ import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
+import org.aincraft.common.world.Difficulty;
+import org.aincraft.common.world.Environment;
 import org.aincraft.common.world.World;
+import org.aincraft.common.world.WorldBorder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +36,9 @@ class LocationTest {
       @Override public Key key() { return key; }
       @Override public int minHeight() { return -64; }
       @Override public int maxHeight() { return 320; }
+      @Override public WorldBorder worldBorder() { return null; }
+      @Override public Environment environment() { return Environment.NORMAL; }
+      @Override public Difficulty difficulty() { return Difficulty.NORMAL; }
       @Override public long time() { return 1000L; }
       @Override public long fullTime() { return 25000L; }
       @Override public Collection<? extends Player> players() { return java.util.List.of(); }

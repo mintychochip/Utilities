@@ -1,11 +1,13 @@
 package org.aincraft.common.entity;
 
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.aincraft.common.inventory.InventoryHolder;
+import org.aincraft.common.inventory.PlayerInventory;
+import org.aincraft.common.world.GameMode;
 import org.jetbrains.annotations.NotNull;
 
-public interface Player extends Entity, Audience {
+public interface Player extends LivingEntity, Audience, InventoryHolder {
 
   @NotNull String username();
 
@@ -13,31 +15,40 @@ public interface Player extends Entity, Audience {
 
   int ping();
 
-  double health();
-
-  double maxHealth();
-
   int foodLevel();
+
+  void setFoodLevel(int foodLevel);
 
   float saturation();
 
+  void setSaturation(float saturation);
+
   int level();
+
+  void setLevel(int level);
 
   float exp();
 
-  @NotNull Key gameMode();
+  void setExp(float exp);
+
+  @NotNull GameMode gameMode();
+
+  void setGameMode(@NotNull GameMode gameMode);
 
   boolean isSneaking();
 
+  void setSneaking(boolean sneaking);
+
   boolean isSprinting();
+
+  void setSprinting(boolean sprinting);
 
   boolean isFlying();
 
   void setFlying(boolean flying);
 
-  void setSneaking(boolean sneaking);
-
-  void setSprinting(boolean sprinting);
+  @Override
+  @NotNull PlayerInventory inventory();
 
   void kick(@NotNull Component reason);
 }

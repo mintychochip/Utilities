@@ -66,13 +66,15 @@ class WorldChunkBlockTest {
       @Override public Key key() { return worldKey; }
       @Override public int minHeight() { return -64; }
       @Override public int maxHeight() { return 320; }
+      @Override public WorldBorder worldBorder() { return null; }
+      @Override public Environment environment() { return Environment.NORMAL; }
+      @Override public Difficulty difficulty() { return Difficulty.NORMAL; }
       @Override public long time() { return 6000L; }
       @Override public long fullTime() { return 18000L; }
       @Override public Collection<? extends Player> players() { return java.util.List.of(); }
       @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
       @Override public Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
       @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return chunkX == 0 && chunkZ == 0; }
-
       @Override
       public Chunk getChunkAt(int chunkX, int chunkZ) {
         World currentWorld = this;

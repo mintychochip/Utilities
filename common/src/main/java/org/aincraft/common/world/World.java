@@ -54,10 +54,15 @@ public interface World extends Keyed, Identified, Audience {
 
   int maxHeight();
 
+  @NotNull WorldBorder worldBorder();
+
+  @NotNull Environment environment();
+
+  @NotNull Difficulty difficulty();
+
   long time();
 
   long fullTime();
-
   @NotNull Collection<? extends Player> players();
 
   @NotNull Collection<? extends Entity> entities();

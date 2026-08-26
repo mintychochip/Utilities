@@ -5,13 +5,20 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.aincraft.common.effect.PotionEffect;
+import org.aincraft.common.effect.PotionEffectType;
+import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
 import org.aincraft.common.location.Vector3d;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
+import org.aincraft.common.world.Difficulty;
+import org.aincraft.common.world.Environment;
+import org.aincraft.common.world.GameMode;
 import org.aincraft.common.world.World;
+import org.aincraft.common.world.WorldBorder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,6 +73,9 @@ class EntityPlayerTest {
       @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return false; }
       @Override public int minHeight() { return 0; }
       @Override public int maxHeight() { return 256; }
+      @Override public WorldBorder worldBorder() { return null; }
+      @Override public Environment environment() { return Environment.NORMAL; }
+      @Override public Difficulty difficulty() { return Difficulty.NORMAL; }
       @Override public long time() { return 0; }
       @Override public long fullTime() { return 0; }
       @Override public Collection<? extends Player> players() { return java.util.List.of(); }
@@ -81,7 +91,6 @@ class EntityPlayerTest {
     Position pos = createPos(10, 64, 10);
     Location location = createLoc(world, pos);
     Key playerType = Key.key("minecraft", "player");
-    Key survival = Key.key("minecraft", "survival");
     AtomicBoolean messageSent = new AtomicBoolean(false);
     AtomicBoolean kicked = new AtomicBoolean(false);
 
@@ -91,18 +100,39 @@ class EntityPlayerTest {
       @Override public boolean isOnline() { return true; }
       @Override public int ping() { return 15; }
       @Override public double health() { return 20.0; }
+      @Override public void setHealth(double health) {}
       @Override public double maxHealth() { return 20.0; }
+      @Override public void damage(double amount) {}
+      @Override public void damage(double amount, Entity source) {}
+      @Override public double eyeHeight() { return 1.62; }
+      @Override public Location eyeLocation() { return location; }
+      @Override public boolean hasLineOfSight(Entity other) { return true; }
+      @Override public LivingEntity target() { return null; }
+      @Override public void setTarget(LivingEntity target) {}
+      @Override public boolean isGliding() { return false; }
+      @Override public boolean isSwimming() { return false; }
+      @Override public boolean isSleeping() { return false; }
+      @Override public Collection<? extends PotionEffect> activePotionEffects() { return java.util.List.of(); }
+      @Override public void addPotionEffect(PotionEffect effect) {}
+      @Override public void removePotionEffect(PotionEffectType type) {}
+      @Override public boolean hasPotionEffect(PotionEffectType type) { return false; }
       @Override public int foodLevel() { return 20; }
+      @Override public void setFoodLevel(int foodLevel) {}
       @Override public float saturation() { return 5.0f; }
+      @Override public void setSaturation(float saturation) {}
       @Override public int level() { return 30; }
+      @Override public void setLevel(int level) {}
       @Override public float exp() { return 0.5f; }
-      @Override public Key gameMode() { return survival; }
+      @Override public void setExp(float exp) {}
+      @Override public GameMode gameMode() { return GameMode.SURVIVAL; }
+      @Override public void setGameMode(GameMode gameMode) {}
       @Override public boolean isSneaking() { return false; }
+      @Override public void setSneaking(boolean sneaking) {}
       @Override public boolean isSprinting() { return true; }
+      @Override public void setSprinting(boolean sprinting) {}
       @Override public boolean isFlying() { return false; }
       @Override public void setFlying(boolean flying) {}
-      @Override public void setSneaking(boolean sneaking) {}
-      @Override public void setSprinting(boolean sprinting) {}
+      @Override public PlayerInventory inventory() { return null; }
       @Override public void kick(Component reason) { kicked.set(true); }
       @Override public World world() { return world; }
       @Override public Location location() { return location; }
@@ -124,7 +154,7 @@ class EntityPlayerTest {
     assertTrue(player.isOnline());
     assertEquals(15, player.ping());
     assertEquals(20.0, player.health());
-    assertEquals(survival, player.gameMode());
+    assertEquals(GameMode.SURVIVAL, player.gameMode());
     assertTrue(player.isSprinting());
     assertFalse(player.isFlying());
     assertSame(world, player.world());

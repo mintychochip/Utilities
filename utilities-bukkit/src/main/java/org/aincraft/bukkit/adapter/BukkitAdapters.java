@@ -20,7 +20,6 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
@@ -38,8 +37,7 @@ public final class BukkitAdapters {
     if (location instanceof BukkitLocationWrapper wrapper) {
       return wrapper.getBukkitLocation();
     }
-    org.bukkit.World bWorld = toBukkit(location.world());
-    return new org.bukkit.Location(bWorld, location.x(), location.y(), location.z(), location.yaw(), location.pitch());
+    throw new IllegalArgumentException("Cannot unwrap foreign Location implementation: " + location.getClass().getName());
   }
 
   public static @NotNull Position adapt(@NotNull Vector vector) {
@@ -50,7 +48,7 @@ public final class BukkitAdapters {
     if (position instanceof BukkitPositionWrapper wrapper) {
       return wrapper.getBukkitVector();
     }
-    return new Vector(position.x(), position.y(), position.z());
+    throw new IllegalArgumentException("Cannot unwrap foreign Position implementation: " + position.getClass().getName());
   }
 
   public static @NotNull BoundingBox adapt(@NotNull org.bukkit.util.BoundingBox box) {
@@ -61,7 +59,7 @@ public final class BukkitAdapters {
     if (box instanceof BukkitBoundingBoxWrapper wrapper) {
       return wrapper.getBukkitBoundingBox();
     }
-    return new org.bukkit.util.BoundingBox(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ());
+    throw new IllegalArgumentException("Cannot unwrap foreign BoundingBox implementation: " + box.getClass().getName());
   }
 
   public static @NotNull Block adapt(@NotNull org.bukkit.block.Block block) {
@@ -72,8 +70,7 @@ public final class BukkitAdapters {
     if (block instanceof BukkitBlockWrapper wrapper) {
       return wrapper.getBukkitBlock();
     }
-    org.bukkit.World bWorld = toBukkit(block.world());
-    return bWorld.getBlockAt(block.x(), block.y(), block.z());
+    throw new IllegalArgumentException("Cannot unwrap foreign Block implementation: " + block.getClass().getName());
   }
 
   public static @NotNull Chunk adapt(@NotNull org.bukkit.Chunk chunk) {
@@ -84,8 +81,7 @@ public final class BukkitAdapters {
     if (chunk instanceof BukkitChunkWrapper wrapper) {
       return wrapper.getBukkitChunk();
     }
-    org.bukkit.World bWorld = toBukkit(chunk.world());
-    return bWorld.getChunkAt(chunk.x(), chunk.z());
+    throw new IllegalArgumentException("Cannot unwrap foreign Chunk implementation: " + chunk.getClass().getName());
   }
 
   public static @NotNull World adapt(@NotNull org.bukkit.World world) {
@@ -96,14 +92,7 @@ public final class BukkitAdapters {
     if (world instanceof BukkitWorldWrapper wrapper) {
       return wrapper.getBukkitWorld();
     }
-    org.bukkit.World bWorld = Bukkit.getWorld(world.uid());
-    if (bWorld == null) {
-      bWorld = Bukkit.getWorld(world.name());
-    }
-    if (bWorld == null) {
-      throw new IllegalArgumentException("Cannot find Bukkit World for: " + world.name() + " (" + world.uid() + ")");
-    }
-    return bWorld;
+    throw new IllegalArgumentException("Cannot unwrap foreign World implementation: " + world.getClass().getName());
   }
 
   public static @NotNull WorldBorder adapt(@NotNull org.bukkit.WorldBorder worldBorder) {
@@ -131,11 +120,7 @@ public final class BukkitAdapters {
     if (entity instanceof BukkitEntityWrapper wrapper) {
       return wrapper.getBukkitEntity();
     }
-    org.bukkit.entity.Entity bEntity = Bukkit.getEntity(entity.uniqueId());
-    if (bEntity == null) {
-      throw new IllegalArgumentException("Cannot find Bukkit Entity with UUID: " + entity.uniqueId());
-    }
-    return bEntity;
+    throw new IllegalArgumentException("Cannot unwrap foreign Entity implementation: " + entity.getClass().getName());
   }
 
   public static @NotNull LivingEntity adapt(@NotNull org.bukkit.entity.LivingEntity entity) {
@@ -149,11 +134,7 @@ public final class BukkitAdapters {
     if (entity instanceof BukkitLivingEntityWrapper wrapper) {
       return wrapper.getBukkitLivingEntity();
     }
-    org.bukkit.entity.Entity bEntity = toBukkit((Entity) entity);
-    if (bEntity instanceof org.bukkit.entity.LivingEntity living) {
-      return living;
-    }
-    throw new IllegalArgumentException("Bukkit Entity is not a LivingEntity: " + bEntity.getClass().getName());
+    throw new IllegalArgumentException("Cannot unwrap foreign LivingEntity implementation: " + entity.getClass().getName());
   }
 
   public static @NotNull Player adapt(@NotNull org.bukkit.entity.Player player) {
@@ -164,11 +145,7 @@ public final class BukkitAdapters {
     if (player instanceof BukkitPlayerWrapper wrapper) {
       return wrapper.getBukkitPlayer();
     }
-    org.bukkit.entity.Player bPlayer = Bukkit.getPlayer(player.uniqueId());
-    if (bPlayer == null) {
-      throw new IllegalArgumentException("Cannot find Bukkit Player with UUID: " + player.uniqueId());
-    }
-    return bPlayer;
+    throw new IllegalArgumentException("Cannot unwrap foreign Player implementation: " + player.getClass().getName());
   }
 
   public static @NotNull ItemStack adapt(@NotNull org.bukkit.inventory.ItemStack item) {
@@ -179,11 +156,7 @@ public final class BukkitAdapters {
     if (item instanceof BukkitItemStackWrapper wrapper) {
       return wrapper.getBukkitItemStack();
     }
-    Material material = Material.matchMaterial(item.type().key().asString());
-    if (material == null) {
-      throw new IllegalArgumentException("Cannot match Bukkit Material for item: " + item.type().key());
-    }
-    return new org.bukkit.inventory.ItemStack(material, item.amount());
+    throw new IllegalArgumentException("Cannot unwrap foreign ItemStack implementation: " + item.getClass().getName());
   }
 
   public static @NotNull ItemType adapt(@NotNull Material material) {
@@ -194,11 +167,7 @@ public final class BukkitAdapters {
     if (itemType instanceof BukkitItemTypeWrapper wrapper) {
       return wrapper.getBukkitMaterial();
     }
-    Material material = Material.matchMaterial(itemType.key().asString());
-    if (material == null) {
-      throw new IllegalArgumentException("Cannot match Bukkit Material for ItemType: " + itemType.key());
-    }
-    return material;
+    throw new IllegalArgumentException("Cannot unwrap foreign ItemType implementation: " + itemType.getClass().getName());
   }
 
   public static @NotNull Inventory adapt(@NotNull org.bukkit.inventory.Inventory inventory) {
@@ -248,6 +217,9 @@ public final class BukkitAdapters {
   }
 
   public static @NotNull org.bukkit.command.CommandSender toBukkit(@NotNull CommandSender sender) {
+    if (sender instanceof BukkitPlayerWrapper wrapper) {
+      return wrapper.getBukkitPlayer();
+    }
     if (sender instanceof BukkitCommandSenderWrapper wrapper) {
       return wrapper.getBukkitCommandSender();
     }
@@ -310,11 +282,7 @@ public final class BukkitAdapters {
     if (blockType instanceof BukkitBlockTypeWrapper wrapper) {
       return wrapper.getBukkitMaterial();
     }
-    Material material = Material.matchMaterial(blockType.key().asString());
-    if (material == null) {
-      throw new IllegalArgumentException("Cannot match Bukkit Material for BlockType: " + blockType.key());
-    }
-    return material;
+    throw new IllegalArgumentException("Cannot unwrap foreign BlockType implementation: " + blockType.getClass().getName());
   }
 
   public static @NotNull BlockState adapt(@NotNull BlockData blockData) {
@@ -325,6 +293,6 @@ public final class BukkitAdapters {
     if (blockState instanceof BukkitBlockStateWrapper wrapper) {
       return wrapper.getBukkitBlockData();
     }
-    return Bukkit.createBlockData(blockState.asString());
+    throw new IllegalArgumentException("Cannot unwrap foreign BlockState implementation: " + blockState.getClass().getName());
   }
 }

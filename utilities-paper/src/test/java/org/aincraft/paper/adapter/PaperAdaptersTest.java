@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.aincraft.common.entity.Player;
+import org.aincraft.common.server.Server;
 import org.aincraft.common.world.World;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -58,6 +59,7 @@ class PaperAdaptersTest {
           case "getLocation" -> new Location(bWorld, 0, 64, 0);
           case "getType" -> EntityType.PLAYER;
           case "getAttribute" -> null;
+          case "getInventory" -> null;
           case "sendMessage" -> {
             sentMessage.set(true);
             yield null;
@@ -129,6 +131,9 @@ class PaperAdaptersTest {
           case "getKey" -> NamespacedKey.minecraft("the_nether");
           case "getMinHeight" -> 0;
           case "getMaxHeight" -> 256;
+          case "getEnvironment" -> org.bukkit.World.Environment.NETHER;
+          case "getDifficulty" -> org.bukkit.Difficulty.HARD;
+          case "getWorldBorder" -> null;
           case "sendMessage" -> {
             worldMessage.set(true);
             yield null;
@@ -155,5 +160,40 @@ class PaperAdaptersTest {
 
     world.showTitle(Title.title(Component.text("World Title"), Component.text("Subtitle")));
     assertTrue(worldTitle.get());
+  }
+
+  @Test
+  void testPaperServerWrapper() {
+    AtomicBoolean serverBroadcast = new AtomicBoolean(false);
+
+    org.bukkit.Server bServer = (org.bukkit.Server) Proxy.newProxyInstance(
+        org.bukkit.Server.class.getClassLoader(),
+        new Class<?>[]{org.bukkit.Server.class},
+        (proxy, method, args) -> switch (method.getName()) {
+          case "getVersion" -> "1.21.4-Paper";
+          case "getName" -> "Paper";
+          case "getPort" -> 25565;
+          case "getIp" -> "127.0.0.1";
+          case "getMaxPlayers" -> 100;
+          case "getOnlinePlayers" -> java.util.List.of();
+          case "getWorlds" -> java.util.List.of();
+          case "broadcast" -> {
+            serverBroadcast.set(true);
+            yield 1;
+          }
+          case "hashCode" -> 1;
+          case "equals" -> proxy == args[0];
+          default -> null;
+        }
+    );
+
+    Server server = PaperAdapters.adapt(bServer);
+    assertTrue(server instanceof PaperServerWrapper);
+    assertEquals("1.21.4-Paper", server.version());
+    assertEquals("Paper", server.name());
+    assertEquals(25565, server.port());
+
+    server.broadcast(Component.text("Global Announcement"));
+    assertTrue(serverBroadcast.get());
   }
 }

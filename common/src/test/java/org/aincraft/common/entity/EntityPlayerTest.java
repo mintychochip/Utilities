@@ -132,6 +132,9 @@ class EntityPlayerTest {
       @Override public void setSprinting(boolean sprinting) {}
       @Override public boolean isFlying() { return false; }
       @Override public void setFlying(boolean flying) {}
+      @Override public boolean hasPermission(String permission) { return true; }
+      @Override public boolean isOp() { return false; }
+      @Override public void setOp(boolean op) {}
       @Override public PlayerInventory inventory() { return null; }
       @Override public void kick(Component reason) { kicked.set(true); }
       @Override public World world() { return world; }

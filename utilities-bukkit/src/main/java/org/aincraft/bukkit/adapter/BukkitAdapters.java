@@ -21,13 +21,12 @@ import org.jetbrains.annotations.NotNull;
 public final class BukkitAdapters {
 
   private BukkitAdapters() {}
-
-  public static @NotNull Location<World> adapt(@NotNull org.bukkit.Location location) {
-    return new BukkitLocationWrapper<>(location);
+  public static @NotNull Location adapt(@NotNull org.bukkit.Location location) {
+    return new BukkitLocationWrapper(location);
   }
 
-  public static @NotNull org.bukkit.Location toBukkit(@NotNull Location<?> location) {
-    if (location instanceof BukkitLocationWrapper<?> wrapper) {
+  public static @NotNull org.bukkit.Location toBukkit(@NotNull Location location) {
+    if (location instanceof BukkitLocationWrapper wrapper) {
       return wrapper.getBukkitLocation();
     }
     org.bukkit.World bWorld = toBukkit(location.world());

@@ -28,12 +28,11 @@ public final class PaperAdapters {
   public static @NotNull World adapt(@NotNull org.bukkit.World world) {
     return new PaperWorldWrapper(world);
   }
-
-  public static @NotNull Location<World> adapt(@NotNull org.bukkit.Location location) {
+  public static @NotNull Location adapt(@NotNull org.bukkit.Location location) {
     return BukkitAdapters.adapt(location);
   }
 
-  public static @NotNull org.bukkit.Location toBukkit(@NotNull Location<?> location) {
+  public static @NotNull org.bukkit.Location toBukkit(@NotNull Location location) {
     return BukkitAdapters.toBukkit(location);
   }
 

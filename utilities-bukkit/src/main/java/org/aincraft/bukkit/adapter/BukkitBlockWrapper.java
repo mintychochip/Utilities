@@ -49,7 +49,7 @@ public class BukkitBlockWrapper implements Block {
   }
 
   @Override
-  public @NotNull Location<World> location() {
+  public @NotNull Location location() {
     return BukkitAdapters.adapt(block.getLocation());
   }
 

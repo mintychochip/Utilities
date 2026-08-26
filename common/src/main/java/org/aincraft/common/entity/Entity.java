@@ -17,9 +17,7 @@ public interface Entity extends Keyed, Identified {
   @NotNull UUID uniqueId();
 
   @NotNull World world();
-
-  @NotNull Location<World> location();
-
+  @NotNull Location location();
   @NotNull Position position();
 
   default double x() {
@@ -45,9 +43,7 @@ public interface Entity extends Keyed, Identified {
   @NotNull Vector3d velocity();
 
   boolean isOnGround();
-
-  void teleport(@NotNull Location<World> targetLocation);
-
+  void teleport(@NotNull Location targetLocation);
   void remove();
 
   @Override

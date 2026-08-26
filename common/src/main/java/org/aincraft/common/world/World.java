@@ -29,11 +29,9 @@ public interface World extends Keyed, Identified, Audience {
   default @NotNull Block getBlockAt(@NotNull Position position) {
     return getBlockAt(position.blockX(), position.blockY(), position.blockZ());
   }
-
-  default @NotNull Block getBlockAt(@NotNull Location<?> location) {
+  default @NotNull Block getBlockAt(@NotNull Location location) {
     return getBlockAt(location.position());
   }
-
   @NotNull Chunk getChunkAt(int chunkX, int chunkZ);
 
   default @NotNull Chunk getChunkAt(@NotNull Block block) {
@@ -43,11 +41,9 @@ public interface World extends Keyed, Identified, Audience {
   default @NotNull Chunk getChunkAt(@NotNull Position position) {
     return getChunkAt(position.blockX() >> 4, position.blockZ() >> 4);
   }
-
-  default @NotNull Chunk getChunkAt(@NotNull Location<?> location) {
+  default @NotNull Chunk getChunkAt(@NotNull Location location) {
     return getChunkAt(location.blockX() >> 4, location.blockZ() >> 4);
   }
-
   boolean isChunkLoaded(int chunkX, int chunkZ);
 
   default boolean isChunkLoaded(@NotNull Chunk chunk) {

@@ -5,9 +5,9 @@ import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
 
-public interface Location<W extends World> {
+public interface Location {
 
-  @NotNull W world();
+  @NotNull World world();
 
   @NotNull Position position();
 
@@ -39,11 +39,11 @@ public interface Location<W extends World> {
     return position().blockZ();
   }
 
-  default double distanceSquared(@NotNull Location<?> other) {
+  default double distanceSquared(@NotNull Location other) {
     return position().distanceSquared(other.position());
   }
 
-  default double distance(@NotNull Location<?> other) {
+  default double distance(@NotNull Location other) {
     return position().distance(other.position());
   }
 

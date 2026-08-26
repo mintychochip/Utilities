@@ -20,9 +20,7 @@ public interface Block {
   @NotNull World world();
 
   @NotNull Chunk chunk();
-
-  @NotNull Location<World> location();
-
+  @NotNull Location location();
   @NotNull Position position();
 
   @NotNull BlockType type();

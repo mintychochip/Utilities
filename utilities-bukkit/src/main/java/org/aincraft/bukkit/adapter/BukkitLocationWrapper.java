@@ -6,24 +6,23 @@ import org.aincraft.common.location.Position;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitLocationWrapper<W extends World> implements Location<W> {
+public class BukkitLocationWrapper implements Location {
 
   private final org.bukkit.Location bukkitLocation;
-  private final W world;
+  private final World world;
   private final Position position;
 
-  @SuppressWarnings("unchecked")
   public BukkitLocationWrapper(@NotNull org.bukkit.Location bukkitLocation) {
     this.bukkitLocation = Objects.requireNonNull(bukkitLocation, "bukkitLocation cannot be null");
     org.bukkit.World bWorld = bukkitLocation.getWorld();
     if (bWorld == null) {
       throw new IllegalArgumentException("Bukkit location world cannot be null");
     }
-    this.world = (W) BukkitAdapters.adapt(bWorld);
+    this.world = BukkitAdapters.adapt(bWorld);
     this.position = new BukkitPositionWrapper(bukkitLocation.toVector());
   }
 
-  public BukkitLocationWrapper(@NotNull org.bukkit.Location bukkitLocation, @NotNull W world) {
+  public BukkitLocationWrapper(@NotNull org.bukkit.Location bukkitLocation, @NotNull World world) {
     this.bukkitLocation = Objects.requireNonNull(bukkitLocation, "bukkitLocation cannot be null");
     this.world = Objects.requireNonNull(world, "world cannot be null");
     this.position = new BukkitPositionWrapper(bukkitLocation.toVector());
@@ -34,7 +33,7 @@ public class BukkitLocationWrapper<W extends World> implements Location<W> {
   }
 
   @Override
-  public @NotNull W world() {
+  public @NotNull World world() {
     return world;
   }
 
@@ -86,7 +85,7 @@ public class BukkitLocationWrapper<W extends World> implements Location<W> {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Location<?> that)) return false;
+    if (!(o instanceof Location that)) return false;
     return Float.compare(that.yaw(), yaw()) == 0
         && Float.compare(that.pitch(), pitch()) == 0
         && Double.compare(that.x(), x()) == 0

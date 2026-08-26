@@ -66,7 +66,7 @@ class LocationTest {
           @Override public int z() { return z; }
           @Override public World world() { return currentWorld; }
           @Override public Chunk chunk() { return getChunkAt(x >> 4, z >> 4); }
-          @Override public Location<World> location() { return createLocation(currentWorld, createPos(x, y, z), 0f, 0f); }
+          @Override public Location location() { return createLocation(currentWorld, createPos(x, y, z), 0f, 0f); }
           @Override public Position position() { return createPos(x, y, z); }
           @Override public BlockType type() { return () -> Key.key("minecraft", "air"); }
           @Override public BlockState state() { return new BlockState() {
@@ -91,8 +91,8 @@ class LocationTest {
     };
   }
 
-  private static Location<World> createLocation(World world, Position position, float yaw, float pitch) {
-    return new Location<>() {
+  private static Location createLocation(World world, Position position, float yaw, float pitch) {
+    return new Location() {
       @Override public World world() { return world; }
       @Override public Position position() { return position; }
       @Override public float yaw() { return yaw; }
@@ -103,7 +103,7 @@ class LocationTest {
   @Test
   void testLocationCoordinatesAndOrientation() {
     World world = createTestWorld("overworld");
-    Location<World> loc = createLocation(world, createPos(10.5, 64.0, -12.5), 90.0f, 45.0f);
+    Location loc = createLocation(world, createPos(10.5, 64.0, -12.5), 90.0f, 45.0f);
 
     assertSame(world, loc.world());
     assertEquals(10.5, loc.x(), 1e-6);
@@ -128,8 +128,8 @@ class LocationTest {
   @Test
   void testLocationDistance() {
     World world = createTestWorld("world");
-    Location<World> loc1 = createLocation(world, createPos(0, 0, 0), 0, 0);
-    Location<World> loc2 = createLocation(world, createPos(3, 4, 0), 0, 0);
+    Location loc1 = createLocation(world, createPos(0, 0, 0), 0, 0);
+    Location loc2 = createLocation(world, createPos(3, 4, 0), 0, 0);
 
     assertEquals(25.0, loc1.distanceSquared(loc2), 1e-6);
     assertEquals(5.0, loc1.distance(loc2), 1e-6);

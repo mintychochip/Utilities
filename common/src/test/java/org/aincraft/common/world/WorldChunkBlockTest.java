@@ -25,9 +25,8 @@ class WorldChunkBlockTest {
       @Override public double z() { return z; }
     };
   }
-
-  private static Location<World> createLoc(World world, Position position) {
-    return new Location<>() {
+  private static Location createLoc(World world, Position position) {
+    return new Location() {
       @Override public World world() { return world; }
       @Override public Position position() { return position; }
       @Override public float yaw() { return 0f; }
@@ -100,7 +99,7 @@ class WorldChunkBlockTest {
           @Override public int z() { return z; }
           @Override public World world() { return currentWorld; }
           @Override public Chunk chunk() { return getChunkAt(x >> 4, z >> 4); }
-          @Override public Location<World> location() { return createLoc(currentWorld, createPos(x, y, z)); }
+          @Override public Location location() { return createLoc(currentWorld, createPos(x, y, z)); }
           @Override public Position position() { return createPos(x, y, z); }
           @Override public BlockType type() { return stoneType; }
           @Override public BlockState state() { return stoneState; }

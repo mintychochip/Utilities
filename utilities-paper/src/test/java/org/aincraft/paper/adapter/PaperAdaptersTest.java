@@ -4,6 +4,7 @@ import java.lang.reflect.Proxy;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.world.World;
 import org.bukkit.GameMode;
@@ -21,6 +22,9 @@ class PaperAdaptersTest {
     UUID uuid = UUID.randomUUID();
     AtomicBoolean sentMessage = new AtomicBoolean(false);
     AtomicBoolean sentActionBar = new AtomicBoolean(false);
+    AtomicBoolean shownTitle = new AtomicBoolean(false);
+    AtomicBoolean clearedTitle = new AtomicBoolean(false);
+    AtomicBoolean resetTitle = new AtomicBoolean(false);
     AtomicBoolean kicked = new AtomicBoolean(false);
 
     org.bukkit.World bWorld = (org.bukkit.World) Proxy.newProxyInstance(
@@ -62,6 +66,18 @@ class PaperAdaptersTest {
             sentActionBar.set(true);
             yield null;
           }
+          case "showTitle" -> {
+            shownTitle.set(true);
+            yield null;
+          }
+          case "clearTitle" -> {
+            clearedTitle.set(true);
+            yield null;
+          }
+          case "resetTitle" -> {
+            resetTitle.set(true);
+            yield null;
+          }
           case "kick" -> {
             kicked.set(true);
             yield null;
@@ -85,6 +101,15 @@ class PaperAdaptersTest {
     player.sendActionBar(Component.text("Action"));
     assertTrue(sentActionBar.get());
 
+    player.showTitle(Title.title(Component.text("Title"), Component.text("Subtitle")));
+    assertTrue(shownTitle.get());
+
+    player.clearTitle();
+    assertTrue(clearedTitle.get());
+
+    player.resetTitle();
+    assertTrue(resetTitle.get());
+
     player.kick(Component.text("Kick reason"));
     assertTrue(kicked.get());
   }
@@ -92,6 +117,9 @@ class PaperAdaptersTest {
   @Test
   void testPaperWorldWrapper() {
     UUID uuid = UUID.randomUUID();
+    AtomicBoolean worldMessage = new AtomicBoolean(false);
+    AtomicBoolean worldTitle = new AtomicBoolean(false);
+
     org.bukkit.World bWorld = (org.bukkit.World) Proxy.newProxyInstance(
         org.bukkit.World.class.getClassLoader(),
         new Class<?>[]{org.bukkit.World.class},
@@ -101,6 +129,14 @@ class PaperAdaptersTest {
           case "getKey" -> NamespacedKey.minecraft("the_nether");
           case "getMinHeight" -> 0;
           case "getMaxHeight" -> 256;
+          case "sendMessage" -> {
+            worldMessage.set(true);
+            yield null;
+          }
+          case "showTitle" -> {
+            worldTitle.set(true);
+            yield null;
+          }
           case "hashCode" -> uuid.hashCode();
           case "equals" -> proxy == args[0];
           default -> null;
@@ -113,5 +149,11 @@ class PaperAdaptersTest {
     assertEquals("nether", world.name());
     assertEquals(0, world.minHeight());
     assertEquals(256, world.maxHeight());
+
+    world.sendMessage(Component.text("Broadcast"));
+    assertTrue(worldMessage.get());
+
+    world.showTitle(Title.title(Component.text("World Title"), Component.text("Subtitle")));
+    assertTrue(worldTitle.get());
   }
 }

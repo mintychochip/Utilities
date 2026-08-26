@@ -45,8 +45,8 @@ class EntityPlayerTest {
     };
   }
 
-  private static Location<World> createLoc(World world, Position position) {
-    return new Location<>() {
+  private static Location createLoc(World world, Position position) {
+    return new Location() {
       @Override public World world() { return world; }
       @Override public Position position() { return position; }
       @Override public float yaw() { return 0f; }
@@ -79,7 +79,7 @@ class EntityPlayerTest {
     UUID uuid = UUID.randomUUID();
     World world = createTestWorld("overworld");
     Position pos = createPos(10, 64, 10);
-    Location<World> location = createLoc(world, pos);
+    Location location = createLoc(world, pos);
     Key playerType = Key.key("minecraft", "player");
     Key survival = Key.key("minecraft", "survival");
     AtomicBoolean messageSent = new AtomicBoolean(false);
@@ -105,7 +105,7 @@ class EntityPlayerTest {
       @Override public void setSprinting(boolean sprinting) {}
       @Override public void kick(Component reason) { kicked.set(true); }
       @Override public World world() { return world; }
-      @Override public Location<World> location() { return location; }
+      @Override public Location location() { return location; }
       @Override public Position position() { return pos; }
       @Override public Key type() { return playerType; }
       @Override public boolean isValid() { return true; }
@@ -113,7 +113,7 @@ class EntityPlayerTest {
       @Override public BoundingBox boundingBox() { return createBox(pos.x(), pos.y(), pos.z()); }
       @Override public Vector3d velocity() { return createVec(0, 0, 0); }
       @Override public boolean isOnGround() { return true; }
-      @Override public void teleport(Location<World> targetLocation) {}
+      @Override public void teleport(Location targetLocation) {}
       @Override public void remove() {}
       @Override public void sendMessage(Component message) { messageSent.set(true); }
     };

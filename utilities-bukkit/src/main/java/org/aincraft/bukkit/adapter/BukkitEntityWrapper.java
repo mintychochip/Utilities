@@ -36,7 +36,7 @@ public class BukkitEntityWrapper implements Entity {
   }
 
   @Override
-  public @NotNull Location<World> location() {
+  public @NotNull Location location() {
     return BukkitAdapters.adapt(entity.getLocation());
   }
 
@@ -81,7 +81,7 @@ public class BukkitEntityWrapper implements Entity {
   }
 
   @Override
-  public void teleport(@NotNull Location<World> targetLocation) {
+  public void teleport(@NotNull Location targetLocation) {
     entity.teleport(BukkitAdapters.toBukkit(targetLocation));
   }
 

@@ -2,10 +2,12 @@ package org.aincraft.bukkit.adapter;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.inventory.ItemMeta;
 import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.ItemType;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,7 +77,38 @@ public class BukkitItemStackWrapper implements ItemStack {
 
   @Override
   public boolean isEmpty() {
-    return item.getType().isAir() || item.getAmount() <= 0;
+    return item.getType() == Material.AIR || item.getAmount() <= 0;
+  }
+
+  @Override
+  public @NotNull ItemStack clone() {
+    return new BukkitItemStackWrapper(item.clone());
+  }
+
+  @Override
+  public int maxStackSize() {
+    return item.getMaxStackSize();
+  }
+
+  @Override
+  public boolean editMeta(@NotNull Consumer<ItemMeta> consumer) {
+    org.bukkit.inventory.meta.ItemMeta bMeta = item.getItemMeta();
+    if (bMeta == null) {
+      return false;
+    }
+    BukkitItemMetaWrapper wrapper = new BukkitItemMetaWrapper(bMeta);
+    consumer.accept(wrapper);
+    return item.setItemMeta(bMeta);
+  }
+
+  @Override
+  public @NotNull ItemStack asOne() {
+    return withAmount(1);
+  }
+
+  @Override
+  public @NotNull ItemStack asQuantity(int amount) {
+    return withAmount(amount);
   }
 
   @Override
@@ -88,8 +121,8 @@ public class BukkitItemStackWrapper implements ItemStack {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof ItemStack that)) return false;
-    return item.equals(BukkitAdapters.toBukkit(that));
+    if (!(o instanceof BukkitItemStackWrapper that)) return false;
+    return item.equals(that.item);
   }
 
   @Override

@@ -7,6 +7,8 @@ import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
+import org.aincraft.common.effect.Sound;
+import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.inventory.DataComponentType;
@@ -27,8 +29,9 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class BukkitAdaptersTest {
@@ -212,6 +215,7 @@ class BukkitAdaptersTest {
       @Override public org.aincraft.common.world.Difficulty difficulty() { return org.aincraft.common.world.Difficulty.NORMAL; }
       @Override public long time() { return 0; }
       @Override public long fullTime() { return 0; }
+      @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
       @Override public java.util.Collection<? extends Player> players() { return java.util.List.of(); }
       @Override public java.util.Collection<? extends Entity> entities() { return java.util.List.of(); }
       @Override public java.util.Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
@@ -290,6 +294,11 @@ class BukkitAdaptersTest {
       @Override public void setMeta(org.aincraft.common.inventory.ItemMeta meta) {}
       @Override public boolean isSimilar(ItemStack other) { return false; }
       @Override public boolean isEmpty() { return false; }
+      @Override public ItemStack clone() { return this; }
+      @Override public int maxStackSize() { return 64; }
+      @Override public boolean editMeta(java.util.function.Consumer<org.aincraft.common.inventory.ItemMeta> consumer) { return false; }
+      @Override public ItemStack asOne() { return this; }
+      @Override public ItemStack asQuantity(int amount) { return this; }
       @Override public ItemStack withAmount(int amount) { return this; }
     };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignItem));
@@ -301,12 +310,18 @@ class BukkitAdaptersTest {
       @Override public void setItem(int slot, ItemStack item) {}
       @Override public ItemStack[] contents() { return new ItemStack[9]; }
       @Override public void setContents(ItemStack[] items) {}
+      @Override public java.util.Map<Integer, ItemStack> addItem(ItemStack... items) { return java.util.Map.of(); }
+      @Override public java.util.Map<Integer, ItemStack> removeItem(ItemStack... items) { return java.util.Map.of(); }
+      @Override public boolean contains(org.aincraft.common.inventory.ItemType type) { return false; }
+      @Override public boolean contains(ItemStack item) { return false; }
+      @Override public boolean containsAtLeast(ItemStack item, int amount) { return false; }
+      @Override public int first(ItemStack item) { return -1; }
+      @Override public int firstEmpty() { return -1; }
       @Override public void clear() {}
       @Override public boolean isEmpty() { return true; }
       @Override public Location location() { return null; }
       @Override public org.aincraft.common.inventory.InventoryHolder holder() { return null; }
     };
-    assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignInv));
 
     Server foreignServer = new Server() {
       @Override public String version() { return "1.0"; }

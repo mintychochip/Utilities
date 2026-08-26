@@ -7,11 +7,15 @@ import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
+import org.aincraft.common.effect.Particle;
+import org.aincraft.common.effect.Sound;
+import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface World extends Keyed, Identified, Audience {
 
@@ -68,4 +72,22 @@ public interface World extends Keyed, Identified, Audience {
   @NotNull Collection<? extends Entity> entities();
 
   @NotNull Collection<? extends Chunk> loadedChunks();
+
+  default void playSound(@NotNull Location location, @NotNull Sound sound, float volume, float pitch) {
+    playSound(location, sound, null, volume, pitch);
+  }
+
+  void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch);
+
+  default void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count) {
+    spawnParticle(particle, location, count, 0.0, 0.0, 0.0, 0.0);
+  }
+
+  default void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count,
+                             double offsetX, double offsetY, double offsetZ) {
+    spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, 0.0);
+  }
+
+  void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count,
+                     double offsetX, double offsetY, double offsetZ, double extra);
 }

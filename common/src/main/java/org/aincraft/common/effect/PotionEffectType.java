@@ -8,4 +8,8 @@ public interface PotionEffectType extends Keyed {
   @NotNull String name();
 
   boolean isInstant();
+
+  @NotNull PotionEffectTypeCategory category();
+
+  @NotNull PotionEffect createEffect(int duration, int amplifier);
 }

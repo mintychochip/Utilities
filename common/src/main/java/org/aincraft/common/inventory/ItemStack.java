@@ -24,8 +24,17 @@ public interface ItemStack {
   void setMeta(@Nullable ItemMeta meta);
 
   boolean isSimilar(@Nullable ItemStack other);
-
   boolean isEmpty();
+
+  @NotNull ItemStack clone();
+
+  int maxStackSize();
+
+  boolean editMeta(@NotNull java.util.function.Consumer<ItemMeta> consumer);
+
+  @NotNull ItemStack asOne();
+
+  @NotNull ItemStack asQuantity(int amount);
 
   @NotNull ItemStack withAmount(int amount);
 }

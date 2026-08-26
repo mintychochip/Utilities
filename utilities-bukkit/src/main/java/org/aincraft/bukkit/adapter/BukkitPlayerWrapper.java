@@ -28,6 +28,17 @@ public class BukkitPlayerWrapper extends BukkitLivingEntityWrapper implements Pl
   }
 
   @Override
+  public @NotNull Component displayName() {
+    String name = player.getDisplayName();
+    return name != null ? LegacyComponentSerializer.legacySection().deserialize(name) : Component.text(username());
+  }
+
+  @Override
+  public void displayName(@NotNull Component displayName) {
+    player.setDisplayName(LegacyComponentSerializer.legacySection().serialize(displayName));
+  }
+
+  @Override
   public boolean isOnline() {
     return player.isOnline();
   }
@@ -126,6 +137,16 @@ public class BukkitPlayerWrapper extends BukkitLivingEntityWrapper implements Pl
   @Override
   public void setFlying(boolean flying) {
     player.setFlying(flying);
+  }
+
+  @Override
+  public boolean allowFlight() {
+    return player.getAllowFlight();
+  }
+
+  @Override
+  public void setAllowFlight(boolean allow) {
+    player.setAllowFlight(allow);
   }
 
   @Override

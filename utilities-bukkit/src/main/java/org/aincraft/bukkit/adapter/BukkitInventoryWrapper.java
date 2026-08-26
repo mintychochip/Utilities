@@ -1,10 +1,13 @@
 package org.aincraft.bukkit.adapter;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import org.aincraft.common.inventory.Inventory;
 import org.aincraft.common.inventory.InventoryHolder;
 import org.aincraft.common.inventory.InventoryType;
 import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.common.inventory.ItemType;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,6 +67,59 @@ public class BukkitInventoryWrapper implements Inventory {
       bContents[i] = items[i] != null ? BukkitAdapters.toBukkit(items[i]) : null;
     }
     inventory.setContents(bContents);
+  }
+
+  @Override
+  public @NotNull Map<Integer, ItemStack> addItem(@NotNull ItemStack... items) {
+    org.bukkit.inventory.ItemStack[] bItems = new org.bukkit.inventory.ItemStack[items.length];
+    for (int i = 0; i < items.length; i++) {
+      bItems[i] = BukkitAdapters.toBukkit(items[i]);
+    }
+    Map<Integer, org.bukkit.inventory.ItemStack> leftovers = inventory.addItem(bItems);
+    Map<Integer, ItemStack> result = new HashMap<>();
+    for (Map.Entry<Integer, org.bukkit.inventory.ItemStack> entry : leftovers.entrySet()) {
+      result.put(entry.getKey(), BukkitAdapters.adapt(entry.getValue()));
+    }
+    return result;
+  }
+
+  @Override
+  public @NotNull Map<Integer, ItemStack> removeItem(@NotNull ItemStack... items) {
+    org.bukkit.inventory.ItemStack[] bItems = new org.bukkit.inventory.ItemStack[items.length];
+    for (int i = 0; i < items.length; i++) {
+      bItems[i] = BukkitAdapters.toBukkit(items[i]);
+    }
+    Map<Integer, org.bukkit.inventory.ItemStack> leftovers = inventory.removeItem(bItems);
+    Map<Integer, ItemStack> result = new HashMap<>();
+    for (Map.Entry<Integer, org.bukkit.inventory.ItemStack> entry : leftovers.entrySet()) {
+      result.put(entry.getKey(), BukkitAdapters.adapt(entry.getValue()));
+    }
+    return result;
+  }
+
+  @Override
+  public boolean contains(@NotNull ItemType type) {
+    return inventory.contains(BukkitAdapters.toBukkit(type));
+  }
+
+  @Override
+  public boolean contains(@NotNull ItemStack item) {
+    return inventory.contains(BukkitAdapters.toBukkit(item));
+  }
+
+  @Override
+  public boolean containsAtLeast(@NotNull ItemStack item, int amount) {
+    return inventory.containsAtLeast(BukkitAdapters.toBukkit(item), amount);
+  }
+
+  @Override
+  public int first(@NotNull ItemStack item) {
+    return inventory.first(BukkitAdapters.toBukkit(item));
+  }
+
+  @Override
+  public int firstEmpty() {
+    return inventory.firstEmpty();
   }
 
   @Override

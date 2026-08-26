@@ -10,7 +10,13 @@ public interface Damageable extends Entity {
 
   double maxHealth();
 
+  double absorptionAmount();
+
+  void setAbsorptionAmount(double amount);
+
   void damage(double amount);
 
   void damage(double amount, @Nullable Entity source);
+
+  void kill();
 }

@@ -10,6 +10,7 @@ import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.PotionEffectType;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.LivingEntity;
+import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +42,21 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
   public double maxHealth() {
     org.bukkit.attribute.AttributeInstance attr = livingEntity.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
     return attr != null ? attr.getValue() : 20.0;
+  }
+
+  @Override
+  public double absorptionAmount() {
+    return livingEntity.getAbsorptionAmount();
+  }
+
+  @Override
+  public void setAbsorptionAmount(double amount) {
+    livingEntity.setAbsorptionAmount(amount);
+  }
+
+  @Override
+  public void kill() {
+    setHealth(0);
   }
 
   @Override
@@ -104,54 +120,84 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
   }
 
   @Override
+  public boolean isInvisible() {
+    return livingEntity.isInvisible();
+  }
+
+  @Override
+  public void setInvisible(boolean invisible) {
+    livingEntity.setInvisible(invisible);
+  }
+
+  @Override
+  public @NotNull EntityEquipment equipment() {
+    return new BukkitEntityEquipmentWrapper(livingEntity.getEquipment());
+  }
+
+  @Override
+  public void attack(@NotNull Entity target) {
+    livingEntity.attack(BukkitAdapters.toBukkit(target));
+  }
+
+  @Override
+  public void swingMainHand() {
+    livingEntity.swingMainHand();
+  }
+
+  @Override
+  public void swingOffHand() {
+    livingEntity.swingOffHand();
+  }
+
+  @Override
+  public @Nullable PotionEffect potionEffect(@NotNull PotionEffectType type) {
+    org.bukkit.potion.PotionEffect bEffect = livingEntity.getPotionEffect(BukkitAdapters.toBukkit(type));
+    return bEffect != null ? BukkitAdapters.adapt(bEffect) : null;
+  }
+
+  @Override
   public @NotNull Collection<? extends PotionEffect> activePotionEffects() {
     List<PotionEffect> result = new ArrayList<>();
     for (org.bukkit.potion.PotionEffect bEffect : livingEntity.getActivePotionEffects()) {
-      org.bukkit.potion.PotionEffectType bType = bEffect.getType();
-      Key typeKey = Key.key(bType.getKey().getNamespace(), bType.getKey().getKey());
-      PotionEffectType cType = new PotionEffectType() {
-        @Override public @NotNull Key key() { return typeKey; }
-        @Override public @NotNull String name() { return bType.getName(); }
-        @Override public boolean isInstant() { return bType.isInstant(); }
-      };
-      result.add(new PotionEffect() {
-        @Override public @NotNull PotionEffectType type() { return cType; }
-        @Override public int duration() { return bEffect.getDuration(); }
-        @Override public int amplifier() { return bEffect.getAmplifier(); }
-        @Override public boolean isAmbient() { return bEffect.isAmbient(); }
-        @Override public boolean hasParticles() { return bEffect.hasParticles(); }
-        @Override public boolean hasIcon() { return bEffect.hasIcon(); }
-      });
+      result.add(BukkitAdapters.adapt(bEffect));
     }
     return result;
   }
 
   @Override
   public void addPotionEffect(@NotNull PotionEffect effect) {
-    org.bukkit.NamespacedKey nKey = new org.bukkit.NamespacedKey(effect.type().key().namespace(), effect.type().key().value());
-    org.bukkit.potion.PotionEffectType bType = org.bukkit.potion.PotionEffectType.getByKey(nKey);
-    if (bType != null) {
-      livingEntity.addPotionEffect(new org.bukkit.potion.PotionEffect(
-          bType, effect.duration(), effect.amplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()
-      ));
+    livingEntity.addPotionEffect(BukkitAdapters.toBukkit(effect));
+  }
+
+  @Override
+  public boolean addPotionEffect(@NotNull PotionEffect effect, boolean force) {
+    return livingEntity.addPotionEffect(BukkitAdapters.toBukkit(effect), force);
+  }
+
+  @Override
+  public boolean clearActivePotionEffects() {
+    boolean changed = false;
+    for (org.bukkit.potion.PotionEffectType type : livingEntity.getActivePotionEffects().stream()
+        .map(org.bukkit.potion.PotionEffect::getType)
+        .toList()) {
+      livingEntity.removePotionEffect(type);
+      changed = true;
     }
+    return changed;
   }
 
   @Override
   public void removePotionEffect(@NotNull PotionEffectType type) {
-    org.bukkit.NamespacedKey nKey = new org.bukkit.NamespacedKey(type.key().namespace(), type.key().value());
-    org.bukkit.potion.PotionEffectType bType = org.bukkit.potion.PotionEffectType.getByKey(nKey);
-    if (bType != null) {
-      livingEntity.removePotionEffect(bType);
-    }
+    org.bukkit.potion.PotionEffectType bType = BukkitAdapters.toBukkit(type);
+    livingEntity.removePotionEffect(bType);
   }
 
   @Override
   public boolean hasPotionEffect(@NotNull PotionEffectType type) {
-    org.bukkit.NamespacedKey nKey = new org.bukkit.NamespacedKey(type.key().namespace(), type.key().value());
-    org.bukkit.potion.PotionEffectType bType = org.bukkit.potion.PotionEffectType.getByKey(nKey);
-    return bType != null && livingEntity.hasPotionEffect(bType);
+    org.bukkit.potion.PotionEffectType bType = BukkitAdapters.toBukkit(type);
+    return livingEntity.hasPotionEffect(bType);
   }
+
   @Override
   public @Nullable AttributeInstance getAttribute(@NotNull Attribute attribute) {
     org.bukkit.attribute.Attribute bAttr = BukkitAdapters.toBukkit(attribute);

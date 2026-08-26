@@ -1,0 +1,2468 @@
+# Bukkit/Paper API Trace Context
+
+## inventory
+### org.bukkit.inventory.ItemStack
+- `org.bukkit.inventory.ItemStack of(org.bukkit.Material)`
+- `org.bukkit.inventory.ItemStack of(org.bukkit.Material, int)`
+- `io.papermc.paper.persistence.PersistentDataContainerView getPersistentDataContainer()`
+- `boolean editPersistentDataContainer(java.util.function.Consumer<org.bukkit.persistence.PersistentDataContainer>)`
+- `org.bukkit.inventory.ItemStack(org.bukkit.Material)`
+- `org.bukkit.inventory.ItemStack(org.bukkit.Material, int)`
+- `org.bukkit.inventory.ItemStack(org.bukkit.Material, int, short)`
+- `org.bukkit.inventory.ItemStack(org.bukkit.Material, int, short, java.lang.Byte)`
+- `org.bukkit.inventory.ItemStack(org.bukkit.inventory.ItemStack) throws java.lang.IllegalArgumentException`
+- `org.bukkit.Material getType()`
+- `void setType(org.bukkit.Material)`
+- `org.bukkit.inventory.ItemStack withType(org.bukkit.Material)`
+- `int getAmount()`
+- `void setAmount(int)`
+- `org.bukkit.material.MaterialData getData()`
+- `void setData(org.bukkit.material.MaterialData)`
+- `void setDurability(short)`
+- `short getDurability()`
+- `int getMaxStackSize()`
+- `java.lang.String toString()`
+- `boolean equals(java.lang.Object)`
+- `boolean isSimilar(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack clone()`
+- `int hashCode()`
+- `boolean containsEnchantment(org.bukkit.enchantments.Enchantment)`
+- `int getEnchantmentLevel(org.bukkit.enchantments.Enchantment)`
+- `java.util.Map<org.bukkit.enchantments.Enchantment, java.lang.Integer> getEnchantments()`
+- `void addEnchantments(java.util.Map<org.bukkit.enchantments.Enchantment, java.lang.Integer>)`
+- `void addEnchantment(org.bukkit.enchantments.Enchantment, int)`
+- `void addUnsafeEnchantments(java.util.Map<org.bukkit.enchantments.Enchantment, java.lang.Integer>)`
+- `void addUnsafeEnchantment(org.bukkit.enchantments.Enchantment, int)`
+- `int removeEnchantment(org.bukkit.enchantments.Enchantment)`
+- `void removeEnchantments()`
+- `java.util.Map<java.lang.String, java.lang.Object> serialize()`
+- `org.bukkit.inventory.ItemStack deserialize(java.util.Map<java.lang.String, java.lang.Object>)`
+- `boolean editMeta(java.util.function.Consumer<? super org.bukkit.inventory.meta.ItemMeta>)`
+- `<M extends org.bukkit.inventory.meta.ItemMeta> boolean editMeta(java.lang.Class<M>, java.util.function.Consumer<? super M>)`
+- `org.bukkit.inventory.meta.ItemMeta getItemMeta()`
+- `boolean hasItemMeta()`
+- `boolean setItemMeta(org.bukkit.inventory.meta.ItemMeta)`
+- `java.lang.String getTranslationKey()`
+- `org.bukkit.inventory.ItemStack enchantWithLevels(int, boolean, java.util.Random)`
+- `org.bukkit.inventory.ItemStack enchantWithLevels(int, io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.enchantments.Enchantment>, java.util.Random)`
+- `net.kyori.adventure.text.event.HoverEvent<net.kyori.adventure.text.event.HoverEvent$ShowItem> asHoverEvent(java.util.function.UnaryOperator<net.kyori.adventure.text.event.HoverEvent$ShowItem>)`
+- `net.kyori.adventure.text.Component displayName()`
+- `net.kyori.adventure.text.Component effectiveName()`
+- `org.bukkit.inventory.ItemStack ensureServerConversions()`
+- `org.bukkit.inventory.ItemStack deserializeBytes(byte[])`
+- `byte[] serializeAsBytes()`
+- `byte[] serializeItemsAsBytes(java.util.Collection<org.bukkit.inventory.ItemStack>)`
+- `byte[] serializeItemsAsBytes(org.bukkit.inventory.ItemStack[])`
+- `org.bukkit.inventory.ItemStack[] deserializeItemsFromBytes(byte[])`
+- `java.lang.String getI18NDisplayName()`
+- `int getMaxItemUseDuration()`
+- `int getMaxItemUseDuration(org.bukkit.entity.LivingEntity)`
+- `org.bukkit.inventory.ItemStack asOne()`
+- `org.bukkit.inventory.ItemStack asQuantity(int)`
+- `org.bukkit.inventory.ItemStack add()`
+- `org.bukkit.inventory.ItemStack add(int)`
+- `org.bukkit.inventory.ItemStack subtract()`
+- `org.bukkit.inventory.ItemStack subtract(int)`
+- `java.util.List<java.lang.String> getLore()`
+- `java.util.List<net.kyori.adventure.text.Component> lore()`
+- `void setLore(java.util.List<java.lang.String>)`
+- `void lore(java.util.List<? extends net.kyori.adventure.text.Component>)`
+- `void addItemFlags(org.bukkit.inventory.ItemFlag...)`
+- `void removeItemFlags(org.bukkit.inventory.ItemFlag...)`
+- `java.util.Set<org.bukkit.inventory.ItemFlag> getItemFlags()`
+- `boolean hasItemFlag(org.bukkit.inventory.ItemFlag)`
+- `java.lang.String translationKey()`
+- `io.papermc.paper.inventory.ItemRarity getRarity()`
+- `boolean isRepairableBy(org.bukkit.inventory.ItemStack)`
+- `boolean canRepair(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack damage(int, org.bukkit.entity.LivingEntity)`
+- `org.bukkit.inventory.ItemStack empty()`
+- `boolean isEmpty()`
+- `java.util.List<net.kyori.adventure.text.Component> computeTooltipLines(io.papermc.paper.inventory.tooltip.TooltipContext, org.bukkit.entity.Player)`
+- `<T> T getData(io.papermc.paper.datacomponent.DataComponentType$Valued<T>)`
+- `<T> T getDataOrDefault(io.papermc.paper.datacomponent.DataComponentType$Valued<? extends T>, T)`
+- `boolean hasData(io.papermc.paper.datacomponent.DataComponentType)`
+- `java.util.Set<io.papermc.paper.datacomponent.DataComponentType> getDataTypes()`
+- `<T> void setData(io.papermc.paper.datacomponent.DataComponentType$Valued<T>, io.papermc.paper.datacomponent.DataComponentBuilder<T>)`
+- `<T> void setData(io.papermc.paper.datacomponent.DataComponentType$Valued<T>, T)`
+- `void setData(io.papermc.paper.datacomponent.DataComponentType$NonValued)`
+- `void unsetData(io.papermc.paper.datacomponent.DataComponentType)`
+- `void resetData(io.papermc.paper.datacomponent.DataComponentType)`
+- `void copyDataFrom(org.bukkit.inventory.ItemStack, java.util.function.Predicate<io.papermc.paper.datacomponent.DataComponentType>)`
+- `boolean isDataOverridden(io.papermc.paper.datacomponent.DataComponentType)`
+- `boolean matchesWithoutData(org.bukkit.inventory.ItemStack, java.util.Set<io.papermc.paper.datacomponent.DataComponentType>)`
+- `boolean matchesWithoutData(org.bukkit.inventory.ItemStack, java.util.Set<io.papermc.paper.datacomponent.DataComponentType>, boolean)`
+- `java.lang.Object clone() throws java.lang.CloneNotSupportedException`
+### org.bukkit.inventory.ItemFactory
+- `org.bukkit.inventory.meta.ItemMeta getItemMeta(org.bukkit.Material)`
+- `boolean isApplicable(org.bukkit.inventory.meta.ItemMeta, org.bukkit.inventory.ItemStack) throws java.lang.IllegalArgumentException`
+- `boolean isApplicable(org.bukkit.inventory.meta.ItemMeta, org.bukkit.Material) throws java.lang.IllegalArgumentException`
+- `boolean equals(org.bukkit.inventory.meta.ItemMeta, org.bukkit.inventory.meta.ItemMeta) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.meta.ItemMeta asMetaFor(org.bukkit.inventory.meta.ItemMeta, org.bukkit.inventory.ItemStack) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.meta.ItemMeta asMetaFor(org.bukkit.inventory.meta.ItemMeta, org.bukkit.Material) throws java.lang.IllegalArgumentException`
+- `org.bukkit.Color getDefaultLeatherColor()`
+- `org.bukkit.inventory.ItemStack createItemStack(java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.Material getSpawnEgg(org.bukkit.entity.EntityType)`
+- `org.bukkit.inventory.ItemStack enchantItem(org.bukkit.entity.Entity, org.bukkit.inventory.ItemStack, int, boolean)`
+- `org.bukkit.inventory.ItemStack enchantItem(org.bukkit.World, org.bukkit.inventory.ItemStack, int, boolean)`
+- `org.bukkit.inventory.ItemStack enchantItem(org.bukkit.inventory.ItemStack, int, boolean)`
+- `net.kyori.adventure.text.event.HoverEvent<net.kyori.adventure.text.event.HoverEvent$ShowItem> asHoverEvent(org.bukkit.inventory.ItemStack, java.util.function.UnaryOperator<net.kyori.adventure.text.event.HoverEvent$ShowItem>)`
+- `net.kyori.adventure.text.Component displayName(org.bukkit.inventory.ItemStack)`
+- `java.lang.String getI18NDisplayName(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack ensureServerConversions(org.bukkit.inventory.ItemStack)`
+- `net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.inventory.ItemStack)`
+- `net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity)`
+- `net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity, java.lang.String)`
+- `net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity, net.md_5.bungee.api.chat.BaseComponent)`
+- `net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity, net.md_5.bungee.api.chat.BaseComponent[])`
+- `org.bukkit.inventory.ItemStack enchantWithLevels(org.bukkit.inventory.ItemStack, int, boolean, java.util.Random)`
+- `org.bukkit.inventory.ItemStack enchantWithLevels(org.bukkit.inventory.ItemStack, int, io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.enchantments.Enchantment>, java.util.Random)`
+### org.bukkit.inventory.meta.ItemMeta
+- `boolean hasCustomName()`
+- `net.kyori.adventure.text.Component customName()`
+- `void customName(net.kyori.adventure.text.Component)`
+- `boolean hasDisplayName()`
+- `net.kyori.adventure.text.Component displayName()`
+- `void displayName(net.kyori.adventure.text.Component)`
+- `java.lang.String getDisplayName()`
+- `net.md_5.bungee.api.chat.BaseComponent[] getDisplayNameComponent()`
+- `void setDisplayName(java.lang.String)`
+- `void setDisplayNameComponent(net.md_5.bungee.api.chat.BaseComponent[])`
+- `boolean hasItemName()`
+- `net.kyori.adventure.text.Component itemName()`
+- `void itemName(net.kyori.adventure.text.Component)`
+- `java.lang.String getItemName()`
+- `void setItemName(java.lang.String)`
+- `boolean hasLocalizedName()`
+- `java.lang.String getLocalizedName()`
+- `void setLocalizedName(java.lang.String)`
+- `boolean hasLore()`
+- `java.util.List<net.kyori.adventure.text.Component> lore()`
+- `void lore(java.util.List<? extends net.kyori.adventure.text.Component>)`
+- `java.util.List<java.lang.String> getLore()`
+- `java.util.List<net.md_5.bungee.api.chat.BaseComponent[]> getLoreComponents()`
+- `void setLore(java.util.List<java.lang.String>)`
+- `void setLoreComponents(java.util.List<net.md_5.bungee.api.chat.BaseComponent[]>)`
+- `boolean hasCustomModelData()`
+- `int getCustomModelData()`
+- `org.bukkit.inventory.meta.components.CustomModelDataComponent getCustomModelDataComponent()`
+- `void setCustomModelData(java.lang.Integer)`
+- `boolean hasCustomModelDataComponent()`
+- `void setCustomModelDataComponent(org.bukkit.inventory.meta.components.CustomModelDataComponent)`
+- `boolean hasEnchantable()`
+- `int getEnchantable()`
+- `void setEnchantable(java.lang.Integer)`
+- `boolean hasEnchants()`
+- `boolean hasEnchant(org.bukkit.enchantments.Enchantment)`
+- `int getEnchantLevel(org.bukkit.enchantments.Enchantment)`
+- `java.util.Map<org.bukkit.enchantments.Enchantment, java.lang.Integer> getEnchants()`
+- `boolean addEnchant(org.bukkit.enchantments.Enchantment, int, boolean)`
+- `boolean removeEnchant(org.bukkit.enchantments.Enchantment)`
+- `void removeEnchantments()`
+- `boolean hasConflictingEnchant(org.bukkit.enchantments.Enchantment)`
+- `void addItemFlags(org.bukkit.inventory.ItemFlag...)`
+- `void removeItemFlags(org.bukkit.inventory.ItemFlag...)`
+- `java.util.Set<org.bukkit.inventory.ItemFlag> getItemFlags()`
+- `boolean hasItemFlag(org.bukkit.inventory.ItemFlag)`
+- `boolean isHideTooltip()`
+- `void setHideTooltip(boolean)`
+- `boolean hasTooltipStyle()`
+- `org.bukkit.NamespacedKey getTooltipStyle()`
+- `void setTooltipStyle(org.bukkit.NamespacedKey)`
+- `boolean hasItemModel()`
+- `org.bukkit.NamespacedKey getItemModel()`
+- `void setItemModel(org.bukkit.NamespacedKey)`
+- `boolean isUnbreakable()`
+- `void setUnbreakable(boolean)`
+- `boolean hasEnchantmentGlintOverride()`
+- `java.lang.Boolean getEnchantmentGlintOverride()`
+- `void setEnchantmentGlintOverride(java.lang.Boolean)`
+- `boolean isGlider()`
+- `void setGlider(boolean)`
+- `boolean isFireResistant()`
+- `void setFireResistant(boolean)`
+- `boolean hasDamageResistant()`
+- `org.bukkit.Tag<org.bukkit.damage.DamageType> getDamageResistant()`
+- `void setDamageResistant(org.bukkit.Tag<org.bukkit.damage.DamageType>)`
+- `io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.damage.DamageType> getDamageResistantTypes()`
+- `void setDamageResistantTypes(io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.damage.DamageType>)`
+- `boolean hasMaxStackSize()`
+- `int getMaxStackSize()`
+- `void setMaxStackSize(java.lang.Integer)`
+- `boolean hasRarity()`
+- `org.bukkit.inventory.ItemRarity getRarity()`
+- `void setRarity(org.bukkit.inventory.ItemRarity)`
+- `boolean hasUseRemainder()`
+- `org.bukkit.inventory.ItemStack getUseRemainder()`
+- `void setUseRemainder(org.bukkit.inventory.ItemStack)`
+- `boolean hasUseCooldown()`
+- `org.bukkit.inventory.meta.components.UseCooldownComponent getUseCooldown()`
+- `void setUseCooldown(org.bukkit.inventory.meta.components.UseCooldownComponent)`
+- `boolean hasFood()`
+- `org.bukkit.inventory.meta.components.FoodComponent getFood()`
+- `void setFood(org.bukkit.inventory.meta.components.FoodComponent)`
+- `boolean hasTool()`
+- `org.bukkit.inventory.meta.components.ToolComponent getTool()`
+- `void setTool(org.bukkit.inventory.meta.components.ToolComponent)`
+- `boolean hasEquippable()`
+- `org.bukkit.inventory.meta.components.EquippableComponent getEquippable()`
+- `void setEquippable(org.bukkit.inventory.meta.components.EquippableComponent)`
+- `boolean hasJukeboxPlayable()`
+- `org.bukkit.inventory.meta.components.JukeboxPlayableComponent getJukeboxPlayable()`
+- `void setJukeboxPlayable(org.bukkit.inventory.meta.components.JukeboxPlayableComponent)`
+- `boolean hasAttributeModifiers()`
+- `com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> getAttributeModifiers()`
+- `com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> getAttributeModifiers(org.bukkit.inventory.EquipmentSlot)`
+- `java.util.Collection<org.bukkit.attribute.AttributeModifier> getAttributeModifiers(org.bukkit.attribute.Attribute)`
+- `boolean addAttributeModifier(org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier)`
+- `void setAttributeModifiers(com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier>)`
+- `boolean removeAttributeModifier(org.bukkit.attribute.Attribute)`
+- `boolean removeAttributeModifier(org.bukkit.inventory.EquipmentSlot)`
+- `boolean removeAttributeModifier(org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier)`
+- `java.lang.String getAsString()`
+- `java.lang.String getAsComponentString()`
+- `org.bukkit.inventory.meta.tags.CustomItemTagContainer getCustomTagContainer()`
+- `void setVersion(int)`
+- `org.bukkit.inventory.meta.ItemMeta clone()`
+- `java.util.Set<org.bukkit.Material> getCanDestroy()`
+- `void setCanDestroy(java.util.Set<org.bukkit.Material>)`
+- `java.util.Set<org.bukkit.Material> getCanPlaceOn()`
+- `void setCanPlaceOn(java.util.Set<org.bukkit.Material>)`
+- `java.util.Set<com.destroystokyo.paper.Namespaced> getDestroyableKeys()`
+- `void setDestroyableKeys(java.util.Collection<com.destroystokyo.paper.Namespaced>)`
+- `java.util.Set<com.destroystokyo.paper.Namespaced> getPlaceableKeys()`
+- `void setPlaceableKeys(java.util.Collection<com.destroystokyo.paper.Namespaced>)`
+- `boolean hasPlaceableKeys()`
+- `boolean hasDestroyableKeys()`
+### org.bukkit.inventory.Inventory
+- `int getSize()`
+- `int getMaxStackSize()`
+- `void setMaxStackSize(int)`
+- `org.bukkit.inventory.ItemStack getItem(int)`
+- `void setItem(int, org.bukkit.inventory.ItemStack)`
+- `java.util.HashMap<java.lang.Integer, org.bukkit.inventory.ItemStack> addItem(org.bukkit.inventory.ItemStack...) throws java.lang.IllegalArgumentException`
+- `java.util.HashMap<java.lang.Integer, org.bukkit.inventory.ItemStack> removeItem(org.bukkit.inventory.ItemStack...) throws java.lang.IllegalArgumentException`
+- `java.util.HashMap<java.lang.Integer, org.bukkit.inventory.ItemStack> removeItemAnySlot(org.bukkit.inventory.ItemStack...) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.ItemStack[] getContents()`
+- `void setContents(org.bukkit.inventory.ItemStack[]) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.ItemStack[] getStorageContents()`
+- `void setStorageContents(org.bukkit.inventory.ItemStack[]) throws java.lang.IllegalArgumentException`
+- `boolean contains(org.bukkit.Material) throws java.lang.IllegalArgumentException`
+- `boolean contains(org.bukkit.inventory.ItemStack)`
+- `boolean contains(org.bukkit.Material, int) throws java.lang.IllegalArgumentException`
+- `boolean contains(org.bukkit.inventory.ItemStack, int)`
+- `boolean containsAtLeast(org.bukkit.inventory.ItemStack, int)`
+- `java.util.HashMap<java.lang.Integer, ? extends org.bukkit.inventory.ItemStack> all(org.bukkit.Material) throws java.lang.IllegalArgumentException`
+- `java.util.HashMap<java.lang.Integer, ? extends org.bukkit.inventory.ItemStack> all(org.bukkit.inventory.ItemStack)`
+- `int first(org.bukkit.Material) throws java.lang.IllegalArgumentException`
+- `int first(org.bukkit.inventory.ItemStack)`
+- `int firstEmpty()`
+- `boolean isEmpty()`
+- `void remove(org.bukkit.Material) throws java.lang.IllegalArgumentException`
+- `void remove(org.bukkit.inventory.ItemStack)`
+- `void clear(int)`
+- `void clear()`
+- `int close()`
+- `java.util.List<org.bukkit.entity.HumanEntity> getViewers()`
+- `org.bukkit.event.inventory.InventoryType getType()`
+- `org.bukkit.inventory.InventoryHolder getHolder()`
+- `org.bukkit.inventory.InventoryHolder getHolder(boolean)`
+- `java.util.ListIterator<org.bukkit.inventory.ItemStack> iterator()`
+- `java.util.ListIterator<org.bukkit.inventory.ItemStack> iterator(int)`
+- `org.bukkit.Location getLocation()`
+- `java.util.Iterator iterator()`
+### org.bukkit.inventory.PlayerInventory
+- `org.bukkit.inventory.ItemStack[] getArmorContents()`
+- `org.bukkit.inventory.ItemStack[] getExtraContents()`
+- `org.bukkit.inventory.ItemStack getHelmet()`
+- `org.bukkit.inventory.ItemStack getChestplate()`
+- `org.bukkit.inventory.ItemStack getLeggings()`
+- `org.bukkit.inventory.ItemStack getBoots()`
+- `void setItem(int, org.bukkit.inventory.ItemStack)`
+- `void setItem(org.bukkit.inventory.EquipmentSlot, org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack getItem(org.bukkit.inventory.EquipmentSlot)`
+- `void setArmorContents(org.bukkit.inventory.ItemStack[])`
+- `void setExtraContents(org.bukkit.inventory.ItemStack[])`
+- `void setHelmet(org.bukkit.inventory.ItemStack)`
+- `void setChestplate(org.bukkit.inventory.ItemStack)`
+- `void setLeggings(org.bukkit.inventory.ItemStack)`
+- `void setBoots(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack getItemInMainHand()`
+- `void setItemInMainHand(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack getItemInOffHand()`
+- `void setItemInOffHand(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack getItemInHand()`
+- `void setItemInHand(org.bukkit.inventory.ItemStack)`
+- `int getHeldItemSlot()`
+- `void setHeldItemSlot(int)`
+- `org.bukkit.entity.HumanEntity getHolder()`
+- `org.bukkit.inventory.InventoryHolder getHolder()`
+### org.bukkit.inventory.InventoryHolder
+- `org.bukkit.inventory.Inventory getInventory()`
+### org.bukkit.inventory.EquipmentSlot
+- `org.bukkit.inventory.EquipmentSlot[] values()`
+- `org.bukkit.inventory.EquipmentSlot valueOf(java.lang.String)`
+- `org.bukkit.inventory.EquipmentSlotGroup getGroup()`
+- `boolean isHand()`
+- `org.bukkit.inventory.EquipmentSlot getOppositeHand()`
+- `boolean isArmor()`
+### org.bukkit.Material
+- `org.bukkit.Material[] values()`
+- `org.bukkit.Material valueOf(java.lang.String)`
+- `java.lang.String translationKey()`
+- `io.papermc.paper.inventory.ItemRarity getItemRarity()`
+- `com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> getItemAttributes(org.bukkit.inventory.EquipmentSlot)`
+- `boolean isCollidable()`
+- `int getId()`
+- `boolean isLegacy()`
+- `org.bukkit.NamespacedKey getKey()`
+- `int getMaxStackSize()`
+- `short getMaxDurability()`
+- `org.bukkit.block.data.BlockData createBlockData()`
+- `org.bukkit.block.data.BlockData createBlockData(java.util.function.Consumer<? super org.bukkit.block.data.BlockData>)`
+- `org.bukkit.block.data.BlockData createBlockData(java.lang.String) throws java.lang.IllegalArgumentException`
+- `java.lang.Class<? extends org.bukkit.material.MaterialData> getData()`
+- `org.bukkit.material.MaterialData getNewData(byte)`
+- `boolean isBlock()`
+- `boolean isEdible()`
+- `org.bukkit.Material getMaterial(java.lang.String)`
+- `org.bukkit.Material getMaterial(java.lang.String, boolean)`
+- `org.bukkit.Material matchMaterial(java.lang.String)`
+- `org.bukkit.Material matchMaterial(java.lang.String, boolean)`
+- `boolean isRecord()`
+- `boolean isSolid()`
+- `boolean isAir()`
+- `boolean isEmpty()`
+- `boolean isTransparent()`
+- `boolean isFlammable()`
+- `boolean isBurnable()`
+- `boolean isFuel()`
+- `boolean isOccluding()`
+- `boolean hasGravity()`
+- `boolean isItem()`
+- `boolean isInteractable()`
+- `float getHardness()`
+- `float getBlastResistance()`
+- `float getSlipperiness()`
+- `org.bukkit.Material getCraftingRemainingItem()`
+- `org.bukkit.inventory.EquipmentSlot getEquipmentSlot()`
+- `com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> getDefaultAttributeModifiers()`
+- `com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> getDefaultAttributeModifiers(org.bukkit.inventory.EquipmentSlot)`
+- `org.bukkit.inventory.CreativeCategory getCreativeCategory()`
+- `java.lang.String getTranslationKey()`
+- `java.lang.String getBlockTranslationKey()`
+- `java.lang.String getItemTranslationKey()`
+- `boolean isCompostable()`
+- `float getCompostChance()`
+- `org.bukkit.inventory.ItemType asItemType()`
+- `org.bukkit.block.BlockType asBlockType()`
+- `<T> T getDefaultData(io.papermc.paper.datacomponent.DataComponentType$Valued<T>)`
+- `boolean hasDefaultData(io.papermc.paper.datacomponent.DataComponentType)`
+- `java.util.Set<io.papermc.paper.datacomponent.DataComponentType> getDefaultDataTypes()`
+
+## entity
+### org.bukkit.entity.Entity
+- `org.bukkit.Location getLocation()`
+- `org.bukkit.Location getLocation(org.bukkit.Location)`
+- `void setVelocity(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector getVelocity()`
+- `double getHeight()`
+- `double getWidth()`
+- `org.bukkit.util.BoundingBox getBoundingBox()`
+- `boolean isOnGround()`
+- `boolean isInWater()`
+- `org.bukkit.World getWorld()`
+- `void setRotation(float, float)`
+- `void setRotation(io.papermc.paper.math.Angle, io.papermc.paper.math.Angle)`
+- `boolean teleport(org.bukkit.Location, io.papermc.paper.entity.TeleportFlag...)`
+- `boolean teleport(org.bukkit.Location, org.bukkit.event.player.PlayerTeleportEvent$TeleportCause, io.papermc.paper.entity.TeleportFlag...)`
+- `void lookAt(double, double, double, io.papermc.paper.entity.LookAnchor)`
+- `void lookAt(io.papermc.paper.math.Position, io.papermc.paper.entity.LookAnchor)`
+- `boolean teleport(org.bukkit.Location)`
+- `boolean teleport(org.bukkit.Location, org.bukkit.event.player.PlayerTeleportEvent$TeleportCause)`
+- `boolean teleport(org.bukkit.entity.Entity)`
+- `boolean teleport(org.bukkit.entity.Entity, org.bukkit.event.player.PlayerTeleportEvent$TeleportCause)`
+- `java.util.concurrent.CompletableFuture<java.lang.Boolean> teleportAsync(org.bukkit.Location)`
+- `java.util.concurrent.CompletableFuture<java.lang.Boolean> teleportAsync(org.bukkit.Location, org.bukkit.event.player.PlayerTeleportEvent$TeleportCause)`
+- `java.util.concurrent.CompletableFuture<java.lang.Boolean> teleportAsync(org.bukkit.Location, io.papermc.paper.entity.TeleportFlag...)`
+- `java.util.concurrent.CompletableFuture<java.lang.Boolean> teleportAsync(org.bukkit.Location, org.bukkit.event.player.PlayerTeleportEvent$TeleportCause, io.papermc.paper.entity.TeleportFlag...)`
+- `java.util.List<org.bukkit.entity.Entity> getNearbyEntities(double, double, double)`
+- `int getEntityId()`
+- `int getFireTicks()`
+- `int getMaxFireTicks()`
+- `void setFireTicks(int)`
+- `void setVisualFire(boolean)`
+- `void setVisualFire(net.kyori.adventure.util.TriState)`
+- `boolean isVisualFire()`
+- `net.kyori.adventure.util.TriState getVisualFire()`
+- `int getFreezeTicks()`
+- `int getMaxFreezeTicks()`
+- `void setFreezeTicks(int)`
+- `boolean isFrozen()`
+- `void setInvisible(boolean)`
+- `boolean isInvisible()`
+- `void setNoPhysics(boolean)`
+- `boolean hasNoPhysics()`
+- `boolean isFreezeTickingLocked()`
+- `void lockFreezeTicks(boolean)`
+- `void remove()`
+- `org.bukkit.event.entity.EntityRemoveEvent$Cause getRemoveEventCause()`
+- `io.papermc.paper.entity.RemovalReason getRemovalReason()`
+- `boolean isDead()`
+- `boolean isValid()`
+- `org.bukkit.Server getServer()`
+- `boolean isPersistent()`
+- `void setPersistent(boolean)`
+- `org.bukkit.entity.Entity getPassenger()`
+- `boolean setPassenger(org.bukkit.entity.Entity)`
+- `java.util.List<org.bukkit.entity.Entity> getPassengers()`
+- `boolean addPassenger(org.bukkit.entity.Entity)`
+- `boolean removePassenger(org.bukkit.entity.Entity)`
+- `boolean isEmpty()`
+- `boolean eject()`
+- `org.bukkit.inventory.ItemStack getPickItemStack()`
+- `float getFallDistance()`
+- `void setFallDistance(float)`
+- `void setLastDamageCause(org.bukkit.event.entity.EntityDamageEvent)`
+- `org.bukkit.event.entity.EntityDamageEvent getLastDamageCause()`
+- `java.util.UUID getUniqueId()`
+- `int getTicksLived()`
+- `void setTicksLived(int)`
+- `void playEffect(org.bukkit.EntityEffect)`
+- `org.bukkit.entity.EntityType getType()`
+- `org.bukkit.SoundCategory getSoundCategory()`
+- `org.bukkit.Sound getSwimSound()`
+- `org.bukkit.Sound getSwimSplashSound()`
+- `org.bukkit.Sound getSwimHighSpeedSplashSound()`
+- `boolean isInsideVehicle()`
+- `boolean leaveVehicle()`
+- `org.bukkit.entity.Entity getVehicle()`
+- `void setCustomNameVisible(boolean)`
+- `boolean isCustomNameVisible()`
+- `void setVisibleByDefault(boolean)`
+- `boolean isVisibleByDefault()`
+- `java.util.Set<org.bukkit.entity.Player> getTrackedBy()`
+- `boolean isTrackedBy(org.bukkit.entity.Player)`
+- `void setGlowing(boolean)`
+- `boolean isGlowing()`
+- `void setInvulnerable(boolean)`
+- `boolean isInvulnerable()`
+- `boolean isSilent()`
+- `void setSilent(boolean)`
+- `boolean hasGravity()`
+- `void setGravity(boolean)`
+- `int getPortalCooldown()`
+- `void setPortalCooldown(int)`
+- `java.util.Set<java.lang.String> getScoreboardTags()`
+- `boolean addScoreboardTag(java.lang.String)`
+- `boolean removeScoreboardTag(java.lang.String)`
+- `org.bukkit.block.PistonMoveReaction getPistonMoveReaction()`
+- `org.bukkit.block.BlockFace getFacing()`
+- `org.bukkit.entity.Pose getPose()`
+- `boolean isSneaking()`
+- `void setSneaking(boolean)`
+- `void setPose(org.bukkit.entity.Pose)`
+- `void setPose(org.bukkit.entity.Pose, boolean)`
+- `boolean hasFixedPose()`
+- `org.bukkit.entity.SpawnCategory getSpawnCategory()`
+- `boolean isInWorld()`
+- `java.lang.String getAsString()`
+- `org.bukkit.entity.EntitySnapshot createSnapshot()`
+- `org.bukkit.entity.Entity copy()`
+- `org.bukkit.entity.Entity copy(org.bukkit.Location)`
+- `org.bukkit.entity.Entity$Spigot spigot()`
+- `net.kyori.adventure.text.Component teamDisplayName()`
+- `net.kyori.adventure.text.event.HoverEvent<net.kyori.adventure.text.event.HoverEvent$ShowEntity> asHoverEvent(java.util.function.UnaryOperator<net.kyori.adventure.text.event.HoverEvent$ShowEntity>)`
+- `org.bukkit.Location getOrigin()`
+- `boolean fromMobSpawner()`
+- `org.bukkit.Chunk getChunk()`
+- `org.bukkit.event.entity.CreatureSpawnEvent$SpawnReason getEntitySpawnReason()`
+- `boolean isUnderWater()`
+- `boolean isInRain()`
+- `boolean isInBubbleColumn()`
+- `boolean isInWaterOrRain()`
+- `boolean isInWaterOrBubbleColumn()`
+- `boolean isInWaterOrRainOrBubbleColumn()`
+- `boolean isInLava()`
+- `boolean isTicking()`
+- `java.util.Set<org.bukkit.entity.Player> getTrackedPlayers()`
+- `boolean spawnAt(org.bukkit.Location)`
+- `boolean spawnAt(org.bukkit.Location, org.bukkit.event.entity.CreatureSpawnEvent$SpawnReason)`
+- `boolean isInPowderedSnow()`
+- `double getX()`
+- `double getY()`
+- `double getZ()`
+- `float getPitch()`
+- `float getYaw()`
+- `boolean collidesAt(org.bukkit.Location)`
+- `boolean wouldCollideUsing(org.bukkit.util.BoundingBox)`
+- `io.papermc.paper.threadedregions.scheduler.EntityScheduler getScheduler()`
+- `java.lang.String getScoreboardEntryName()`
+- `void broadcastHurtAnimation(java.util.Collection<org.bukkit.entity.Player>)`
+- `org.bukkit.command.CommandSender$Spigot spigot()`
+### org.bukkit.entity.LivingEntity
+- `double getEyeHeight()`
+- `double getEyeHeight(boolean)`
+- `org.bukkit.Location getEyeLocation()`
+- `java.util.List<org.bukkit.block.Block> getLineOfSight(java.util.Set<org.bukkit.Material>, int)`
+- `org.bukkit.block.Block getTargetBlock(java.util.Set<org.bukkit.Material>, int)`
+- `org.bukkit.block.Block getTargetBlock(int)`
+- `org.bukkit.block.Block getTargetBlock(int, com.destroystokyo.paper.block.TargetBlockInfo$FluidMode)`
+- `org.bukkit.block.BlockFace getTargetBlockFace(int)`
+- `org.bukkit.block.BlockFace getTargetBlockFace(int, com.destroystokyo.paper.block.TargetBlockInfo$FluidMode)`
+- `org.bukkit.block.BlockFace getTargetBlockFace(int, org.bukkit.FluidCollisionMode)`
+- `com.destroystokyo.paper.block.TargetBlockInfo getTargetBlockInfo(int)`
+- `com.destroystokyo.paper.block.TargetBlockInfo getTargetBlockInfo(int, com.destroystokyo.paper.block.TargetBlockInfo$FluidMode)`
+- `org.bukkit.entity.Entity getTargetEntity(int)`
+- `org.bukkit.entity.Entity getTargetEntity(int, boolean)`
+- `com.destroystokyo.paper.entity.TargetEntityInfo getTargetEntityInfo(int)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(int)`
+- `com.destroystokyo.paper.entity.TargetEntityInfo getTargetEntityInfo(int, boolean)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(int, boolean)`
+- `java.util.List<org.bukkit.block.Block> getLastTwoTargetBlocks(java.util.Set<org.bukkit.Material>, int)`
+- `org.bukkit.block.Block getTargetBlockExact(int)`
+- `org.bukkit.block.Block getTargetBlockExact(int, org.bukkit.FluidCollisionMode)`
+- `org.bukkit.util.RayTraceResult rayTraceBlocks(double)`
+- `org.bukkit.util.RayTraceResult rayTraceBlocks(double, org.bukkit.FluidCollisionMode)`
+- `int getRemainingAir()`
+- `void setRemainingAir(int)`
+- `int getMaximumAir()`
+- `void setMaximumAir(int)`
+- `org.bukkit.inventory.ItemStack getItemInUse()`
+- `int getItemInUseTicks()`
+- `void setItemInUseTicks(int)`
+- `int getArrowCooldown()`
+- `void setArrowCooldown(int)`
+- `int getArrowsInBody()`
+- `void setArrowsInBody(int)`
+- `void setArrowsInBody(int, boolean)`
+- `void setNextArrowRemoval(int)`
+- `int getNextArrowRemoval()`
+- `int getBeeStingerCooldown()`
+- `void setBeeStingerCooldown(int)`
+- `int getBeeStingersInBody()`
+- `void setBeeStingersInBody(int)`
+- `void setNextBeeStingerRemoval(int)`
+- `int getNextBeeStingerRemoval()`
+- `int getMaximumNoDamageTicks()`
+- `void setMaximumNoDamageTicks(int)`
+- `double getLastDamage()`
+- `void setLastDamage(double)`
+- `int getNoDamageTicks()`
+- `void setNoDamageTicks(int)`
+- `int getNoActionTicks()`
+- `void setNoActionTicks(int)`
+- `org.bukkit.entity.Player getKiller()`
+- `void setKiller(org.bukkit.entity.Player)`
+- `boolean addPotionEffect(org.bukkit.potion.PotionEffect)`
+- `boolean addPotionEffect(org.bukkit.potion.PotionEffect, boolean)`
+- `boolean addPotionEffects(java.util.Collection<org.bukkit.potion.PotionEffect>)`
+- `boolean hasPotionEffect(org.bukkit.potion.PotionEffectType)`
+- `org.bukkit.potion.PotionEffect getPotionEffect(org.bukkit.potion.PotionEffectType)`
+- `void removePotionEffect(org.bukkit.potion.PotionEffectType)`
+- `java.util.Collection<org.bukkit.potion.PotionEffect> getActivePotionEffects()`
+- `boolean clearActivePotionEffects()`
+- `boolean hasLineOfSight(org.bukkit.entity.Entity)`
+- `boolean hasLineOfSight(org.bukkit.Location)`
+- `boolean getRemoveWhenFarAway()`
+- `void setRemoveWhenFarAway(boolean)`
+- `org.bukkit.inventory.EntityEquipment getEquipment()`
+- `void setCanPickupItems(boolean)`
+- `boolean getCanPickupItems()`
+- `boolean isLeashed()`
+- `org.bukkit.entity.Entity getLeashHolder() throws java.lang.IllegalStateException`
+- `boolean setLeashHolder(org.bukkit.entity.Entity)`
+- `boolean isGliding()`
+- `void setGliding(boolean)`
+- `boolean isSwimming()`
+- `void setSwimming(boolean)`
+- `boolean isRiptiding()`
+- `void setRiptiding(boolean)`
+- `boolean isSleeping()`
+- `boolean isClimbing()`
+- `void setAI(boolean)`
+- `boolean hasAI()`
+- `void attack(org.bukkit.entity.Entity)`
+- `void swingMainHand()`
+- `void swingOffHand()`
+- `void playHurtAnimation(float)`
+- `void setCollidable(boolean)`
+- `boolean isCollidable()`
+- `java.util.Set<java.util.UUID> getCollidableExemptions()`
+- `<T> T getMemory(org.bukkit.entity.memory.MemoryKey<T>)`
+- `<T> void setMemory(org.bukkit.entity.memory.MemoryKey<T>, T)`
+- `float getSoundVolume()`
+- `float getSoundPitch()`
+- `org.bukkit.Sound getHurtSound()`
+- `org.bukkit.Sound getHurtSound(org.bukkit.damage.DamageSource)`
+- `org.bukkit.Sound getDeathSound()`
+- `org.bukkit.Sound getFallDamageSound(int)`
+- `org.bukkit.Sound getFallDamageSoundSmall()`
+- `org.bukkit.Sound getFallDamageSoundBig()`
+- `org.bukkit.Sound getDrinkingSound(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.Sound getEatingSound(org.bukkit.inventory.ItemStack)`
+- `boolean canBreatheUnderwater()`
+- `org.bukkit.entity.EntityCategory getCategory()`
+- `int getArrowsStuck()`
+- `void setArrowsStuck(int)`
+- `int getShieldBlockingDelay()`
+- `void setShieldBlockingDelay(int)`
+- `float getSidewaysMovement()`
+- `float getUpwardsMovement()`
+- `float getForwardsMovement()`
+- `void startUsingItem(org.bukkit.inventory.EquipmentSlot)`
+- `void completeUsingActiveItem()`
+- `org.bukkit.inventory.ItemStack getActiveItem()`
+- `void clearActiveItem()`
+- `int getActiveItemRemainingTime()`
+- `void setActiveItemRemainingTime(int)`
+- `boolean hasActiveItem()`
+- `int getActiveItemUsedTime()`
+- `org.bukkit.inventory.EquipmentSlot getActiveItemHand()`
+- `int getItemUseRemainingTime()`
+- `int getHandRaisedTime()`
+- `boolean isHandRaised()`
+- `org.bukkit.inventory.EquipmentSlot getHandRaised()`
+- `boolean isJumping()`
+- `void setJumping(boolean)`
+- `void playPickupItemAnimation(org.bukkit.entity.Item)`
+- `void playPickupItemAnimation(org.bukkit.entity.Item, int)`
+- `float getHurtDirection()`
+- `void setHurtDirection(float)`
+- `void swingHand(org.bukkit.inventory.EquipmentSlot)`
+- `void knockback(double, double, double)`
+- `void broadcastSlotBreak(org.bukkit.inventory.EquipmentSlot)`
+- `void broadcastSlotBreak(org.bukkit.inventory.EquipmentSlot, java.util.Collection<org.bukkit.entity.Player>)`
+- `org.bukkit.inventory.ItemStack damageItemStack(org.bukkit.inventory.ItemStack, int)`
+- `void damageItemStack(org.bukkit.inventory.EquipmentSlot, int)`
+- `float getBodyYaw()`
+- `void setBodyYaw(float)`
+- `boolean canUseEquipmentSlot(org.bukkit.inventory.EquipmentSlot)`
+- `io.papermc.paper.world.damagesource.CombatTracker getCombatTracker()`
+- `void setWaypointStyle(net.kyori.adventure.key.Key)`
+- `void setWaypointColor(org.bukkit.Color)`
+- `net.kyori.adventure.key.Key getWaypointStyle()`
+- `org.bukkit.Color getWaypointColor()`
+### org.bukkit.entity.Player
+- `net.kyori.adventure.identity.Identity identity()`
+- `java.lang.Iterable<? extends net.kyori.adventure.bossbar.BossBar> activeBossBars()`
+- `net.kyori.adventure.text.Component displayName()`
+- `void displayName(net.kyori.adventure.text.Component)`
+- `java.lang.String getName()`
+- `java.lang.String getDisplayName()`
+- `void setDisplayName(java.lang.String)`
+- `void playerListName(net.kyori.adventure.text.Component)`
+- `net.kyori.adventure.text.Component playerListName()`
+- `net.kyori.adventure.text.Component playerListHeader()`
+- `net.kyori.adventure.text.Component playerListFooter()`
+- `java.lang.String getPlayerListName()`
+- `void setPlayerListName(java.lang.String)`
+- `int getPlayerListOrder()`
+- `void setPlayerListOrder(int)`
+- `java.lang.String getPlayerListHeader()`
+- `java.lang.String getPlayerListFooter()`
+- `void setPlayerListHeader(java.lang.String)`
+- `void setPlayerListFooter(java.lang.String)`
+- `void setPlayerListHeaderFooter(java.lang.String, java.lang.String)`
+- `void setCompassTarget(org.bukkit.Location)`
+- `org.bukkit.Location getCompassTarget()`
+- `java.net.InetSocketAddress getAddress()`
+- `java.net.InetSocketAddress getHAProxyAddress()`
+- `boolean isTransferred()`
+- `java.util.concurrent.CompletableFuture<byte[]> retrieveCookie(org.bukkit.NamespacedKey)`
+- `void storeCookie(org.bukkit.NamespacedKey, byte[])`
+- `void transfer(java.lang.String, int)`
+- `void sendRawMessage(java.lang.String)`
+- `void kickPlayer(java.lang.String)`
+- `void kick()`
+- `void kick(net.kyori.adventure.text.Component)`
+- `void kick(net.kyori.adventure.text.Component, org.bukkit.event.player.PlayerKickEvent$Cause)`
+- `<E extends org.bukkit.BanEntry<? super com.destroystokyo.paper.profile.PlayerProfile>> E ban(java.lang.String, java.util.Date, java.lang.String, boolean)`
+- `<E extends org.bukkit.BanEntry<? super com.destroystokyo.paper.profile.PlayerProfile>> E ban(java.lang.String, java.time.Instant, java.lang.String, boolean)`
+- `<E extends org.bukkit.BanEntry<? super com.destroystokyo.paper.profile.PlayerProfile>> E ban(java.lang.String, java.time.Duration, java.lang.String, boolean)`
+- `org.bukkit.BanEntry<java.net.InetAddress> banIp(java.lang.String, java.util.Date, java.lang.String, boolean)`
+- `org.bukkit.BanEntry<java.net.InetAddress> banIp(java.lang.String, java.time.Instant, java.lang.String, boolean)`
+- `org.bukkit.BanEntry<java.net.InetAddress> banIp(java.lang.String, java.time.Duration, java.lang.String, boolean)`
+- `void chat(java.lang.String)`
+- `boolean performCommand(java.lang.String) throws org.bukkit.command.CommandException`
+- `boolean isOnGround()`
+- `boolean isSneaking()`
+- `void setSneaking(boolean)`
+- `boolean isSprinting()`
+- `void setSprinting(boolean)`
+- `void saveData()`
+- `void loadData()`
+- `void setSleepingIgnored(boolean)`
+- `boolean isSleepingIgnored()`
+- `org.bukkit.Location getRespawnLocation()`
+- `void setBedSpawnLocation(org.bukkit.Location)`
+- `void setRespawnLocation(org.bukkit.Location)`
+- `void setBedSpawnLocation(org.bukkit.Location, boolean)`
+- `void setRespawnLocation(org.bukkit.Location, boolean)`
+- `java.util.Collection<org.bukkit.entity.EnderPearl> getEnderPearls()`
+- `org.bukkit.Input getCurrentInput()`
+- `void playNote(org.bukkit.Location, byte, byte)`
+- `void playNote(org.bukkit.Location, org.bukkit.Instrument, org.bukkit.Note)`
+- `void playSound(org.bukkit.Location, org.bukkit.Sound, float, float)`
+- `void playSound(org.bukkit.Location, java.lang.String, float, float)`
+- `void playSound(org.bukkit.Location, org.bukkit.Sound, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.Location, java.lang.String, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.Location, org.bukkit.Sound, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(org.bukkit.Location, java.lang.String, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(org.bukkit.entity.Entity, org.bukkit.Sound, float, float)`
+- `void playSound(org.bukkit.entity.Entity, java.lang.String, float, float)`
+- `void playSound(org.bukkit.entity.Entity, org.bukkit.Sound, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.entity.Entity, java.lang.String, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.entity.Entity, org.bukkit.Sound, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(org.bukkit.entity.Entity, java.lang.String, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(net.kyori.adventure.sound.Sound, io.papermc.paper.math.Position)`
+- `void stopSound(org.bukkit.Sound)`
+- `void stopSound(java.lang.String)`
+- `void stopSound(org.bukkit.Sound, org.bukkit.SoundCategory)`
+- `void stopSound(java.lang.String, org.bukkit.SoundCategory)`
+- `void stopSound(org.bukkit.SoundCategory)`
+- `void stopAllSounds()`
+- `void playEffect(org.bukkit.Location, org.bukkit.Effect, int)`
+- `<T> void playEffect(org.bukkit.Location, org.bukkit.Effect, T)`
+- `boolean breakBlock(org.bukkit.block.Block)`
+- `void sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)`
+- `void sendBlockChange(org.bukkit.Location, org.bukkit.block.data.BlockData)`
+- `void sendBlockChanges(java.util.Collection<org.bukkit.block.BlockState>)`
+- `void sendBlockChanges(java.util.Collection<org.bukkit.block.BlockState>, boolean)`
+- `void sendBlockDamage(org.bukkit.Location, float)`
+- `void sendMultiBlockChange(java.util.Map<? extends io.papermc.paper.math.Position, org.bukkit.block.data.BlockData>)`
+- `void sendMultiBlockChange(java.util.Map<? extends io.papermc.paper.math.Position, org.bukkit.block.data.BlockData>, boolean)`
+- `void sendBlockDamage(org.bukkit.Location, float, org.bukkit.entity.Entity)`
+- `void sendBlockDamage(org.bukkit.Location, float, int)`
+- `void sendEquipmentChange(org.bukkit.entity.LivingEntity, org.bukkit.inventory.EquipmentSlot, org.bukkit.inventory.ItemStack)`
+- `void sendEquipmentChange(org.bukkit.entity.LivingEntity, java.util.Map<org.bukkit.inventory.EquipmentSlot, org.bukkit.inventory.ItemStack>)`
+- `void sendSignChange(org.bukkit.Location, java.util.List<? extends net.kyori.adventure.text.Component>) throws java.lang.IllegalArgumentException`
+- `void sendSignChange(org.bukkit.Location, java.util.List<? extends net.kyori.adventure.text.Component>, org.bukkit.DyeColor) throws java.lang.IllegalArgumentException`
+- `void sendSignChange(org.bukkit.Location, java.util.List<? extends net.kyori.adventure.text.Component>, boolean) throws java.lang.IllegalArgumentException`
+- `void sendSignChange(org.bukkit.Location, java.util.List<? extends net.kyori.adventure.text.Component>, org.bukkit.DyeColor, boolean) throws java.lang.IllegalArgumentException`
+- `void sendSignChange(org.bukkit.Location, java.lang.String[]) throws java.lang.IllegalArgumentException`
+- `void sendSignChange(org.bukkit.Location, java.lang.String[], org.bukkit.DyeColor) throws java.lang.IllegalArgumentException`
+- `void sendSignChange(org.bukkit.Location, java.lang.String[], org.bukkit.DyeColor, boolean) throws java.lang.IllegalArgumentException`
+- `void sendBlockUpdate(org.bukkit.Location, org.bukkit.block.TileState) throws java.lang.IllegalArgumentException`
+- `void sendPotionEffectChange(org.bukkit.entity.LivingEntity, org.bukkit.potion.PotionEffect)`
+- `void sendPotionEffectChangeRemove(org.bukkit.entity.LivingEntity, org.bukkit.potion.PotionEffectType)`
+- `void sendMap(org.bukkit.map.MapView)`
+- `void showWinScreen()`
+- `boolean hasSeenWinScreen()`
+- `void setHasSeenWinScreen(boolean)`
+- `org.bukkit.BanEntry banPlayerFull(java.lang.String)`
+- `org.bukkit.BanEntry banPlayerFull(java.lang.String, java.lang.String)`
+- `org.bukkit.BanEntry banPlayerFull(java.lang.String, java.util.Date)`
+- `org.bukkit.BanEntry banPlayerFull(java.lang.String, java.util.Date, java.lang.String)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, boolean)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, java.lang.String, boolean)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, java.util.Date, boolean)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, java.lang.String)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, java.util.Date)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, java.util.Date, java.lang.String)`
+- `org.bukkit.BanEntry banPlayerIP(java.lang.String, java.util.Date, java.lang.String, boolean)`
+- `void sendActionBar(java.lang.String)`
+- `void sendActionBar(char, java.lang.String)`
+- `void sendActionBar(net.md_5.bungee.api.chat.BaseComponent...)`
+- `void sendMessage(net.md_5.bungee.api.chat.BaseComponent)`
+- `void sendMessage(net.md_5.bungee.api.chat.BaseComponent...)`
+- `void sendMessage(net.md_5.bungee.api.ChatMessageType, net.md_5.bungee.api.chat.BaseComponent...)`
+- `void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent[], net.md_5.bungee.api.chat.BaseComponent[])`
+- `void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent, net.md_5.bungee.api.chat.BaseComponent)`
+- `void setTitleTimes(int, int, int)`
+- `void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[])`
+- `void setSubtitle(net.md_5.bungee.api.chat.BaseComponent)`
+- `void showTitle(net.md_5.bungee.api.chat.BaseComponent[])`
+- `void showTitle(net.md_5.bungee.api.chat.BaseComponent)`
+- `void showTitle(net.md_5.bungee.api.chat.BaseComponent[], net.md_5.bungee.api.chat.BaseComponent[], int, int, int)`
+- `void showTitle(net.md_5.bungee.api.chat.BaseComponent, net.md_5.bungee.api.chat.BaseComponent, int, int, int)`
+- `void sendTitle(com.destroystokyo.paper.Title)`
+- `void updateTitle(com.destroystokyo.paper.Title)`
+- `void hideTitle()`
+- `void sendHurtAnimation(float)`
+- `void sendLinks(org.bukkit.ServerLinks)`
+- `void addCustomChatCompletions(java.util.Collection<java.lang.String>)`
+- `void removeCustomChatCompletions(java.util.Collection<java.lang.String>)`
+- `void setCustomChatCompletions(java.util.Collection<java.lang.String>)`
+- `void updateInventory()`
+- `org.bukkit.GameMode getPreviousGameMode()`
+- `void setPlayerTime(long, boolean)`
+- `long getPlayerTime()`
+- `long getPlayerTimeOffset()`
+- `boolean isPlayerTimeRelative()`
+- `void resetPlayerTime()`
+- `void setPlayerWeather(org.bukkit.WeatherType)`
+- `org.bukkit.WeatherType getPlayerWeather()`
+- `void resetPlayerWeather()`
+- `void giveExp(int)`
+- `int getExpCooldown()`
+- `void setExpCooldown(int)`
+- `void giveExp(int, boolean)`
+- `int applyMending(int)`
+- `void giveExpLevels(int)`
+- `float getExp()`
+- `void setExp(float)`
+- `int getLevel()`
+- `void setLevel(int)`
+- `int getTotalExperience()`
+- `void setTotalExperience(int)`
+- `int calculateTotalExperiencePoints()`
+- `void setExperienceLevelAndProgress(int)`
+- `int getExperiencePointsNeededForNextLevel()`
+- `void sendExperienceChange(float)`
+- `void sendExperienceChange(float, int)`
+- `boolean getAllowFlight()`
+- `void setAllowFlight(boolean)`
+- `void setFlyingFallDamage(net.kyori.adventure.util.TriState)`
+- `net.kyori.adventure.util.TriState hasFlyingFallDamage()`
+- `void resetFlyingTicks()`
+- `void hidePlayer(org.bukkit.entity.Player)`
+- `void hidePlayer(org.bukkit.plugin.Plugin, org.bukkit.entity.Player)`
+- `void showPlayer(org.bukkit.entity.Player)`
+- `void showPlayer(org.bukkit.plugin.Plugin, org.bukkit.entity.Player)`
+- `boolean canSee(org.bukkit.entity.Player)`
+- `void hideEntity(org.bukkit.plugin.Plugin, org.bukkit.entity.Entity)`
+- `void showEntity(org.bukkit.plugin.Plugin, org.bukkit.entity.Entity)`
+- `boolean canSee(org.bukkit.entity.Entity)`
+- `boolean isListed(org.bukkit.entity.Player)`
+- `boolean unlistPlayer(org.bukkit.entity.Player)`
+- `boolean listPlayer(org.bukkit.entity.Player)`
+- `boolean isFlying()`
+- `void setFlying(boolean)`
+- `void setFlySpeed(float) throws java.lang.IllegalArgumentException`
+- `void setWalkSpeed(float) throws java.lang.IllegalArgumentException`
+- `float getFlySpeed()`
+- `float getWalkSpeed()`
+- `void setTexturePack(java.lang.String)`
+- `void setResourcePack(java.lang.String)`
+- `void setResourcePack(java.lang.String, byte[])`
+- `void setResourcePack(java.lang.String, byte[], java.lang.String)`
+- `void setResourcePack(java.lang.String, byte[], net.kyori.adventure.text.Component)`
+- `void setResourcePack(java.lang.String, byte[], boolean)`
+- `void setResourcePack(java.lang.String, byte[], java.lang.String, boolean)`
+- `void setResourcePack(java.lang.String, byte[], net.kyori.adventure.text.Component, boolean)`
+- `void setResourcePack(java.util.UUID, java.lang.String, byte[], java.lang.String, boolean)`
+- `void setResourcePack(java.util.UUID, java.lang.String, byte[], net.kyori.adventure.text.Component, boolean)`
+- `void setResourcePack(java.lang.String, java.lang.String)`
+- `void setResourcePack(java.lang.String, java.lang.String, boolean)`
+- `void setResourcePack(java.lang.String, java.lang.String, boolean, net.kyori.adventure.text.Component)`
+- `void setResourcePack(java.util.UUID, java.lang.String, java.lang.String, net.kyori.adventure.text.Component, boolean)`
+- `org.bukkit.event.player.PlayerResourcePackStatusEvent$Status getResourcePackStatus()`
+- `java.lang.String getResourcePackHash()`
+- `boolean hasResourcePack()`
+- `void addResourcePack(java.util.UUID, java.lang.String, byte[], java.lang.String, boolean)`
+- `void removeResourcePack(java.util.UUID)`
+- `void removeResourcePacks()`
+- `org.bukkit.scoreboard.Scoreboard getScoreboard()`
+- `void setScoreboard(org.bukkit.scoreboard.Scoreboard) throws java.lang.IllegalArgumentException, java.lang.IllegalStateException`
+- `org.bukkit.WorldBorder getWorldBorder()`
+- `void setWorldBorder(org.bukkit.WorldBorder)`
+- `void sendHealthUpdate(double, int, float)`
+- `void sendHealthUpdate()`
+- `boolean isHealthScaled()`
+- `void setHealthScaled(boolean)`
+- `void setHealthScale(double) throws java.lang.IllegalArgumentException`
+- `double getHealthScale()`
+- `org.bukkit.entity.Entity getSpectatorTarget()`
+- `void setSpectatorTarget(org.bukkit.entity.Entity)`
+- `void sendTitle(java.lang.String, java.lang.String)`
+- `void sendTitle(java.lang.String, java.lang.String, int, int, int)`
+- `void resetTitle()`
+- `void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int)`
+- `void spawnParticle(org.bukkit.Particle, double, double, double, int)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, T)`
+- `void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double)`
+- `void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, T)`
+- `void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double)`
+- `void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, double)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double, T, boolean)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, double, T, boolean)`
+- `org.bukkit.advancement.AdvancementProgress getAdvancementProgress(org.bukkit.advancement.Advancement)`
+- `int getClientViewDistance()`
+- `java.util.Locale locale()`
+- `int getPing()`
+- `java.lang.String getLocale()`
+- `boolean getAffectsSpawning()`
+- `void setAffectsSpawning(boolean)`
+- `int getViewDistance()`
+- `void setViewDistance(int)`
+- `int getSimulationDistance()`
+- `void setSimulationDistance(int)`
+- `int getNoTickViewDistance()`
+- `void setNoTickViewDistance(int)`
+- `int getSendViewDistance()`
+- `void setSendViewDistance(int)`
+- `void updateCommands()`
+- `void openBook(org.bukkit.inventory.ItemStack)`
+- `void openSign(org.bukkit.block.Sign)`
+- `void openSign(org.bukkit.block.Sign, org.bukkit.block.sign.Side)`
+- `void openVirtualSign(io.papermc.paper.math.Position, org.bukkit.block.sign.Side)`
+- `void showDemoScreen()`
+- `boolean isAllowingServerListings()`
+- `net.kyori.adventure.text.event.HoverEvent<net.kyori.adventure.text.event.HoverEvent$ShowEntity> asHoverEvent(java.util.function.UnaryOperator<net.kyori.adventure.text.event.HoverEvent$ShowEntity>)`
+- `void applySkinToPlayerHeadContents(net.kyori.adventure.text.object.PlayerHeadObjectContents$Builder)`
+- `com.destroystokyo.paper.profile.PlayerProfile getPlayerProfile()`
+- `void setPlayerProfile(com.destroystokyo.paper.profile.PlayerProfile)`
+- `float getCooldownPeriod()`
+- `float getCooledAttackStrength(float)`
+- `void resetCooldown()`
+- `<T> T getClientOption(com.destroystokyo.paper.ClientOption<T>)`
+- `org.bukkit.entity.Firework boostElytra(org.bukkit.inventory.ItemStack)`
+- `void sendOpLevel(byte)`
+- `void addAdditionalChatCompletions(java.util.Collection<java.lang.String>)`
+- `void removeAdditionalChatCompletions(java.util.Collection<java.lang.String>)`
+- `java.lang.String getClientBrandName()`
+- `void setRotation(float, float)`
+- `void setRotation(io.papermc.paper.math.Angle, io.papermc.paper.math.Angle)`
+- `void lookAt(org.bukkit.entity.Entity, io.papermc.paper.entity.LookAnchor, io.papermc.paper.entity.LookAnchor)`
+- `void showElderGuardian()`
+- `void showElderGuardian(boolean)`
+- `int getWardenWarningCooldown()`
+- `void setWardenWarningCooldown(int)`
+- `int getWardenTimeSinceLastWarning()`
+- `void setWardenTimeSinceLastWarning(int)`
+- `int getWardenWarningLevel()`
+- `void setWardenWarningLevel(int)`
+- `void increaseWardenWarningLevel()`
+- `java.time.Duration getIdleDuration()`
+- `void resetIdleDuration()`
+- `java.util.Set<java.lang.Long> getSentChunkKeys()`
+- `java.util.Set<org.bukkit.Chunk> getSentChunks()`
+- `boolean isChunkSent(org.bukkit.Chunk)`
+- `boolean isChunkSent(long)`
+- `org.bukkit.entity.Player$Spigot spigot()`
+- `void sendEntityEffect(org.bukkit.EntityEffect, org.bukkit.entity.Entity)`
+- `io.papermc.paper.entity.PlayerGiveResult give(org.bukkit.inventory.ItemStack...)`
+- `io.papermc.paper.entity.PlayerGiveResult give(java.util.Collection<org.bukkit.inventory.ItemStack>)`
+- `io.papermc.paper.entity.PlayerGiveResult give(java.util.Collection<org.bukkit.inventory.ItemStack>, boolean)`
+- `int getDeathScreenScore()`
+- `void setDeathScreenScore(int)`
+- `io.papermc.paper.connection.PlayerGameConnection getConnection()`
+- `net.kyori.adventure.text.object.ObjectContents asObjectContents()`
+- `void unsetFixedPose()`
+- `org.bukkit.entity.Entity$Spigot spigot()`
+- `org.bukkit.command.CommandSender$Spigot spigot()`
+### org.bukkit.entity.HumanEntity
+- `org.bukkit.inventory.EntityEquipment getEquipment()`
+- `java.lang.String getName()`
+- `org.bukkit.inventory.PlayerInventory getInventory()`
+- `org.bukkit.inventory.Inventory getEnderChest()`
+- `org.bukkit.inventory.MainHand getMainHand()`
+- `boolean setWindowProperty(org.bukkit.inventory.InventoryView$Property, int)`
+- `int getEnchantmentSeed()`
+- `void setEnchantmentSeed(int)`
+- `org.bukkit.inventory.InventoryView getOpenInventory()`
+- `org.bukkit.inventory.InventoryView openInventory(org.bukkit.inventory.Inventory)`
+- `org.bukkit.inventory.InventoryView openWorkbench(org.bukkit.Location, boolean)`
+- `org.bukkit.inventory.InventoryView openEnchanting(org.bukkit.Location, boolean)`
+- `void openInventory(org.bukkit.inventory.InventoryView)`
+- `org.bukkit.inventory.InventoryView openMerchant(org.bukkit.entity.Villager, boolean)`
+- `org.bukkit.inventory.InventoryView openMerchant(org.bukkit.inventory.Merchant, boolean)`
+- `org.bukkit.inventory.InventoryView openAnvil(org.bukkit.Location, boolean)`
+- `org.bukkit.inventory.InventoryView openCartographyTable(org.bukkit.Location, boolean)`
+- `org.bukkit.inventory.InventoryView openGrindstone(org.bukkit.Location, boolean)`
+- `org.bukkit.inventory.InventoryView openLoom(org.bukkit.Location, boolean)`
+- `org.bukkit.inventory.InventoryView openSmithingTable(org.bukkit.Location, boolean)`
+- `org.bukkit.inventory.InventoryView openStonecutter(org.bukkit.Location, boolean)`
+- `void closeInventory()`
+- `void closeInventory(org.bukkit.event.inventory.InventoryCloseEvent$Reason)`
+- `org.bukkit.inventory.ItemStack getItemInHand()`
+- `void setItemInHand(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.ItemStack getItemOnCursor()`
+- `void setItemOnCursor(org.bukkit.inventory.ItemStack)`
+- `boolean hasCooldown(org.bukkit.Material)`
+- `int getCooldown(org.bukkit.Material)`
+- `void setCooldown(org.bukkit.Material, int)`
+- `void setHurtDirection(float)`
+- `boolean isDeeplySleeping()`
+- `boolean hasCooldown(org.bukkit.inventory.ItemStack)`
+- `int getCooldown(org.bukkit.inventory.ItemStack)`
+- `void setCooldown(org.bukkit.inventory.ItemStack, int)`
+- `int getCooldown(net.kyori.adventure.key.Key)`
+- `void setCooldown(net.kyori.adventure.key.Key, int)`
+- `int getSleepTicks()`
+- `org.bukkit.Location getPotentialBedLocation()`
+- `org.bukkit.Location getPotentialRespawnLocation()`
+- `org.bukkit.entity.FishHook getFishHook()`
+- `boolean sleep(org.bukkit.Location, boolean)`
+- `void wakeup(boolean)`
+- `void startRiptideAttack(int, float, org.bukkit.inventory.ItemStack)`
+- `org.bukkit.Location getBedLocation()`
+- `org.bukkit.GameMode getGameMode()`
+- `void setGameMode(org.bukkit.GameMode)`
+- `boolean isBlocking()`
+- `boolean isHandRaised()`
+- `int getExpToLevel()`
+- `org.bukkit.entity.Entity releaseLeftShoulderEntity()`
+- `org.bukkit.entity.Entity releaseRightShoulderEntity()`
+- `float getAttackCooldown()`
+- `boolean discoverRecipe(org.bukkit.NamespacedKey)`
+- `int discoverRecipes(java.util.Collection<org.bukkit.NamespacedKey>)`
+- `boolean undiscoverRecipe(org.bukkit.NamespacedKey)`
+- `int undiscoverRecipes(java.util.Collection<org.bukkit.NamespacedKey>)`
+- `boolean hasDiscoveredRecipe(org.bukkit.NamespacedKey)`
+- `java.util.Set<org.bukkit.NamespacedKey> getDiscoveredRecipes()`
+- `org.bukkit.entity.Entity getShoulderEntityLeft()`
+- `void setShoulderEntityLeft(org.bukkit.entity.Entity)`
+- `org.bukkit.entity.Entity getShoulderEntityRight()`
+- `void setShoulderEntityRight(org.bukkit.entity.Entity)`
+- `void openSign(org.bukkit.block.Sign)`
+- `void openSign(org.bukkit.block.Sign, org.bukkit.block.sign.Side)`
+- `boolean dropItem(boolean)`
+- `org.bukkit.entity.Item dropItem(int)`
+- `org.bukkit.entity.Item dropItem(int, int)`
+- `org.bukkit.entity.Item dropItem(int, int, boolean, java.util.function.Consumer<org.bukkit.entity.Item>)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.inventory.EquipmentSlot)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.inventory.EquipmentSlot, int)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.inventory.EquipmentSlot, int, boolean, java.util.function.Consumer<org.bukkit.entity.Item>)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.inventory.ItemStack, boolean, java.util.function.Consumer<org.bukkit.entity.Item>)`
+- `float getExhaustion()`
+- `void setExhaustion(float)`
+- `float getSaturation()`
+- `void setSaturation(float)`
+- `int getFoodLevel()`
+- `void setFoodLevel(int)`
+- `int getSaturatedRegenRate()`
+- `void setSaturatedRegenRate(int)`
+- `int getUnsaturatedRegenRate()`
+- `void setUnsaturatedRegenRate(int)`
+- `int getStarvationRate()`
+- `void setStarvationRate(int)`
+- `org.bukkit.Location getLastDeathLocation()`
+- `void setLastDeathLocation(org.bukkit.Location)`
+- `org.bukkit.entity.Firework fireworkBoost(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.entity.Firework fireworkBoost()`
+- `org.bukkit.inventory.Inventory getInventory()`
+### org.bukkit.entity.Projectile
+- `org.bukkit.projectiles.ProjectileSource getShooter()`
+- `void setShooter(org.bukkit.projectiles.ProjectileSource)`
+- `boolean doesBounce()`
+- `void setBounce(boolean)`
+- `boolean hasLeftShooter()`
+- `void setHasLeftShooter(boolean)`
+- `boolean hasBeenShot()`
+- `void setHasBeenShot(boolean)`
+- `boolean canHitEntity(org.bukkit.entity.Entity)`
+- `void hitEntity(org.bukkit.entity.Entity)`
+- `void hitEntity(org.bukkit.entity.Entity, org.bukkit.util.Vector)`
+- `java.util.UUID getOwnerUniqueId()`
+### org.bukkit.entity.Damageable
+- `void damage(double)`
+- `void damage(double, org.bukkit.entity.Entity)`
+- `void damage(double, org.bukkit.damage.DamageSource)`
+- `void kill()`
+- `void kill(org.bukkit.damage.DamageSource)`
+- `double getHealth()`
+- `void setHealth(double)`
+- `void heal(double)`
+- `void heal(double, org.bukkit.event.entity.EntityRegainHealthEvent$RegainReason)`
+- `double getAbsorptionAmount()`
+- `void setAbsorptionAmount(double)`
+- `double getMaxHealth()`
+- `void setMaxHealth(double)`
+- `void resetMaxHealth()`
+### org.bukkit.entity.EntityType
+- `org.bukkit.entity.EntityType[] values()`
+- `org.bukkit.entity.EntityType valueOf(java.lang.String)`
+- `java.lang.String getName()`
+- `org.bukkit.NamespacedKey getKey()`
+- `java.lang.Class<? extends org.bukkit.entity.Entity> getEntityClass()`
+- `short getTypeId()`
+- `org.bukkit.entity.EntityType fromName(java.lang.String)`
+- `org.bukkit.entity.EntityType fromId(int)`
+- `boolean isSpawnable()`
+- `boolean isAlive()`
+- `java.lang.String getTranslationKey()`
+- `java.lang.String translationKey()`
+- `org.bukkit.entity.SpawnCategory getSpawnCategory()`
+- `boolean hasDefaultAttributes()`
+- `org.bukkit.attribute.Attributable getDefaultAttributes()`
+
+## world
+### org.bukkit.World
+- `boolean isVoidDamageEnabled()`
+- `void setVoidDamageEnabled(boolean)`
+- `float getVoidDamageAmount()`
+- `void setVoidDamageAmount(float)`
+- `double getVoidDamageMinBuildHeightOffset()`
+- `void setVoidDamageMinBuildHeightOffset(double)`
+- `int getEntityCount()`
+- `int getTileEntityCount()`
+- `int getTickableTileEntityCount()`
+- `int getChunkCount()`
+- `int getPlayerCount()`
+- `boolean hasStructureAt(io.papermc.paper.math.Position, org.bukkit.generator.structure.Structure)`
+- `boolean isPositionLoaded(io.papermc.paper.math.Position)`
+- `org.bukkit.block.Block getBlockAt(int, int, int)`
+- `org.bukkit.block.Block getBlockAt(org.bukkit.Location)`
+- `org.bukkit.block.Block getBlockAtKey(long)`
+- `org.bukkit.Location getLocationAtKey(long)`
+- `org.bukkit.block.Block getHighestBlockAt(int, int)`
+- `org.bukkit.block.Block getHighestBlockAt(org.bukkit.Location)`
+- `org.bukkit.block.Block getHighestBlockAt(int, int, org.bukkit.HeightMap)`
+- `org.bukkit.block.Block getHighestBlockAt(org.bukkit.Location, org.bukkit.HeightMap)`
+- `org.bukkit.Chunk getChunkAt(int, int)`
+- `org.bukkit.Chunk getChunkAt(int, int, boolean)`
+- `org.bukkit.Chunk getChunkAt(org.bukkit.Location)`
+- `org.bukkit.Chunk getChunkAt(org.bukkit.block.Block)`
+- `org.bukkit.Chunk getChunkAt(long)`
+- `org.bukkit.Chunk getChunkAt(long, boolean)`
+- `boolean isChunkGenerated(long)`
+- `boolean isChunkLoaded(org.bukkit.Chunk)`
+- `org.bukkit.Chunk[] getLoadedChunks()`
+- `void loadChunk(org.bukkit.Chunk)`
+- `boolean isChunkLoaded(int, int)`
+- `boolean isChunkGenerated(int, int)`
+- `boolean isChunkInUse(int, int)`
+- `void loadChunk(int, int)`
+- `boolean loadChunk(int, int, boolean)`
+- `boolean unloadChunk(org.bukkit.Chunk)`
+- `boolean unloadChunk(int, int)`
+- `boolean unloadChunk(int, int, boolean)`
+- `boolean unloadChunkRequest(int, int)`
+- `boolean regenerateChunk(int, int)`
+- `boolean refreshChunk(int, int)`
+- `java.util.Collection<org.bukkit.entity.Player> getPlayersSeeingChunk(org.bukkit.Chunk)`
+- `java.util.Collection<org.bukkit.entity.Player> getPlayersSeeingChunk(int, int)`
+- `boolean isChunkForceLoaded(int, int)`
+- `void setChunkForceLoaded(int, int, boolean)`
+- `java.util.Collection<org.bukkit.Chunk> getForceLoadedChunks()`
+- `boolean addPluginChunkTicket(int, int, org.bukkit.plugin.Plugin)`
+- `boolean removePluginChunkTicket(int, int, org.bukkit.plugin.Plugin)`
+- `void removePluginChunkTickets(org.bukkit.plugin.Plugin)`
+- `java.util.Collection<org.bukkit.plugin.Plugin> getPluginChunkTickets(int, int)`
+- `java.util.Map<org.bukkit.plugin.Plugin, java.util.Collection<org.bukkit.Chunk>> getPluginChunkTickets()`
+- `java.util.Collection<org.bukkit.Chunk> getIntersectingChunks(org.bukkit.util.BoundingBox)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.Location, org.bukkit.inventory.ItemStack)`
+- `org.bukkit.entity.Item dropItem(org.bukkit.Location, org.bukkit.inventory.ItemStack, java.util.function.Consumer<? super org.bukkit.entity.Item>)`
+- `org.bukkit.entity.Item dropItemNaturally(org.bukkit.Location, org.bukkit.inventory.ItemStack)`
+- `org.bukkit.entity.Item dropItemNaturally(org.bukkit.Location, org.bukkit.inventory.ItemStack, java.util.function.Consumer<? super org.bukkit.entity.Item>)`
+- `org.bukkit.entity.Arrow spawnArrow(org.bukkit.Location, org.bukkit.util.Vector, float, float)`
+- `<T extends org.bukkit.entity.AbstractArrow> T spawnArrow(org.bukkit.Location, org.bukkit.util.Vector, float, float, java.lang.Class<T>)`
+- `boolean generateTree(org.bukkit.Location, org.bukkit.TreeType)`
+- `boolean generateTree(org.bukkit.Location, org.bukkit.TreeType, org.bukkit.BlockChangeDelegate)`
+- `org.bukkit.entity.LightningStrike strikeLightning(org.bukkit.Location)`
+- `org.bukkit.entity.LightningStrike strikeLightningEffect(org.bukkit.Location)`
+- `org.bukkit.Location findLightningRod(org.bukkit.Location)`
+- `org.bukkit.Location findLightningTarget(org.bukkit.Location)`
+- `java.util.List<org.bukkit.entity.Entity> getEntities()`
+- `java.util.List<org.bukkit.entity.LivingEntity> getLivingEntities()`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getEntitiesByClass(java.lang.Class<T>...)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getEntitiesByClass(java.lang.Class<T>)`
+- `java.util.Collection<org.bukkit.entity.Entity> getEntitiesByClasses(java.lang.Class<?>...)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(org.bukkit.Location, double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(org.bukkit.Location, double, double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(org.bukkit.Location, double, double, double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(org.bukkit.Location, double, java.util.function.Predicate<? super org.bukkit.entity.LivingEntity>)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(org.bukkit.Location, double, double, java.util.function.Predicate<? super org.bukkit.entity.LivingEntity>)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(org.bukkit.Location, double, double, double, java.util.function.Predicate<? super org.bukkit.entity.LivingEntity>)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(org.bukkit.Location, double)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(org.bukkit.Location, double, double)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(org.bukkit.Location, double, double, double)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(org.bukkit.Location, double, java.util.function.Predicate<? super org.bukkit.entity.Player>)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(org.bukkit.Location, double, double, java.util.function.Predicate<? super org.bukkit.entity.Player>)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(org.bukkit.Location, double, double, double, java.util.function.Predicate<? super org.bukkit.entity.Player>)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, org.bukkit.Location, double)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, org.bukkit.Location, double, double)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, org.bukkit.Location, double, double, double)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, org.bukkit.Location, double, java.util.function.Predicate<? super T>)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, org.bukkit.Location, double, double, java.util.function.Predicate<? super T>)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, org.bukkit.Location, double, double, double, java.util.function.Predicate<? super T>)`
+- `void getChunkAtAsync(int, int, org.bukkit.World$ChunkLoadCallback)`
+- `void getChunkAtAsync(org.bukkit.Location, org.bukkit.World$ChunkLoadCallback)`
+- `void getChunkAtAsync(org.bukkit.block.Block, org.bukkit.World$ChunkLoadCallback)`
+- `void getChunkAtAsync(int, int, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `void getChunkAtAsync(int, int, boolean, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `void getChunkAtAsync(int, int, boolean, boolean, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `void getChunksAtAsync(int, int, int, int, boolean, java.lang.Runnable)`
+- `void getChunkAtAsync(org.bukkit.Location, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `void getChunkAtAsync(org.bukkit.Location, boolean, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `void getChunkAtAsync(org.bukkit.block.Block, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `void getChunkAtAsync(org.bukkit.block.Block, boolean, java.util.function.Consumer<? super org.bukkit.Chunk>)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(org.bukkit.Location)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(org.bukkit.Location, boolean)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(org.bukkit.block.Block)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(org.bukkit.block.Block, boolean)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(int, int)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(int, int, boolean)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsyncUrgently(org.bukkit.Location)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsyncUrgently(org.bukkit.Location, boolean)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsyncUrgently(org.bukkit.block.Block)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsyncUrgently(org.bukkit.block.Block, boolean)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsyncUrgently(int, int)`
+- `java.util.concurrent.CompletableFuture<org.bukkit.Chunk> getChunkAtAsync(int, int, boolean, boolean)`
+- `java.util.List<org.bukkit.entity.Player> getPlayers()`
+- `java.lang.Iterable<? extends net.kyori.adventure.audience.Audience> audiences()`
+- `java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(org.bukkit.Location, double, double, double)`
+- `org.bukkit.entity.Entity getEntity(java.util.UUID)`
+- `java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(org.bukkit.Location, double, double, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>)`
+- `java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(org.bukkit.util.BoundingBox)`
+- `java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(org.bukkit.util.BoundingBox, java.util.function.Predicate<? super org.bukkit.entity.Entity>)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(org.bukkit.Location, org.bukkit.util.Vector, double)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(org.bukkit.Location, org.bukkit.util.Vector, double, double)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(org.bukkit.Location, org.bukkit.util.Vector, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(org.bukkit.Location, org.bukkit.util.Vector, double, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>)`
+- `org.bukkit.util.RayTraceResult rayTraceEntities(io.papermc.paper.math.Position, org.bukkit.util.Vector, double, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>)`
+- `org.bukkit.util.RayTraceResult rayTraceBlocks(org.bukkit.Location, org.bukkit.util.Vector, double)`
+- `org.bukkit.util.RayTraceResult rayTraceBlocks(org.bukkit.Location, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode)`
+- `org.bukkit.util.RayTraceResult rayTraceBlocks(org.bukkit.Location, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode, boolean)`
+- `org.bukkit.util.RayTraceResult rayTraceBlocks(io.papermc.paper.math.Position, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode, boolean, java.util.function.Predicate<? super org.bukkit.block.Block>)`
+- `org.bukkit.util.RayTraceResult rayTrace(org.bukkit.Location, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode, boolean, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>)`
+- `org.bukkit.util.RayTraceResult rayTrace(io.papermc.paper.math.Position, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode, boolean, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>, java.util.function.Predicate<? super org.bukkit.block.Block>)`
+- `org.bukkit.util.RayTraceResult rayTrace(java.util.function.Consumer<io.papermc.paper.raytracing.PositionedRayTraceConfigurationBuilder>)`
+- `org.bukkit.Location getSpawnLocation()`
+- `boolean setSpawnLocation(org.bukkit.Location)`
+- `boolean setSpawnLocation(int, int, int, float)`
+- `boolean setSpawnLocation(int, int, int)`
+- `long getTime()`
+- `void setTime(long)`
+- `long getFullTime()`
+- `void setFullTime(long)`
+- `boolean isDayTime()`
+- `long getGameTime()`
+- `boolean hasStorm()`
+- `void setStorm(boolean)`
+- `int getWeatherDuration()`
+- `void setWeatherDuration(int)`
+- `boolean isThundering()`
+- `void setThundering(boolean)`
+- `int getThunderDuration()`
+- `void setThunderDuration(int)`
+- `boolean isClearWeather()`
+- `void setClearWeatherDuration(int)`
+- `int getClearWeatherDuration()`
+- `boolean createExplosion(double, double, double, float)`
+- `boolean createExplosion(double, double, double, float, boolean)`
+- `boolean createExplosion(double, double, double, float, boolean, boolean)`
+- `boolean createExplosion(double, double, double, float, boolean, boolean, org.bukkit.entity.Entity)`
+- `boolean createExplosion(org.bukkit.Location, float)`
+- `boolean createExplosion(org.bukkit.Location, float, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, org.bukkit.Location, float, boolean, boolean, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, org.bukkit.Location, float, boolean, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, org.bukkit.Location, float, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, org.bukkit.Location, float)`
+- `boolean createExplosion(org.bukkit.entity.Entity, float, boolean, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, float, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, float)`
+- `boolean createExplosion(org.bukkit.Location, float, boolean, boolean)`
+- `boolean createExplosion(org.bukkit.Location, float, boolean, boolean, org.bukkit.entity.Entity)`
+- `boolean getPVP()`
+- `void setPVP(boolean)`
+- `org.bukkit.generator.ChunkGenerator getGenerator()`
+- `org.bukkit.generator.BiomeProvider getBiomeProvider()`
+- `void save()`
+- `void save(boolean)`
+- `java.util.List<org.bukkit.generator.BlockPopulator> getPopulators()`
+- `<T extends org.bukkit.entity.LivingEntity> T spawn(org.bukkit.Location, java.lang.Class<T>, org.bukkit.event.entity.CreatureSpawnEvent$SpawnReason, boolean, java.util.function.Consumer<? super T>) throws java.lang.IllegalArgumentException`
+- `org.bukkit.entity.FallingBlock spawnFallingBlock(org.bukkit.Location, org.bukkit.material.MaterialData) throws java.lang.IllegalArgumentException`
+- `org.bukkit.entity.FallingBlock spawnFallingBlock(org.bukkit.Location, org.bukkit.block.data.BlockData) throws java.lang.IllegalArgumentException`
+- `org.bukkit.entity.FallingBlock spawnFallingBlock(org.bukkit.Location, org.bukkit.Material, byte) throws java.lang.IllegalArgumentException`
+- `void playEffect(org.bukkit.Location, org.bukkit.Effect, int)`
+- `void playEffect(org.bukkit.Location, org.bukkit.Effect, int, int)`
+- `<T> void playEffect(org.bukkit.Location, org.bukkit.Effect, T)`
+- `<T> void playEffect(org.bukkit.Location, org.bukkit.Effect, T, int)`
+- `org.bukkit.ChunkSnapshot getEmptyChunkSnapshot(int, int, boolean, boolean)`
+- `void setAllowMonsterSpawning(boolean)`
+- `void setSpawnFlags(boolean, boolean)`
+- `boolean getAllowAnimals()`
+- `boolean getAllowMonsters()`
+- `org.bukkit.block.Biome getBiome(int, int)`
+- `void setBiome(int, int, org.bukkit.block.Biome)`
+- `double getTemperature(int, int)`
+- `double getTemperature(int, int, int)`
+- `double getHumidity(int, int)`
+- `double getHumidity(int, int, int)`
+- `int getLogicalHeight()`
+- `boolean isNatural()`
+- `boolean isBedWorks()`
+- `boolean hasSkyLight()`
+- `boolean hasCeiling()`
+- `boolean isPiglinSafe()`
+- `boolean isRespawnAnchorWorks()`
+- `boolean hasRaids()`
+- `boolean isUltraWarm()`
+- `int getSeaLevel()`
+- `boolean getKeepSpawnInMemory()`
+- `void setKeepSpawnInMemory(boolean)`
+- `boolean isAutoSave()`
+- `void setAutoSave(boolean)`
+- `void setDifficulty(org.bukkit.Difficulty)`
+- `org.bukkit.Difficulty getDifficulty()`
+- `int getViewDistance()`
+- `int getSimulationDistance()`
+- `java.io.File getWorldFolder()`
+- `java.nio.file.Path getWorldPath()`
+- `org.bukkit.WorldType getWorldType()`
+- `boolean canGenerateStructures()`
+- `boolean hasBonusChest()`
+- `boolean isHardcore()`
+- `void setHardcore(boolean)`
+- `long getTicksPerAnimalSpawns()`
+- `void setTicksPerAnimalSpawns(int)`
+- `long getTicksPerMonsterSpawns()`
+- `void setTicksPerMonsterSpawns(int)`
+- `long getTicksPerWaterSpawns()`
+- `void setTicksPerWaterSpawns(int)`
+- `long getTicksPerWaterAmbientSpawns()`
+- `void setTicksPerWaterAmbientSpawns(int)`
+- `long getTicksPerWaterUndergroundCreatureSpawns()`
+- `void setTicksPerWaterUndergroundCreatureSpawns(int)`
+- `long getTicksPerAmbientSpawns()`
+- `void setTicksPerAmbientSpawns(int)`
+- `long getTicksPerSpawns(org.bukkit.entity.SpawnCategory)`
+- `void setTicksPerSpawns(org.bukkit.entity.SpawnCategory, int)`
+- `int getMonsterSpawnLimit()`
+- `void setMonsterSpawnLimit(int)`
+- `int getAnimalSpawnLimit()`
+- `void setAnimalSpawnLimit(int)`
+- `int getWaterAnimalSpawnLimit()`
+- `void setWaterAnimalSpawnLimit(int)`
+- `int getWaterUndergroundCreatureSpawnLimit()`
+- `void setWaterUndergroundCreatureSpawnLimit(int)`
+- `int getWaterAmbientSpawnLimit()`
+- `void setWaterAmbientSpawnLimit(int)`
+- `int getAmbientSpawnLimit()`
+- `void setAmbientSpawnLimit(int)`
+- `int getSpawnLimit(org.bukkit.entity.SpawnCategory)`
+- `void setSpawnLimit(org.bukkit.entity.SpawnCategory, int)`
+- `void playNote(org.bukkit.Location, org.bukkit.Instrument, org.bukkit.Note)`
+- `void playSound(org.bukkit.Location, org.bukkit.Sound, float, float)`
+- `void playSound(org.bukkit.Location, java.lang.String, float, float)`
+- `void playSound(org.bukkit.Location, org.bukkit.Sound, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.Location, java.lang.String, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.Location, org.bukkit.Sound, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(org.bukkit.Location, java.lang.String, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(org.bukkit.entity.Entity, org.bukkit.Sound, float, float)`
+- `void playSound(org.bukkit.entity.Entity, java.lang.String, float, float)`
+- `void playSound(org.bukkit.entity.Entity, org.bukkit.Sound, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.entity.Entity, java.lang.String, org.bukkit.SoundCategory, float, float)`
+- `void playSound(org.bukkit.entity.Entity, org.bukkit.Sound, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(org.bukkit.entity.Entity, java.lang.String, org.bukkit.SoundCategory, float, float, long)`
+- `void playSound(net.kyori.adventure.sound.Sound, io.papermc.paper.math.Position)`
+- `java.lang.String[] getGameRules()`
+- `java.lang.String getGameRuleValue(java.lang.String)`
+- `boolean setGameRuleValue(java.lang.String, java.lang.String)`
+- `boolean isGameRule(java.lang.String)`
+- `<T> T getGameRuleValue(org.bukkit.GameRule<T>)`
+- `<T> T getGameRuleDefault(org.bukkit.GameRule<T>)`
+- `<T> boolean setGameRule(org.bukkit.GameRule<T>, T)`
+- `org.bukkit.WorldBorder getWorldBorder()`
+- `void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int)`
+- `void spawnParticle(org.bukkit.Particle, double, double, double, int)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, T)`
+- `void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double)`
+- `void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, T)`
+- `void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double)`
+- `void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, double)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, java.util.List<org.bukkit.entity.Player>, org.bukkit.entity.Player, double, double, double, int, double, double, double, double, T)`
+- `<T> void spawnParticle(org.bukkit.Particle, java.util.List<org.bukkit.entity.Player>, org.bukkit.entity.Player, double, double, double, int, double, double, double, double, T, boolean)`
+- `<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double, T, boolean)`
+- `<T> void spawnParticle(org.bukkit.Particle, double, double, double, int, double, double, double, double, T, boolean)`
+- `org.bukkit.Location locateNearestStructure(org.bukkit.Location, org.bukkit.StructureType, int, boolean)`
+- `org.bukkit.util.StructureSearchResult locateNearestStructure(org.bukkit.Location, org.bukkit.generator.structure.StructureType, int, boolean)`
+- `org.bukkit.util.StructureSearchResult locateNearestStructure(org.bukkit.Location, org.bukkit.generator.structure.Structure, int, boolean)`
+- `org.bukkit.Location locateNearestBiome(org.bukkit.Location, org.bukkit.block.Biome, int)`
+- `org.bukkit.Location locateNearestBiome(org.bukkit.Location, org.bukkit.block.Biome, int, int)`
+- `org.bukkit.Location locateNearestPoi(org.bukkit.Location, io.papermc.paper.entity.poi.PoiType, int)`
+- `org.bukkit.Location locateNearestPoi(org.bukkit.Location, io.papermc.paper.entity.poi.PoiType, int, io.papermc.paper.entity.poi.PoiType$Occupancy)`
+- `java.util.List<io.papermc.paper.entity.poi.PoiSearchResult> locateAllPoiInRange(org.bukkit.Location, java.util.function.Predicate<io.papermc.paper.entity.poi.PoiType>, int)`
+- `java.util.List<io.papermc.paper.entity.poi.PoiSearchResult> locateAllPoiInRange(org.bukkit.Location, java.util.function.Predicate<io.papermc.paper.entity.poi.PoiType>, int, io.papermc.paper.entity.poi.PoiType$Occupancy)`
+- `double getCoordinateScale()`
+- `boolean isFixedTime()`
+- `java.util.Collection<org.bukkit.Material> getInfiniburn()`
+- `void sendGameEvent(org.bukkit.entity.Entity, org.bukkit.GameEvent, org.bukkit.util.Vector)`
+- `org.bukkit.World$Spigot spigot()`
+- `org.bukkit.util.BiomeSearchResult locateNearestBiome(org.bukkit.Location, int, org.bukkit.block.Biome...)`
+- `org.bukkit.util.BiomeSearchResult locateNearestBiome(org.bukkit.Location, int, int, int, org.bukkit.block.Biome...)`
+- `org.bukkit.Raid locateNearestRaid(org.bukkit.Location, int)`
+- `org.bukkit.Raid getRaid(int)`
+- `java.util.List<org.bukkit.Raid> getRaids()`
+- `org.bukkit.boss.DragonBattle getEnderDragonBattle()`
+- `java.util.Set<org.bukkit.FeatureFlag> getFeatureFlags()`
+- `void setViewDistance(int)`
+- `void setSimulationDistance(int)`
+- `int getNoTickViewDistance()`
+- `void setNoTickViewDistance(int)`
+- `int getSendViewDistance()`
+- `void setSendViewDistance(int)`
+- `java.util.Collection<org.bukkit.generator.structure.GeneratedStructure> getStructures(int, int)`
+- `java.util.Collection<org.bukkit.generator.structure.GeneratedStructure> getStructures(int, int, org.bukkit.generator.structure.Structure)`
+### org.bukkit.WorldBorder
+- `org.bukkit.World getWorld()`
+- `void reset()`
+- `double getSize()`
+- `void setSize(double)`
+- `void changeSize(double, long)`
+- `void setSize(double, long)`
+- `void setSize(double, java.util.concurrent.TimeUnit, long)`
+- `org.bukkit.Location getCenter()`
+- `void setCenter(double, double)`
+- `void setCenter(org.bukkit.Location)`
+- `double getDamageBuffer()`
+- `void setDamageBuffer(double)`
+- `double getDamageAmount()`
+- `void setDamageAmount(double)`
+- `int getWarningTime()`
+- `void setWarningTime(int)`
+- `int getWarningTimeTicks()`
+- `void setWarningTimeTicks(int)`
+- `int getWarningDistance()`
+- `void setWarningDistance(int)`
+- `boolean isInside(org.bukkit.Location)`
+- `double getMaxSize()`
+- `double getMaxCenterCoordinate()`
+### org.bukkit.Chunk
+- `int getX()`
+- `int getZ()`
+- `long getChunkKey()`
+- `long getChunkKey(org.bukkit.Location)`
+- `long getChunkKey(int, int)`
+- `org.bukkit.World getWorld()`
+- `org.bukkit.block.Block getBlock(int, int, int)`
+- `org.bukkit.ChunkSnapshot getChunkSnapshot()`
+- `org.bukkit.ChunkSnapshot getChunkSnapshot(boolean, boolean, boolean)`
+- `org.bukkit.ChunkSnapshot getChunkSnapshot(boolean, boolean, boolean, boolean)`
+- `boolean isEntitiesLoaded()`
+- `org.bukkit.entity.Entity[] getEntities()`
+- `org.bukkit.block.BlockState[] getTileEntities()`
+- `org.bukkit.block.BlockState[] getTileEntities(boolean)`
+- `java.util.Collection<org.bukkit.block.BlockState> getTileEntities(java.util.function.Predicate<? super org.bukkit.block.Block>, boolean)`
+- `boolean isGenerated()`
+- `boolean isLoaded()`
+- `boolean load(boolean)`
+- `boolean load()`
+- `boolean unload(boolean)`
+- `boolean unload()`
+- `boolean isSlimeChunk()`
+- `boolean isForceLoaded()`
+- `void setForceLoaded(boolean)`
+- `boolean addPluginChunkTicket(org.bukkit.plugin.Plugin)`
+- `boolean removePluginChunkTicket(org.bukkit.plugin.Plugin)`
+- `java.util.Collection<org.bukkit.plugin.Plugin> getPluginChunkTickets()`
+- `long getInhabitedTime()`
+- `void setInhabitedTime(long)`
+- `boolean contains(org.bukkit.block.data.BlockData)`
+- `boolean contains(org.bukkit.block.Biome)`
+- `org.bukkit.Chunk$LoadLevel getLoadLevel()`
+- `java.util.Collection<org.bukkit.generator.structure.GeneratedStructure> getStructures()`
+- `java.util.Collection<org.bukkit.generator.structure.GeneratedStructure> getStructures(org.bukkit.generator.structure.Structure)`
+- `java.util.Collection<org.bukkit.entity.Player> getPlayersSeeingChunk()`
+### org.bukkit.Difficulty
+- `org.bukkit.Difficulty[] values()`
+- `org.bukkit.Difficulty valueOf(java.lang.String)`
+- `int getValue()`
+- `java.lang.String translationKey()`
+- `org.bukkit.Difficulty getByValue(int)`
+### org.bukkit.WorldType
+- `org.bukkit.WorldType[] values()`
+- `org.bukkit.WorldType valueOf(java.lang.String)`
+- `java.lang.String getName()`
+- `org.bukkit.WorldType getByName(java.lang.String)`
+### org.bukkit.GameRule
+- `org.bukkit.GameRule()`
+- `java.lang.String getName()`
+- `java.lang.Class<T> getType()`
+- `T getDefaultValue()`
+- `<T> org.bukkit.GameRule<T> getByName(java.lang.String)`
+- `org.bukkit.GameRule<?>[] values()`
+- `java.lang.String translationKey()`
+### org.bukkit.GameMode
+- `org.bukkit.GameMode[] values()`
+- `org.bukkit.GameMode valueOf(java.lang.String)`
+- `java.lang.String translationKey()`
+- `int getValue()`
+- `org.bukkit.GameMode getByValue(int)`
+- `boolean isInvulnerable()`
+### org.bukkit.SoundCategory
+- `org.bukkit.SoundCategory[] values()`
+- `org.bukkit.SoundCategory valueOf(java.lang.String)`
+- `net.kyori.adventure.sound.Sound$Source soundSource()`
+
+## block
+### org.bukkit.block.Block
+- `byte getData()`
+- `org.bukkit.block.data.BlockData getBlockData()`
+- `org.bukkit.block.Block getRelative(int, int, int)`
+- `org.bukkit.block.Block getRelative(org.bukkit.block.BlockFace)`
+- `org.bukkit.block.Block getRelative(org.bukkit.block.BlockFace, int)`
+- `org.bukkit.Material getType()`
+- `byte getLightLevel()`
+- `byte getLightFromSky()`
+- `byte getLightFromBlocks()`
+- `org.bukkit.World getWorld()`
+- `int getX()`
+- `int getY()`
+- `int getZ()`
+- `long getBlockKey()`
+- `long getBlockKey(int, int, int)`
+- `int getBlockKeyX(long)`
+- `int getBlockKeyY(long)`
+- `int getBlockKeyZ(long)`
+- `boolean isValidTool(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.Location getLocation()`
+- `org.bukkit.Location getLocation(org.bukkit.Location)`
+- `org.bukkit.Chunk getChunk()`
+- `void setBlockData(org.bukkit.block.data.BlockData)`
+- `void setBlockData(org.bukkit.block.data.BlockData, boolean)`
+- `void setType(org.bukkit.Material)`
+- `void setType(org.bukkit.Material, boolean)`
+- `org.bukkit.block.BlockFace getFace(org.bukkit.block.Block)`
+- `org.bukkit.block.BlockState getState()`
+- `org.bukkit.block.BlockState getState(boolean)`
+- `org.bukkit.block.Biome getBiome()`
+- `org.bukkit.block.Biome getComputedBiome()`
+- `void setBiome(org.bukkit.block.Biome)`
+- `boolean isBlockPowered()`
+- `boolean isBlockIndirectlyPowered()`
+- `boolean isBlockFacePowered(org.bukkit.block.BlockFace)`
+- `boolean isBlockFaceIndirectlyPowered(org.bukkit.block.BlockFace)`
+- `int getBlockPower(org.bukkit.block.BlockFace)`
+- `int getBlockPower()`
+- `boolean isEmpty()`
+- `boolean isLiquid()`
+- `boolean isBuildable()`
+- `boolean isBurnable()`
+- `boolean isReplaceable()`
+- `boolean isSolid()`
+- `boolean isCollidable()`
+- `double getTemperature()`
+- `double getHumidity()`
+- `org.bukkit.block.PistonMoveReaction getPistonMoveReaction()`
+- `boolean breakNaturally()`
+- `boolean breakNaturally(org.bukkit.inventory.ItemStack)`
+- `boolean breakNaturally(boolean)`
+- `boolean breakNaturally(boolean, boolean)`
+- `boolean breakNaturally(org.bukkit.inventory.ItemStack, boolean)`
+- `boolean breakNaturally(org.bukkit.inventory.ItemStack, boolean, boolean)`
+- `boolean breakNaturally(org.bukkit.inventory.ItemStack, boolean, boolean, boolean)`
+- `void tick()`
+- `void fluidTick()`
+- `void randomTick()`
+- `boolean applyBoneMeal(org.bukkit.block.BlockFace)`
+- `java.util.Collection<org.bukkit.inventory.ItemStack> getDrops()`
+- `java.util.Collection<org.bukkit.inventory.ItemStack> getDrops(org.bukkit.inventory.ItemStack)`
+- `java.util.Collection<org.bukkit.inventory.ItemStack> getDrops(org.bukkit.inventory.ItemStack, org.bukkit.entity.Entity)`
+- `boolean isPreferredTool(org.bukkit.inventory.ItemStack)`
+- `float getBreakSpeed(org.bukkit.entity.Player)`
+- `boolean isPassable()`
+- `org.bukkit.util.RayTraceResult rayTrace(org.bukkit.Location, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode)`
+- `org.bukkit.util.BoundingBox getBoundingBox()`
+- `org.bukkit.util.VoxelShape getCollisionShape()`
+- `boolean canPlace(org.bukkit.block.data.BlockData)`
+- `com.destroystokyo.paper.block.BlockSoundGroup getSoundGroup()`
+- `org.bukkit.SoundGroup getBlockSoundGroup()`
+- `java.lang.String getTranslationKey()`
+- `float getDestroySpeed(org.bukkit.inventory.ItemStack)`
+- `float getDestroySpeed(org.bukkit.inventory.ItemStack, boolean)`
+- `boolean isSuffocating()`
+### org.bukkit.block.BlockState
+- `org.bukkit.block.Block getBlock()`
+- `org.bukkit.material.MaterialData getData()`
+- `org.bukkit.block.data.BlockData getBlockData()`
+- `org.bukkit.block.BlockState copy()`
+- `org.bukkit.block.BlockState copy(org.bukkit.Location)`
+- `org.bukkit.Material getType()`
+- `byte getLightLevel()`
+- `org.bukkit.World getWorld()`
+- `int getX()`
+- `int getY()`
+- `int getZ()`
+- `org.bukkit.Location getLocation()`
+- `org.bukkit.Location getLocation(org.bukkit.Location)`
+- `org.bukkit.Chunk getChunk()`
+- `void setData(org.bukkit.material.MaterialData)`
+- `void setBlockData(org.bukkit.block.data.BlockData)`
+- `void setType(org.bukkit.Material)`
+- `boolean update()`
+- `boolean update(boolean)`
+- `boolean update(boolean, boolean)`
+- `byte getRawData()`
+- `void setRawData(byte)`
+- `boolean isPlaced()`
+- `boolean isCollidable()`
+- `java.util.Collection<org.bukkit.inventory.ItemStack> getDrops()`
+- `java.util.Collection<org.bukkit.inventory.ItemStack> getDrops(org.bukkit.inventory.ItemStack)`
+- `java.util.Collection<org.bukkit.inventory.ItemStack> getDrops(org.bukkit.inventory.ItemStack, org.bukkit.entity.Entity)`
+- `boolean isSuffocating()`
+### org.bukkit.block.data.BlockData
+- `org.bukkit.Material getMaterial()`
+- `java.lang.String getAsString()`
+- `java.lang.String getAsString(boolean)`
+- `org.bukkit.block.data.BlockData merge(org.bukkit.block.data.BlockData)`
+- `boolean matches(org.bukkit.block.data.BlockData)`
+- `org.bukkit.block.data.BlockData clone()`
+- `org.bukkit.SoundGroup getSoundGroup()`
+- `int getLightEmission()`
+- `boolean isOccluding()`
+- `boolean requiresCorrectToolForDrops()`
+- `boolean isPreferredTool(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.block.PistonMoveReaction getPistonMoveReaction()`
+- `boolean isSupported(org.bukkit.block.Block)`
+- `boolean isSupported(org.bukkit.Location)`
+- `boolean isFaceSturdy(org.bukkit.block.BlockFace, org.bukkit.block.BlockSupport)`
+- `org.bukkit.util.VoxelShape getCollisionShape(org.bukkit.Location)`
+- `org.bukkit.Color getMapColor()`
+- `org.bukkit.Material getPlacementMaterial()`
+- `void rotate(org.bukkit.block.structure.StructureRotation)`
+- `void mirror(org.bukkit.block.structure.Mirror)`
+- `void copyTo(org.bukkit.block.data.BlockData)`
+- `org.bukkit.block.BlockState createBlockState()`
+- `float getDestroySpeed(org.bukkit.inventory.ItemStack)`
+- `float getDestroySpeed(org.bukkit.inventory.ItemStack, boolean)`
+- `boolean isRandomlyTicked()`
+- `boolean isReplaceable()`
+### org.bukkit.block.Biome
+- `org.bukkit.block.Biome valueOf(java.lang.String)`
+- `org.bukkit.block.Biome[] values()`
+- `java.lang.String translationKey()`
+### org.bukkit.block.BlockFace
+- `org.bukkit.block.BlockFace[] values()`
+- `org.bukkit.block.BlockFace valueOf(java.lang.String)`
+- `int getModX()`
+- `int getModY()`
+- `int getModZ()`
+- `org.bukkit.util.Vector getDirection()`
+- `boolean isCartesian()`
+- `org.bukkit.block.BlockFace getOppositeFace()`
+
+## effect
+### org.bukkit.potion.PotionEffect
+- `org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType, int, int, boolean, boolean, boolean, org.bukkit.potion.PotionEffect)`
+- `org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType, int, int, boolean, boolean, boolean)`
+- `org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType, int, int, boolean, boolean)`
+- `org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType, int, int, boolean)`
+- `org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType, int, int)`
+- `org.bukkit.potion.PotionEffect(java.util.Map<java.lang.String, java.lang.Object>)`
+- `org.bukkit.potion.PotionEffect withType(org.bukkit.potion.PotionEffectType)`
+- `org.bukkit.potion.PotionEffect withDuration(int)`
+- `org.bukkit.potion.PotionEffect withAmplifier(int)`
+- `org.bukkit.potion.PotionEffect withAmbient(boolean)`
+- `org.bukkit.potion.PotionEffect withParticles(boolean)`
+- `org.bukkit.potion.PotionEffect withIcon(boolean)`
+- `org.bukkit.potion.PotionEffect getHiddenPotionEffect()`
+- `java.util.Map<java.lang.String, java.lang.Object> serialize()`
+- `boolean apply(org.bukkit.entity.LivingEntity)`
+- `boolean equals(java.lang.Object)`
+- `int getAmplifier()`
+- `int getDuration()`
+- `boolean isInfinite()`
+- `boolean isShorterThan(org.bukkit.potion.PotionEffect)`
+- `org.bukkit.potion.PotionEffectType getType()`
+- `boolean isAmbient()`
+- `boolean hasParticles()`
+- `org.bukkit.Color getColor()`
+- `boolean hasIcon()`
+- `int hashCode()`
+- `java.lang.String toString()`
+### org.bukkit.potion.PotionEffectType
+- `org.bukkit.potion.PotionEffectType()`
+- `org.bukkit.potion.PotionEffect createEffect(int, int)`
+- `boolean isInstant()`
+- `org.bukkit.potion.PotionEffectTypeCategory getCategory()`
+- `org.bukkit.Color getColor()`
+- `double getDurationModifier()`
+- `int getId()`
+- `java.lang.String getName()`
+- `org.bukkit.potion.PotionEffectType getByKey(org.bukkit.NamespacedKey)`
+- `org.bukkit.potion.PotionEffectType getById(int)`
+- `org.bukkit.potion.PotionEffectType getByName(java.lang.String)`
+- `org.bukkit.potion.PotionEffectType[] values()`
+- `java.util.Map<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> getEffectAttributes()`
+- `double getAttributeModifierAmount(org.bukkit.attribute.Attribute, int)`
+- `org.bukkit.potion.PotionEffectType$Category getEffectCategory()`
+### org.bukkit.enchantments.Enchantment
+- `org.bukkit.enchantments.Enchantment()`
+- `java.lang.String getName()`
+- `int getMaxLevel()`
+- `int getStartLevel()`
+- `org.bukkit.enchantments.EnchantmentTarget getItemTarget()`
+- `boolean isTreasure()`
+- `boolean isCursed()`
+- `boolean conflictsWith(org.bukkit.enchantments.Enchantment)`
+- `boolean canEnchantItem(org.bukkit.inventory.ItemStack)`
+- `net.kyori.adventure.text.Component displayName(int)`
+- `boolean isTradeable()`
+- `boolean isDiscoverable()`
+- `int getMinModifiedCost(int)`
+- `int getMaxModifiedCost(int)`
+- `int getAnvilCost()`
+- `io.papermc.paper.enchantments.EnchantmentRarity getRarity()`
+- `float getDamageIncrease(int, org.bukkit.entity.EntityCategory)`
+- `float getDamageIncrease(int, org.bukkit.entity.EntityType)`
+- `java.util.Set<org.bukkit.inventory.EquipmentSlot> getActiveSlots()`
+- `java.util.Set<org.bukkit.inventory.EquipmentSlotGroup> getActiveSlotGroups()`
+- `net.kyori.adventure.text.Component description()`
+- `io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.inventory.ItemType> getSupportedItems()`
+- `io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.inventory.ItemType> getPrimaryItems()`
+- `int getWeight()`
+- `io.papermc.paper.registry.set.RegistryKeySet<org.bukkit.enchantments.Enchantment> getExclusiveWith()`
+- `java.lang.String translationKey()`
+- `org.bukkit.enchantments.Enchantment getByKey(org.bukkit.NamespacedKey)`
+- `org.bukkit.enchantments.Enchantment getByName(java.lang.String)`
+- `org.bukkit.enchantments.Enchantment[] values()`
+### org.bukkit.Particle
+- `org.bukkit.Particle[] values()`
+- `org.bukkit.Particle valueOf(java.lang.String)`
+- `java.lang.Class<?> getDataType()`
+- `org.bukkit.NamespacedKey getKey()`
+- `com.destroystokyo.paper.ParticleBuilder builder()`
+### org.bukkit.Sound
+- `org.bukkit.Sound valueOf(java.lang.String)`
+- `org.bukkit.NamespacedKey getKey()`
+- `org.bukkit.Sound[] values()`
+- `net.kyori.adventure.key.Key key()`
+
+## attribute
+### org.bukkit.attribute.Attribute
+- `org.bukkit.attribute.Attribute$Sentiment getSentiment()`
+- `double getDefaultValue()`
+- `org.bukkit.attribute.Attribute valueOf(java.lang.String)`
+- `org.bukkit.attribute.Attribute[] values()`
+### org.bukkit.attribute.AttributeInstance
+- `org.bukkit.attribute.Attribute getAttribute()`
+- `double getBaseValue()`
+- `void setBaseValue(double)`
+- `java.util.Collection<org.bukkit.attribute.AttributeModifier> getModifiers()`
+- `org.bukkit.attribute.AttributeModifier getModifier(net.kyori.adventure.key.Key)`
+- `void removeModifier(net.kyori.adventure.key.Key)`
+- `org.bukkit.attribute.AttributeModifier getModifier(java.util.UUID)`
+- `void removeModifier(java.util.UUID)`
+- `void addModifier(org.bukkit.attribute.AttributeModifier)`
+- `void addTransientModifier(org.bukkit.attribute.AttributeModifier)`
+- `void removeModifier(org.bukkit.attribute.AttributeModifier)`
+- `double getValue()`
+- `double getDefaultValue()`
+### org.bukkit.attribute.AttributeModifier
+- `org.bukkit.attribute.AttributeModifier(java.lang.String, double, org.bukkit.attribute.AttributeModifier$Operation)`
+- `org.bukkit.attribute.AttributeModifier(java.util.UUID, java.lang.String, double, org.bukkit.attribute.AttributeModifier$Operation)`
+- `org.bukkit.attribute.AttributeModifier(java.util.UUID, java.lang.String, double, org.bukkit.attribute.AttributeModifier$Operation, org.bukkit.inventory.EquipmentSlot)`
+- `org.bukkit.attribute.AttributeModifier(java.util.UUID, java.lang.String, double, org.bukkit.attribute.AttributeModifier$Operation, org.bukkit.inventory.EquipmentSlotGroup)`
+- `org.bukkit.attribute.AttributeModifier(org.bukkit.NamespacedKey, double, org.bukkit.attribute.AttributeModifier$Operation)`
+- `org.bukkit.attribute.AttributeModifier(org.bukkit.NamespacedKey, double, org.bukkit.attribute.AttributeModifier$Operation, org.bukkit.inventory.EquipmentSlotGroup)`
+- `java.util.UUID getUniqueId()`
+- `org.bukkit.NamespacedKey getKey()`
+- `java.lang.String getName()`
+- `double getAmount()`
+- `org.bukkit.attribute.AttributeModifier$Operation getOperation()`
+- `org.bukkit.inventory.EquipmentSlot getSlot()`
+- `org.bukkit.inventory.EquipmentSlotGroup getSlotGroup()`
+- `java.util.Map<java.lang.String, java.lang.Object> serialize()`
+- `boolean equals(java.lang.Object)`
+- `int hashCode()`
+- `java.lang.String toString()`
+- `org.bukkit.attribute.AttributeModifier deserialize(java.util.Map<java.lang.String, java.lang.Object>)`
+### org.bukkit.attribute.Attributable
+- `org.bukkit.attribute.AttributeInstance getAttribute(org.bukkit.attribute.Attribute)`
+- `void registerAttribute(org.bukkit.attribute.Attribute)`
+
+## server
+### org.bukkit.Server
+- `java.io.File getPluginsFolder()`
+- `java.lang.String getName()`
+- `java.lang.String getVersion()`
+- `java.lang.String getBukkitVersion()`
+- `java.lang.String getMinecraftVersion()`
+- `java.util.Collection<? extends org.bukkit.entity.Player> getOnlinePlayers()`
+- `int getMaxPlayers()`
+- `void setMaxPlayers(int)`
+- `int getPort()`
+- `int getViewDistance()`
+- `int getSimulationDistance()`
+- `java.lang.String getIp()`
+- `java.lang.String getWorldType()`
+- `boolean getGenerateStructures()`
+- `int getMaxWorldSize()`
+- `boolean getAllowEnd()`
+- `boolean getAllowNether()`
+- `boolean isLoggingIPs()`
+- `java.util.List<java.lang.String> getInitialEnabledPacks()`
+- `java.util.List<java.lang.String> getInitialDisabledPacks()`
+- `org.bukkit.ServerTickManager getServerTickManager()`
+- `org.bukkit.packs.ResourcePack getServerResourcePack()`
+- `java.lang.String getResourcePack()`
+- `java.lang.String getResourcePackHash()`
+- `java.lang.String getResourcePackPrompt()`
+- `boolean isResourcePackRequired()`
+- `boolean hasWhitelist()`
+- `void setWhitelist(boolean)`
+- `boolean isWhitelistEnforced()`
+- `void setWhitelistEnforced(boolean)`
+- `java.util.Set<org.bukkit.OfflinePlayer> getWhitelistedPlayers()`
+- `void reloadWhitelist()`
+- `int broadcastMessage(java.lang.String)`
+- `void broadcast(net.md_5.bungee.api.chat.BaseComponent)`
+- `void broadcast(net.md_5.bungee.api.chat.BaseComponent...)`
+- `void sendRichMessage(java.lang.String)`
+- `void sendRichMessage(java.lang.String, net.kyori.adventure.text.minimessage.tag.resolver.TagResolver...)`
+- `void sendPlainMessage(java.lang.String)`
+- `java.lang.String getUpdateFolder()`
+- `java.io.File getUpdateFolderFile()`
+- `long getConnectionThrottle()`
+- `int getTicksPerAnimalSpawns()`
+- `int getTicksPerMonsterSpawns()`
+- `int getTicksPerWaterSpawns()`
+- `int getTicksPerWaterAmbientSpawns()`
+- `int getTicksPerWaterUndergroundCreatureSpawns()`
+- `int getTicksPerAmbientSpawns()`
+- `int getTicksPerSpawns(org.bukkit.entity.SpawnCategory)`
+- `org.bukkit.entity.Player getPlayer(java.lang.String)`
+- `org.bukkit.entity.Player getPlayerExact(java.lang.String)`
+- `java.util.List<org.bukkit.entity.Player> matchPlayer(java.lang.String)`
+- `org.bukkit.entity.Player getPlayer(java.util.UUID)`
+- `java.util.UUID getPlayerUniqueId(java.lang.String)`
+- `org.bukkit.plugin.PluginManager getPluginManager()`
+- `org.bukkit.scheduler.BukkitScheduler getScheduler()`
+- `org.bukkit.plugin.ServicesManager getServicesManager()`
+- `java.util.List<org.bukkit.World> getWorlds()`
+- `boolean isTickingWorlds()`
+- `org.bukkit.World createWorld(org.bukkit.WorldCreator)`
+- `boolean unloadWorld(java.lang.String, boolean)`
+- `boolean unloadWorld(org.bukkit.World, boolean)`
+- `org.bukkit.World getRespawnWorld()`
+- `void setRespawnWorld(org.bukkit.World)`
+- `org.bukkit.World getWorld(java.lang.String)`
+- `org.bukkit.World getWorld(java.util.UUID)`
+- `org.bukkit.World getWorld(org.bukkit.NamespacedKey)`
+- `org.bukkit.World getWorld(net.kyori.adventure.key.Key)`
+- `org.bukkit.WorldBorder createWorldBorder()`
+- `org.bukkit.map.MapView getMap(int)`
+- `org.bukkit.map.MapView createMap(org.bukkit.World)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.StructureType)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.StructureType, int, boolean)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.generator.structure.StructureType, org.bukkit.map.MapCursor$Type)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.generator.structure.StructureType, org.bukkit.map.MapCursor$Type, int, boolean)`
+- `void reload()`
+- `void reloadData()`
+- `void updateResources()`
+- `void updateRecipes()`
+- `java.util.logging.Logger getLogger()`
+- `org.bukkit.command.PluginCommand getPluginCommand(java.lang.String)`
+- `void savePlayers()`
+- `boolean dispatchCommand(org.bukkit.command.CommandSender, java.lang.String) throws org.bukkit.command.CommandException`
+- `boolean addRecipe(org.bukkit.inventory.Recipe)`
+- `boolean addRecipe(org.bukkit.inventory.Recipe, boolean)`
+- `java.util.List<org.bukkit.inventory.Recipe> getRecipesFor(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.Recipe getRecipe(org.bukkit.NamespacedKey)`
+- `org.bukkit.inventory.Recipe getCraftingRecipe(org.bukkit.inventory.ItemStack[], org.bukkit.World)`
+- `org.bukkit.inventory.ItemStack craftItem(org.bukkit.inventory.ItemStack[], org.bukkit.World, org.bukkit.entity.Player)`
+- `org.bukkit.inventory.ItemStack craftItem(org.bukkit.inventory.ItemStack[], org.bukkit.World)`
+- `org.bukkit.inventory.ItemCraftResult craftItemResult(org.bukkit.inventory.ItemStack[], org.bukkit.World, org.bukkit.entity.Player)`
+- `org.bukkit.inventory.ItemCraftResult craftItemResult(org.bukkit.inventory.ItemStack[], org.bukkit.World)`
+- `java.util.Iterator<org.bukkit.inventory.Recipe> recipeIterator()`
+- `void clearRecipes()`
+- `void resetRecipes()`
+- `boolean removeRecipe(org.bukkit.NamespacedKey)`
+- `boolean removeRecipe(org.bukkit.NamespacedKey, boolean)`
+- `java.util.Map<java.lang.String, java.lang.String[]> getCommandAliases()`
+- `int getSpawnRadius()`
+- `void setSpawnRadius(int)`
+- `boolean shouldSendChatPreviews()`
+- `boolean isEnforcingSecureProfiles()`
+- `boolean isAcceptingTransfers()`
+- `boolean getHideOnlinePlayers()`
+- `boolean getOnlineMode()`
+- `io.papermc.paper.configuration.ServerConfiguration getServerConfig()`
+- `boolean getAllowFlight()`
+- `boolean isHardcore()`
+- `void shutdown()`
+- `int broadcast(java.lang.String, java.lang.String)`
+- `int broadcast(net.kyori.adventure.text.Component)`
+- `int broadcast(net.kyori.adventure.text.Component, java.lang.String)`
+- `org.bukkit.OfflinePlayer getOfflinePlayer(java.lang.String)`
+- `org.bukkit.OfflinePlayer getOfflinePlayerIfCached(java.lang.String)`
+- `org.bukkit.OfflinePlayer getOfflinePlayer(java.util.UUID)`
+- `org.bukkit.profile.PlayerProfile createPlayerProfile(java.util.UUID, java.lang.String)`
+- `org.bukkit.profile.PlayerProfile createPlayerProfile(java.util.UUID)`
+- `org.bukkit.profile.PlayerProfile createPlayerProfile(java.lang.String)`
+- `java.util.Set<java.lang.String> getIPBans()`
+- `void banIP(java.lang.String)`
+- `void unbanIP(java.lang.String)`
+- `void banIP(java.net.InetAddress)`
+- `void unbanIP(java.net.InetAddress)`
+- `java.util.Set<org.bukkit.OfflinePlayer> getBannedPlayers()`
+- `<T extends org.bukkit.BanList<?>> T getBanList(org.bukkit.BanList$Type)`
+- `<B extends org.bukkit.BanList<E>, E> B getBanList(io.papermc.paper.ban.BanListType<B>)`
+- `java.util.Set<org.bukkit.OfflinePlayer> getOperators()`
+- `org.bukkit.GameMode getDefaultGameMode()`
+- `void setDefaultGameMode(org.bukkit.GameMode)`
+- `boolean forcesDefaultGameMode()`
+- `org.bukkit.command.ConsoleCommandSender getConsoleSender()`
+- `org.bukkit.command.CommandSender createCommandSender(java.util.function.Consumer<? super net.kyori.adventure.text.Component>)`
+- `java.io.File getWorldContainer()`
+- `java.nio.file.Path getLevelDirectory()`
+- `org.bukkit.OfflinePlayer[] getOfflinePlayers()`
+- `org.bukkit.plugin.messaging.Messenger getMessenger()`
+- `org.bukkit.help.HelpMap getHelpMap()`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType)`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType, net.kyori.adventure.text.Component)`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType, java.lang.String)`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int, net.kyori.adventure.text.Component) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int, java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.Merchant createMerchant(net.kyori.adventure.text.Component)`
+- `org.bukkit.inventory.Merchant createMerchant(java.lang.String)`
+- `int getMaxChainedNeighborUpdates()`
+- `org.bukkit.inventory.Merchant createMerchant()`
+- `int getMonsterSpawnLimit()`
+- `int getAnimalSpawnLimit()`
+- `int getWaterAnimalSpawnLimit()`
+- `int getWaterAmbientSpawnLimit()`
+- `int getWaterUndergroundCreatureSpawnLimit()`
+- `int getAmbientSpawnLimit()`
+- `int getSpawnLimit(org.bukkit.entity.SpawnCategory)`
+- `boolean isPrimaryThread()`
+- `net.kyori.adventure.text.Component motd()`
+- `void motd(net.kyori.adventure.text.Component)`
+- `net.kyori.adventure.text.Component shutdownMessage()`
+- `java.lang.String getMotd()`
+- `void setMotd(java.lang.String)`
+- `org.bukkit.ServerLinks getServerLinks()`
+- `java.lang.String getShutdownMessage()`
+- `org.bukkit.Warning$WarningState getWarningState()`
+- `org.bukkit.inventory.ItemFactory getItemFactory()`
+- `org.bukkit.entity.EntityFactory getEntityFactory()`
+- `org.bukkit.scoreboard.ScoreboardManager getScoreboardManager()`
+- `org.bukkit.scoreboard.Criteria getScoreboardCriteria(java.lang.String)`
+- `org.bukkit.util.CachedServerIcon getServerIcon()`
+- `org.bukkit.util.CachedServerIcon loadServerIcon(java.io.File) throws java.lang.IllegalArgumentException, java.lang.Exception`
+- `org.bukkit.util.CachedServerIcon loadServerIcon(java.awt.image.BufferedImage) throws java.lang.IllegalArgumentException, java.lang.Exception`
+- `void setIdleTimeout(int)`
+- `int getIdleTimeout()`
+- `int getPauseWhenEmptyTime()`
+- `void setPauseWhenEmptyTime(int)`
+- `org.bukkit.generator.ChunkGenerator$ChunkData createChunkData(org.bukkit.World)`
+- `org.bukkit.boss.BossBar createBossBar(java.lang.String, org.bukkit.boss.BarColor, org.bukkit.boss.BarStyle, org.bukkit.boss.BarFlag...)`
+- `org.bukkit.boss.KeyedBossBar createBossBar(org.bukkit.NamespacedKey, java.lang.String, org.bukkit.boss.BarColor, org.bukkit.boss.BarStyle, org.bukkit.boss.BarFlag...)`
+- `java.util.Iterator<org.bukkit.boss.KeyedBossBar> getBossBars()`
+- `org.bukkit.boss.KeyedBossBar getBossBar(org.bukkit.NamespacedKey)`
+- `boolean removeBossBar(org.bukkit.NamespacedKey)`
+- `org.bukkit.entity.Entity getEntity(java.util.UUID)`
+- `double[] getTPS()`
+- `long[] getTickTimes()`
+- `double getAverageTickTime()`
+- `org.bukkit.command.CommandMap getCommandMap()`
+- `org.bukkit.advancement.Advancement getAdvancement(org.bukkit.NamespacedKey)`
+- `java.util.Iterator<org.bukkit.advancement.Advancement> advancementIterator()`
+- `org.bukkit.block.data.BlockData createBlockData(org.bukkit.Material)`
+- `org.bukkit.block.data.BlockData createBlockData(org.bukkit.Material, java.util.function.Consumer<? super org.bukkit.block.data.BlockData>)`
+- `org.bukkit.block.data.BlockData createBlockData(java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.block.data.BlockData createBlockData(org.bukkit.Material, java.lang.String) throws java.lang.IllegalArgumentException`
+- `<T extends org.bukkit.Keyed> org.bukkit.Tag<T> getTag(java.lang.String, org.bukkit.NamespacedKey, java.lang.Class<T>)`
+- `<T extends org.bukkit.Keyed> java.lang.Iterable<org.bukkit.Tag<T>> getTags(java.lang.String, java.lang.Class<T>)`
+- `org.bukkit.loot.LootTable getLootTable(org.bukkit.NamespacedKey)`
+- `java.util.List<org.bukkit.entity.Entity> selectEntities(org.bukkit.command.CommandSender, java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.structure.StructureManager getStructureManager()`
+- `<T extends org.bukkit.Keyed> org.bukkit.Registry<T> getRegistry(java.lang.Class<T>)`
+- `org.bukkit.UnsafeValues getUnsafe()`
+- `org.bukkit.Server$Spigot spigot()`
+- `void restart()`
+- `void reloadPermissions()`
+- `boolean reloadCommandAliases()`
+- `boolean suggestPlayerNamesWhenNullTabCompletions()`
+- `java.lang.String getPermissionMessage()`
+- `net.kyori.adventure.text.Component permissionMessage()`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfile(java.util.UUID)`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfile(java.lang.String)`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfile(java.util.UUID, java.lang.String)`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfileExact(java.util.UUID, java.lang.String)`
+- `int getCurrentTick()`
+- `boolean isStopping()`
+- `com.destroystokyo.paper.entity.ai.MobGoals getMobGoals()`
+- `io.papermc.paper.datapack.DatapackManager getDatapackManager()`
+- `org.bukkit.potion.PotionBrewer getPotionBrewer()`
+- `io.papermc.paper.threadedregions.scheduler.RegionScheduler getRegionScheduler()`
+- `io.papermc.paper.threadedregions.scheduler.AsyncScheduler getAsyncScheduler()`
+- `io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler getGlobalRegionScheduler()`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, io.papermc.paper.math.Position)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, io.papermc.paper.math.Position, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.Location)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.Location, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.block.Block)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, int, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, int, int, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, int, int, int, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.entity.Entity)`
+- `boolean isGlobalTickThread()`
+- `boolean isPaused()`
+- `void allowPausing(org.bukkit.plugin.Plugin, boolean)`
+### org.bukkit.command.CommandSender
+- `void sendMessage(java.lang.String)`
+- `void sendMessage(java.lang.String...)`
+- `void sendMessage(java.util.UUID, java.lang.String)`
+- `void sendMessage(java.util.UUID, java.lang.String...)`
+- `org.bukkit.Server getServer()`
+- `java.lang.String getName()`
+- `org.bukkit.command.CommandSender$Spigot spigot()`
+- `net.kyori.adventure.text.Component name()`
+- `void sendMessage(net.kyori.adventure.text.Component)`
+- `void sendMessage(net.kyori.adventure.text.Component, net.kyori.adventure.chat.ChatType$Bound)`
+- `void sendMessage(net.kyori.adventure.chat.SignedMessage, net.kyori.adventure.chat.ChatType$Bound)`
+- `void sendRichMessage(java.lang.String)`
+- `void sendRichMessage(java.lang.String, net.kyori.adventure.text.minimessage.tag.resolver.TagResolver...)`
+- `void sendPlainMessage(java.lang.String)`
+- `void sendMessage(net.md_5.bungee.api.chat.BaseComponent)`
+- `void sendMessage(net.md_5.bungee.api.chat.BaseComponent...)`
+### org.bukkit.Bukkit
+- `org.bukkit.Server getServer()`
+- `java.io.File getPluginsFolder()`
+- `void setServer(org.bukkit.Server)`
+- `java.lang.String getVersionMessage()`
+- `java.lang.String getName()`
+- `java.lang.String getVersion()`
+- `java.lang.String getBukkitVersion()`
+- `java.lang.String getMinecraftVersion()`
+- `java.util.Collection<? extends org.bukkit.entity.Player> getOnlinePlayers()`
+- `int getMaxPlayers()`
+- `void setMaxPlayers(int)`
+- `int getPort()`
+- `int getViewDistance()`
+- `int getSimulationDistance()`
+- `java.lang.String getIp()`
+- `java.lang.String getWorldType()`
+- `boolean getGenerateStructures()`
+- `int getMaxWorldSize()`
+- `boolean getAllowEnd()`
+- `boolean getAllowNether()`
+- `boolean isLoggingIPs()`
+- `java.util.List<java.lang.String> getInitialEnabledPacks()`
+- `java.util.List<java.lang.String> getInitialDisabledPacks()`
+- `org.bukkit.packs.ResourcePack getServerResourcePack()`
+- `org.bukkit.ServerTickManager getServerTickManager()`
+- `java.lang.String getResourcePack()`
+- `java.lang.String getResourcePackHash()`
+- `java.lang.String getResourcePackPrompt()`
+- `boolean isResourcePackRequired()`
+- `boolean hasWhitelist()`
+- `void setWhitelist(boolean)`
+- `boolean isWhitelistEnforced()`
+- `void setWhitelistEnforced(boolean)`
+- `java.util.Set<org.bukkit.OfflinePlayer> getWhitelistedPlayers()`
+- `void reloadWhitelist()`
+- `int broadcastMessage(java.lang.String)`
+- `void broadcast(net.md_5.bungee.api.chat.BaseComponent)`
+- `void broadcast(net.md_5.bungee.api.chat.BaseComponent...)`
+- `java.lang.String getUpdateFolder()`
+- `java.io.File getUpdateFolderFile()`
+- `long getConnectionThrottle()`
+- `int getTicksPerAnimalSpawns()`
+- `int getTicksPerMonsterSpawns()`
+- `int getTicksPerWaterSpawns()`
+- `int getTicksPerAmbientSpawns()`
+- `int getTicksPerWaterAmbientSpawns()`
+- `int getTicksPerWaterUndergroundCreatureSpawns()`
+- `int getTicksPerSpawns(org.bukkit.entity.SpawnCategory)`
+- `org.bukkit.entity.Player getPlayer(java.lang.String)`
+- `org.bukkit.entity.Player getPlayerExact(java.lang.String)`
+- `java.util.List<org.bukkit.entity.Player> matchPlayer(java.lang.String)`
+- `org.bukkit.entity.Player getPlayer(java.util.UUID)`
+- `java.util.UUID getPlayerUniqueId(java.lang.String)`
+- `org.bukkit.plugin.PluginManager getPluginManager()`
+- `org.bukkit.scheduler.BukkitScheduler getScheduler()`
+- `org.bukkit.plugin.ServicesManager getServicesManager()`
+- `java.util.List<org.bukkit.World> getWorlds()`
+- `boolean isTickingWorlds()`
+- `org.bukkit.World createWorld(org.bukkit.WorldCreator)`
+- `boolean unloadWorld(java.lang.String, boolean)`
+- `boolean unloadWorld(org.bukkit.World, boolean)`
+- `org.bukkit.World getWorld(java.lang.String)`
+- `org.bukkit.World getWorld(java.util.UUID)`
+- `org.bukkit.World getWorld(org.bukkit.NamespacedKey)`
+- `org.bukkit.World getWorld(net.kyori.adventure.key.Key)`
+- `org.bukkit.WorldBorder createWorldBorder()`
+- `org.bukkit.map.MapView getMap(int)`
+- `org.bukkit.map.MapView createMap(org.bukkit.World)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.StructureType)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.StructureType, int, boolean)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.generator.structure.StructureType, org.bukkit.map.MapCursor$Type)`
+- `org.bukkit.inventory.ItemStack createExplorerMap(org.bukkit.World, org.bukkit.Location, org.bukkit.generator.structure.StructureType, org.bukkit.map.MapCursor$Type, int, boolean)`
+- `void reload()`
+- `void reloadData()`
+- `void updateResources()`
+- `void updateRecipes()`
+- `java.util.logging.Logger getLogger()`
+- `org.bukkit.command.PluginCommand getPluginCommand(java.lang.String)`
+- `void savePlayers()`
+- `boolean dispatchCommand(org.bukkit.command.CommandSender, java.lang.String) throws org.bukkit.command.CommandException`
+- `boolean addRecipe(org.bukkit.inventory.Recipe)`
+- `boolean addRecipe(org.bukkit.inventory.Recipe, boolean)`
+- `java.util.List<org.bukkit.inventory.Recipe> getRecipesFor(org.bukkit.inventory.ItemStack)`
+- `org.bukkit.inventory.Recipe getRecipe(org.bukkit.NamespacedKey)`
+- `org.bukkit.inventory.Recipe getCraftingRecipe(org.bukkit.inventory.ItemStack[], org.bukkit.World)`
+- `org.bukkit.inventory.ItemCraftResult craftItemResult(org.bukkit.inventory.ItemStack[], org.bukkit.World, org.bukkit.entity.Player)`
+- `org.bukkit.inventory.ItemCraftResult craftItemResult(org.bukkit.inventory.ItemStack[], org.bukkit.World)`
+- `org.bukkit.inventory.ItemStack craftItem(org.bukkit.inventory.ItemStack[], org.bukkit.World, org.bukkit.entity.Player)`
+- `org.bukkit.inventory.ItemStack craftItem(org.bukkit.inventory.ItemStack[], org.bukkit.World)`
+- `java.util.Iterator<org.bukkit.inventory.Recipe> recipeIterator()`
+- `void clearRecipes()`
+- `void resetRecipes()`
+- `boolean removeRecipe(org.bukkit.NamespacedKey)`
+- `boolean removeRecipe(org.bukkit.NamespacedKey, boolean)`
+- `java.util.Map<java.lang.String, java.lang.String[]> getCommandAliases()`
+- `int getSpawnRadius()`
+- `void setSpawnRadius(int)`
+- `boolean shouldSendChatPreviews()`
+- `boolean isEnforcingSecureProfiles()`
+- `boolean isAcceptingTransfers()`
+- `boolean getHideOnlinePlayers()`
+- `boolean getOnlineMode()`
+- `io.papermc.paper.configuration.ServerConfiguration getServerConfig()`
+- `boolean getAllowFlight()`
+- `boolean isHardcore()`
+- `void shutdown()`
+- `int broadcast(net.kyori.adventure.text.Component)`
+- `int broadcast(net.kyori.adventure.text.Component, java.lang.String)`
+- `int broadcast(java.lang.String, java.lang.String)`
+- `org.bukkit.OfflinePlayer getOfflinePlayer(java.lang.String)`
+- `org.bukkit.OfflinePlayer getOfflinePlayerIfCached(java.lang.String)`
+- `org.bukkit.OfflinePlayer getOfflinePlayer(java.util.UUID)`
+- `org.bukkit.profile.PlayerProfile createPlayerProfile(java.util.UUID, java.lang.String)`
+- `org.bukkit.profile.PlayerProfile createPlayerProfile(java.util.UUID)`
+- `org.bukkit.profile.PlayerProfile createPlayerProfile(java.lang.String)`
+- `java.util.Set<java.lang.String> getIPBans()`
+- `void banIP(java.lang.String)`
+- `void unbanIP(java.lang.String)`
+- `void banIP(java.net.InetAddress)`
+- `void unbanIP(java.net.InetAddress)`
+- `java.util.Set<org.bukkit.OfflinePlayer> getBannedPlayers()`
+- `<T extends org.bukkit.BanList<?>> T getBanList(org.bukkit.BanList$Type)`
+- `<B extends org.bukkit.BanList<E>, E> B getBanList(io.papermc.paper.ban.BanListType<B>)`
+- `java.util.Set<org.bukkit.OfflinePlayer> getOperators()`
+- `org.bukkit.GameMode getDefaultGameMode()`
+- `void setDefaultGameMode(org.bukkit.GameMode)`
+- `boolean forcesDefaultGameMode()`
+- `org.bukkit.command.ConsoleCommandSender getConsoleSender()`
+- `org.bukkit.command.CommandSender createCommandSender(java.util.function.Consumer<? super net.kyori.adventure.text.Component>)`
+- `java.io.File getWorldContainer()`
+- `org.bukkit.OfflinePlayer[] getOfflinePlayers()`
+- `org.bukkit.plugin.messaging.Messenger getMessenger()`
+- `org.bukkit.help.HelpMap getHelpMap()`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType)`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType, net.kyori.adventure.text.Component)`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType, java.lang.String)`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int, net.kyori.adventure.text.Component) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int, java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.inventory.Merchant createMerchant(net.kyori.adventure.text.Component)`
+- `org.bukkit.inventory.Merchant createMerchant(java.lang.String)`
+- `org.bukkit.inventory.Merchant createMerchant()`
+- `int getMaxChainedNeighborUpdates()`
+- `int getMonsterSpawnLimit()`
+- `int getAnimalSpawnLimit()`
+- `int getWaterAnimalSpawnLimit()`
+- `int getWaterAmbientSpawnLimit()`
+- `int getWaterUndergroundCreatureSpawnLimit()`
+- `int getAmbientSpawnLimit()`
+- `int getSpawnLimit(org.bukkit.entity.SpawnCategory)`
+- `boolean isPrimaryThread()`
+- `net.kyori.adventure.text.Component motd()`
+- `void motd(net.kyori.adventure.text.Component)`
+- `net.kyori.adventure.text.Component shutdownMessage()`
+- `java.lang.String getMotd()`
+- `void setMotd(java.lang.String)`
+- `org.bukkit.ServerLinks getServerLinks()`
+- `java.lang.String getShutdownMessage()`
+- `org.bukkit.Warning$WarningState getWarningState()`
+- `org.bukkit.inventory.ItemFactory getItemFactory()`
+- `org.bukkit.entity.EntityFactory getEntityFactory()`
+- `org.bukkit.scoreboard.ScoreboardManager getScoreboardManager()`
+- `org.bukkit.scoreboard.Criteria getScoreboardCriteria(java.lang.String)`
+- `org.bukkit.util.CachedServerIcon getServerIcon()`
+- `org.bukkit.util.CachedServerIcon loadServerIcon(java.io.File) throws java.lang.IllegalArgumentException, java.lang.Exception`
+- `org.bukkit.util.CachedServerIcon loadServerIcon(java.awt.image.BufferedImage) throws java.lang.IllegalArgumentException, java.lang.Exception`
+- `void setIdleTimeout(int)`
+- `int getIdleTimeout()`
+- `int getPauseWhenEmptyTime()`
+- `void setPauseWhenEmptyTime(int)`
+- `org.bukkit.generator.ChunkGenerator$ChunkData createChunkData(org.bukkit.World)`
+- `org.bukkit.boss.BossBar createBossBar(java.lang.String, org.bukkit.boss.BarColor, org.bukkit.boss.BarStyle, org.bukkit.boss.BarFlag...)`
+- `org.bukkit.boss.KeyedBossBar createBossBar(org.bukkit.NamespacedKey, java.lang.String, org.bukkit.boss.BarColor, org.bukkit.boss.BarStyle, org.bukkit.boss.BarFlag...)`
+- `java.util.Iterator<org.bukkit.boss.KeyedBossBar> getBossBars()`
+- `org.bukkit.boss.KeyedBossBar getBossBar(org.bukkit.NamespacedKey)`
+- `boolean removeBossBar(org.bukkit.NamespacedKey)`
+- `org.bukkit.entity.Entity getEntity(java.util.UUID)`
+- `double[] getTPS()`
+- `long[] getTickTimes()`
+- `double getAverageTickTime()`
+- `org.bukkit.advancement.Advancement getAdvancement(org.bukkit.NamespacedKey)`
+- `java.util.Iterator<org.bukkit.advancement.Advancement> advancementIterator()`
+- `org.bukkit.block.data.BlockData createBlockData(org.bukkit.Material)`
+- `org.bukkit.block.data.BlockData createBlockData(org.bukkit.Material, java.util.function.Consumer<? super org.bukkit.block.data.BlockData>)`
+- `org.bukkit.block.data.BlockData createBlockData(java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.block.data.BlockData createBlockData(org.bukkit.Material, java.lang.String) throws java.lang.IllegalArgumentException`
+- `<T extends org.bukkit.Keyed> org.bukkit.Tag<T> getTag(java.lang.String, org.bukkit.NamespacedKey, java.lang.Class<T>)`
+- `<T extends org.bukkit.Keyed> java.lang.Iterable<org.bukkit.Tag<T>> getTags(java.lang.String, java.lang.Class<T>)`
+- `org.bukkit.loot.LootTable getLootTable(org.bukkit.NamespacedKey)`
+- `java.util.List<org.bukkit.entity.Entity> selectEntities(org.bukkit.command.CommandSender, java.lang.String) throws java.lang.IllegalArgumentException`
+- `org.bukkit.structure.StructureManager getStructureManager()`
+- `<T extends org.bukkit.Keyed> org.bukkit.Registry<T> getRegistry(java.lang.Class<T>)`
+- `org.bukkit.UnsafeValues getUnsafe()`
+- `org.bukkit.command.CommandMap getCommandMap()`
+- `void reloadPermissions()`
+- `boolean reloadCommandAliases()`
+- `boolean suggestPlayerNamesWhenNullTabCompletions()`
+- `java.lang.String getPermissionMessage()`
+- `net.kyori.adventure.text.Component permissionMessage()`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfile(java.util.UUID)`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfile(java.lang.String)`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfile(java.util.UUID, java.lang.String)`
+- `com.destroystokyo.paper.profile.PlayerProfile createProfileExact(java.util.UUID, java.lang.String)`
+- `int getCurrentTick()`
+- `boolean isStopping()`
+- `com.destroystokyo.paper.entity.ai.MobGoals getMobGoals()`
+- `io.papermc.paper.datapack.DatapackManager getDatapackManager()`
+- `org.bukkit.potion.PotionBrewer getPotionBrewer()`
+- `io.papermc.paper.threadedregions.scheduler.RegionScheduler getRegionScheduler()`
+- `io.papermc.paper.threadedregions.scheduler.AsyncScheduler getAsyncScheduler()`
+- `io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler getGlobalRegionScheduler()`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, io.papermc.paper.math.Position)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, io.papermc.paper.math.Position, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.Location)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.Location, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.block.Block)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, int, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, int, int, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.World, int, int, int, int)`
+- `boolean isOwnedByCurrentRegion(org.bukkit.entity.Entity)`
+- `boolean isGlobalTickThread()`
+- `org.bukkit.Server$Spigot spigot()`
+- `void restart()`
+
+## location
+### org.bukkit.Location
+- `org.bukkit.Location(org.bukkit.World, double, double, double)`
+- `org.bukkit.Location(org.bukkit.World, double, double, double, float, float)`
+- `void setWorld(org.bukkit.World)`
+- `boolean isWorldLoaded()`
+- `org.bukkit.World getWorld()`
+- `org.bukkit.Chunk getChunk()`
+- `org.bukkit.block.Block getBlock()`
+- `void setX(double)`
+- `double getX()`
+- `int getBlockX()`
+- `void setY(double)`
+- `double getY()`
+- `int getBlockY()`
+- `void setZ(double)`
+- `double getZ()`
+- `int getBlockZ()`
+- `void setYaw(float)`
+- `float getYaw()`
+- `void setPitch(float)`
+- `float getPitch()`
+- `org.bukkit.util.Vector getDirection()`
+- `org.bukkit.Location setDirection(org.bukkit.util.Vector)`
+- `org.bukkit.Location add(org.bukkit.Location)`
+- `org.bukkit.Location add(org.bukkit.util.Vector)`
+- `org.bukkit.Location add(double, double, double)`
+- `org.bukkit.Location addRotation(float, float)`
+- `org.bukkit.Location addRotation(io.papermc.paper.math.Rotation)`
+- `io.papermc.paper.math.Rotation getRotation()`
+- `org.bukkit.Location subtract(org.bukkit.Location)`
+- `org.bukkit.Location subtract(org.bukkit.util.Vector)`
+- `org.bukkit.Location subtract(double, double, double)`
+- `org.bukkit.Location subtractRotation(float, float)`
+- `org.bukkit.Location subtractRotation(io.papermc.paper.math.Rotation)`
+- `double length()`
+- `double lengthSquared()`
+- `double distance(org.bukkit.Location)`
+- `double distanceSquared(org.bukkit.Location)`
+- `org.bukkit.Location multiply(double)`
+- `org.bukkit.Location zero()`
+- `boolean isChunkLoaded()`
+- `boolean isGenerated()`
+- `org.bukkit.Location set(double, double, double)`
+- `org.bukkit.Location setRotation(float, float)`
+- `org.bukkit.Location setRotation(io.papermc.paper.math.Rotation)`
+- `org.bukkit.Location add(org.bukkit.Location, double, double, double)`
+- `org.bukkit.Location subtract(org.bukkit.Location, double, double, double)`
+- `org.bukkit.Location toBlockLocation()`
+- `long toBlockKey()`
+- `org.bukkit.Location toCenterLocation()`
+- `org.bukkit.Location toHighestLocation()`
+- `org.bukkit.Location toHighestLocation(org.bukkit.HeightMap)`
+- `boolean createExplosion(float)`
+- `boolean createExplosion(float, boolean)`
+- `boolean createExplosion(float, boolean, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, float)`
+- `boolean createExplosion(org.bukkit.entity.Entity, float, boolean)`
+- `boolean createExplosion(org.bukkit.entity.Entity, float, boolean, boolean)`
+- `java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(double, double, double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double, double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double, double, double)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double, java.util.function.Predicate<? super org.bukkit.entity.LivingEntity>)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double, double, java.util.function.Predicate<? super org.bukkit.entity.LivingEntity>)`
+- `java.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double, double, double, java.util.function.Predicate<? super org.bukkit.entity.LivingEntity>)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double, double)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double, double, double)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double, java.util.function.Predicate<? super org.bukkit.entity.Player>)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double, double, java.util.function.Predicate<? super org.bukkit.entity.Player>)`
+- `java.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double, double, double, java.util.function.Predicate<? super org.bukkit.entity.Player>)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, double)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, double, double)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, double, double, double)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, double, java.util.function.Predicate<? super T>)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, double, double, java.util.function.Predicate<? super T>)`
+- `<T extends org.bukkit.entity.Entity> java.util.Collection<T> getNearbyEntitiesByType(java.lang.Class<? extends T>, double, double, double, java.util.function.Predicate<? super T>)`
+- `boolean equals(java.lang.Object)`
+- `int hashCode()`
+- `java.lang.String toString()`
+- `org.bukkit.util.Vector toVector()`
+- `org.bukkit.Location clone()`
+- `void checkFinite() throws java.lang.IllegalArgumentException`
+- `int locToBlock(double)`
+- `java.util.Map<java.lang.String, java.lang.Object> serialize()`
+- `org.bukkit.Location deserialize(java.util.Map<java.lang.String, java.lang.Object>)`
+- `float normalizeYaw(float)`
+- `float normalizePitch(float)`
+- `double x()`
+- `double y()`
+- `double z()`
+- `boolean isFinite()`
+- `org.bukkit.Location toLocation(org.bukkit.World)`
+- `java.lang.Object clone() throws java.lang.CloneNotSupportedException`
+### org.bukkit.util.BoundingBox
+- `org.bukkit.util.BoundingBox of(org.bukkit.util.Vector, org.bukkit.util.Vector)`
+- `org.bukkit.util.BoundingBox of(org.bukkit.Location, org.bukkit.Location)`
+- `org.bukkit.util.BoundingBox of(org.bukkit.block.Block, org.bukkit.block.Block)`
+- `org.bukkit.util.BoundingBox of(org.bukkit.block.Block)`
+- `org.bukkit.util.BoundingBox of(org.bukkit.util.Vector, double, double, double)`
+- `org.bukkit.util.BoundingBox of(org.bukkit.Location, double, double, double)`
+- `org.bukkit.util.BoundingBox()`
+- `org.bukkit.util.BoundingBox(double, double, double, double, double, double)`
+- `org.bukkit.util.BoundingBox resize(double, double, double, double, double, double)`
+- `double getMinX()`
+- `double getMinY()`
+- `double getMinZ()`
+- `org.bukkit.util.Vector getMin()`
+- `double getMaxX()`
+- `double getMaxY()`
+- `double getMaxZ()`
+- `org.bukkit.util.Vector getMax()`
+- `double getWidthX()`
+- `double getWidthZ()`
+- `double getHeight()`
+- `double getVolume()`
+- `double getCenterX()`
+- `double getCenterY()`
+- `double getCenterZ()`
+- `org.bukkit.util.Vector getCenter()`
+- `org.bukkit.util.BoundingBox copy(org.bukkit.util.BoundingBox)`
+- `org.bukkit.util.BoundingBox expand(double, double, double, double, double, double)`
+- `org.bukkit.util.BoundingBox expand(double, double, double)`
+- `org.bukkit.util.BoundingBox expand(org.bukkit.util.Vector)`
+- `org.bukkit.util.BoundingBox expand(double)`
+- `org.bukkit.util.BoundingBox expand(double, double, double, double)`
+- `org.bukkit.util.BoundingBox expand(org.bukkit.util.Vector, double)`
+- `org.bukkit.util.BoundingBox expand(org.bukkit.block.BlockFace, double)`
+- `org.bukkit.util.BoundingBox expandDirectional(double, double, double)`
+- `org.bukkit.util.BoundingBox expandDirectional(org.bukkit.util.Vector)`
+- `org.bukkit.util.BoundingBox union(double, double, double)`
+- `org.bukkit.util.BoundingBox union(org.bukkit.util.Vector)`
+- `org.bukkit.util.BoundingBox union(org.bukkit.Location)`
+- `org.bukkit.util.BoundingBox union(org.bukkit.util.BoundingBox)`
+- `org.bukkit.util.BoundingBox intersection(org.bukkit.util.BoundingBox)`
+- `org.bukkit.util.BoundingBox shift(double, double, double)`
+- `org.bukkit.util.BoundingBox shift(org.bukkit.util.Vector)`
+- `org.bukkit.util.BoundingBox shift(org.bukkit.Location)`
+- `boolean overlaps(org.bukkit.util.BoundingBox)`
+- `boolean overlaps(org.bukkit.util.Vector, org.bukkit.util.Vector)`
+- `boolean contains(double, double, double)`
+- `boolean contains(org.bukkit.util.Vector)`
+- `boolean contains(org.bukkit.util.BoundingBox)`
+- `boolean contains(org.bukkit.util.Vector, org.bukkit.util.Vector)`
+- `org.bukkit.util.RayTraceResult rayTrace(org.bukkit.util.Vector, org.bukkit.util.Vector, double)`
+- `int hashCode()`
+- `boolean equals(java.lang.Object)`
+- `java.lang.String toString()`
+- `org.bukkit.util.BoundingBox clone()`
+- `java.util.Map<java.lang.String, java.lang.Object> serialize()`
+- `org.bukkit.util.BoundingBox deserialize(java.util.Map<java.lang.String, java.lang.Object>)`
+- `java.lang.Object clone() throws java.lang.CloneNotSupportedException`
+### org.bukkit.util.Vector
+- `org.bukkit.util.Vector()`
+- `org.bukkit.util.Vector(int, int, int)`
+- `org.bukkit.util.Vector(double, double, double)`
+- `org.bukkit.util.Vector(float, float, float)`
+- `org.bukkit.util.Vector add(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector subtract(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector multiply(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector divide(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector copy(org.bukkit.util.Vector)`
+- `double length()`
+- `double lengthSquared()`
+- `double distance(org.bukkit.util.Vector)`
+- `double distanceSquared(org.bukkit.util.Vector)`
+- `float angle(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector midpoint(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector getMidpoint(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector multiply(int)`
+- `org.bukkit.util.Vector multiply(double)`
+- `org.bukkit.util.Vector multiply(float)`
+- `double dot(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector crossProduct(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector getCrossProduct(org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector normalize()`
+- `org.bukkit.util.Vector zero()`
+- `boolean isZero()`
+- `boolean isInAABB(org.bukkit.util.Vector, org.bukkit.util.Vector)`
+- `boolean isInSphere(org.bukkit.util.Vector, double)`
+- `boolean isNormalized()`
+- `org.bukkit.util.Vector rotateAroundX(double)`
+- `org.bukkit.util.Vector rotateAroundY(double)`
+- `org.bukkit.util.Vector rotateAroundZ(double)`
+- `org.bukkit.util.Vector rotateAroundAxis(org.bukkit.util.Vector, double) throws java.lang.IllegalArgumentException`
+- `org.bukkit.util.Vector rotateAroundNonUnitAxis(org.bukkit.util.Vector, double) throws java.lang.IllegalArgumentException`
+- `double getX()`
+- `int getBlockX()`
+- `double getY()`
+- `int getBlockY()`
+- `double getZ()`
+- `int getBlockZ()`
+- `org.bukkit.util.Vector setX(int)`
+- `org.bukkit.util.Vector setX(double)`
+- `org.bukkit.util.Vector setX(float)`
+- `org.bukkit.util.Vector setY(int)`
+- `org.bukkit.util.Vector setY(double)`
+- `org.bukkit.util.Vector setY(float)`
+- `org.bukkit.util.Vector setZ(int)`
+- `org.bukkit.util.Vector setZ(double)`
+- `org.bukkit.util.Vector setZ(float)`
+- `boolean equals(java.lang.Object)`
+- `int hashCode()`
+- `org.bukkit.util.Vector clone()`
+- `java.lang.String toString()`
+- `org.bukkit.Location toLocation(org.bukkit.World)`
+- `org.bukkit.Location toLocation(org.bukkit.World, float, float)`
+- `org.bukkit.util.BlockVector toBlockVector()`
+- `org.joml.Vector3f toVector3f()`
+- `org.joml.Vector3d toVector3d()`
+- `org.joml.Vector3i toVector3i(int)`
+- `org.joml.Vector3i toVector3i()`
+- `void checkFinite() throws java.lang.IllegalArgumentException`
+- `double getEpsilon()`
+- `org.bukkit.util.Vector getMinimum(org.bukkit.util.Vector, org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector getMaximum(org.bukkit.util.Vector, org.bukkit.util.Vector)`
+- `org.bukkit.util.Vector getRandom()`
+- `org.bukkit.util.Vector fromJOML(org.joml.Vector3f)`
+- `org.bukkit.util.Vector fromJOML(org.joml.Vector3d)`
+- `org.bukkit.util.Vector fromJOML(org.joml.Vector3i)`
+- `org.bukkit.util.Vector fromJOML(org.joml.Vector3fc)`
+- `org.bukkit.util.Vector fromJOML(org.joml.Vector3dc)`
+- `org.bukkit.util.Vector fromJOML(org.joml.Vector3ic)`
+- `java.util.Map<java.lang.String, java.lang.Object> serialize()`
+- `org.bukkit.util.Vector deserialize(java.util.Map<java.lang.String, java.lang.Object>)`
+- `java.lang.Object clone() throws java.lang.CloneNotSupportedException`

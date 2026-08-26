@@ -65,6 +65,14 @@ public interface ItemMeta {
 
   @NotNull Set<DataComponentType<?>> dataComponentTypes();
 
+  @NotNull Set<ItemFlag> itemFlags();
+
+  boolean hasItemFlag(@NotNull ItemFlag flag);
+
+  void addItemFlags(@NotNull ItemFlag... flags);
+
+  void removeItemFlags(@NotNull ItemFlag... flags);
+
   default <T> boolean has(@NotNull DataComponentType<T> type) {
     return hasData(type);
   }

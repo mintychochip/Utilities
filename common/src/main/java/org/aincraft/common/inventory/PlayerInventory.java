@@ -1,5 +1,7 @@
 package org.aincraft.common.inventory;
 
+import java.util.Collection;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface PlayerInventory extends Inventory {
@@ -27,6 +29,18 @@ public interface PlayerInventory extends Inventory {
   @Nullable ItemStack itemInOffHand();
 
   void setItemInOffHand(@Nullable ItemStack item);
+
+  @NotNull Collection<@Nullable ItemStack> armorContents();
+
+  void setArmorContents(@NotNull Collection<@Nullable ItemStack> items);
+
+  @NotNull Collection<@Nullable ItemStack> extraContents();
+
+  void setExtraContents(@NotNull Collection<@Nullable ItemStack> items);
+
+  @Nullable ItemStack getItem(@NotNull EquipmentSlot slot);
+
+  void setItem(@NotNull EquipmentSlot slot, @Nullable ItemStack item);
 
   int heldItemSlot();
 

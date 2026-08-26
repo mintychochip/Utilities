@@ -5,8 +5,12 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
 import net.kyori.adventure.key.Key;
+import org.aincraft.common.effect.Particle;
+import org.aincraft.common.effect.Sound;
+import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
+import org.aincraft.common.location.Location;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.Difficulty;
@@ -14,7 +18,7 @@ import org.aincraft.common.world.Environment;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
-
+import org.jetbrains.annotations.Nullable;
 public class BukkitWorldWrapper implements World {
 
   private final org.bukkit.World world;
@@ -123,6 +127,24 @@ public class BukkitWorldWrapper implements World {
         .toList();
   }
 
+  @Override
+  public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {
+    org.bukkit.Sound bSound = BukkitAdapters.toBukkit(sound);
+    org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
+    if (category == null) {
+      world.playSound(bLoc, bSound, volume, pitch);
+    } else {
+      world.playSound(bLoc, bSound, org.bukkit.SoundCategory.valueOf(category.name()), volume, pitch);
+    }
+  }
+
+  @Override
+  public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count,
+                            double offsetX, double offsetY, double offsetZ, double extra) {
+    org.bukkit.Particle bParticle = BukkitAdapters.toBukkit(particle);
+    org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
+    world.spawnParticle(bParticle, bLoc, count, offsetX, offsetY, offsetZ, extra);
+  }
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

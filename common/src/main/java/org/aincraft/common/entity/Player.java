@@ -17,6 +17,10 @@ public interface Player extends LivingEntity, Audience, InventoryHolder, Command
     return username();
   }
 
+  @NotNull Component displayName();
+
+  void displayName(@NotNull Component displayName);
+
   boolean isOnline();
 
   int ping();
@@ -52,6 +56,10 @@ public interface Player extends LivingEntity, Audience, InventoryHolder, Command
   boolean isFlying();
 
   void setFlying(boolean flying);
+
+  boolean allowFlight();
+
+  void setAllowFlight(boolean allow);
 
   @Override
   @NotNull PlayerInventory inventory();

@@ -1,14 +1,8 @@
 plugins {
-    id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    alias(libs.plugins.run.paper)
+    alias(libs.plugins.shadow)
     java
     `java-library`
-}
-
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-    maven("https://repo.papermc.io/repository/maven-public")
 }
 
 java {
@@ -16,14 +10,14 @@ java {
 }
 
 dependencies {
-    implementation(project(":utilities")) {
-        exclude(group = "io.papermc.paper", module = "paper-api")
-    }
-    compileOnly("io.papermc.paper:paper-api:26.2.build.119-stable")
-    testImplementation(project(":utilities"))
-    testCompileOnly("io.papermc.paper:paper-api:26.2.build.119-stable")
-    testImplementation(platform("org.junit:junit-bom:5.11.3"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation(project(":config"))
+    implementation(project(":db-paper"))
+    compileOnly(libs.paper.api)
+    testImplementation(project(":config"))
+    testImplementation(project(":db-paper"))
+    testCompileOnly(libs.paper.api)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
 }
 
 tasks {

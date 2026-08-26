@@ -14,6 +14,7 @@ import org.aincraft.common.attribute.Attribute;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.inventory.DataComponentType;
+import org.aincraft.common.inventory.ItemFlag;
 import org.aincraft.common.inventory.ItemMeta;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
@@ -263,5 +264,37 @@ public class BukkitItemMetaWrapper implements ItemMeta {
       });
     }
     return result;
+  }
+
+  @Override
+  public @NotNull Set<ItemFlag> itemFlags() {
+    Set<ItemFlag> result = new HashSet<>();
+    for (org.bukkit.inventory.ItemFlag flag : meta.getItemFlags()) {
+      result.add(adapt(flag));
+    }
+    return result;
+  }
+
+  @Override
+  public boolean hasItemFlag(@NotNull ItemFlag flag) {
+    return meta.hasItemFlag(toBukkit(flag));
+  }
+
+  @Override
+  public void addItemFlags(@NotNull ItemFlag... flags) {
+    meta.addItemFlags(java.util.Arrays.stream(flags).map(BukkitItemMetaWrapper::toBukkit).toArray(org.bukkit.inventory.ItemFlag[]::new));
+  }
+
+  @Override
+  public void removeItemFlags(@NotNull ItemFlag... flags) {
+    meta.removeItemFlags(java.util.Arrays.stream(flags).map(BukkitItemMetaWrapper::toBukkit).toArray(org.bukkit.inventory.ItemFlag[]::new));
+  }
+
+  private static ItemFlag adapt(@NotNull org.bukkit.inventory.ItemFlag flag) {
+    return ItemFlag.valueOf(flag.name());
+  }
+
+  private static org.bukkit.inventory.ItemFlag toBukkit(@NotNull ItemFlag flag) {
+    return org.bukkit.inventory.ItemFlag.valueOf(flag.name());
   }
 }

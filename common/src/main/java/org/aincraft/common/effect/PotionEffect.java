@@ -15,4 +15,10 @@ public interface PotionEffect {
   boolean hasParticles();
 
   boolean hasIcon();
+
+  boolean isInfinite();
+
+  @NotNull PotionEffect withDuration(int duration);
+
+  @NotNull PotionEffect withAmplifier(int amplifier);
 }

@@ -1,0 +1,1564 @@
+{
+  "inventory": {
+    "domain": "inventory",
+    "summary": ":common covers basic Inventory/PlayerInventory/ItemStack/ItemMeta/ItemType but omits the highest-traffic Bukkit inventory surfaces: entity equipment, GUI views/cursor, inventory bulk ops (add/contains/firstEmpty), item flags/durability meta, stack cloning/editMeta/enchants, and server item factory/createInventory. Adapters exist for current interfaces but would need new wrappers and LivingEntity/Player/Server extensions.",
+    "gaps": [
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.inventory.EntityEquipment",
+        "methodSignature": "@NotNull EntityEquipment equipment() on org.aincraft.common.entity.LivingEntity; interface EntityEquipment { @Nullable ItemStack get(@NotNull EquipmentSlot slot); void set(@NotNull EquipmentSlot slot, @Nullable ItemStack item); @Nullable ItemStack[] armorContents(); void setArmorContents(@NotNull ItemStack[] items); @Nullable ItemStack helmet/chestplate/leggings/boots(); void setHelmet/setChestplate/setLeggings/setBoots(@Nullable ItemStack); @Nullable ItemStack itemInMainHand/itemInOffHand(); void setItemInMainHand/setItemInOffHand(@Nullable ItemStack); }",
+        "bukkitSource": "org.bukkit.entity.LivingEntity.getEquipment()",
+        "bukkitSignature": "org.bukkit.inventory.EntityEquipment getEquipment()",
+        "reason": "Nearly every mob/NPC/armor plugin reads equipment via EntityEquipment, not PlayerInventory. LivingEntity has no equipment accessor in :common today.",
+        "adapterImpact": "New BukkitEntityEquipmentWrapper; update BukkitLivingEntityWrapper (+ MinestomLivingEntityWrapper). Paper inherits Bukkit path.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.inventory.ItemFlag",
+        "methodSignature": "enum ItemFlag { HIDE_ENCHANTS, HIDE_ATTRIBUTES, HIDE_UNBREAKABLE, HIDE_DESTROYS, HIDE_PLACED_ON, HIDE_ADDITIONAL_TOOLTIP, HIDE_DYE, HIDE_ARMOR_TRIM }",
+        "bukkitSource": "org.bukkit.inventory.ItemFlag",
+        "bukkitSignature": "org.bukkit.inventory.ItemFlag[] values(); org.bukkit.inventory.ItemFlag valueOf(java.lang.String)",
+        "reason": "Item flags are the standard way to hide enchants, attributes, trim, etc. on custom items; used constantly with ItemMeta.",
+        "adapterImpact": "New enum in :common; mapping in BukkitItemMetaWrapper when flag methods are added.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.ItemMeta",
+        "methodSignature": "void addItemFlags(@NotNull ItemFlag... flags); void removeItemFlags(@NotNull ItemFlag... flags); @NotNull Set<ItemFlag> itemFlags(); boolean hasItemFlag(@NotNull ItemFlag flag)",
+        "bukkitSource": "org.bukkit.inventory.meta.ItemMeta",
+        "bukkitSignature": "void addItemFlags(org.bukkit.inventory.ItemFlag...); void removeItemFlags(org.bukkit.inventory.ItemFlag...); java.util.Set<org.bukkit.inventory.ItemFlag> getItemFlags(); boolean hasItemFlag(org.bukkit.inventory.ItemFlag)",
+        "reason": "Pairs with ItemFlag enum; without these, adapters cannot expose tooltip/attribute hiding on custom items.",
+        "adapterImpact": "BukkitItemMetaWrapper; future Minestom item-meta wrapper.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.inventory.InventoryView",
+        "methodSignature": "@NotNull Inventory topInventory(); @NotNull Inventory bottomInventory(); @Nullable ItemStack getItem(int rawSlot); void setItem(int rawSlot, @Nullable ItemStack item); @Nullable ItemStack cursor(); void setCursor(@Nullable ItemStack item); @NotNull Component title(); void close()",
+        "bukkitSource": "org.bukkit.inventory.InventoryView",
+        "bukkitSignature": "org.bukkit.inventory.Inventory getTopInventory(); org.bukkit.inventory.Inventory getBottomInventory(); org.bukkit.inventory.ItemStack getItem(int); void setItem(int, org.bukkit.inventory.ItemStack); org.bukkit.inventory.ItemStack getCursor(); void setCursor(org.bukkit.inventory.ItemStack); net.kyori.adventure.text.Component title(); void close()",
+        "reason": "GUI plugins need open-inventory state (top/bottom, raw slots, cursor, title) without pulling in inventory events.",
+        "adapterImpact": "New BukkitInventoryViewWrapper; BukkitPlayerWrapper for getOpenInventory/openInventory mappings.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Player",
+        "methodSignature": "@NotNull InventoryView openInventory(); @NotNull InventoryView openInventory(@NotNull Inventory inventory); void closeInventory(); @Nullable ItemStack itemOnCursor(); void setItemOnCursor(@Nullable ItemStack item); @NotNull Inventory enderChest()",
+        "bukkitSource": "org.bukkit.entity.HumanEntity",
+        "bukkitSignature": "org.bukkit.inventory.InventoryView getOpenInventory(); org.bukkit.inventory.InventoryView openInventory(org.bukkit.inventory.Inventory); void closeInventory(); org.bukkit.inventory.ItemStack getItemOnCursor(); void setItemOnCursor(org.bukkit.inventory.ItemStack); org.bukkit.inventory.Inventory getEnderChest()",
+        "reason": "Core player inventory UX\u2014opening chest GUIs, drag/drop cursor, ender chest\u2014is absent from :common Player despite being among the most-used inventory APIs.",
+        "adapterImpact": "BukkitPlayerWrapper (+ PaperPlayerWrapper); MinestomPlayerWrapper (partial/stub today).",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.Inventory",
+        "methodSignature": "@NotNull Map<Integer, ItemStack> addItem(@NotNull ItemStack... items); @NotNull Map<Integer, ItemStack> removeItem(@NotNull ItemStack... items); boolean contains(@NotNull ItemType type); boolean contains(@NotNull ItemStack item); boolean containsAtLeast(@NotNull ItemStack item, int amount); int first(@NotNull ItemStack item); int firstEmpty()",
+        "bukkitSource": "org.bukkit.inventory.Inventory",
+        "bukkitSignature": "java.util.HashMap<java.lang.Integer, org.bukkit.inventory.ItemStack> addItem(org.bukkit.inventory.ItemStack...); java.util.HashMap<java.lang.Integer, org.bukkit.inventory.ItemStack> removeItem(org.bukkit.inventory.ItemStack...); boolean contains(org.bukkit.inventory.ItemStack); boolean containsAtLeast(org.bukkit.inventory.ItemStack, int); int first(org.bukkit.inventory.ItemStack); int firstEmpty()",
+        "reason": "Bulk give/take and slot search are standard for shops, rewards, and container logic; only raw get/set exists today.",
+        "adapterImpact": "BukkitInventoryWrapper; Minestom inventory wrapper when slot ops are implemented.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.PlayerInventory",
+        "methodSignature": "@Nullable ItemStack[] armorContents(); void setArmorContents(@NotNull ItemStack[] items); @Nullable ItemStack[] extraContents(); void setExtraContents(@NotNull ItemStack[] items); @Nullable ItemStack getItem(@NotNull EquipmentSlot slot); void setItem(@NotNull EquipmentSlot slot, @Nullable ItemStack item)",
+        "bukkitSource": "org.bukkit.inventory.PlayerInventory",
+        "bukkitSignature": "org.bukkit.inventory.ItemStack[] getArmorContents(); void setArmorContents(org.bukkit.inventory.ItemStack[]); org.bukkit.inventory.ItemStack[] getExtraContents(); void setExtraContents(org.bukkit.inventory.ItemStack[]); org.bukkit.inventory.ItemStack getItem(org.bukkit.inventory.EquipmentSlot); void setItem(org.bukkit.inventory.EquipmentSlot, org.bukkit.inventory.ItemStack)",
+        "reason": "PlayerInventory only exposes per-piece armor getters and hotbar slot; Bukkit's slot-group and EquipmentSlot accessors are missing.",
+        "adapterImpact": "BukkitPlayerInventoryWrapper; MinestomPlayerInventoryWrapper.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.ItemStack",
+        "methodSignature": "@NotNull ItemStack clone(); boolean editMeta(@NotNull Consumer<ItemMeta> consumer); @NotNull ItemStack asOne(); @NotNull ItemStack asQuantity(int quantity); int maxStackSize()",
+        "bukkitSource": "org.bukkit.inventory.ItemStack",
+        "bukkitSignature": "org.bukkit.inventory.ItemStack clone(); boolean editMeta(java.util.function.Consumer<? super org.bukkit.inventory.meta.ItemMeta>); org.bukkit.inventory.ItemStack asOne(); org.bukkit.inventory.ItemStack asQuantity(int); int getMaxStackSize()",
+        "reason": "clone/editMeta/asQuantity are the dominant patterns for copying and mutating items; only withAmount exists in :common.",
+        "adapterImpact": "BukkitItemStackWrapper; Minestom item adapter when ItemStack is fully implemented.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.inventory.DamageableItemMeta",
+        "methodSignature": "interface DamageableItemMeta extends ItemMeta { int damage(); void setDamage(int damage); int maxDamage(); boolean hasDamage(); }",
+        "bukkitSource": "org.bukkit.inventory.meta.Damageable",
+        "bukkitSignature": "int getDamage(); void setDamage(int); int getMaxDamage(); boolean hasDamage()",
+        "reason": "Durability/custom-model damage is separate from entity Damageable; tools/weapons rely on item-meta damage, not stack type alone.",
+        "adapterImpact": "Optional DamageableItemMeta wrapper or branch in BukkitItemMetaWrapper when meta implements Bukkit Damageable.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.ItemStack",
+        "methodSignature": "boolean hasEnchant(@NotNull Enchantment enchantment); int enchantLevel(@NotNull Enchantment enchantment); void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction); int removeEnchant(@NotNull Enchantment enchantment); @NotNull Map<Enchantment, Integer> enchantments()",
+        "bukkitSource": "org.bukkit.inventory.ItemStack",
+        "bukkitSignature": "boolean containsEnchantment(org.bukkit.enchantments.Enchantment); int getEnchantmentLevel(org.bukkit.enchantments.Enchantment); void addEnchantment(org.bukkit.enchantments.Enchantment, int); int removeEnchantment(org.bukkit.enchantments.Enchantment); java.util.Map<org.bukkit.enchantments.Enchantment, java.lang.Integer> getEnchantments()",
+        "reason": "Many plugins enchant at ItemStack level without touching ItemMeta; :common only exposes enchants on ItemMeta.",
+        "adapterImpact": "BukkitItemStackWrapper.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.ItemMeta",
+        "methodSignature": "@Nullable Component customName(); void customName(@Nullable Component name); boolean hasCustomName(); @Nullable Component itemName(); void itemName(@Nullable Component name); boolean hasItemName()",
+        "bukkitSource": "org.bukkit.inventory.meta.ItemMeta",
+        "bukkitSignature": "net.kyori.adventure.text.Component customName(); void customName(net.kyori.adventure.text.Component); boolean hasCustomName(); net.kyori.adventure.text.Component itemName(); void itemName(net.kyori.adventure.text.Component); boolean hasItemName()",
+        "reason": "Modern items distinguish custom name vs item name vs display name; only displayName/lore exist in :common ItemMeta.",
+        "adapterImpact": "BukkitItemMetaWrapper.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.inventory.ItemFactory",
+        "methodSignature": "@NotNull ItemMeta createItemMeta(@NotNull ItemType type); @NotNull ItemStack createItemStack(@NotNull Key materialKey); boolean metaEquals(@NotNull ItemMeta meta1, @NotNull ItemMeta meta2); @NotNull ItemFactory itemFactory() on org.aincraft.common.server.Server",
+        "bukkitSource": "org.bukkit.inventory.ItemFactory / org.bukkit.Server.getItemFactory()",
+        "bukkitSignature": "org.bukkit.inventory.meta.ItemMeta getItemMeta(org.bukkit.Material); org.bukkit.inventory.ItemStack createItemStack(java.lang.String); boolean equals(org.bukkit.inventory.meta.ItemMeta, org.bukkit.inventory.meta.ItemMeta); org.bukkit.inventory.ItemFactory getItemFactory()",
+        "reason": "Creating blank meta and parsing material strings is server/bootstrap code paths; Server has no inventory factory surface.",
+        "adapterImpact": "New BukkitItemFactoryWrapper; BukkitServerWrapper (+ PaperServerWrapper).",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@NotNull Inventory createInventory(@Nullable InventoryHolder holder, int size); @NotNull Inventory createInventory(@Nullable InventoryHolder holder, @NotNull InventoryType type); @NotNull Inventory createInventory(@Nullable InventoryHolder holder, int size, @NotNull Component title)",
+        "bukkitSource": "org.bukkit.Server",
+        "bukkitSignature": "org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int); org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType); org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int, net.kyori.adventure.text.Component)",
+        "reason": "Custom chest/hopper GUIs are created via Server.createInventory; no :common equivalent.",
+        "adapterImpact": "BukkitServerWrapper (+ PaperServerWrapper); Minestom server adapter later.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.ItemStack",
+        "methodSignature": "<T> @Nullable T getData(@NotNull DataComponentType<T> type); <T> void setData(@NotNull DataComponentType<T> type, @Nullable T value); boolean hasData(@NotNull DataComponentType<?> type); @NotNull Set<DataComponentType<?>> dataTypes(); void resetData(@NotNull DataComponentType<?> type)",
+        "bukkitSource": "org.bukkit.inventory.ItemStack",
+        "bukkitSignature": "<T> T getData(io.papermc.paper.datacomponent.DataComponentType$Valued<T>); <T> void setData(io.papermc.paper.datacomponent.DataComponentType$Valued<T>, T); boolean hasData(io.papermc.paper.datacomponent.DataComponentType); java.util.Set<io.papermc.paper.datacomponent.DataComponentType> getDataTypes(); void resetData(io.papermc.paper.datacomponent.DataComponentType)",
+        "reason": "Paper/Spigot moved many item properties to stack-level data components; ItemMeta has partial coverage but ItemStack-level API is the primary path in modern versions.",
+        "adapterImpact": "BukkitItemStackWrapper (extend beyond BukkitItemMetaWrapper); Paper benefits directly.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.inventory.EquipmentSlot",
+        "methodSignature": "Add BODY, SADDLE (and map Bukkit CARPET/wolf armor if needed); boolean isHand(); boolean isArmor(); @NotNull EquipmentSlot oppositeHand()",
+        "bukkitSource": "org.bukkit.inventory.EquipmentSlot",
+        "bukkitSignature": "boolean isHand(); boolean isArmor(); org.bukkit.inventory.EquipmentSlot getOppositeHand(); values include BODY, SADDLE",
+        "reason": ":common EquipmentSlot is a minimal 6-value set; modern slots (elytra body, saddle) and helpers are missing, blocking correct EntityEquipment mapping.",
+        "adapterImpact": "EquipmentSlot enum + BukkitEquipmentSlot mapping in all inventory/equipment wrappers.",
+        "priority": "medium"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.inventory",
+        "name": "EntityEquipment",
+        "extends": [],
+        "methods": [
+          "@Nullable ItemStack get(@NotNull EquipmentSlot slot)",
+          "void set(@NotNull EquipmentSlot slot, @Nullable ItemStack item)",
+          "@Nullable ItemStack[] armorContents()",
+          "void setArmorContents(@NotNull ItemStack[] items)",
+          "@Nullable ItemStack helmet()",
+          "void setHelmet(@Nullable ItemStack item)",
+          "@Nullable ItemStack chestplate()",
+          "void setChestplate(@Nullable ItemStack item)",
+          "@Nullable ItemStack leggings()",
+          "void setLeggings(@Nullable ItemStack item)",
+          "@Nullable ItemStack boots()",
+          "void setBoots(@Nullable ItemStack item)",
+          "@Nullable ItemStack itemInMainHand()",
+          "void setItemInMainHand(@Nullable ItemStack item)",
+          "@Nullable ItemStack itemInOffHand()",
+          "void setItemInOffHand(@Nullable ItemStack item)"
+        ],
+        "reason": "Mirrors org.bukkit.inventory.EntityEquipment for all living entities; should be returned from LivingEntity.equipment()."
+      },
+      {
+        "package": "org.aincraft.common.inventory",
+        "name": "InventoryView",
+        "extends": [],
+        "methods": [
+          "@NotNull Inventory topInventory()",
+          "@NotNull Inventory bottomInventory()",
+          "@Nullable ItemStack getItem(int rawSlot)",
+          "void setItem(int rawSlot, @Nullable ItemStack item)",
+          "@Nullable ItemStack cursor()",
+          "void setCursor(@Nullable ItemStack item)",
+          "@NotNull Component title()",
+          "void close()"
+        ],
+        "reason": "Represents an open GUI session (cursor + combined slots) without event APIs."
+      },
+      {
+        "package": "org.aincraft.common.inventory",
+        "name": "DamageableItemMeta",
+        "extends": [
+          "ItemMeta"
+        ],
+        "methods": [
+          "int damage()",
+          "void setDamage(int damage)",
+          "int maxDamage()",
+          "boolean hasDamage()"
+        ],
+        "reason": "Item durability is a meta capability in Bukkit (org.bukkit.inventory.meta.Damageable), distinct from entity health."
+      },
+      {
+        "package": "org.aincraft.common.inventory",
+        "name": "ItemFactory",
+        "extends": [],
+        "methods": [
+          "@NotNull ItemMeta createItemMeta(@NotNull ItemType type)",
+          "@NotNull ItemStack createItemStack(@NotNull Key materialKey)",
+          "boolean metaEquals(@NotNull ItemMeta meta1, @NotNull ItemMeta meta2)"
+        ],
+        "reason": "Server-side item/meta construction and meta equality checks; maps to org.bukkit.inventory.ItemFactory."
+      }
+    ]
+  },
+  "entity": {
+    "domain": "entity",
+    "summary": "`:common` entity coverage is a thin slice of Bukkit/Paper/Spigot: base `Entity` has location/velocity read/teleport/remove but lacks motion control, orientation, naming, passengers, visibility flags, and proximity queries. `LivingEntity`/`Damageable`/`Player` omit equipment, combat, absorption, respawn, and flight-permission APIs that plugins use constantly. Highest ROI is closing these core gameplay gaps with Adventure-typed names and small inventory bridges (`EntityEquipment`, `HumanEntity`) rather than per-mob interfaces.",
+    "gaps": [
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "void setVelocity(@NotNull Vector3d velocity)",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "void setVelocity(org.bukkit.util.Vector)",
+        "reason": "Velocity is read-only today; knockback, launches, projectiles, and physics plugins need to set motion. Symmetric with existing velocity().",
+        "adapterImpact": "BukkitEntityWrapper, BukkitLivingEntityWrapper (inherits), MinestomEntityWrapper, MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "float yaw(); float pitch(); void setRotation(float yaw, float pitch)",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "float getYaw(); float getPitch(); void setRotation(float, float)",
+        "reason": "Facing is fundamental for spawning, teleporting, AI, and ray-based interactions. Location exposes position but not head rotation on the entity itself.",
+        "adapterImpact": "BukkitEntityWrapper, MinestomEntityWrapper (via Pos yaw/pitch)",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.entity.Nameable",
+        "methodSignature": "@Nullable Component customName(); void customName(@Nullable Component name); boolean hasCustomName(); boolean isCustomNameVisible(); void setCustomNameVisible(boolean visible)",
+        "bukkitSource": "org.bukkit.Nameable (implemented by org.bukkit.entity.Entity)",
+        "bukkitSignature": "net.kyori.adventure.text.Component customName(); void customName(net.kyori.adventure.text.Component); boolean isCustomNameVisible(); void setCustomNameVisible(boolean)",
+        "reason": "Custom entity names (holograms, mob labels, admin markers) are among the most common entity tweaks. Adventure Component keeps it platform-agnostic.",
+        "adapterImpact": "Entity extends Nameable; implement in BukkitEntityWrapper, BukkitLivingEntityWrapper, MinestomEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "@NotNull List<? extends Entity> passengers(); boolean addPassenger(@NotNull Entity passenger); boolean removePassenger(@NotNull Entity passenger); boolean eject()",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "java.util.List<org.bukkit.entity.Entity> getPassengers(); boolean addPassenger(org.bukkit.entity.Entity); boolean removePassenger(org.bukkit.entity.Entity); boolean eject()",
+        "reason": "Passenger stacks power boats, minecarts, mounts, and stacked entities\u2014core gameplay, not niche.",
+        "adapterImpact": "BukkitEntityWrapper, MinestomEntityWrapper (passenger APIs on net.minestom.server.entity.Entity)",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "@Nullable Entity vehicle(); boolean leaveVehicle(); boolean isInsideVehicle()",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "org.bukkit.entity.Entity getVehicle(); boolean leaveVehicle(); boolean isInsideVehicle()",
+        "reason": "Complements passenger APIs for ride/dismount logic used in transport and combat plugins.",
+        "adapterImpact": "BukkitEntityWrapper, MinestomEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "boolean isGlowing(); void setGlowing(boolean glowing); boolean isInvisible(); void setInvisible(boolean invisible); boolean isInvulnerable(); void setInvulnerable(boolean invulnerable)",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "boolean isGlowing(); void setGlowing(boolean); boolean isInvisible(); void setInvisible(boolean); boolean isInvulnerable(); void setInvulnerable(boolean)",
+        "reason": "Visibility and damage-immunity flags are standard minigame/admin tooling; no event or scheduler coupling required.",
+        "adapterImpact": "BukkitEntityWrapper, BukkitLivingEntityWrapper, MinestomEntityWrapper, MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "@NotNull Collection<? extends Entity> nearbyEntities(double x, double y, double z)",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "java.util.List<org.bukkit.entity.Entity> getNearbyEntities(double, double, double)",
+        "reason": "Entity-centric proximity queries avoid re-deriving centers from Location and mirror the most common Bukkit entity query pattern.",
+        "adapterImpact": "BukkitEntityWrapper (delegate + adapt collection), MinestomEntityWrapper (instance entity query)",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Entity",
+        "methodSignature": "double height(); double width(); int entityId()",
+        "bukkitSource": "org.bukkit.entity.Entity",
+        "bukkitSignature": "double getHeight(); double getWidth(); int getEntityId()",
+        "reason": "Dimensions are needed for safe spawning and hitbox math; entityId is widely used for packets, debugging, and cross-referencing.",
+        "adapterImpact": "BukkitEntityWrapper, MinestomEntityWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.LivingEntity",
+        "methodSignature": "@NotNull EntityEquipment equipment()",
+        "bukkitSource": "org.bukkit.entity.LivingEntity",
+        "bukkitSignature": "org.bukkit.inventory.EntityEquipment getEquipment()",
+        "reason": "Armor and hand items are essential for combat, loot, and mob customization; currently unreachable through common abstractions.",
+        "adapterImpact": "New BukkitEntityEquipmentWrapper; BukkitLivingEntityWrapper; MinestomLivingEntityWrapper; BukkitAdapters.adapt for Projectile/LivingEntity branches",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.LivingEntity",
+        "methodSignature": "void attack(@NotNull Entity target); void swingMainHand(); void swingOffHand()",
+        "bukkitSource": "org.bukkit.entity.LivingEntity",
+        "bukkitSignature": "void attack(org.bukkit.entity.Entity); void swingMainHand(); void swingOffHand()",
+        "reason": "Programmatic melee and swing animations are common for custom mobs, NPC combat, and ability systems.",
+        "adapterImpact": "BukkitLivingEntityWrapper, MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.LivingEntity",
+        "methodSignature": "int remainingAir(); void setRemainingAir(int ticks); boolean hasAI(); void setAI(boolean hasAi)",
+        "bukkitSource": "org.bukkit.entity.LivingEntity",
+        "bukkitSignature": "int getRemainingAir(); void setRemainingAir(int); boolean hasAI(); void setAI(boolean)",
+        "reason": "Drowning/air mechanics and AI toggling are domain-agnostic survival and mob-behavior controls used outside the Mob subtype.",
+        "adapterImpact": "BukkitLivingEntityWrapper, MinestomLivingEntityWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Damageable",
+        "methodSignature": "double absorptionAmount(); void setAbsorptionAmount(double amount); void kill()",
+        "bukkitSource": "org.bukkit.entity.Damageable",
+        "bukkitSignature": "double getAbsorptionAmount(); void setAbsorptionAmount(double); void kill()",
+        "reason": "Absorption hearts and instant kill are core combat APIs; damage() exists but absorption and kill do not.",
+        "adapterImpact": "BukkitLivingEntityWrapper, MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Player",
+        "methodSignature": "@NotNull Component displayName(); void displayName(@NotNull Component displayName); boolean allowFlight(); void setAllowFlight(boolean allow)",
+        "bukkitSource": "org.bukkit.entity.Player",
+        "bukkitSignature": "net.kyori.adventure.text.Component displayName(); void displayName(net.kyori.adventure.text.Component); boolean getAllowFlight(); void setAllowFlight(boolean)",
+        "reason": "Display names are standard for tab/scoreboard UX; allowFlight is distinct from isFlying and required for creative/spectator flight gating.",
+        "adapterImpact": "BukkitPlayerWrapper, PaperPlayerWrapper (override displayName with native Adventure), MinestomPlayerWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.entity.HumanEntity",
+        "methodSignature": "@NotNull Inventory enderChest(); @Nullable ItemStack itemOnCursor(); void setItemOnCursor(@Nullable ItemStack item); float exhaustion(); void setExhaustion(float exhaustion)",
+        "bukkitSource": "org.bukkit.entity.HumanEntity",
+        "bukkitSignature": "org.bukkit.inventory.Inventory getEnderChest(); org.bukkit.inventory.ItemStack getItemOnCursor(); void setItemOnCursor(org.bukkit.inventory.ItemStack); float getExhaustion(); void setExhaustion(float)",
+        "reason": "Player extends LivingEntity today but Bukkit's HumanEntity layer covers ender chest, cursor item, and hunger exhaustion\u2014heavily used inventory/survival APIs.",
+        "adapterImpact": "Player extends HumanEntity; BukkitPlayerWrapper, PaperPlayerWrapper, MinestomPlayerWrapper; reuse existing Inventory/ItemStack adapters",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.Player",
+        "methodSignature": "@Nullable Location bedSpawnLocation(); void setBedSpawnLocation(@Nullable Location location, boolean force)",
+        "bukkitSource": "org.bukkit.entity.Player",
+        "bukkitSignature": "org.bukkit.Location getRespawnLocation(); void setRespawnLocation(org.bukkit.Location, boolean)",
+        "reason": "Respawn point management is a foundational survival/multiworld feature without tying common to events.",
+        "adapterImpact": "BukkitPlayerWrapper, PaperPlayerWrapper, MinestomPlayerWrapper",
+        "priority": "medium"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.entity",
+        "name": "Nameable",
+        "extends": [],
+        "methods": [
+          "@Nullable Component customName()",
+          "void customName(@Nullable Component name)",
+          "boolean hasCustomName()",
+          "boolean isCustomNameVisible()",
+          "void setCustomNameVisible(boolean visible)"
+        ],
+        "reason": "Bukkit Entity implements Nameable; extracting it lets non-entity holders reuse the same Adventure-based naming contract."
+      },
+      {
+        "package": "org.aincraft.common.inventory",
+        "name": "EntityEquipment",
+        "extends": [],
+        "methods": [
+          "@Nullable ItemStack helmet()",
+          "void setHelmet(@Nullable ItemStack item)",
+          "@Nullable ItemStack chestplate()",
+          "void setChestplate(@Nullable ItemStack item)",
+          "@Nullable ItemStack leggings()",
+          "void setLeggings(@Nullable ItemStack item)",
+          "@Nullable ItemStack boots()",
+          "void setBoots(@Nullable ItemStack item)",
+          "@Nullable ItemStack itemInMainHand()",
+          "void setItemInMainHand(@Nullable ItemStack item)",
+          "@Nullable ItemStack itemInOffHand()",
+          "void setItemInOffHand(@Nullable ItemStack item)",
+          "@Nullable ItemStack getItem(@NotNull EquipmentSlot slot)",
+          "void setItem(@NotNull EquipmentSlot slot, @Nullable ItemStack item)"
+        ],
+        "reason": "Maps org.bukkit.inventory.EntityEquipment\u2014the main bridge for mob gear and held items\u2014using existing common ItemStack and EquipmentSlot types."
+      },
+      {
+        "package": "org.aincraft.common.entity",
+        "name": "HumanEntity",
+        "extends": [
+          "org.aincraft.common.entity.LivingEntity"
+        ],
+        "methods": [
+          "@NotNull Inventory enderChest()",
+          "@Nullable ItemStack itemOnCursor()",
+          "void setItemOnCursor(@Nullable ItemStack item)",
+          "float exhaustion()",
+          "void setExhaustion(float exhaustion)"
+        ],
+        "reason": "Mirrors Bukkit's HumanEntity layer between LivingEntity and Player; Player should extend HumanEntity instead of LivingEntity directly."
+      }
+    ]
+  },
+  "world": {
+    "domain": "world",
+    "summary": ":common` world coverage is read-heavy: block/chunk lookup, dimensions, border, environment/difficulty/time reads, and entity/player enumeration. Bukkit exposes large gameplay surfaces still absent\u2014ray tracing (despite RayTraceResult existing), spatial queries, entity spawn/lookup, block mutation/light/biome, weather/time/spawn/explosion control, chunk generation/force-load flags, and animated world-border changes. Adding ~15 domain-agnostic methods plus FluidCollisionMode and HeightMap enums would unlock most cross-platform plugin patterns without touching event/scheduler APIs.",
+    "gaps": [
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@Nullable RayTraceResult rayTraceBlocks(@NotNull Location start, @NotNull Vector3d direction, double maxDistance, @NotNull FluidCollisionMode fluidCollisionMode, boolean ignorePassableBlocks)",
+        "bukkitSource": "org.bukkit.World#rayTraceBlocks",
+        "bukkitSignature": "org.bukkit.util.RayTraceResult rayTraceBlocks(org.bukkit.Location, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode, boolean)",
+        "reason": "Line-of-sight, placement preview, and interaction reach checks are among the most common world queries; RayTraceResult already exists in :common but World has no producer methods.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper (inherits), MinestomWorldWrapper; new BukkitRayTraceResultWrapper (or inline adapt) mapping hit block/face/entity to common types",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@Nullable RayTraceResult rayTrace(@NotNull Location start, @NotNull Vector3d direction, double maxDistance, @NotNull FluidCollisionMode fluidCollisionMode, boolean ignorePassableBlocks, double raySize)",
+        "bukkitSource": "org.bukkit.World#rayTrace",
+        "bukkitSignature": "org.bukkit.util.RayTraceResult rayTrace(org.bukkit.Location, org.bukkit.util.Vector, double, org.bukkit.FluidCollisionMode, boolean, double, java.util.function.Predicate<? super org.bukkit.entity.Entity>)",
+        "reason": "Combined block+entity ray traces power crosshair targeting, projectile collision, and unified interaction APIs; widely used in combat and building plugins.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper; predicate overloads can be added later as default methods",
+        "priority": "high"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.world.FluidCollisionMode",
+        "methodSignature": "enum FluidCollisionMode { NEVER, SOURCE_ONLY, ALWAYS }",
+        "bukkitSource": "org.bukkit.FluidCollisionMode",
+        "bukkitSignature": "org.bukkit.FluidCollisionMode",
+        "reason": "Required parameter for rayTraceBlocks/rayTrace; domain-agnostic and maps 1:1 to Bukkit fluid collision semantics.",
+        "adapterImpact": "Used by all World ray-trace adapter methods in BukkitWorldWrapper and MinestomWorldWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@NotNull Block getHighestBlockAt(int x, int z); @NotNull Block getHighestBlockAt(int x, int z, @NotNull HeightMap heightMap)",
+        "bukkitSource": "org.bukkit.World#getHighestBlockAt",
+        "bukkitSignature": "org.bukkit.block.Block getHighestBlockAt(int, int); org.bukkit.block.Block getHighestBlockAt(int, int, org.bukkit.HeightMap)",
+        "reason": "Terrain height lookup is essential for spawning, fall-safe teleports, structure bases, and surface scans.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.world.HeightMap",
+        "methodSignature": "enum HeightMap { MOTION_BLOCKING, MOTION_BLOCKING_NO_LEAVES, OCEAN_FLOOR, WORLD_SURFACE, WORLD_SURFACE_WG }",
+        "bukkitSource": "org.bukkit.HeightMap",
+        "bukkitSignature": "org.bukkit.HeightMap",
+        "reason": "Controls which blocks count as surface for getHighestBlockAt; needed for correct spawn Y and pathfinding anchors.",
+        "adapterImpact": "BukkitWorldWrapper, MinestomWorldWrapper when implementing getHighestBlockAt overload",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@NotNull Collection<? extends Entity> nearbyEntities(@NotNull Location center, double xRadius, double yRadius, double zRadius); @NotNull Collection<? extends Entity> nearbyEntities(@NotNull BoundingBox box)",
+        "bukkitSource": "org.bukkit.World#getNearbyEntities",
+        "bukkitSignature": "java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(org.bukkit.Location, double, double, double); java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(org.bukkit.util.BoundingBox)",
+        "reason": "Spatial entity queries underpin mob AI helpers, region scanners, proximity triggers, and effect radii\u2014far more efficient than filtering entities().",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@Nullable Entity entity(@NotNull UUID uuid)",
+        "bukkitSource": "org.bukkit.World#getEntity",
+        "bukkitSignature": "org.bukkit.entity.Entity getEntity(java.util.UUID)",
+        "reason": "UUID\u2192entity lookup is standard for persistence, quests, and cross-reference from stored data.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@NotNull <T extends Entity> T spawn(@NotNull Location location, @NotNull Class<T> type)",
+        "bukkitSource": "org.bukkit.World#spawn",
+        "bukkitSignature": "<T extends org.bukkit.entity.LivingEntity> T spawn(org.bukkit.Location, java.lang.Class<T>, org.bukkit.event.entity.CreatureSpawnEvent$SpawnReason, boolean, java.util.function.Consumer<? super T>)",
+        "reason": "Entity spawning from world is core gameplay; common already has Entity/EntityType but World cannot create entities. Omit SpawnReason initially to stay event-agnostic.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper; may need EntityType-based overload using org.aincraft.common.entity.EntityType",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "void setType(@NotNull BlockType type); void setType(@NotNull BlockType type, boolean applyPhysics); void setState(@NotNull BlockState state, boolean applyPhysics)",
+        "bukkitSource": "org.bukkit.block.Block#setType / setBlockData",
+        "bukkitSignature": "void setType(org.bukkit.Material); void setType(org.bukkit.Material, boolean); void setBlockData(org.bukkit.block.data.BlockData, boolean)",
+        "reason": "Block access is currently read-only; mutating blocks is fundamental for builders, minigames, and world editors.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper; BlockState may need richer mutation support beyond asString()",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "int lightLevel(); int lightFromSky(); int lightFromBlocks()",
+        "bukkitSource": "org.bukkit.block.Block#getLightLevel / getLightFromSky / getLightFromBlocks",
+        "bukkitSignature": "byte getLightLevel(); byte getLightFromSky(); byte getLightFromBlocks()",
+        "reason": "Light checks drive mob spawning rules, crop growth logic, and safe-area detection; very common in survival plugins.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "@NotNull Biome biome(); void setBiome(@NotNull Biome biome)",
+        "bukkitSource": "org.bukkit.block.Block#getBiome / setBiome",
+        "bukkitSignature": "org.bukkit.block.Biome getBiome(); void setBiome(org.bukkit.block.Biome)",
+        "reason": "Per-block biome drives mob spawns, grass color, and climate effects; org.aincraft.common.effect.Biome already exists but Block cannot read/write it.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper; Biome adapter mapping in BukkitAdapters/MinestomAdapters",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "boolean hasStorm(); void setStorm(boolean storm); boolean isThundering(); void setThundering(boolean thundering); int weatherDuration(); void setWeatherDuration(int ticks)",
+        "bukkitSource": "org.bukkit.World weather methods",
+        "bukkitSignature": "boolean hasStorm(); void setStorm(boolean); boolean isThundering(); void setThundering(boolean); int getWeatherDuration(); void setWeatherDuration(int)",
+        "reason": "Weather control is widely used for ambience, events, and dimension scripting; fully domain-agnostic.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper (Minestom may stub or map to instance weather if available)",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "void setTime(long time); void setFullTime(long time); boolean isDayTime(); long gameTime()",
+        "bukkitSource": "org.bukkit.World time methods",
+        "bukkitSignature": "void setTime(long); void setFullTime(long); boolean isDayTime(); long getGameTime()",
+        "reason": "World exposes time()/fullTime() read-only; mutators and game-time/day checks are standard for shops, sleep mechanics, and timed events.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "@NotNull Location spawnLocation(); boolean setSpawnLocation(@NotNull Location location); void setDifficulty(@NotNull Difficulty difficulty)",
+        "bukkitSource": "org.bukkit.World#getSpawnLocation / setSpawnLocation / setDifficulty",
+        "bukkitSignature": "org.bukkit.Location getSpawnLocation(); boolean setSpawnLocation(org.bukkit.Location); void setDifficulty(org.bukkit.Difficulty)",
+        "reason": "Spawn point and difficulty are core world configuration used by lobby plugins, adventure maps, and difficulty scaling.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "boolean createExplosion(@NotNull Location location, float power, boolean setFire, boolean breakBlocks)",
+        "bukkitSource": "org.bukkit.World#createExplosion",
+        "bukkitSignature": "boolean createExplosion(org.bukkit.Location, float, boolean, boolean)",
+        "reason": "Explosions are a common gameplay primitive for abilities, traps, and TNT-style mechanics without pulling in entity-specific overloads first.",
+        "adapterImpact": "BukkitWorldWrapper, PaperWorldWrapper, MinestomWorldWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Chunk",
+        "methodSignature": "boolean isGenerated(); boolean isForceLoaded(); void setForceLoaded(boolean forceLoaded)",
+        "bukkitSource": "org.bukkit.Chunk#isGenerated / isForceLoaded / setForceLoaded",
+        "bukkitSignature": "boolean isGenerated(); boolean isForceLoaded(); void setForceLoaded(boolean)",
+        "reason": "Chunk generation and force-load state are widely used for async loaders, farms, and redstone contraptions; complements existing load/unload.",
+        "adapterImpact": "BukkitChunkWrapper, MinestomChunkWrapper; World-level isChunkGenerated(int,int) can be added as convenience default",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.WorldBorder",
+        "methodSignature": "void changeSize(double newSize, long seconds); void reset(); @NotNull World world()",
+        "bukkitSource": "org.bukkit.WorldBorder",
+        "bukkitSignature": "void changeSize(double, long); void reset(); org.bukkit.World getWorld()",
+        "reason": "Animated border shrink/grow and reset are standard minigame/lobby patterns; current wrapper only supports instant setSize.",
+        "adapterImpact": "BukkitWorldBorderWrapper, MinestomWorldBorderWrapper",
+        "priority": "medium"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.world",
+        "name": "FluidCollisionMode",
+        "extends": [],
+        "methods": [],
+        "reason": "Enum backing World ray-trace methods; maps directly to org.bukkit.FluidCollisionMode (NEVER/SOURCE_ONLY/ALWAYS)."
+      },
+      {
+        "package": "org.aincraft.common.world",
+        "name": "HeightMap",
+        "extends": [],
+        "methods": [],
+        "reason": "Enum for surface-height semantics used by getHighestBlockAt; maps to org.bukkit.HeightMap constants."
+      }
+    ]
+  },
+  "block": {
+    "domain": "block",
+    "summary": "`:common` block coverage is thin: `BlockType` is key-only, `BlockState` mirrors only Bukkit `BlockData` as a string (not tile `BlockState`), and `world.Block` lacks mutation, lighting, redstone, drops/breaking, placement checks, and biome APIs. The highest-value additions are block mutation, richer `BlockState`/`BlockData` properties, lighting/redstone queries, drop/break helpers, tile-state access, and small supporting enums.",
+    "gaps": [
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "void setState(@NotNull BlockState state);\nvoid setState(@NotNull BlockState state, boolean applyPhysics);",
+        "bukkitSource": "org.bukkit.block.Block#setBlockData",
+        "bukkitSignature": "void setBlockData(org.bukkit.block.data.BlockData);\nvoid setBlockData(org.bukkit.block.data.BlockData, boolean);",
+        "reason": "Placing/changing blocks is one of the most common plugin operations; adapters already wrap `BlockData` as `BlockState` but expose no write path.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "void setType(@NotNull BlockType type);\nvoid setType(@NotNull BlockType type, boolean applyPhysics);",
+        "bukkitSource": "org.bukkit.block.Block#setType",
+        "bukkitSignature": "void setType(org.bukkit.Material);\nvoid setType(org.bukkit.Material, boolean);",
+        "reason": "Simple type swaps (e.g. air, water, debug markers) are widely used and should not require callers to build full block-state strings.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "int lightLevel();\nint lightFromSky();\nint lightFromBlocks();",
+        "bukkitSource": "org.bukkit.block.Block#getLightLevel / getLightFromSky / getLightFromBlocks",
+        "bukkitSignature": "byte getLightLevel();\nbyte getLightFromSky();\nbyte getLightFromBlocks();",
+        "reason": "Light checks drive mob spawning, crop growth, and safe-placement logic across many plugins.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "int blockPower();\nint blockPower(@NotNull BlockFace face);\nboolean isPowered();\nboolean isIndirectlyPowered();\nboolean isFacePowered(@NotNull BlockFace face);\nboolean isFaceIndirectlyPowered(@NotNull BlockFace face);",
+        "bukkitSource": "org.bukkit.block.Block redstone query methods",
+        "bukkitSignature": "int getBlockPower();\nint getBlockPower(org.bukkit.block.BlockFace);\nboolean isBlockPowered();\nboolean isBlockIndirectlyPowered();\nboolean isBlockFacePowered(org.bukkit.block.BlockFace);\nboolean isBlockFaceIndirectlyPowered(org.bukkit.block.BlockFace);",
+        "reason": "Redstone-aware placement and machine logic depend on these queries; they are domain-agnostic gameplay signals.",
+        "adapterImpact": "BukkitBlockWrapper (Minestom: partial/no-op or redstone subsystem mapping)",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "boolean isReplaceable();\nboolean isCollidable();\nboolean isBuildable();\nboolean isBurnable();\nboolean isSuffocating();",
+        "bukkitSource": "org.bukkit.block.Block property predicates",
+        "bukkitSignature": "boolean isReplaceable();\nboolean isCollidable();\nboolean isBuildable();\nboolean isBurnable();\nboolean isSuffocating();",
+        "reason": "Placement validators, protection plugins, and movement/pathfinding all use these flags beyond the few already on `Block`.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "@NotNull Collection<? extends ItemStack> drops();\n@NotNull Collection<? extends ItemStack> drops(@Nullable ItemStack tool);\n@NotNull Collection<? extends ItemStack> drops(@Nullable ItemStack tool, @Nullable Entity breaker);",
+        "bukkitSource": "org.bukkit.block.Block#getDrops",
+        "bukkitSignature": "java.util.Collection<org.bukkit.inventory.ItemStack> getDrops();\njava.util.Collection<org.bukkit.inventory.ItemStack> getDrops(org.bukkit.inventory.ItemStack);\njava.util.Collection<org.bukkit.inventory.ItemStack> getDrops(org.bukkit.inventory.ItemStack, org.bukkit.entity.Entity);",
+        "reason": "Custom mining, vein miners, and loot-preview UIs need server-accurate drop simulation without actually breaking the block.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "boolean breakNaturally();\nboolean breakNaturally(@Nullable ItemStack tool);",
+        "bukkitSource": "org.bukkit.block.Block#breakNaturally",
+        "bukkitSignature": "boolean breakNaturally();\nboolean breakNaturally(org.bukkit.inventory.ItemStack);",
+        "reason": "Common gameplay utility for quests, abilities, and automated harvesting; keeps drop/tool rules on the platform.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "boolean canPlace(@NotNull BlockState state);",
+        "bukkitSource": "org.bukkit.block.Block#canPlace",
+        "bukkitSignature": "boolean canPlace(org.bukkit.block.data.BlockData);",
+        "reason": "Builders, schematics, and structure pasters need placement validation before mutating the world.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "@NotNull Biome biome();\nvoid setBiome(@NotNull Biome biome);",
+        "bukkitSource": "org.bukkit.block.Block#getBiome / setBiome",
+        "bukkitSignature": "org.bukkit.block.Biome getBiome();\nvoid setBiome(org.bukkit.block.Biome);",
+        "reason": "Per-block biome reads/writes are used for custom worldgen tooling and biome-dependent mechanics; `Biome` already exists in `:common`.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.block.BlockState",
+        "methodSignature": "@NotNull BlockState copy();\n@NotNull BlockState merge(@NotNull BlockState other);\nboolean matches(@NotNull BlockState other);\nint lightEmission();\nboolean isOccluding();\nboolean requiresCorrectToolForDrops();\nboolean isReplaceable();\nboolean isRandomlyTicked();\nfloat destroySpeed(@NotNull ItemStack tool);",
+        "bukkitSource": "org.bukkit.block.data.BlockData",
+        "bukkitSignature": "org.bukkit.block.data.BlockData clone();\norg.bukkit.block.data.BlockData merge(org.bukkit.block.data.BlockData);\nboolean matches(org.bukkit.block.data.BlockData);\nint getLightEmission();\nboolean isOccluding();\nboolean requiresCorrectToolForDrops();\nboolean isReplaceable();\nboolean isRandomlyTicked();\nfloat getDestroySpeed(org.bukkit.inventory.ItemStack);",
+        "reason": "Current `BlockState` only exposes `type()` and `asString()`; these properties are essential for lighting engines, tool checks, and state editing without string parsing.",
+        "adapterImpact": "BukkitBlockStateWrapper, MinestomBlockStateWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.block.TileBlockState",
+        "methodSignature": "@NotNull Block block();\n@NotNull BlockState blockData();\nboolean update();\nboolean update(boolean force);\nboolean update(boolean force, boolean applyPhysics);\n@NotNull TileBlockState copy();\nboolean isPlaced();",
+        "bukkitSource": "org.bukkit.block.BlockState (tile entity state)",
+        "bukkitSignature": "org.bukkit.block.Block getBlock();\norg.bukkit.block.data.BlockData getBlockData();\nboolean update();\nboolean update(boolean);\nboolean update(boolean, boolean);\norg.bukkit.block.BlockState copy();\nboolean isPlaced();",
+        "reason": "Bukkit distinguishes `BlockData` (wrapped today as `BlockState`) from tile `BlockState` (chests, signs, spawners). Without a tile-state interface, chest/sign APIs cannot be expressed in `:common`.",
+        "adapterImpact": "New BukkitTileBlockStateWrapper; new Minestom tile wrapper where applicable; extend BukkitBlockWrapper#tileState()",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "long blockKey();",
+        "bukkitSource": "org.bukkit.block.Block#getBlockKey",
+        "bukkitSignature": "long getBlockKey();",
+        "reason": "Packed block keys are used for efficient maps/sets and chunk-local indexing in performant block trackers.",
+        "adapterImpact": "BukkitBlockWrapper, MinestomBlockWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "float breakSpeed(@NotNull Player player);",
+        "bukkitSource": "org.bukkit.block.Block#getBreakSpeed",
+        "bukkitSignature": "float getBreakSpeed(org.bukkit.entity.Player);",
+        "reason": "Mining UX, haste/fatigue plugins, and custom tool abilities need player-specific break speed at a block.",
+        "adapterImpact": "BukkitBlockWrapper (Minestom: approximate via block hardness + player attributes)",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.block.PistonMoveReaction",
+        "methodSignature": "enum PistonMoveReaction { NORMAL, DESTROY, BLOCK, IGNORE, PUSH_ONLY }",
+        "bukkitSource": "org.bukkit.block.PistonMoveReaction",
+        "bukkitSignature": "org.bukkit.block.PistonMoveReaction getPistonMoveReaction();",
+        "reason": "Piston/contraption plugins need a portable enum for how a block reacts to piston movement.",
+        "adapterImpact": "BukkitBlockStateWrapper (+ Block wrapper passthrough); MinestomBlockStateWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.block.BlockType",
+        "methodSignature": "@NotNull String translationKey();",
+        "bukkitSource": "org.bukkit.block.Block#getTranslationKey / Material translation",
+        "bukkitSignature": "java.lang.String getTranslationKey();",
+        "reason": "Display names, logging, and Adventure components often need the vanilla translation key alongside the namespaced key.",
+        "adapterImpact": "BukkitBlockTypeWrapper, MinestomBlockTypeWrapper",
+        "priority": "low"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.block",
+        "name": "TileBlockState",
+        "extends": [],
+        "methods": [
+          "@NotNull Block block()",
+          "@NotNull BlockState blockData()",
+          "boolean update()",
+          "boolean update(boolean force)",
+          "boolean update(boolean force, boolean applyPhysics)",
+          "@NotNull TileBlockState copy()",
+          "boolean isPlaced()"
+        ],
+        "reason": "Represents Bukkit/Paper tile-entity block state separately from property-only `BlockState` (Bukkit `BlockData`), enabling chest/sign/spawner abstractions later."
+      },
+      {
+        "package": "org.aincraft.common.block",
+        "name": "VoxelShape",
+        "extends": [],
+        "methods": [
+          "@NotNull BoundingBox boundingBox()",
+          "boolean isEmpty()",
+          "boolean contains(double x, double y, double z)"
+        ],
+        "reason": "Backs `getCollisionShape()`-style queries for movement, placement, and ray intersection without exposing Bukkit types."
+      },
+      {
+        "package": "org.aincraft.common.block",
+        "name": "BlockSupport",
+        "extends": [],
+        "methods": [],
+        "reason": "Enum companion for `BlockState.isFaceSturdy(BlockFace, BlockSupport)` \u2014 needed for placement/support checks (center vs full face) in builder APIs."
+      }
+    ]
+  },
+  "effect": {
+    "domain": "effect",
+    "summary": "`:common` effect coverage is thin: six marker-like types with almost no behavior, no `Sound` type, no world particle/sound APIs, and no dedicated Bukkit effect wrappers (anonymous implementations in `BukkitLivingEntityWrapper`). Highest-value additions are registry-backed `Sound`, world `spawnParticle`/`playSound`, richer potion/enchantment metadata, and adapter conversion helpers so plugins can drive visuals and status effects without Bukkit types.",
+    "gaps": [
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.effect.Sound",
+        "methodSignature": "interface Sound extends net.kyori.adventure.key.Keyed {}",
+        "bukkitSource": "org.bukkit.Sound",
+        "bukkitSignature": "net.kyori.adventure.key.Key key()",
+        "reason": "Sound is referenced everywhere (World/Player/LivingEntity hurt/eat/drink sounds) but `:common` has no keyed sound abstraction; plugins must use raw Adventure keys or platform types.",
+        "adapterImpact": "Add `BukkitSoundWrapper` (or registry lookup) and `Sound`/`toBukkit(Sound)` in `BukkitAdapters`; Paper can reuse Bukkit mapping.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count);\n<T> void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra, @Nullable T data);",
+        "bukkitSource": "org.bukkit.World",
+        "bukkitSignature": "<T> void spawnParticle(org.bukkit.Particle, org.bukkit.Location, int, double, double, double, double, T)",
+        "reason": "Particle effects are one of the most common cross-platform gameplay utilities; `World` currently exposes no visual-effect API despite Bukkit exposing many overloads.",
+        "adapterImpact": "Extend `BukkitWorldWrapper` and `PaperWorldWrapper`; add `Particle` conversion in `BukkitAdapters`. Minestom needs `MinestomWorldWrapper` particle bridge.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.World",
+        "methodSignature": "void playSound(@NotNull Location location, @NotNull Sound sound, @NotNull SoundCategory category, float volume, float pitch);",
+        "bukkitSource": "org.bukkit.World",
+        "bukkitSignature": "void playSound(org.bukkit.Location, org.bukkit.Sound, org.bukkit.SoundCategory, float, float)",
+        "reason": "Ambient/world sound playback is domain-agnostic and widely used for feedback, minigames, and ambience; only `SoundCategory` exists today.",
+        "adapterImpact": "Extend `BukkitWorldWrapper`/`PaperWorldWrapper`; map `SoundCategory` via existing enum and new `Sound` adapter.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.LivingEntity",
+        "methodSignature": "@Nullable PotionEffect potionEffect(@NotNull PotionEffectType type);",
+        "bukkitSource": "org.bukkit.entity.LivingEntity",
+        "bukkitSignature": "org.bukkit.potion.PotionEffect getPotionEffect(org.bukkit.potion.PotionEffectType)",
+        "reason": "Plugins frequently read amplifier/duration of a single active effect; only `hasPotionEffect` and the full collection are exposed.",
+        "adapterImpact": "Add to `BukkitLivingEntityWrapper` and `MinestomLivingEntityWrapper`; reuse shared `BukkitPotionEffectWrapper` instead of anonymous classes.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.entity.LivingEntity",
+        "methodSignature": "boolean addPotionEffect(@NotNull PotionEffect effect, boolean force);\nboolean clearActivePotionEffects();",
+        "bukkitSource": "org.bukkit.entity.LivingEntity",
+        "bukkitSignature": "boolean addPotionEffect(org.bukkit.potion.PotionEffect, boolean);\nboolean clearActivePotionEffects()",
+        "reason": "Bukkit distinguishes forced overrides and bulk clear; current `addPotionEffect` always behaves like non-forced add and cannot wipe all effects.",
+        "adapterImpact": "Update `BukkitLivingEntityWrapper` method signatures/behavior; mirror in Minestom adapter.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.PotionEffectType",
+        "methodSignature": "@NotNull PotionEffect createEffect(int duration, int amplifier);",
+        "bukkitSource": "org.bukkit.potion.PotionEffectType",
+        "bukkitSignature": "org.bukkit.potion.PotionEffect createEffect(int, int)",
+        "reason": "Canonical factory for building effects from a type; avoids duplicating duration/amplifier/ambient defaults at every call site.",
+        "adapterImpact": "Implement on `BukkitPotionEffectTypeWrapper`; Minestom registry-backed implementation.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.PotionEffect",
+        "methodSignature": "boolean isInfinite();\n@NotNull PotionEffect withDuration(int duration);\n@NotNull PotionEffect withAmplifier(int amplifier);",
+        "bukkitSource": "org.bukkit.potion.PotionEffect",
+        "bukkitSignature": "boolean isInfinite();\norg.bukkit.potion.PotionEffect withDuration(int);\norg.bukkit.potion.PotionEffect withAmplifier(int)",
+        "reason": "Infinite/beacon-style effects and immutable `with*` copies are standard Bukkit patterns used in buff systems and item builders.",
+        "adapterImpact": "New `BukkitPotionEffectWrapper`; update `BukkitLivingEntityWrapper` to wrap rather than allocate anonymous `PotionEffect` instances.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.effect.PotionEffectTypeCategory",
+        "methodSignature": "enum PotionEffectTypeCategory { BENEFICIAL, HARMFUL, NEUTRAL }",
+        "bukkitSource": "org.bukkit.potion.PotionEffectTypeCategory",
+        "bukkitSignature": "org.bukkit.potion.PotionEffectTypeCategory getCategory()",
+        "reason": "Category drives UI coloring, brewing logic, and whether an effect is treated as a debuff; `PotionEffectType` lacks this metadata.",
+        "adapterImpact": "Add `PotionEffectType.category()` and map in `BukkitPotionEffectTypeWrapper`.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.PotionEffectType",
+        "methodSignature": "@NotNull PotionEffectTypeCategory category();",
+        "bukkitSource": "org.bukkit.potion.PotionEffectType",
+        "bukkitSignature": "org.bukkit.potion.PotionEffectTypeCategory getCategory()",
+        "reason": "Pairs with the new category enum; required for effect classification in domain-agnostic code.",
+        "adapterImpact": "Implement on `BukkitPotionEffectTypeWrapper`.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.Enchantment",
+        "methodSignature": "@NotNull net.kyori.adventure.text.Component displayName(int level);\n@NotNull net.kyori.adventure.text.Component description();\nboolean conflictsWith(@NotNull Enchantment other);\nboolean canEnchant(@NotNull org.aincraft.common.inventory.ItemStack item);",
+        "bukkitSource": "org.bukkit.enchantments.Enchantment",
+        "bukkitSignature": "net.kyori.adventure.text.Component displayName(int);\nnet.kyori.adventure.text.Component description();\nboolean conflictsWith(org.bukkit.enchantments.Enchantment);\nboolean canEnchantItem(org.bukkit.inventory.ItemStack)",
+        "reason": "Enchantment display and applicability checks are core to anvil/grindstone/custom-enchant plugins; current interface only exposes level bounds and curse/treasure flags.",
+        "adapterImpact": "New `BukkitEnchantmentWrapper` plus `Enchantment`/`toBukkit(Enchantment)` in `BukkitAdapters`; used by future `ItemStack` enchantment helpers.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.Enchantment",
+        "methodSignature": "boolean isTradeable();\nboolean isDiscoverable();",
+        "bukkitSource": "org.bukkit.enchantments.Enchantment",
+        "bukkitSignature": "boolean isTradeable();\nboolean isDiscoverable()",
+        "reason": "Controls villager loot and enchanting-table pools; commonly queried when generating rewards.",
+        "adapterImpact": "Add to `BukkitEnchantmentWrapper`.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.Particle",
+        "methodSignature": "@NotNull Class<?> dataType();",
+        "bukkitSource": "org.bukkit.Particle",
+        "bukkitSignature": "java.lang.Class<?> getDataType()",
+        "reason": "Typed particles (block dust, item, color) require knowing the data payload class before calling `World.spawnParticle`; marker `Particle` is insufficient.",
+        "adapterImpact": "Add `BukkitParticleWrapper`; validate `data` argument type in world spawn helpers.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.world.Block",
+        "methodSignature": "@NotNull Biome biome();\nvoid setBiome(@NotNull Biome biome);",
+        "bukkitSource": "org.bukkit.block.Block",
+        "bukkitSignature": "org.bukkit.block.Biome getBiome();\nvoid setBiome(org.bukkit.block.Biome)",
+        "reason": "`Biome` exists in `:common` but is unused; biome get/set on blocks is a standard worldgen/gameplay effect primitive.",
+        "adapterImpact": "Extend `BukkitBlockWrapper` and `MinestomBlockWrapper`; add `Biome` adapter helpers.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.effect.EntityEffect",
+        "methodSignature": "enum EntityEffect { HURT, DEATH, ... }",
+        "bukkitSource": "org.bukkit.EntityEffect",
+        "bukkitSignature": "void sendEntityEffect(org.bukkit.EntityEffect, org.bukkit.entity.Entity)",
+        "reason": "Lightweight entity status animations (hurt, wolf shake, etc.) are widely used for client feedback without spawning particles.",
+        "adapterImpact": "Add `Player.sendEntityEffect(EntityEffect, Entity)` (or `Audience` helper) in `BukkitPlayerWrapper`/`PaperPlayerWrapper`.",
+        "priority": "medium"
+      },
+      {
+        "category": "adapter_gap",
+        "targetInterface": "org.aincraft.bukkit.adapter.BukkitAdapters",
+        "methodSignature": "@NotNull PotionEffect adapt(org.bukkit.potion.PotionEffect);\n@NotNull org.bukkit.potion.PotionEffect toBukkit(@NotNull PotionEffect);\n@NotNull Enchantment adapt(org.bukkit.enchantments.Enchantment);\n@NotNull Particle adapt(org.bukkit.Particle);",
+        "bukkitSource": "org.bukkit.potion.PotionEffect / org.bukkit.enchantments.Enchantment / org.bukkit.Particle",
+        "bukkitSignature": "(wrapper conversion helpers)",
+        "reason": "Effect objects are constructed inline in `BukkitLivingEntityWrapper`, causing duplication and preventing identity-safe round-trips.",
+        "adapterImpact": "Create `BukkitPotionEffectWrapper`, `BukkitPotionEffectTypeWrapper`, `BukkitEnchantmentWrapper`, `BukkitParticleWrapper`, `BukkitBiomeWrapper`; refactor `BukkitLivingEntityWrapper` to use them.",
+        "priority": "high"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.effect",
+        "name": "Sound",
+        "extends": [
+          "net.kyori.adventure.key.Keyed"
+        ],
+        "methods": [],
+        "reason": "Registry-backed keyed sound token used by `World.playSound` and entity sound queries; maps 1:1 to Bukkit/Paper `Sound` and Adventure `Key`."
+      },
+      {
+        "package": "org.aincraft.common.effect",
+        "name": "PotionEffectTypeCategory",
+        "extends": [],
+        "methods": [],
+        "reason": "Domain-agnostic classification for potion types (beneficial/harmful/neutral) backing `PotionEffectType.category()`."
+      },
+      {
+        "package": "org.aincraft.common.effect",
+        "name": "EntityEffect",
+        "extends": [],
+        "methods": [],
+        "reason": "Enum of client-side entity status animations; enables `Player.sendEntityEffect` without exposing Bukkit enums."
+      }
+    ]
+  },
+  "attribute": {
+    "domain": "attribute",
+    "summary": "`:common` covers core attributable entity/instance/modifier read/write but omits several widely-used Paper/Bukkit attribute APIs: default values, transient modifiers, Key-based modifier lookup/removal, slot groups, sentiment, registry/constants access, modifier factories, and potion-effect attribute metadata. ItemMeta attribute coverage is partial (no per-slot bulk ops). Minestom adapter stubs modifier APIs entirely.",
+    "gaps": [
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.AttributeInstance",
+        "methodSignature": "void addTransientModifier(@NotNull AttributeModifier modifier)",
+        "bukkitSource": "org.bukkit.attribute.AttributeInstance.addTransientModifier",
+        "bukkitSignature": "void addTransientModifier(org.bukkit.attribute.AttributeModifier)",
+        "reason": "Transient modifiers are the standard way to apply temporary buffs/debuffs (potions, abilities) without persisting on save; adapters currently only expose permanent addModifier.",
+        "adapterImpact": "BukkitAttributeInstanceWrapper; MinestomLivingEntityWrapper (currently no-op stub)",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.AttributeInstance",
+        "methodSignature": "double defaultValue()",
+        "bukkitSource": "org.bukkit.attribute.AttributeInstance.getDefaultValue",
+        "bukkitSignature": "double getDefaultValue()",
+        "reason": "Needed to compute effective bonuses, reset logic, and UI that shows base vs modified values without hard-coding vanilla defaults.",
+        "adapterImpact": "BukkitAttributeInstanceWrapper; MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.AttributeInstance",
+        "methodSignature": "@Nullable AttributeModifier getModifier(@NotNull Key key)",
+        "bukkitSource": "org.bukkit.attribute.AttributeInstance.getModifier",
+        "bukkitSignature": "org.bukkit.attribute.AttributeModifier getModifier(net.kyori.adventure.key.Key)",
+        "reason": "Modern Paper prefers NamespacedKey/Adventure Key over UUID for modifier identity; common only supports UUID lookup.",
+        "adapterImpact": "BukkitAttributeInstanceWrapper (replace manual UUID loop); MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.AttributeInstance",
+        "methodSignature": "void removeModifier(@NotNull Key key)",
+        "bukkitSource": "org.bukkit.attribute.AttributeInstance.removeModifier",
+        "bukkitSignature": "void removeModifier(net.kyori.adventure.key.Key)",
+        "reason": "Pairs with Key-based getModifier; required for clean removal of keyed modifiers from items/effects without tracking UUIDs.",
+        "adapterImpact": "BukkitAttributeInstanceWrapper; MinestomLivingEntityWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.Attribute",
+        "methodSignature": "double defaultValue()",
+        "bukkitSource": "org.bukkit.attribute.Attribute.getDefaultValue",
+        "bukkitSignature": "double getDefaultValue()",
+        "reason": "Registry attributes carry vanilla default magnitudes; needed when no AttributeInstance exists yet or when building items/effects.",
+        "adapterImpact": "BukkitAttributeWrapper",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.AttributeModifier",
+        "methodSignature": "@Nullable EquipmentSlotGroup slotGroup()",
+        "bukkitSource": "org.bukkit.attribute.AttributeModifier.getSlotGroup",
+        "bukkitSignature": "org.bukkit.inventory.EquipmentSlotGroup getSlotGroup()",
+        "reason": "Paper constructors and modern item components attach modifiers to slot groups (HAND, ARMOR, ANY, etc.); common only exposes single EquipmentSlot.",
+        "adapterImpact": "BukkitAttributeModifierWrapper; BukkitAdapters.toBukkit(AttributeModifier) when creating modifiers",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.inventory.EquipmentSlotGroup",
+        "methodSignature": "enum EquipmentSlotGroup { ANY, ARMOR, CHEST, FEET, HAND, HEAD, LEGS, OFF_HAND, BODY, SADDLE, ... }",
+        "bukkitSource": "org.bukkit.inventory.EquipmentSlotGroup",
+        "bukkitSignature": "org.bukkit.inventory.EquipmentSlotGroup enum with values()/valueOf and slot membership helpers",
+        "reason": "Prerequisite for AttributeModifier.slotGroup() and Paper slot-group modifier constructors; domain-agnostic grouping of equipment slots.",
+        "adapterImpact": "New mapping in BukkitAdapters; BukkitAttributeModifierWrapper; future ItemMeta/Equippable adapters",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.attribute.AttributeRegistry",
+        "methodSignature": "@Nullable Attribute get(@NotNull Key key); @NotNull Collection<? extends Attribute> values()",
+        "bukkitSource": "org.bukkit.Registry.ATTRIBUTE / io.papermc.paper.registry.RegistryAccess",
+        "bukkitSignature": "Registry<Attribute> getRegistry(RegistryKey.ATTRIBUTE); Attribute get(Key)",
+        "reason": "Attribute is registry-backed (not a fixed enum); cross-platform code needs Key\u2192Attribute resolution and iteration without Bukkit Registry types.",
+        "adapterImpact": "New Bukkit/Paper registry adapter (likely BukkitServerWrapper or PaperServerWrapper); Minestom key\u2192Attribute mapping",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.attribute.Attributes",
+        "methodSignature": "interface Attributes { Attribute MAX_HEALTH(); Attribute ATTACK_DAMAGE(); Attribute MOVEMENT_SPEED(); ... }",
+        "bukkitSource": "org.bukkit.attribute.Attribute.MAX_HEALTH (static registry holders)",
+        "bukkitSignature": "static final Attribute MAX_HEALTH, ATTACK_DAMAGE, MOVEMENT_SPEED, ...",
+        "reason": "Gameplay code universally references well-known attribute keys; a common constants holder avoids scattering raw Key strings.",
+        "adapterImpact": "Implemented via AttributeRegistry in each adapter module (Bukkit maps to org.bukkit.attribute.Attribute.*)",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.attribute.AttributeModifierFactory",
+        "methodSignature": "AttributeModifier create(@NotNull Key key, double amount, @NotNull AttributeModifier.Operation operation, @Nullable EquipmentSlotGroup slotGroup)",
+        "bukkitSource": "org.bukkit.attribute.AttributeModifier constructors",
+        "bukkitSignature": "AttributeModifier(NamespacedKey, double, Operation, EquipmentSlotGroup)",
+        "reason": ":common` has modifier interfaces but no way to construct platform-neutral modifiers; adapters cannot round-trip custom modifiers created in common code.",
+        "adapterImpact": "New BukkitAttributeModifierFactory + BukkitAdapters.create/toBukkit paths; Minestom factory",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.attribute.Attributable",
+        "methodSignature": "void registerAttribute(@NotNull Attribute attribute)",
+        "bukkitSource": "org.bukkit.attribute.Attributable.registerAttribute",
+        "bukkitSignature": "void registerAttribute(org.bukkit.attribute.Attribute)",
+        "reason": "Required for custom/plugin entities that add non-default attributes before getAttribute can succeed.",
+        "adapterImpact": "BukkitLivingEntityWrapper (and entity wrappers for custom mobs); MinestomLivingEntityWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.attribute.Attribute.Sentiment",
+        "methodSignature": "enum Sentiment { POSITIVE, NEUTRAL, NEGATIVE }; @NotNull Sentiment sentiment()",
+        "bukkitSource": "org.bukkit.attribute.Attribute.getSentiment",
+        "bukkitSignature": "org.bukkit.attribute.Attribute.Sentiment getSentiment()",
+        "reason": "Paper exposes attribute sentiment for tooltips/UI categorization (buff vs debuff); useful for domain-agnostic item/attribute displays.",
+        "adapterImpact": "BukkitAttributeWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.effect.PotionEffectType",
+        "methodSignature": "@NotNull Map<Attribute, AttributeModifier> effectAttributes(); double attributeModifierAmount(@NotNull Attribute attribute, int amplifier)",
+        "bukkitSource": "org.bukkit.potion.PotionEffectType.getEffectAttributes / getAttributeModifierAmount",
+        "bukkitSignature": "Map<Attribute,AttributeModifier> getEffectAttributes(); double getAttributeModifierAmount(Attribute, int)",
+        "reason": "Potion effects are a primary source of transient attribute modifiers; bridging effect types to attribute modifiers avoids duplicating vanilla effect tables.",
+        "adapterImpact": "New or extended effect adapter in utilities-bukkit; PotionEffectType wrappers as needed",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.inventory.ItemMeta",
+        "methodSignature": "@NotNull Map<Attribute, Collection<AttributeModifier>> getAttributeModifiers(@NotNull EquipmentSlot slot); void setAttributeModifiers(@NotNull Map<Attribute, Collection<AttributeModifier>> modifiers); boolean removeAttributeModifier(@NotNull EquipmentSlot slot)",
+        "bukkitSource": "org.bukkit.inventory.meta.ItemMeta.getAttributeModifiers(EquipmentSlot) / setAttributeModifiers / removeAttributeModifier(EquipmentSlot)",
+        "bukkitSignature": "Multimap getAttributeModifiers(EquipmentSlot); void setAttributeModifiers(Multimap); boolean removeAttributeModifier(EquipmentSlot)",
+        "reason": "Item attribute editing is slot-scoped in Bukkit; common ItemMeta only supports per-attribute CRUD, not bulk per-slot read/replace.",
+        "adapterImpact": "BukkitItemMetaWrapper",
+        "priority": "medium"
+      },
+      {
+        "category": "adapter_gap",
+        "targetInterface": "org.aincraft.minestom.adapter.MinestomLivingEntityWrapper",
+        "methodSignature": "modifiers(), addModifier(), removeModifier(), getModifier() \u2014 full AttributeInstance modifier API",
+        "bukkitSource": "net.minestom.server.entity.attribute.AttributeInstance modifier list",
+        "bukkitSignature": "Minestom AttributeInstance getModifiers/addModifier/removeModifier equivalents",
+        "reason": "Minestom wrapper returns empty modifiers and no-op mutators, breaking any cross-platform attribute modifier logic on Minestom.",
+        "adapterImpact": "MinestomLivingEntityWrapper; possible new MinestomAttributeModifierWrapper",
+        "priority": "high"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.inventory",
+        "name": "EquipmentSlotGroup",
+        "extends": [],
+        "methods": [
+          "@NotNull Key key()",
+          "@NotNull Collection<EquipmentSlot> slots()",
+          "boolean contains(@NotNull EquipmentSlot slot)"
+        ],
+        "reason": "Mirror Bukkit EquipmentSlotGroup for modifier slot targeting and Paper modifier constructors without Bukkit types."
+      },
+      {
+        "package": "org.aincraft.common.attribute",
+        "name": "AttributeRegistry",
+        "extends": [],
+        "methods": [
+          "@Nullable Attribute get(@NotNull Key key)",
+          "@NotNull Collection<? extends Attribute> values()",
+          "default @Nullable Attribute get(@NotNull String key) { return get(Key.key(key)); }"
+        ],
+        "reason": "Platform-agnostic registry access for keyed Attribute instances."
+      },
+      {
+        "package": "org.aincraft.common.attribute",
+        "name": "Attributes",
+        "extends": [],
+        "methods": [
+          "@NotNull Attribute maxHealth()",
+          "@NotNull Attribute attackDamage()",
+          "@NotNull Attribute movementSpeed()",
+          "@NotNull Attribute attackSpeed()",
+          "@NotNull Attribute armor()",
+          "@NotNull Attribute armorToughness()",
+          "@NotNull Attribute knockbackResistance()",
+          "@NotNull Attribute luck()",
+          "@NotNull Attribute followRange()",
+          "@NotNull Attribute flyingSpeed()",
+          "@NotNull Attribute jumpStrength()"
+        ],
+        "reason": "Stable names for vanilla attributes used across combat, movement, and item systems."
+      },
+      {
+        "package": "org.aincraft.common.attribute",
+        "name": "AttributeModifierFactory",
+        "extends": [],
+        "methods": [
+          "@NotNull AttributeModifier create(@NotNull Key key, double amount, @NotNull AttributeModifier.Operation operation)",
+          "@NotNull AttributeModifier create(@NotNull Key key, double amount, @NotNull AttributeModifier.Operation operation, @Nullable EquipmentSlot slot)",
+          "@NotNull AttributeModifier create(@NotNull Key key, double amount, @NotNull AttributeModifier.Operation operation, @Nullable EquipmentSlotGroup slotGroup)",
+          "@NotNull AttributeModifier create(@NotNull UUID id, @NotNull String name, double amount, @NotNull AttributeModifier.Operation operation, @Nullable EquipmentSlot slot)"
+        ],
+        "reason": "Interface-only construction path for AttributeModifier implementations in adapters."
+      }
+    ]
+  },
+  "server": {
+    "domain": "server",
+    "summary": "`:common` server coverage is thin (13 methods on `Server`, 4 on `CommandSender`) versus ~230 `org.bukkit.Server` APIs. The highest-value additions are version/identity lookups, command dispatch, thread/tick introspection, offline-player identity, inventory factory methods, MOTD/broadcast variants, and closing Adventure messaging gaps in adapters. Scheduler, plugin manager, scoreboard, boss bar, recipe, and Paper-Folia region APIs are intentionally deferred.",
+    "gaps": [
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@NotNull String minecraftVersion();",
+        "bukkitSource": "org.bukkit.Server#getMinecraftVersion",
+        "bukkitSignature": "java.lang.String getMinecraftVersion()",
+        "reason": "Nearly every cross-version plugin gates behavior on the Minecraft release string; `version()` alone returns the Bukkit implementation string, not the game version.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper (delegate to `getBukkitServer().getMinecraftVersion()`). Future MinestomServerWrapper maps to Minestom protocol/version.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "boolean dispatchCommand(@NotNull CommandSender sender, @NotNull String commandLine);",
+        "bukkitSource": "org.bukkit.Server#dispatchCommand",
+        "bukkitSignature": "boolean dispatchCommand(org.bukkit.command.CommandSender, java.lang.String) throws org.bukkit.command.CommandException",
+        "reason": "Core server primitive for running console/plugin commands from gameplay code without touching Bukkit command maps directly.",
+        "adapterImpact": "BukkitServerWrapper (unwrap `CommandSender` via `BukkitAdapters.toBukkit(sender)`), PaperServerWrapper inherits. New Minestom adapter would route to Minestom command manager.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@Nullable org.aincraft.common.entity.Entity entity(@NotNull UUID uniqueId);",
+        "bukkitSource": "org.bukkit.Server#getEntity",
+        "bukkitSignature": "org.bukkit.entity.Entity getEntity(java.util.UUID)",
+        "reason": "UUID entity lookup is the standard way to resolve dropped items, mobs, and players across worlds without holding live references.",
+        "adapterImpact": "BukkitServerWrapper + PaperServerWrapper (`BukkitAdapters.adapt(getEntity(uuid))`). Requires existing `BukkitEntityWrapper` path.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "boolean isPrimaryThread();",
+        "bukkitSource": "org.bukkit.Server#isPrimaryThread",
+        "bukkitSignature": "boolean isPrimaryThread()",
+        "reason": "Thread-safety guard used everywhere on Bukkit/Paper before mutating worlds or entities; domain-agnostic and essential for portable utilities.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper. Minestom equivalent would compare against the instance process thread.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "int currentTick();",
+        "bukkitSource": "org.bukkit.Server#getCurrentTick",
+        "bukkitSignature": "int getCurrentTick()",
+        "reason": "Lightweight server clock for cooldowns, delays, and diagnostics without pulling in Bukkit's scheduler API.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper. Minestom maps to `MinecraftServer.getTick()`.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.server.OfflinePlayer",
+        "methodSignature": "@NotNull OfflinePlayer offlinePlayer(@NotNull UUID uniqueId);\n@NotNull OfflinePlayer offlinePlayer(@NotNull String name);",
+        "bukkitSource": "org.bukkit.Server#getOfflinePlayer",
+        "bukkitSignature": "org.bukkit.OfflinePlayer getOfflinePlayer(java.util.UUID)\norg.bukkit.OfflinePlayer getOfflinePlayer(java.lang.String)",
+        "reason": "Offline identity is required for bans, whitelist, stats, and UUID resolution (`getPlayerUniqueId`) and is one of the most-used Server lookups after online player queries.",
+        "adapterImpact": "New `BukkitOfflinePlayerWrapper`; Server methods in BukkitServerWrapper/PaperServerWrapper. Minestom needs a profile/offline-player bridge.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@Nullable org.aincraft.common.entity.Player playerExact(@NotNull String name);\n@NotNull java.util.Collection<? extends org.aincraft.common.entity.Player> matchPlayers(@NotNull String partialName);",
+        "bukkitSource": "org.bukkit.Server#getPlayerExact / #matchPlayer",
+        "bukkitSignature": "org.bukkit.entity.Player getPlayerExact(java.lang.String)\njava.util.List<org.bukkit.entity.Player> matchPlayer(java.lang.String)",
+        "reason": "Complements existing `player(String)` (case-insensitive) with exact-name and partial-match lookups used by commands and tab completion.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper (adapt player collections via `BukkitAdapters`).",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@NotNull org.aincraft.common.world.GameMode defaultGameMode();\nvoid setDefaultGameMode(@NotNull org.aincraft.common.world.GameMode gameMode);",
+        "bukkitSource": "org.bukkit.Server#getDefaultGameMode / #setDefaultGameMode",
+        "bukkitSignature": "org.bukkit.GameMode getDefaultGameMode()\nvoid setDefaultGameMode(org.bukkit.GameMode)",
+        "reason": "Server-wide default gamemode is a common lobby/minigame setting; `:common` already owns `GameMode`.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper (enum mapping between common and Bukkit `GameMode`).",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@NotNull net.kyori.adventure.text.Component motd();\nvoid motd(@NotNull net.kyori.adventure.text.Component motd);",
+        "bukkitSource": "org.bukkit.Server#motd",
+        "bukkitSignature": "net.kyori.adventure.text.Component motd()\nvoid motd(net.kyori.adventure.text.Component)",
+        "reason": "MOTD is a first-class Adventure `Component` on modern Paper; fits the Kyori-first `:common` policy and is widely read/written by lobby plugins.",
+        "adapterImpact": "BukkitServerWrapper (Paper native `motd()`), PaperServerWrapper inherits. Legacy Spigot may need serializer fallback for set.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "int broadcast(@NotNull net.kyori.adventure.text.Component message, @NotNull String permission);",
+        "bukkitSource": "org.bukkit.Server#broadcast",
+        "bukkitSignature": "int broadcast(net.kyori.adventure.text.Component, java.lang.String)",
+        "reason": "Permission-scoped broadcast is the standard way to send staff/admin messages without iterating `onlinePlayers()` manually.",
+        "adapterImpact": "PaperServerWrapper (native Adventure broadcast). BukkitServerWrapper should gain a Paper-aware path or legacy fallback; return recipient count.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "@NotNull org.aincraft.common.inventory.Inventory createInventory(@Nullable org.aincraft.common.inventory.InventoryHolder holder, int size, @NotNull net.kyori.adventure.text.Component title);\n@NotNull org.aincraft.common.inventory.Inventory createInventory(@Nullable org.aincraft.common.inventory.InventoryHolder holder, @NotNull org.aincraft.common.inventory.InventoryType type);",
+        "bukkitSource": "org.bukkit.Server#createInventory",
+        "bukkitSignature": "org.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, int, net.kyori.adventure.text.Component)\norg.bukkit.inventory.Inventory createInventory(org.bukkit.inventory.InventoryHolder, org.bukkit.event.inventory.InventoryType)",
+        "reason": "Virtual GUI creation is one of the most common server-side operations and belongs on `Server` rather than forcing plugins to reach for Bukkit directly.",
+        "adapterImpact": "BukkitServerWrapper + `BukkitInventoryWrapper`; unwrap holder via adapters. Paper can pass Adventure title natively.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "void savePlayers();",
+        "bukkitSource": "org.bukkit.Server#savePlayers",
+        "bukkitSignature": "void savePlayers()",
+        "reason": "Explicit player-data flush before shutdown/reload is a common admin utility and is domain-agnostic persistence.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper direct delegate.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.Server",
+        "methodSignature": "boolean onlineMode();",
+        "bukkitSource": "org.bukkit.Server#getOnlineMode",
+        "bukkitSignature": "boolean getOnlineMode()",
+        "reason": "Online-mode flag drives UUID/skin/auth behavior; frequently checked in portable auth and proxy-aware plugins.",
+        "adapterImpact": "BukkitServerWrapper, PaperServerWrapper. Minestom exposes equivalent via connection/auth config.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.server.CommandSender",
+        "methodSignature": "@NotNull Server server();",
+        "bukkitSource": "org.bukkit.command.CommandSender#getServer",
+        "bukkitSignature": "org.bukkit.Server getServer()",
+        "reason": "Command handlers routinely need the server instance; every `CommandSender` (console, players, proxied senders) exposes this on Bukkit.",
+        "adapterImpact": "BukkitCommandSenderWrapper (return adapted server from `sender.getServer()`). Player wrappers can override to avoid re-wrap cost.",
+        "priority": "high"
+      },
+      {
+        "category": "adapter_gap",
+        "targetInterface": "org.aincraft.common.server.CommandSender",
+        "methodSignature": "void sendMessage(@NotNull net.kyori.adventure.text.Component message);",
+        "bukkitSource": "org.bukkit.command.CommandSender#sendMessage(Component)",
+        "bukkitSignature": "void sendMessage(net.kyori.adventure.text.Component)",
+        "reason": "`CommandSender` extends `Audience`, but `BukkitCommandSenderWrapper` serializes to legacy section strings, losing formatting on Paper and diverging from `PaperServerWrapper` which already uses native Adventure.",
+        "adapterImpact": "Add `PaperCommandSenderWrapper` (delegate `sendMessage(Component)` natively); keep legacy fallback in `BukkitCommandSenderWrapper` for plain Spigot. Update `BukkitAdapters.adapt(CommandSender)` to select Paper wrapper when available.",
+        "priority": "high"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.server",
+        "name": "OfflinePlayer",
+        "extends": [
+          "net.kyori.adventure.identity.Identified"
+        ],
+        "methods": [
+          "@NotNull java.util.UUID uniqueId();",
+          "@Nullable String name();",
+          "boolean hasPlayedBefore();",
+          "boolean isOnline();",
+          "@Nullable org.aincraft.common.entity.Player player();",
+          "long lastPlayed();",
+          "boolean isWhitelisted();",
+          "void setWhitelisted(boolean whitelisted);",
+          "boolean isBanned();",
+          "boolean isOp();",
+          "void setOp(boolean op);"
+        ],
+        "reason": "Minimal offline identity contract backing `Server.offlinePlayer(...)`, whitelist/ban checks, and UUID resolution without importing Bukkit's `OfflinePlayer` or profile types."
+      }
+    ]
+  },
+  "location": {
+    "domain": "location",
+    "summary": "`:common` location types are read-only coordinate views (Location, Position, BoundingBox) with minimal defaults. Bukkit exposes rich vector math on `org.bukkit.util.Vector`, spatial transforms and queries on `org.bukkit.Location`, and box mutation/ray-trace on `org.bukkit.util.BoundingBox`. The largest coverage holes are Vector3d arithmetic, Location direction/offset/nearby-entity helpers, BoundingBox expand/shift/union/rayTrace, and a Rotation/HeightMap pair for orientation and height sampling. Adapters today wrap Bukkit Vector as Position only, and BoundingBox.intersects() does not delegate to Bukkit overlaps().",
+    "gaps": [
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Vector3d",
+        "methodSignature": "@NotNull Vector3d add(double x, double y, double z);\n@NotNull Vector3d subtract(@NotNull Vector3d other);\n@NotNull Vector3d multiply(double scalar);\n@NotNull Vector3d normalize();\n@NotNull Vector3d crossProduct(@NotNull Vector3d other);",
+        "bukkitSource": "org.bukkit.util.Vector",
+        "bukkitSignature": "org.bukkit.util.Vector add(org.bukkit.util.Vector);\norg.bukkit.util.Vector subtract(org.bukkit.util.Vector);\norg.bukkit.util.Vector multiply(double);\norg.bukkit.util.Vector normalize();\norg.bukkit.util.Vector crossProduct(org.bukkit.util.Vector);",
+        "reason": "Bukkit collapses position and direction into Vector with full 3D math. Plugins constantly use normalize/cross/add for knockback, projectiles, and facing. Vector3d today only exposes accessors, length, distance, and dot.",
+        "adapterImpact": "Add BukkitVector3dWrapper (or make BukkitPositionWrapper implement Vector3d); add MinestomVector3dWrapper backed by Vec/Point; extend BukkitAdapters/MinestomAdapters with adapt/toBukkit conversions.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Location",
+        "methodSignature": "@NotNull Vector3d direction();",
+        "bukkitSource": "org.bukkit.Location",
+        "bukkitSignature": "org.bukkit.util.Vector getDirection();",
+        "reason": "getDirection() is one of the most-used Location APIs (spawn offsets, velocity, ray origins). No common equivalent exists; callers must reimplement yaw/pitch trigonometry.",
+        "adapterImpact": "BukkitLocationWrapper delegates to getDirection() via Vector3d adapter; MinestomLocationWrapper computes from Pos yaw/pitch.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Location",
+        "methodSignature": "@NotNull Location withOffset(double dx, double dy, double dz);\n@NotNull Location withOffset(@NotNull Vector3d offset);\n@NotNull Location withRotation(float yaw, float pitch);",
+        "bukkitSource": "org.bukkit.Location",
+        "bukkitSignature": "org.bukkit.Location add(double, double, double);\norg.bukkit.Location add(org.bukkit.util.Vector);\norg.bukkit.Location setRotation(float, float);",
+        "reason": "Immutable-style transforms are needed because :common interfaces are views, while Bukkit Location is mutable. Teleport targets, spawn builders, and pathing all offset/rotate locations frequently.",
+        "adapterImpact": "BukkitLocationWrapper and MinestomLocationWrapper return new wrapper instances (clone/add on Bukkit; Pos.withView on Minestom). Paper adapter inherits Bukkit behavior.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Location",
+        "methodSignature": "@NotNull Location toBlockLocation();\n@NotNull Location toCenterLocation();",
+        "bukkitSource": "org.bukkit.Location",
+        "bukkitSignature": "org.bukkit.Location toBlockLocation();\norg.bukkit.Location toCenterLocation();",
+        "reason": "Block-aligned and block-center snapping are standard for placement, particles, and region math. Current Location only exposes blockX/Y/Z getters without producing adjusted locations.",
+        "adapterImpact": "BukkitLocationWrapper delegates directly; MinestomLocationWrapper uses block/center Pos helpers.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Location",
+        "methodSignature": "@NotNull Collection<? extends Entity> nearbyEntities(double radius);\n@NotNull Collection<? extends Entity> nearbyEntities(double xRadius, double yRadius, double zRadius);\n@NotNull Collection<? extends Player> nearbyPlayers(double radius);\n@NotNull Collection<? extends LivingEntity> nearbyLivingEntities(double radius);",
+        "bukkitSource": "org.bukkit.Location",
+        "bukkitSignature": "java.util.Collection<org.bukkit.entity.Entity> getNearbyEntities(double, double, double);\njava.util.Collection<org.bukkit.entity.Player> getNearbyPlayers(double);\njava.util.Collection<org.bukkit.entity.LivingEntity> getNearbyLivingEntities(double, double, double);",
+        "reason": "Spatial entity queries from a point are core gameplay utilities (auras, traps, proximity checks). World.entities() is world-wide and not a substitute.",
+        "adapterImpact": "BukkitLocationWrapper delegates and wraps entities via existing entity wrappers; MinestomLocationWrapper uses instance entity queries near Pos.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.BoundingBox",
+        "methodSignature": "@NotNull BoundingBox expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ);\n@NotNull BoundingBox expand(double x, double y, double z);\n@NotNull BoundingBox expand(@NotNull BlockFace face, double amount);",
+        "bukkitSource": "org.bukkit.util.BoundingBox",
+        "bukkitSignature": "org.bukkit.util.BoundingBox expand(double, double, double, double, double, double);\norg.bukkit.util.BoundingBox expand(double, double, double);\norg.bukkit.util.BoundingBox expand(org.bukkit.block.BlockFace, double);",
+        "reason": "Region growth around selections and hitboxes is a primary BoundingBox use case. Common BoundingBox is query-only (contains/intersects) with no mutation/expansion API.",
+        "adapterImpact": "BukkitBoundingBoxWrapper and MinestomBoundingBoxWrapper return new box wrappers from platform expand calls.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.BoundingBox",
+        "methodSignature": "@NotNull BoundingBox shift(double dx, double dy, double dz);\n@NotNull BoundingBox union(@NotNull BoundingBox other);\n@Nullable BoundingBox intersection(@NotNull BoundingBox other);",
+        "bukkitSource": "org.bukkit.util.BoundingBox",
+        "bukkitSignature": "org.bukkit.util.BoundingBox shift(double, double, double);\norg.bukkit.util.BoundingBox union(org.bukkit.util.BoundingBox);\norg.bukkit.util.BoundingBox intersection(org.bukkit.util.BoundingBox);",
+        "reason": "Moving selections and merging/intersecting volumes are standard for protection regions, collision broadphase, and structure bounds.",
+        "adapterImpact": "Update BukkitBoundingBoxWrapper and MinestomBoundingBoxWrapper to delegate shift/union/intersection.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.BoundingBox",
+        "methodSignature": "@Nullable RayTraceResult rayTrace(@NotNull Vector3d origin, @NotNull Vector3d direction, double maxDistance);",
+        "bukkitSource": "org.bukkit.util.BoundingBox",
+        "bukkitSignature": "org.bukkit.util.RayTraceResult rayTrace(org.bukkit.util.Vector, org.bukkit.util.Vector, double);",
+        "reason": "RayTraceResult already exists in :common.world but BoundingBox cannot perform the trace. Needed for line-of-sight and projectile intersection against AABBs.",
+        "adapterImpact": "BukkitBoundingBoxWrapper delegates and maps to common RayTraceResult; MinestomBoundingBoxWrapper uses Minestom collision raycast APIs.",
+        "priority": "high"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Location",
+        "methodSignature": "@NotNull Location toHighestLocation();\n@NotNull Location toHighestLocation(@NotNull HeightMap heightMap);",
+        "bukkitSource": "org.bukkit.Location",
+        "bukkitSignature": "org.bukkit.Location toHighestLocation();\norg.bukkit.Location toHighestLocation(org.bukkit.HeightMap);",
+        "reason": "Snapping to highest solid block is widely used for safe teleport and surface finding. Requires a platform-agnostic HeightMap enum in :common.",
+        "adapterImpact": "BukkitLocationWrapper delegates; MinestomLocationWrapper uses chunk height/surface queries; add HeightMap mapping in both adapters.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_enum",
+        "targetInterface": "org.aincraft.common.world.HeightMap",
+        "methodSignature": "enum HeightMap { MOTION_BLOCKING, MOTION_BLOCKING_NO_LEAVES, OCEAN_FLOOR, WORLD_SURFACE, WORLD_SURFACE_WG }",
+        "bukkitSource": "org.bukkit.HeightMap",
+        "bukkitSignature": "org.bukkit.HeightMap MOTION_BLOCKING, MOTION_BLOCKING_NO_LEAVES, OCEAN_FLOOR, WORLD_SURFACE, WORLD_SURFACE_WG",
+        "reason": "toHighestLocation(HeightMap) cannot be expressed in :common without a shared height-sampling enum.",
+        "adapterImpact": "Map enum values in BukkitAdapters; provide Minestom equivalent height strategy per value.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_interface",
+        "targetInterface": "org.aincraft.common.location.Rotation",
+        "methodSignature": "float yaw();\nfloat pitch();\n@NotNull Rotation add(float yawDelta, float pitchDelta);\n@NotNull Rotation subtract(float yawDelta, float pitchDelta);",
+        "bukkitSource": "io.papermc.paper.math.Rotation / org.bukkit.Location",
+        "bukkitSignature": "io.papermc.paper.math.Rotation getRotation();\norg.bukkit.Location addRotation(float, float);\norg.bukkit.Location subtractRotation(float, float);",
+        "reason": "Paper exposes rotation as a first-class type; yaw/pitch pairs are used independently of position for cameras, mounts, and teleport. Cleaner than duplicating float pairs across APIs.",
+        "adapterImpact": "BukkitLocationWrapper maps Paper Rotation when available; MinestomLocationWrapper maps Pos view; optional Location.rotation() accessor.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Vector3i",
+        "methodSignature": "@NotNull Vector3i add(int x, int y, int z);\n@NotNull Vector3i subtract(@NotNull Vector3i other);",
+        "bukkitSource": "org.bukkit.util.BlockVector",
+        "bukkitSignature": "org.bukkit.util.BlockVector add(org.bukkit.util.Vector);\norg.bukkit.util.BlockVector subtract(org.bukkit.util.Vector);",
+        "reason": "Integer block-coordinate arithmetic is common for schematic offsets and chunk-relative math. Vector3i is read-only today and no BlockVector adapter exists.",
+        "adapterImpact": "Add BukkitVector3iWrapper and MinestomVector3iWrapper; wire through BukkitAdapters/MinestomAdapters.",
+        "priority": "medium"
+      },
+      {
+        "category": "missing_method",
+        "targetInterface": "org.aincraft.common.location.Location",
+        "methodSignature": "boolean isChunkLoaded();\nlong toBlockKey();",
+        "bukkitSource": "org.bukkit.Location",
+        "bukkitSignature": "boolean isChunkLoaded();\nlong toBlockKey();",
+        "reason": "Chunk-loaded checks prevent unsafe block access; toBlockKey() is a compact block identity used in maps and palette systems.",
+        "adapterImpact": "BukkitLocationWrapper delegates; MinestomLocationWrapper uses instance chunk-loaded check and packs block coords into long.",
+        "priority": "medium"
+      },
+      {
+        "category": "adapter_gap",
+        "targetInterface": "org.aincraft.bukkit.adapter.BukkitPositionWrapper",
+        "methodSignature": "implements Vector3d (or dedicated BukkitVector3dWrapper)",
+        "bukkitSource": "org.bukkit.util.Vector",
+        "bukkitSignature": "(entire org.bukkit.util.Vector API)",
+        "reason": "BukkitAdapters.adapt(Vector) returns Position, discarding mutable vector behavior. Any Vector3d API added to :common cannot be reached from Bukkit without a Vector3d-capable wrapper.",
+        "adapterImpact": "Refactor BukkitPositionWrapper to implement Vector3d or split Position/Vector3d wrappers; update BukkitAdapters adapt/toBukkit overloads. Minestom needs parallel Vector3d wrapper.",
+        "priority": "high"
+      },
+      {
+        "category": "adapter_gap",
+        "targetInterface": "org.aincraft.bukkit.adapter.BukkitBoundingBoxWrapper",
+        "methodSignature": "boolean intersects(@NotNull BoundingBox other) should delegate to org.bukkit.util.BoundingBox.overlaps",
+        "bukkitSource": "org.bukkit.util.BoundingBox",
+        "bukkitSignature": "boolean overlaps(org.bukkit.util.BoundingBox);",
+        "reason": "Current intersects() reimplements AABB logic in Java instead of delegating to Bukkit, risking divergence from platform edge cases and missing future Bukkit fixes.",
+        "adapterImpact": "Update BukkitBoundingBoxWrapper.intersects() to call boundingBox.overlaps() when other is a Bukkit wrapper; keep fallback for foreign BoundingBox implementations.",
+        "priority": "low"
+      }
+    ],
+    "newInterfaces": [
+      {
+        "package": "org.aincraft.common.location",
+        "name": "Rotation",
+        "extends": [],
+        "methods": [
+          "float yaw();",
+          "float pitch();",
+          "@NotNull Rotation add(float yawDelta, float pitchDelta);",
+          "@NotNull Rotation subtract(float yawDelta, float pitchDelta);"
+        ],
+        "reason": "Models yaw/pitch independently of position; aligns with Paper Rotation and Location rotation helpers without pulling Paper types into :common."
+      },
+      {
+        "package": "org.aincraft.common.world",
+        "name": "HeightMap",
+        "extends": [],
+        "methods": [],
+        "reason": "Platform-agnostic height sampling strategy required by Location.toHighestLocation(HeightMap); maps directly to org.bukkit.HeightMap."
+      }
+    ]
+  }
+}

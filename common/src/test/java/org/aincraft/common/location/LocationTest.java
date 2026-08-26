@@ -5,6 +5,8 @@ import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
+import org.aincraft.common.effect.Sound;
+import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.world.Block;
@@ -13,6 +15,8 @@ import org.aincraft.common.world.Difficulty;
 import org.aincraft.common.world.Environment;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +48,7 @@ class LocationTest {
       @Override public Collection<? extends Player> players() { return java.util.List.of(); }
       @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
       @Override public Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
+      @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
       @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return true; }
 
       @Override

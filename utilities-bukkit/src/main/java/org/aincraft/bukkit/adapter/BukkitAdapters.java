@@ -6,6 +6,12 @@ import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
+import org.aincraft.common.effect.Biome;
+import org.aincraft.common.effect.Enchantment;
+import org.aincraft.common.effect.Particle;
+import org.aincraft.common.effect.PotionEffect;
+import org.aincraft.common.effect.PotionEffectType;
+import org.aincraft.common.effect.Sound;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.LivingEntity;
 import org.aincraft.common.entity.Player;
@@ -24,6 +30,7 @@ import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -330,5 +337,41 @@ public final class BukkitAdapters {
       return wrapper.getBukkitAttributeInstance();
     }
     throw new IllegalArgumentException("Cannot unwrap foreign AttributeInstance implementation: " + instance.getClass().getName());
+  }
+  public static @NotNull PotionEffectType adapt(@NotNull org.bukkit.potion.PotionEffectType type) {
+    return new BukkitPotionEffectTypeWrapper(type);
+  }
+
+  public static @NotNull org.bukkit.potion.PotionEffectType toBukkit(@NotNull PotionEffectType type) {
+    if (type instanceof BukkitPotionEffectTypeWrapper wrapper) {
+      return wrapper.getBukkitPotionEffectType();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign PotionEffectType implementation: " + type.getClass().getName());
+  }
+
+  public static @NotNull PotionEffect adapt(@NotNull org.bukkit.potion.PotionEffect effect) {
+    return new BukkitPotionEffectWrapper(effect);
+  }
+
+  public static @NotNull org.bukkit.potion.PotionEffect toBukkit(@NotNull PotionEffect effect) {
+    if (effect instanceof BukkitPotionEffectWrapper wrapper) {
+      return wrapper.getBukkitPotionEffect();
+    }
+    throw new IllegalArgumentException("Cannot unwrap foreign PotionEffect implementation: " + effect.getClass().getName());
+  }
+
+  public static @NotNull Sound adapt(@NotNull org.bukkit.Sound sound) {
+    return new BukkitSoundWrapper(sound);
+  }
+
+  public static @NotNull org.bukkit.Sound toBukkit(@NotNull Sound sound) {
+    if (sound instanceof BukkitSoundWrapper wrapper) {
+      return wrapper.getBukkitSound();
+    }
+    org.bukkit.Sound bSound = org.bukkit.Registry.SOUNDS.get(NamespacedKey.fromString(sound.key().asString()));
+    if (bSound == null) {
+      throw new IllegalArgumentException("Cannot resolve Sound for key: " + sound.key());
+    }
+    return bSound;
   }
 }

@@ -22,4 +22,6 @@ dependencies {
     compileOnly(libs.spigot.api)
 
     testImplementation(libs.spigot.api)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.junit.jupiter)
 }

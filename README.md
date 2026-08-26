@@ -1,6 +1,17 @@
 # utilities
 
-A utilities library for Minecraft Paper plugins.
+A utilities library for Minecraft Paper plugins, published as separate domain artifacts:
+
+| Gradle project | Artifact | Package |
+| --- | --- | --- |
+| `:common` | `org.aincraft:common` | `org.aincraft.common` |
+| `:config` | `org.aincraft:config` | `org.aincraft.config` |
+| `:db-core` | `org.aincraft:db-core` | `org.aincraft.db` |
+| `:db-paper` | `org.aincraft:db-paper` | `org.aincraft.db.paper` |
+| `:math` | `org.aincraft:math` | `org.aincraft.math` |
+| `:registry` | `org.aincraft:registry` | `org.aincraft.registry` |
+
+`common`, `db-core`, and `math` compile without Paper. `config`, `db-paper`, and `registry` take Paper as `compileOnly`. Depend on only the domains you use; `db-paper` pulls `db-core` transitively.
 
 ## Runtime Requirements
 

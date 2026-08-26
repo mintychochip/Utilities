@@ -1,12 +1,17 @@
 package org.aincraft.common.entity;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.PotionEffectType;
+import org.aincraft.common.effect.Sound;
+import org.aincraft.common.effect.SoundCategory;
+import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
@@ -19,6 +24,8 @@ import org.aincraft.common.world.Environment;
 import org.aincraft.common.world.GameMode;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,33 +61,32 @@ class EntityPlayerTest {
 
   private static Location createLoc(World world, Position position) {
     return new Location() {
-      @Override public World world() { return world; }
-      @Override public Position position() { return position; }
-      @Override public float yaw() { return 0f; }
-      @Override public float pitch() { return 0f; }
+      @Override public @NotNull World world() { return world; }
+      @Override public @NotNull Position position() { return position; }
+      @Override public float yaw() { return 0; }
+      @Override public float pitch() { return 0; }
     };
   }
 
   private static World createTestWorld(String name) {
-    UUID uid = UUID.nameUUIDFromBytes(name.getBytes());
-    Key key = Key.key("test", name);
     return new World() {
-      @Override public UUID uid() { return uid; }
-      @Override public String name() { return name; }
-      @Override public Key key() { return key; }
-      @Override public Block getBlockAt(int x, int y, int z) { throw new UnsupportedOperationException(); }
-      @Override public Chunk getChunkAt(int chunkX, int chunkZ) { throw new UnsupportedOperationException(); }
+      @Override public @NotNull UUID uid() { return UUID.randomUUID(); }
+      @Override public @NotNull String name() { return name; }
+      @Override public @NotNull Block getBlockAt(int x, int y, int z) { return null; }
+      @Override public @NotNull Chunk getChunkAt(int chunkX, int chunkZ) { return null; }
       @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return false; }
-      @Override public int minHeight() { return 0; }
-      @Override public int maxHeight() { return 256; }
-      @Override public WorldBorder worldBorder() { return null; }
-      @Override public Environment environment() { return Environment.NORMAL; }
-      @Override public Difficulty difficulty() { return Difficulty.NORMAL; }
+      @Override public int minHeight() { return -64; }
+      @Override public int maxHeight() { return 320; }
+      @Override public @NotNull WorldBorder worldBorder() { return null; }
+      @Override public @NotNull Environment environment() { return Environment.NORMAL; }
+      @Override public @NotNull Difficulty difficulty() { return Difficulty.NORMAL; }
       @Override public long time() { return 0; }
       @Override public long fullTime() { return 0; }
-      @Override public Collection<? extends Player> players() { return java.util.List.of(); }
-      @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
-      @Override public Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
+      @Override public @NotNull Collection<? extends org.aincraft.common.entity.Player> players() { return List.of(); }
+      @Override public @NotNull Collection<? extends Entity> entities() { return List.of(); }
+      @Override public @NotNull Collection<? extends Chunk> loadedChunks() { return List.of(); }
+      @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
+      @Override public @NotNull Key key() { return Key.key("minecraft", name); }
     };
   }
 
@@ -93,15 +99,21 @@ class EntityPlayerTest {
     Key playerType = Key.key("minecraft", "player");
     AtomicBoolean messageSent = new AtomicBoolean(false);
     AtomicBoolean kicked = new AtomicBoolean(false);
+    AtomicReference<Component> customName = new AtomicReference<>();
 
     Player player = new Player() {
       @Override public UUID uniqueId() { return uuid; }
       @Override public String username() { return "Steve"; }
+      @Override public Component displayName() { return Component.text(username()); }
+      @Override public void displayName(Component displayName) {}
       @Override public boolean isOnline() { return true; }
       @Override public int ping() { return 15; }
       @Override public double health() { return 20.0; }
       @Override public void setHealth(double health) {}
       @Override public double maxHealth() { return 20.0; }
+      @Override public double absorptionAmount() { return 0.0; }
+      @Override public void setAbsorptionAmount(double amount) {}
+      @Override public void kill() {}
       @Override public void damage(double amount) {}
       @Override public org.aincraft.common.attribute.AttributeInstance getAttribute(org.aincraft.common.attribute.Attribute attribute) { return null; }
       @Override public void damage(double amount, Entity source) {}
@@ -113,8 +125,17 @@ class EntityPlayerTest {
       @Override public boolean isGliding() { return false; }
       @Override public boolean isSwimming() { return false; }
       @Override public boolean isSleeping() { return false; }
-      @Override public Collection<? extends PotionEffect> activePotionEffects() { return java.util.List.of(); }
+      @Override public boolean isInvisible() { return false; }
+      @Override public void setInvisible(boolean invisible) {}
+      @Override public EntityEquipment equipment() { return null; }
+      @Override public void attack(Entity target) {}
+      @Override public void swingMainHand() {}
+      @Override public void swingOffHand() {}
+      @Override public PotionEffect potionEffect(PotionEffectType type) { return null; }
+      @Override public Collection<? extends PotionEffect> activePotionEffects() { return List.of(); }
       @Override public void addPotionEffect(PotionEffect effect) {}
+      @Override public boolean addPotionEffect(PotionEffect effect, boolean force) { return true; }
+      @Override public boolean clearActivePotionEffects() { return false; }
       @Override public void removePotionEffect(PotionEffectType type) {}
       @Override public boolean hasPotionEffect(PotionEffectType type) { return false; }
       @Override public int foodLevel() { return 20; }
@@ -133,6 +154,8 @@ class EntityPlayerTest {
       @Override public void setSprinting(boolean sprinting) {}
       @Override public boolean isFlying() { return false; }
       @Override public void setFlying(boolean flying) {}
+      @Override public boolean allowFlight() { return false; }
+      @Override public void setAllowFlight(boolean allow) {}
       @Override public boolean hasPermission(String permission) { return true; }
       @Override public boolean isOp() { return false; }
       @Override public void setOp(boolean op) {}
@@ -141,12 +164,32 @@ class EntityPlayerTest {
       @Override public World world() { return world; }
       @Override public Location location() { return location; }
       @Override public Position position() { return pos; }
+      @Override public float yaw() { return 0; }
+      @Override public float pitch() { return 0; }
+      @Override public void setRotation(float yaw, float pitch) {}
       @Override public Key type() { return playerType; }
       @Override public boolean isValid() { return true; }
       @Override public boolean isDead() { return false; }
       @Override public BoundingBox boundingBox() { return createBox(pos.x(), pos.y(), pos.z()); }
       @Override public Vector3d velocity() { return createVec(0, 0, 0); }
+      @Override public void setVelocity(Vector3d velocity) {}
       @Override public boolean isOnGround() { return true; }
+      @Override public Collection<? extends Entity> nearbyEntities(double x, double y, double z) { return List.of(); }
+      @Override public List<? extends Entity> passengers() { return List.of(); }
+      @Override public boolean addPassenger(Entity passenger) { return false; }
+      @Override public boolean removePassenger(Entity passenger) { return false; }
+      @Override public boolean eject() { return false; }
+      @Override public boolean isInsideVehicle() { return false; }
+      @Override public boolean leaveVehicle() { return false; }
+      @Override public Entity vehicle() { return null; }
+      @Override public boolean isGlowing() { return false; }
+      @Override public void setGlowing(boolean glowing) {}
+      @Override public boolean isInvulnerable() { return false; }
+      @Override public void setInvulnerable(boolean invulnerable) {}
+      @Override public boolean isCustomNameVisible() { return false; }
+      @Override public void setCustomNameVisible(boolean visible) {}
+      @Override public Component customName() { return customName.get(); }
+      @Override public void customName(Component name) { customName.set(name); }
       @Override public void teleport(Location targetLocation) {}
       @Override public void remove() {}
       @Override public void sendMessage(Component message) { messageSent.set(true); }
@@ -170,6 +213,10 @@ class EntityPlayerTest {
     assertEquals(10.0, player.x());
     assertEquals(64.0, player.y());
     assertEquals(10.0, player.z());
+    assertFalse(player.hasCustomName());
+
+    player.customName(Component.text("Named"));
+    assertTrue(player.hasCustomName());
 
     player.sendMessage(Component.text("Hello World"));
     assertTrue(messageSent.get());

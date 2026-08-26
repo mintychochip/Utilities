@@ -109,6 +109,8 @@ public interface MapItemColor {
 ```java
 package org.aincraft.common.datacomponent.potion;
 
+import java.util.List;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.format.TextColor;
 
 public interface PotionContents {
@@ -503,7 +505,7 @@ git commit -m "refactor: make Particle a Key subtype with dataType"
 
 Replace `org.aincraft.common.effect.Sound` with `net.kyori.adventure.sound.Sound.Type` and `org.aincraft.common.effect.SoundCategory` with `net.kyori.adventure.sound.Sound.Source` in anonymous `World`/`Block` stubs.
 
-Implement `setBiome(@NotNull Key)`, `biome()` returns `Key`, and `spawnParticle(@NotNull Particle, ...)` in stubs.
+Implement `setBiome(@NotNull Key)`, `biome()` returning `Key`, and `spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra)` in the anonymous stubs.
 
 - [ ] **Step 7.2: Run `compileTestJava` and `test`**
 
@@ -556,11 +558,11 @@ Expected: BUILD SUCCESSFUL
 Run: `./gradlew clean test check generatePomFileForMavenPublication`
 Expected: BUILD SUCCESSFUL
 
-- [ ] **Step 9.3: Final commit if any fixes**
+- [ ] **Step 9.3: Commit final verification fixes**
 
 ```bash
 git add -u
-git commit -m "fix: any remaining Kyori migration issues"
+git commit -m "fix: finalize Kyori migration verification"
 ```
 
 ---
@@ -575,4 +577,4 @@ git commit -m "fix: any remaining Kyori migration issues"
 - [ ] `Particle` exists and `extends Key` with `dataType()`.
 - [ ] No `org.aincraft.common.datacomponent.Color` or deleted type usage remains in `:common`.
 - [ ] `:common:compileJava`, `:common:test`, `:common:check` pass.
-- [ ] `:common:bukkitFree` and `:common:paperFree` checks pass.
+- [ ] `:common:verifyNoBukkitImports`, `:common:verifyNoPaperImports`, and `:common:verifyNoPaperOnCompileClasspath` pass.

@@ -25,7 +25,6 @@
 - Modify: `common/src/main/java/org/aincraft/common/datacomponent/item/DyedItemColor.java`
 - Modify: `common/src/main/java/org/aincraft/common/datacomponent/item/MapItemColor.java`
 - Modify: `common/src/main/java/org/aincraft/common/datacomponent/potion/PotionContents.java`
-- Modify: `common/src/main/java/org/aincraft/common/datacomponent/DataComponentTypes.java` (if any `Color.class` references exist)
 
 **Interfaces:**
 - `CustomModelData.colors()` returns `List<TextColor>`.
@@ -47,11 +46,12 @@ package org.aincraft.common.datacomponent.item;
 
 import java.util.List;
 import net.kyori.adventure.text.format.TextColor;
-
 public interface CustomModelData {
+  List<Float> floats();
+  List<Boolean> flags();
+  List<String> strings();
   List<TextColor> colors();
 }
-```
 
 - [ ] **Step 1.3: Update `FireworkEffect.java`**
 
@@ -68,7 +68,13 @@ public interface FireworkEffect {
   boolean flicker();
   FireworkEffect.Type type();
 
-  enum Type { ... }
+  enum Type {
+    BALL,
+    BALL_LARGE,
+    STAR,
+    BURST,
+    CREEPER
+  }
 }
 ```
 
@@ -106,11 +112,12 @@ package org.aincraft.common.datacomponent.potion;
 import net.kyori.adventure.text.format.TextColor;
 
 public interface PotionContents {
+  Key potion();
   TextColor customColor();
-  TextColor computeEffectiveColor();
   List<PotionEffect> customEffects();
-  PotionEffectType potion();
-  int getPotionDurationScale();
+  String customName();
+  List<PotionEffect> allEffects();
+  TextColor computeEffectiveColor();
 }
 ```
 
@@ -150,7 +157,10 @@ git commit -m "refactor: replace Color with TextColor"
 - `AttributeInstance.attribute()` returns `Key`
 - `ItemAttributeModifiers.Entry.attribute()` returns `Key`
 - `ItemMeta.attributeModifiers()` returns `Map<Key, Collection<AttributeModifier>>`
-- `ItemMeta.getAttributeModifiers(Key)`, `addAttributeModifier(Key, ...)`, etc.
+- `ItemMeta.getAttributeModifiers(@NotNull Key)` returns `Collection<AttributeModifier>`
+- `ItemMeta.addAttributeModifier(@NotNull Key, @NotNull AttributeModifier)`
+- `ItemMeta.removeAttributeModifier(@NotNull Key)`
+- `ItemMeta.removeAttributeModifier(@NotNull Key, @NotNull AttributeModifier)`
 
 - [ ] **Step 2.1: Delete `Attribute.java`**
 
@@ -453,7 +463,6 @@ public class BukkitParticleWrapper implements Particle {
     return particle;
   }
 
-  @Override public @NotNull Key key() { return key; }
   @Override public @NotNull String asString() { return key.asString(); }
   @Override public @NotNull String namespace() { return key.namespace(); }
   @Override public @NotNull String value() { return key.value(); }
@@ -561,7 +570,7 @@ git commit -m "fix: any remaining Kyori migration issues"
 - [ ] `Color` no longer exists in `:common`; all references use `TextColor`.
 - [ ] `Attribute` no longer exists in `:common`; all references use `Key`.
 - [ ] `Biome` no longer exists in `:common`; all references use `Key`.
-- [ ] `Sound` no longer exists in `:common`; all references use `Sound.Type`.
+- [ ] `:common:verifyNoBukkitImports`, `:common:verifyNoPaperImports`, and `:common:verifyNoPaperOnCompileClasspath` pass.
 - [ ] `SoundCategory` no longer exists in `:common`; all references use `Sound.Source`.
 - [ ] `Particle` exists and `extends Key` with `dataType()`.
 - [ ] No `org.aincraft.common.datacomponent.Color` or deleted type usage remains in `:common`.

@@ -13,6 +13,7 @@ maven-publish-plugin = "0.34.0"
 nmcp = "1.0.0"
 shadow = "8.1.1"
 run-paper = "2.3.1"
+minestom = "2026.08.16-26.2"
 
 [libraries]
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
@@ -29,6 +30,7 @@ annotations = { module = "org.jetbrains:annotations", version.ref = "annotations
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 adventure-text-serializer-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
+minestom = { module = "net.minestom:minestom", version.ref = "minestom" }
 [plugins]
 maven-publish-vanniktech = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }
 nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }

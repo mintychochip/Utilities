@@ -38,6 +38,22 @@ class SQLiteConnectionSourceTest {
   }
 
   @Test
+  void initializesPragmas() throws Exception {
+    try (SQLiteConnectionSource source = SQLiteConnectionSource.create(dbFile());
+         Connection c = source.getConnection();
+         Statement s = c.createStatement()) {
+      try (ResultSet rs = s.executeQuery("PRAGMA foreign_keys")) {
+        assertTrue(rs.next());
+        assertEquals(1, rs.getInt(1));
+      }
+      try (ResultSet rs = s.executeQuery("PRAGMA synchronous")) {
+        assertTrue(rs.next());
+        assertEquals(1, rs.getInt(1)); // NORMAL == 1
+      }
+    }
+  }
+
+  @Test
   void lifecycleTransitions() {
     SQLiteConnectionSource source = SQLiteConnectionSource.create(dbFile());
     assertFalse(source.closed());

@@ -45,6 +45,8 @@ public final class SQLiteConnectionSource implements SQLConnectionSource {
     }
     HikariConfig config = new HikariConfig();
     config.setJdbcUrl("jdbc:sqlite:" + databaseFile.toAbsolutePath());
+    config.addDataSourceProperty("foreign_keys", "on");
+    config.addDataSourceProperty("synchronous", "normal");
     config.setMaximumPoolSize(4);
     return new HikariDataSource(config);
   }

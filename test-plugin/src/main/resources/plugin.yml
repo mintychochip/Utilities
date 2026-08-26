@@ -1,7 +1,7 @@
 name: TestPlugin
 version: 1.0
 main: org.aincraft.TestPlugin
-api-version: 1.21
+api-version: '26.2'
 author: mintychochip
 description: Test plugin to test utilities
 commands:

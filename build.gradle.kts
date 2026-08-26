@@ -8,6 +8,9 @@ plugins {
     `maven-publish`
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+}
 repositories {
     mavenCentral()
     gradlePluginPortal()
@@ -16,7 +19,7 @@ repositories {
 
 dependencies {
     implementation("org.mongodb:mongodb-driver-sync:5.2.0")
-    compileOnly("io.papermc.paper:paper-api:1.21.7-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.119-stable")
     implementation("com.zaxxer:HikariCP:5.0.1")
 }
 

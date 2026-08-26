@@ -12,16 +12,16 @@ repositories {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 dependencies {
     implementation(project(":utilities")) {
         exclude(group = "io.papermc.paper", module = "paper-api")
     }
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.119-stable")
     testImplementation(project(":utilities"))
-    testCompileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    testCompileOnly("io.papermc.paper:paper-api:26.2.build.119-stable")
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }

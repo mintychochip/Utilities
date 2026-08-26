@@ -3,6 +3,7 @@ package org.aincraft.minestom.adapter;
 import java.util.Objects;
 import java.util.UUID;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
@@ -116,4 +117,105 @@ public class MinestomEntityWrapper implements Entity {
   public String toString() {
     return "MinestomEntityWrapper{type=" + type() + ", uuid=" + uniqueId() + "}";
   }
+
+  @Override
+  public float yaw() {
+    return entity.getPosition().yaw();
+  }
+
+  @Override
+  public float pitch() {
+    return entity.getPosition().pitch();
+  }
+
+  @Override
+  public void setRotation(float yaw, float pitch) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setVelocity(@NotNull Vector3d velocity) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull java.util.Collection<? extends org.aincraft.common.entity.Entity> nearbyEntities(double x, double y, double z) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull java.util.List<? extends org.aincraft.common.entity.Entity> passengers() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean addPassenger(@NotNull org.aincraft.common.entity.Entity passenger) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean removePassenger(@NotNull org.aincraft.common.entity.Entity passenger) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean eject() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isInsideVehicle() {
+    return false;
+  }
+
+  @Override
+  public boolean leaveVehicle() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable org.aincraft.common.entity.Entity vehicle() {
+    return null;
+  }
+
+  @Override
+  public boolean isGlowing() {
+    return false;
+  }
+
+  @Override
+  public void setGlowing(boolean glowing) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isInvulnerable() {
+    return false;
+  }
+
+  @Override
+  public void setInvulnerable(boolean invulnerable) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isCustomNameVisible() {
+    return false;
+  }
+
+  @Override
+  public void setCustomNameVisible(boolean visible) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component customName() {
+    return null;
+  }
+
+  @Override
+  public void customName(@org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component name) {
+    throw new UnsupportedOperationException();
+  }
+
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.Instance;
 import org.aincraft.common.block.BlockState;
+import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
@@ -108,6 +109,16 @@ public class MinestomBlockWrapper implements Block {
   @Override
   public @NotNull BoundingBox boundingBox() {
     return MinestomAdapters.adapt(new net.minestom.server.collision.BoundingBox(1.0, 1.0, 1.0));
+  }
+
+  @Override
+  public @NotNull Key biome() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setBiome(@NotNull Key biome) {
+    throw new UnsupportedOperationException();
   }
 
   @Override

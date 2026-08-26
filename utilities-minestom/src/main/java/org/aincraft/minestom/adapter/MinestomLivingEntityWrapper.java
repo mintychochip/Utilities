@@ -11,6 +11,7 @@ import net.minestom.server.entity.attribute.Attribute;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.effect.PotionEffect;
+import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.effect.PotionEffectType;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.Location;
@@ -47,16 +48,12 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
 
   @Override
   public void damage(double amount) {
-    livingEntity.damage(Damage.fromEntity(livingEntity, (float) amount));
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public void damage(double amount, @Nullable Entity source) {
-    if (source instanceof MinestomEntityWrapper wrapper) {
-      livingEntity.damage(Damage.fromEntity(wrapper.getMinestomEntity(), (float) amount));
-    } else {
-      damage(amount);
-    }
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -115,6 +112,7 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
     };
   }
 
+  @Override
   public double eyeHeight() {
     return livingEntity.getEyeHeight();
   }
@@ -171,4 +169,65 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
   public boolean hasPotionEffect(@NotNull PotionEffectType type) {
     return false;
   }
+
+  @Override
+  public boolean isInvisible() {
+    return false;
+  }
+
+  @Override
+  public void setInvisible(boolean invisible) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @NotNull org.aincraft.common.inventory.EntityEquipment equipment() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void attack(@NotNull org.aincraft.common.entity.Entity target) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void swingMainHand() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void swingOffHand() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable org.aincraft.common.effect.PotionEffect potionEffect(@NotNull org.aincraft.common.effect.PotionEffectType type) {
+    return null;
+  }
+
+  @Override
+  public boolean clearActivePotionEffects() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public double absorptionAmount() {
+    return 0;
+  }
+
+  @Override
+  public void setAbsorptionAmount(double amount) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void kill() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean addPotionEffect(@NotNull org.aincraft.common.effect.PotionEffect effect, boolean force) {
+    throw new UnsupportedOperationException();
+  }
+
 }

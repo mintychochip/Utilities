@@ -3,7 +3,7 @@ package org.aincraft.bukkit.adapter;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
-import org.aincraft.common.attribute.Attribute;
+import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ public class BukkitAttributeInstanceWrapper implements AttributeInstance {
   }
 
   @Override
-  public @NotNull Attribute attribute() {
+  public @NotNull Key attribute() {
     return BukkitAdapters.adapt(instance.getAttribute());
   }
 

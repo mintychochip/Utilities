@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.attribute.Attribute;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.PotionEffectType;
@@ -199,7 +198,7 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
   }
 
   @Override
-  public @Nullable AttributeInstance getAttribute(@NotNull Attribute attribute) {
+  public @Nullable AttributeInstance getAttribute(@NotNull Key attribute) {
     org.bukkit.attribute.Attribute bAttr = BukkitAdapters.toBukkit(attribute);
     org.bukkit.attribute.AttributeInstance inst = livingEntity.getAttribute(bAttr);
     return inst != null ? new BukkitAttributeInstanceWrapper(inst) : null;

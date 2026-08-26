@@ -10,7 +10,6 @@ import java.util.Set;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.aincraft.common.attribute.Attribute;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.inventory.DataComponentType;
@@ -134,12 +133,12 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   }
 
   @Override
-  public @NotNull Map<Attribute, Collection<AttributeModifier>> attributeModifiers() {
-    Map<Attribute, Collection<AttributeModifier>> result = new HashMap<>();
+  public @NotNull Map<Key, Collection<AttributeModifier>> attributeModifiers() {
+    Map<Key, Collection<AttributeModifier>> result = new HashMap<>();
     com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> bModifiers = meta.getAttributeModifiers();
     if (bModifiers != null) {
       for (org.bukkit.attribute.Attribute bAttr : bModifiers.keySet()) {
-        Attribute cAttr = BukkitAdapters.adapt(bAttr);
+        Key cAttr = BukkitAdapters.adapt(bAttr);
         result.put(cAttr, bModifiers.get(bAttr).stream().map(BukkitAdapters::adapt).toList());
       }
     }
@@ -147,7 +146,7 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   }
 
   @Override
-  public @Nullable Collection<AttributeModifier> getAttributeModifiers(@NotNull Attribute attribute) {
+  public @Nullable Collection<AttributeModifier> getAttributeModifiers(@NotNull Key attribute) {
     org.bukkit.attribute.Attribute bAttr = BukkitAdapters.toBukkit(attribute);
     Collection<org.bukkit.attribute.AttributeModifier> bMods = meta.getAttributeModifiers(bAttr);
     return bMods != null ? bMods.stream().map(BukkitAdapters::adapt).toList() : null;
@@ -159,17 +158,17 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   }
 
   @Override
-  public void addAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
+  public void addAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier) {
     meta.addAttributeModifier(BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
   }
 
   @Override
-  public void removeAttributeModifier(@NotNull Attribute attribute) {
+  public void removeAttributeModifier(@NotNull Key attribute) {
     meta.removeAttributeModifier(BukkitAdapters.toBukkit(attribute));
   }
 
   @Override
-  public void removeAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
+  public void removeAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier) {
     meta.removeAttributeModifier(BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
   }
 

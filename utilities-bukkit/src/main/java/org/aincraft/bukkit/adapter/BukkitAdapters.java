@@ -1,6 +1,6 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.attribute.Attribute;
+import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
@@ -306,11 +306,11 @@ public final class BukkitAdapters {
     throw new IllegalArgumentException("Cannot unwrap foreign BlockState implementation: " + blockState.getClass().getName());
   }
 
-  public static @NotNull Attribute adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
+  public static @NotNull Key adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
     return new BukkitAttributeWrapper(attribute);
   }
 
-  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Attribute attribute) {
+  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Key attribute) {
     if (attribute instanceof BukkitAttributeWrapper wrapper) {
       return wrapper.getBukkitAttribute();
     }

@@ -2,10 +2,9 @@ package org.aincraft.bukkit.adapter;
 
 import java.util.Objects;
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.attribute.Attribute;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitAttributeWrapper implements Attribute {
+public class BukkitAttributeWrapper implements Key {
 
   private final org.bukkit.attribute.Attribute attribute;
   private final Key key;
@@ -20,15 +19,25 @@ public class BukkitAttributeWrapper implements Attribute {
   }
 
   @Override
-  public @NotNull Key key() {
-    return key;
+  public @NotNull String asString() {
+    return key.asString();
+  }
+
+  @Override
+  public @NotNull String namespace() {
+    return key.namespace();
+  }
+
+  @Override
+  public @NotNull String value() {
+    return key.value();
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Attribute that)) return false;
-    return Objects.equals(key, that.key());
+    if (!(o instanceof Key that)) return false;
+    return Objects.equals(key, that);
   }
 
   @Override

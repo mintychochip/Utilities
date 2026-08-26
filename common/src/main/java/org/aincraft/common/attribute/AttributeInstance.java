@@ -2,12 +2,13 @@ package org.aincraft.common.attribute;
 
 import java.util.Collection;
 import java.util.UUID;
+import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface AttributeInstance {
 
-  @NotNull Attribute attribute();
+  @NotNull Key attribute();
 
   double baseValue();
 

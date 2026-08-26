@@ -1,7 +1,7 @@
 package org.aincraft.common.datacomponent.item.attribute;
 
 import java.util.List;
-import org.aincraft.common.attribute.Attribute;
+import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.datacomponent.item.EquipmentSlotGroup;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +34,7 @@ public interface ItemAttributeModifiers {
      * @return the attribute
      */
     @NotNull
-    Attribute attribute();
+    Key attribute();
 
     /**
      * Returns the modifier applied to the attribute.

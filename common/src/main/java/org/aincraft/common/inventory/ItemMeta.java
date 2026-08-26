@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
-import org.aincraft.common.attribute.Attribute;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.effect.Enchantment;
 import org.jetbrains.annotations.NotNull;
@@ -43,17 +43,17 @@ public interface ItemMeta {
 
   void removeEnchant(@NotNull Enchantment enchantment);
 
-  @NotNull Map<Attribute, Collection<AttributeModifier>> attributeModifiers();
+  @NotNull Map<Key, Collection<AttributeModifier>> attributeModifiers();
 
-  @Nullable Collection<AttributeModifier> getAttributeModifiers(@NotNull Attribute attribute);
+  @Nullable Collection<AttributeModifier> getAttributeModifiers(@NotNull Key attribute);
 
   boolean hasAttributeModifiers();
 
-  void addAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier);
+  void addAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier);
 
-  void removeAttributeModifier(@NotNull Attribute attribute);
+  void removeAttributeModifier(@NotNull Key attribute);
 
-  void removeAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier);
+  void removeAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier);
 
   boolean hasData(@NotNull DataComponentType<?> type);
 

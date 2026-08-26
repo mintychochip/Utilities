@@ -1,7 +1,7 @@
 package org.aincraft.paper.adapter;
 
 import org.aincraft.bukkit.adapter.BukkitAdapters;
-import org.aincraft.common.attribute.Attribute;
+import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
@@ -193,11 +193,11 @@ public final class PaperAdapters {
     return BukkitAdapters.toBukkit(blockState);
   }
 
-  public static @NotNull Attribute adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
+  public static @NotNull Key adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
     return BukkitAdapters.adapt(attribute);
   }
 
-  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Attribute attribute) {
+  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Key attribute) {
     return BukkitAdapters.toBukkit(attribute);
   }
 

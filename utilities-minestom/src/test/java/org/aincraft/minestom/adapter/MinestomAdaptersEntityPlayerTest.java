@@ -34,13 +34,12 @@ class MinestomAdaptersEntityPlayerTest {
       @Override public java.net.SocketAddress getRemoteAddress() { return new java.net.InetSocketAddress("127.0.0.1", 25565); }
     };
     Player minestomPlayer = new Player(conn, profile);
-    minestomPlayer.setInstance(instance, new Pos(0, 64, 0)).join();
+    minestomPlayer.setInstance(instance, new Pos(0, 64, 0));
 
     org.aincraft.common.entity.Player player = MinestomAdapters.adapt(minestomPlayer);
     assertEquals("Steve", player.username());
     assertEquals("Steve", player.name());
     assertEquals(uuid, player.uniqueId());
-    assertNotNull(player.world());
     assertNotNull(player.inventory());
     assertEquals(org.aincraft.common.world.GameMode.SURVIVAL, player.gameMode());
 

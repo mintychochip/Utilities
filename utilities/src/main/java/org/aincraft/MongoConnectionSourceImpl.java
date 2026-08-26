@@ -3,14 +3,16 @@ package org.aincraft;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.aincraft.ConnectionSource.MongoConnectionSource;
+import org.aincraft.db.ConnectionException;
+import org.aincraft.db.ConnectionSource.MongoConnectionSource;
+import org.aincraft.db.DatabaseType;
 
-final class MongoConnectionSourceImpl implements MongoConnectionSource {
+public final class MongoConnectionSourceImpl implements MongoConnectionSource {
 
   private final MongoClient client;
   private final AtomicBoolean closed = new AtomicBoolean(false);
 
-  MongoConnectionSourceImpl(MongoClient client) {
+  public MongoConnectionSourceImpl(MongoClient client) {
     this.client = client;
   }
 
@@ -20,7 +22,7 @@ final class MongoConnectionSourceImpl implements MongoConnectionSource {
       client.close();
       closed.set(true);
     } catch (Exception e) {
-      throw new ConnectionException("failed to close mongo client");
+      throw new ConnectionException("failed to close mongo client", e);
     }
   }
 

@@ -1,4 +1,4 @@
-package org.aincraft;
+package org.aincraft.db;
 
 public class ConnectionException extends RuntimeException {
 

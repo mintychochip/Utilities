@@ -3,6 +3,10 @@ package org.aincraft;
 import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.aincraft.db.ConnectionSource;
+import org.aincraft.db.DatabaseType;
+import org.aincraft.db.HikariSourceImpl;
+import org.aincraft.db.SQLiteConnectionSource;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
@@ -24,8 +28,8 @@ final class SQLConnectionSourceFactoryImpl implements ConnectionSourceFactory {
           plugin.getDataFolder().toPath().resolve(configuration.getString("path")));
       default -> throw new IllegalArgumentException("failed to create a source for this database type");
     };
-
   }
+
   private static HikariConfig parseHikariConfig(ConfigurationSection configuration) {
     HikariConfig hikariConfig = new HikariConfig();
     String jdbcUrl = configuration.getString("jdbc-url");

@@ -1,4 +1,4 @@
-package org.aincraft;
+package org.aincraft.db;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;

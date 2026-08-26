@@ -1,4 +1,4 @@
-package org.aincraft;
+package org.aincraft.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.Scanner;
-import org.aincraft.ConnectionSource.SQLConnectionSource;
+import org.aincraft.db.ConnectionSource.SQLConnectionSource;
 
 public final class SQLiteConnectionSource implements SQLConnectionSource {
 

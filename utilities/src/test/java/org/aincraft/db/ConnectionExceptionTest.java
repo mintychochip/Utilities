@@ -1,4 +1,4 @@
-package org.aincraft;
+package org.aincraft.db;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 

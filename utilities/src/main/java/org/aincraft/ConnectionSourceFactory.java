@@ -1,6 +1,9 @@
 package org.aincraft;
 
 import java.lang.reflect.Proxy;
+import org.aincraft.db.ConnectionException;
+import org.aincraft.db.ConnectionSource;
+import org.aincraft.db.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 

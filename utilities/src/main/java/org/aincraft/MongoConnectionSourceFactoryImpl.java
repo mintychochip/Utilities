@@ -8,6 +8,9 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClients;
 import com.mongodb.connection.ClusterSettings;
 import java.util.Collections;
+import org.aincraft.db.ConnectionException;
+import org.aincraft.db.ConnectionSource;
+import org.aincraft.db.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
 
 final class MongoConnectionSourceFactoryImpl implements ConnectionSourceFactory {
@@ -22,11 +25,11 @@ final class MongoConnectionSourceFactoryImpl implements ConnectionSourceFactory 
     try {
       return new MongoConnectionSourceImpl(MongoClients.create(parseClientSettings(configuration)));
     } catch (Exception e) {
-      throw new ConnectionException("failed to create mongo client");
+      throw new ConnectionException("failed to create mongo client", e);
     }
   }
 
-  private static MongoClientSettings parseClientSettings(ConfigurationSection configuration) {
+  static MongoClientSettings parseClientSettings(ConfigurationSection configuration) {
     String uri = configuration.getString("connection-uri");
     String host = configuration.getString("host", "localhost");
     int port = configuration.getInt("port", DEFAULT_MONGO_TCP_PORT);

@@ -1,9 +1,9 @@
-package org.aincraft;
+package org.aincraft.db;
 
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.aincraft.ConnectionSource.SQLConnectionSource;
+import org.aincraft.db.ConnectionSource.SQLConnectionSource;
 
 public final class HikariSourceImpl implements SQLConnectionSource {
 
@@ -37,7 +37,7 @@ public final class HikariSourceImpl implements SQLConnectionSource {
     try {
       return dataSource.getConnection();
     } catch (SQLException e) {
-      throw new ConnectionException("");
+      throw new ConnectionException("", e);
     }
   }
 }

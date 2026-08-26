@@ -7,6 +7,7 @@ import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
+import org.aincraft.common.effect.Particle;
 import org.aincraft.common.effect.Sound;
 import org.aincraft.common.effect.SoundCategory;
 import org.aincraft.common.entity.Entity;
@@ -79,6 +80,7 @@ class WorldChunkBlockTest {
       @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
       @Override public Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
       @Override public void playSound(@NotNull Location location, @NotNull Sound sound, @Nullable SoundCategory category, float volume, float pitch) {}
+      @Override public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) { throw new UnsupportedOperationException(); }
       @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return chunkX == 0 && chunkZ == 0; }
       @Override
       public Chunk getChunkAt(int chunkX, int chunkZ) {
@@ -123,6 +125,8 @@ class WorldChunkBlockTest {
             @Override public double maxY() { return y + 1; }
             @Override public double maxZ() { return z + 1; }
           }; }
+          @Override public Key biome() { throw new UnsupportedOperationException(); }
+          @Override public void setBiome(@NotNull Key biome) { throw new UnsupportedOperationException(); }
         };
       }
     };

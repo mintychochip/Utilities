@@ -238,6 +238,8 @@ class BukkitAdaptersTest {
       @Override public boolean isAir() { return false; }
       @Override public boolean isPassable() { return false; }
       @Override public BoundingBox boundingBox() { return foreignBox; }
+      @Override public Key biome() { throw new UnsupportedOperationException(); }
+      @Override public void setBiome(@NotNull Key biome) { throw new UnsupportedOperationException(); }
     };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignBlock));
 

@@ -1,6 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
 import java.util.Objects;
+import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.location.BoundingBox;
@@ -10,7 +11,6 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
-
 public class BukkitBlockWrapper implements Block {
 
   private final org.bukkit.block.Block block;
@@ -98,6 +98,15 @@ public class BukkitBlockWrapper implements Block {
     return BukkitAdapters.adapt(block.getBoundingBox());
   }
 
+  @Override
+  public @NotNull Key biome() {
+    return BukkitAdapters.adapt(block.getBiome());
+  }
+
+  @Override
+  public void setBiome(@NotNull Key biome) {
+    block.setBiome(BukkitAdapters.toBukkitBiome(biome));
+  }
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

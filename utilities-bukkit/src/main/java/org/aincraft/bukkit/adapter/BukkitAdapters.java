@@ -6,7 +6,6 @@ import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
-import org.aincraft.common.effect.Biome;
 import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.effect.Particle;
 import org.aincraft.common.effect.PotionEffect;
@@ -315,6 +314,21 @@ public final class BukkitAdapters {
       return wrapper.getBukkitAttribute();
     }
     throw new IllegalArgumentException("Cannot unwrap foreign Attribute implementation: " + attribute.getClass().getName());
+  }
+
+  public static @NotNull Key adapt(@NotNull org.bukkit.block.Biome biome) {
+    return new BukkitBiomeWrapper(biome);
+  }
+
+  public static @NotNull org.bukkit.block.Biome toBukkitBiome(@NotNull Key biome) {
+    if (biome instanceof BukkitBiomeWrapper wrapper) {
+      return wrapper.getBukkitBiome();
+    }
+    org.bukkit.block.Biome bBiome = org.bukkit.Registry.BIOME.get(NamespacedKey.fromString(biome.asString()));
+    if (bBiome == null) {
+      throw new IllegalArgumentException("Cannot resolve Biome for key: " + biome.asString());
+    }
+    return bBiome;
   }
 
   public static @NotNull AttributeModifier adapt(@NotNull org.bukkit.attribute.AttributeModifier modifier) {

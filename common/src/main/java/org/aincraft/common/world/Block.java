@@ -4,7 +4,6 @@ import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
-import org.aincraft.common.effect.Biome;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
@@ -55,7 +54,7 @@ public interface Block {
 
   @NotNull BoundingBox boundingBox();
 
-  @NotNull Biome biome();
+  @NotNull Key biome();
 
-  void setBiome(@NotNull Biome biome);
+  void setBiome(@NotNull Key biome);
 }

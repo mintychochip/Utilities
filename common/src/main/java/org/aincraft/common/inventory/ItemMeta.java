@@ -42,6 +42,7 @@ public interface ItemMeta {
   void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction);
 
   void removeEnchant(@NotNull Enchantment enchantment);
+
   @NotNull Map<Attribute, Collection<AttributeModifier>> attributeModifiers();
 
   @Nullable Collection<AttributeModifier> getAttributeModifiers(@NotNull Attribute attribute);
@@ -63,4 +64,25 @@ public interface ItemMeta {
   void resetData(@NotNull DataComponentType<?> type);
 
   @NotNull Set<DataComponentType<?>> dataComponentTypes();
+
+  default <T> boolean has(@NotNull DataComponentType<T> type) {
+    return hasData(type);
+  }
+
+  default <T> @Nullable T get(@NotNull DataComponentType<T> type) {
+    return getData(type);
+  }
+
+  default <T> @NotNull T getOrDefault(@NotNull DataComponentType<T> type, @NotNull T defaultValue) {
+    T val = getData(type);
+    return val != null ? val : defaultValue;
+  }
+
+  default <T> void set(@NotNull DataComponentType<T> type, @Nullable T value) {
+    setData(type, value);
+  }
+
+  default void unset(@NotNull DataComponentType<?> type) {
+    resetData(type);
+  }
 }

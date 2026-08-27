@@ -16,5 +16,6 @@ dependencies {
         api(project(":db-paper"))
         api(project(":math"))
         api(project(":registry"))
+        api(project(":utilities-event"))
     }
 }

@@ -8,7 +8,8 @@ import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.LivingEntity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.inventory.EntityEquipment;
-import org.aincraft.common.location.Vector3d;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.EquipmentSlot;
@@ -44,16 +45,12 @@ class BukkitEntityStateTest {
     when(bukkitLiving.getType()).thenReturn(org.bukkit.entity.EntityType.ZOMBIE);
 
     LivingEntity entity = BukkitAdapters.adapt(bukkitLiving);
-    Vector3d velocity = entity.velocity();
+    Vector3dc velocity = entity.velocity();
     assertEquals(1.0, velocity.x(), 1e-6);
     assertEquals(2.0, velocity.y(), 1e-6);
     assertEquals(3.0, velocity.z(), 1e-6);
 
-    entity.setVelocity(new Vector3d() {
-      @Override public double x() { return 4; }
-      @Override public double y() { return 5; }
-      @Override public double z() { return 6; }
-    });
+    entity.setVelocity(new Vector3d(4, 5, 6));
     verify(bukkitLiving).setVelocity(argThat(v ->
         v.getX() == 4.0 && v.getY() == 5.0 && v.getZ() == 6.0));
 

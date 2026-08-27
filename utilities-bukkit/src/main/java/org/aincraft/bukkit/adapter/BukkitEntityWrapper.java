@@ -12,11 +12,12 @@ import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
-import org.aincraft.common.location.Vector3d;
 import org.aincraft.common.world.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 public class BukkitEntityWrapper implements Entity {
 
@@ -86,19 +87,14 @@ public class BukkitEntityWrapper implements Entity {
   public @NotNull BoundingBox boundingBox() {
     return BukkitAdapters.adapt(entity.getBoundingBox());
   }
-
   @Override
-  public @NotNull Vector3d velocity() {
+  public @NotNull Vector3dc velocity() {
     org.bukkit.util.Vector vec = entity.getVelocity();
-    return new Vector3d() {
-      @Override public double x() { return vec.getX(); }
-      @Override public double y() { return vec.getY(); }
-      @Override public double z() { return vec.getZ(); }
-    };
+    return new Vector3d(vec.getX(), vec.getY(), vec.getZ());
   }
 
   @Override
-  public void setVelocity(@NotNull Vector3d velocity) {
+  public void setVelocity(@NotNull Vector3dc velocity) {
     entity.setVelocity(new Vector(velocity.x(), velocity.y(), velocity.z()));
   }
 

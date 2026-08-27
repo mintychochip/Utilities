@@ -10,10 +10,10 @@ import net.kyori.adventure.key.Keyed;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
-import org.aincraft.common.location.Vector3d;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3dc;
 
 public interface Entity extends Keyed, Identified, Nameable {
 
@@ -49,9 +49,9 @@ public interface Entity extends Keyed, Identified, Nameable {
 
   @NotNull BoundingBox boundingBox();
 
-  @NotNull Vector3d velocity();
+  @NotNull Vector3dc velocity();
 
-  void setVelocity(@NotNull Vector3d velocity);
+  void setVelocity(@NotNull Vector3dc velocity);
 
   boolean isOnGround();
 

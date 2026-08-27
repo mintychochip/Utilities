@@ -20,8 +20,10 @@ dependencies {
     api(libs.annotations)
     api(libs.adventure.api)
     api(libs.adventure.key)
+    api(libs.joml)
 
     testImplementation(libs.annotations)
     testImplementation(libs.adventure.api)
     testImplementation(libs.adventure.key)
+    testImplementation(libs.joml)
 }

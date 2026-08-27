@@ -8,9 +8,10 @@ import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
-import org.aincraft.common.location.Vector3d;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 public class MinestomEntityWrapper implements Entity {
 
@@ -68,16 +69,12 @@ public class MinestomEntityWrapper implements Entity {
   public @NotNull BoundingBox boundingBox() {
     return MinestomAdapters.adapt(entity.getBoundingBox());
   }
-
   @Override
-  public @NotNull Vector3d velocity() {
+  public @NotNull Vector3dc velocity() {
     net.minestom.server.coordinate.Vec vel = entity.getVelocity();
-    return new Vector3d() {
-      @Override public double x() { return vel.x(); }
-      @Override public double y() { return vel.y(); }
-      @Override public double z() { return vel.z(); }
-    };
+    return new Vector3d(vel.x(), vel.y(), vel.z());
   }
+
 
   @Override
   public boolean isOnGround() {
@@ -134,9 +131,10 @@ public class MinestomEntityWrapper implements Entity {
   }
 
   @Override
-  public void setVelocity(@NotNull Vector3d velocity) {
+  public void setVelocity(@NotNull Vector3dc velocity) {
     throw new UnsupportedOperationException();
   }
+
 
   @Override
   public @NotNull java.util.Collection<? extends org.aincraft.common.entity.Entity> nearbyEntities(double x, double y, double z) {

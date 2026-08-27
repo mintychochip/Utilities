@@ -4,7 +4,7 @@ import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
+import org.joml.Vector3dc;
 public interface BoundingBox {
 
   double minX();
@@ -85,7 +85,7 @@ public interface BoundingBox {
     throw new UnsupportedOperationException("shift");
   }
 
-  default @NotNull BoundingBox shift(@NotNull Vector3d offset) {
+  default @NotNull BoundingBox shift(@NotNull Vector3dc offset) {
     return shift(offset.x(), offset.y(), offset.z());
   }
 
@@ -97,7 +97,7 @@ public interface BoundingBox {
     throw new UnsupportedOperationException("intersection");
   }
 
-  default @Nullable RayTraceResult rayTrace(@NotNull Vector3d origin, @NotNull Vector3d direction, double maxDistance) {
+  default @Nullable RayTraceResult rayTrace(@NotNull Vector3dc origin, @NotNull Vector3dc direction, double maxDistance) {
     throw new UnsupportedOperationException("rayTrace");
   }
 }

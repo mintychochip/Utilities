@@ -17,11 +17,9 @@ import org.aincraft.common.inventory.Inventory;
 import org.aincraft.common.inventory.InventoryView;
 import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.PlayerInventory;
-import org.aincraft.common.server.Server;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
-import org.aincraft.common.location.Vector3d;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.Difficulty;
@@ -31,6 +29,8 @@ import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,12 +45,8 @@ class EntityPlayerTest {
     };
   }
 
-  private static Vector3d createVec(double x, double y, double z) {
-    return new Vector3d() {
-      @Override public double x() { return x; }
-      @Override public double y() { return y; }
-      @Override public double z() { return z; }
-    };
+  private static Vector3dc createVec(double x, double y, double z) {
+    return new Vector3d(x, y, z);
   }
 
   private static BoundingBox createBox(double x, double y, double z) {
@@ -177,8 +173,8 @@ class EntityPlayerTest {
       @Override public boolean isValid() { return true; }
       @Override public boolean isDead() { return false; }
       @Override public BoundingBox boundingBox() { return createBox(pos.x(), pos.y(), pos.z()); }
-      @Override public Vector3d velocity() { return createVec(0, 0, 0); }
-      @Override public void setVelocity(Vector3d velocity) {}
+      @Override public Vector3dc velocity() { return createVec(0, 0, 0); }
+      @Override public void setVelocity(Vector3dc velocity) {}
       @Override public boolean isOnGround() { return true; }
       @Override public Collection<? extends Entity> nearbyEntities(double x, double y, double z) { return List.of(); }
       @Override public List<? extends Entity> passengers() { return List.of(); }

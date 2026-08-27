@@ -40,8 +40,8 @@ import org.aincraft.common.inventory.InventoryView;
 import org.aincraft.common.inventory.InventoryHolder;
 import org.aincraft.common.entity.EntityType;
 import org.aincraft.common.world.RayTraceResult;
-import org.aincraft.common.location.Vector3d;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3dc;
 
 
 public final class BukkitAdapters {
@@ -70,12 +70,13 @@ public final class BukkitAdapters {
     throw new IllegalArgumentException("Cannot unwrap foreign Position implementation: " + position.getClass().getName());
   }
 
-  public static @NotNull Vector toBukkit(@NotNull Vector3d vector) {
+  public static @NotNull Vector toBukkit(@NotNull Vector3dc vector) {
     if (vector instanceof Position position) {
       return toBukkit(position);
     }
     return new Vector(vector.x(), vector.y(), vector.z());
   }
+
 
   public static @NotNull BoundingBox adapt(@NotNull org.bukkit.util.BoundingBox box) {
     return new BukkitBoundingBoxWrapper(box);

@@ -1,7 +1,10 @@
 package org.aincraft.common.location;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.joml.Vector3d;
+import org.joml.Vector3i;
+import org.junit.jupiter.api.Test;
 
 class PositionTest {
 
@@ -10,22 +13,6 @@ class PositionTest {
       @Override public double x() { return x; }
       @Override public double y() { return y; }
       @Override public double z() { return z; }
-    };
-  }
-
-  private static Vector3d createVector3d(double x, double y, double z) {
-    return new Vector3d() {
-      @Override public double x() { return x; }
-      @Override public double y() { return y; }
-      @Override public double z() { return z; }
-    };
-  }
-
-  private static Vector3i createVector3i(int x, int y, int z) {
-    return new Vector3i() {
-      @Override public int x() { return x; }
-      @Override public int y() { return y; }
-      @Override public int z() { return z; }
     };
   }
 
@@ -53,21 +40,21 @@ class PositionTest {
 
   @Test
   void testVectorCalculations() {
-    Vector3d v3d1 = createVector3d(1.0, 2.0, 2.0);
+    Vector3d v3d1 = new Vector3d(1.0, 2.0, 2.0);
     assertEquals(9.0, v3d1.lengthSquared(), 1e-6);
     assertEquals(3.0, v3d1.length(), 1e-6);
 
-    Vector3d v3d2 = createVector3d(4.0, 6.0, 2.0);
+    Vector3d v3d2 = new Vector3d(4.0, 6.0, 2.0);
     assertEquals(25.0, v3d1.distanceSquared(v3d2), 1e-6);
     assertEquals(5.0, v3d1.distance(v3d2), 1e-6);
     assertEquals(20.0, v3d1.dot(v3d2), 1e-6); // 1*4 + 2*6 + 2*2 = 4 + 12 + 4 = 20
 
-    Vector3i v3i1 = createVector3i(1, 2, 2);
-    assertEquals(9.0, v3i1.lengthSquared(), 1e-6);
+    Vector3i v3i1 = new Vector3i(1, 2, 2);
+    assertEquals(9L, v3i1.lengthSquared());
     assertEquals(3.0, v3i1.length(), 1e-6);
 
-    Vector3i v3i2 = createVector3i(4, 6, 2);
-    assertEquals(25.0, v3i1.distanceSquared(v3i2), 1e-6);
+    Vector3i v3i2 = new Vector3i(4, 6, 2);
+    assertEquals(25L, v3i1.distanceSquared(v3i2));
     assertEquals(5.0, v3i1.distance(v3i2), 1e-6);
   }
 }

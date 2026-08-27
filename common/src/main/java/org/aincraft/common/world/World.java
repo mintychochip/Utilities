@@ -89,4 +89,20 @@ public interface World extends Keyed, Identified, Audience {
 
   void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count,
                      double offsetX, double offsetY, double offsetZ, double extra);
+
+  default @NotNull Block getHighestBlockAt(int x, int z) {
+    return getHighestBlockAt(x, z, HeightMap.WORLD_SURFACE);
+  }
+
+  default @NotNull Block getHighestBlockAt(@NotNull Location location) {
+    return getHighestBlockAt(location.blockX(), location.blockZ());
+  }
+
+  default @NotNull Block getHighestBlockAt(int x, int z, @NotNull HeightMap heightMap) {
+    throw new UnsupportedOperationException();
+  }
+
+  default @NotNull Block getHighestBlockAt(@NotNull Location location, @NotNull HeightMap heightMap) {
+    return getHighestBlockAt(location.blockX(), location.blockZ(), heightMap);
+  }
 }

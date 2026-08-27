@@ -1,7 +1,9 @@
 package org.aincraft.common.inventory;
 
 import java.util.List;
+import java.util.Map;
 import net.kyori.adventure.text.Component;
+import org.aincraft.common.effect.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,4 +39,28 @@ public interface ItemStack {
   @NotNull ItemStack asQuantity(int amount);
 
   @NotNull ItemStack withAmount(int amount);
+
+  default boolean hasEnchant(@NotNull Enchantment enchantment) {
+    throw new UnsupportedOperationException();
+  }
+
+  default int enchantLevel(@NotNull Enchantment enchantment) {
+    throw new UnsupportedOperationException();
+  }
+
+  default @NotNull Map<Enchantment, Integer> enchantments() {
+    throw new UnsupportedOperationException();
+  }
+
+  default void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+    throw new UnsupportedOperationException();
+  }
+
+  default void addEnchant(@NotNull Enchantment enchantment, int level) {
+    addEnchant(enchantment, level, false);
+  }
+
+  default int removeEnchant(@NotNull Enchantment enchantment) {
+    throw new UnsupportedOperationException();
+  }
 }

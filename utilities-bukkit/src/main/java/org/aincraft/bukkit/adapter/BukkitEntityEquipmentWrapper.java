@@ -132,6 +132,15 @@ public class BukkitEntityEquipmentWrapper implements EntityEquipment {
       case FEET -> org.bukkit.inventory.EquipmentSlot.FEET;
       case HAND -> org.bukkit.inventory.EquipmentSlot.HAND;
       case OFF_HAND -> org.bukkit.inventory.EquipmentSlot.OFF_HAND;
+      case BODY, SADDLE -> toBukkitReflective(slot);
     };
+  }
+
+  private static org.bukkit.inventory.EquipmentSlot toBukkitReflective(@NotNull EquipmentSlot slot) {
+    try {
+      return org.bukkit.inventory.EquipmentSlot.valueOf(slot.name());
+    } catch (IllegalArgumentException e) {
+      throw new UnsupportedOperationException(slot + " requires Paper/modern Spigot", e);
+    }
   }
 }

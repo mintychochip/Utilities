@@ -17,10 +17,10 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.Difficulty;
 import org.aincraft.common.world.Environment;
+import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
-
 public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
 
   private final Instance instance;
@@ -192,4 +192,39 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public @NotNull Block getHighestBlockAt(int x, int z) {
+    return getHighestBlockAt(x, z, HeightMap.WORLD_SURFACE);
+  }
+
+  @Override
+  public @NotNull Block getHighestBlockAt(@NotNull org.aincraft.common.location.Location location) {
+    return getHighestBlockAt(location.blockX(), location.blockZ());
+  }
+
+  @Override
+  public @NotNull Block getHighestBlockAt(int x, int z, @NotNull HeightMap heightMap) {
+    boolean motionBlocking = heightMap == HeightMap.MOTION_BLOCKING || heightMap == HeightMap.MOTION_BLOCKING_NO_LEAVES;
+    boolean oceanFloor = heightMap == HeightMap.OCEAN_FLOOR || heightMap == HeightMap.OCEAN_FLOOR_WG;
+    for (int y = maxHeight() - 1; y >= minHeight(); y--) {
+      net.minestom.server.instance.block.Block b = instance.getBlock(x, y, z);
+      boolean matches;
+      if (motionBlocking) {
+        matches = b.solid();
+      } else if (oceanFloor) {
+        matches = !b.air() && !b.liquid();
+      } else {
+        matches = !b.air();
+      }
+      if (matches) {
+        return MinestomAdapters.adapt(instance, x, y, z);
+      }
+    }
+    return MinestomAdapters.adapt(instance, x, minHeight(), z);
+  }
+
+  @Override
+  public @NotNull Block getHighestBlockAt(@NotNull org.aincraft.common.location.Location location, @NotNull HeightMap heightMap) {
+    return getHighestBlockAt(location.blockX(), location.blockZ(), heightMap);
+  }
 }

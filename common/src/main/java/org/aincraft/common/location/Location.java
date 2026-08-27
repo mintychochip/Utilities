@@ -2,6 +2,7 @@ package org.aincraft.common.location;
 
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
+import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,5 +54,13 @@ public interface Location {
 
   default @NotNull Chunk chunk() {
     return world().getChunkAt(blockX() >> 4, blockZ() >> 4);
+  }
+
+  default @NotNull Location toHighestLocation() {
+    throw new UnsupportedOperationException();
+  }
+
+  default @NotNull Location toHighestLocation(@NotNull HeightMap heightMap) {
+    throw new UnsupportedOperationException();
   }
 }

@@ -26,6 +26,7 @@ import org.aincraft.common.server.ConsoleCommandSender;
 import org.aincraft.common.server.Server;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
+import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.bukkit.Material;
@@ -41,6 +42,7 @@ import org.aincraft.common.entity.EntityType;
 import org.aincraft.common.world.RayTraceResult;
 import org.aincraft.common.location.Vector3d;
 import org.jetbrains.annotations.NotNull;
+
 
 public final class BukkitAdapters {
 
@@ -535,5 +537,12 @@ public final class BukkitAdapters {
       return wrapper.getBukkitProjectile();
     }
     throw new IllegalArgumentException("Cannot unwrap foreign Projectile implementation: " + projectile.getClass().getName());
+  }
+  public static @NotNull HeightMap adapt(@NotNull org.bukkit.HeightMap heightMap) {
+    return HeightMap.valueOf(heightMap.name());
+  }
+
+  public static @NotNull org.bukkit.HeightMap toBukkit(@NotNull HeightMap heightMap) {
+    return org.bukkit.HeightMap.valueOf(heightMap.name());
   }
 }

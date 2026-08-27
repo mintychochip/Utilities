@@ -1,9 +1,12 @@
 package org.aincraft.bukkit.adapter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
+import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.inventory.ItemMeta;
 import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.ItemType;
@@ -116,6 +119,44 @@ public class BukkitItemStackWrapper implements ItemStack {
     org.bukkit.inventory.ItemStack clone = item.clone();
     clone.setAmount(amount);
     return new BukkitItemStackWrapper(clone);
+  }
+
+  @Override
+  public boolean hasEnchant(@NotNull Enchantment enchantment) {
+    return item.containsEnchantment(BukkitAdapters.toBukkit(enchantment));
+  }
+
+  @Override
+  public int enchantLevel(@NotNull Enchantment enchantment) {
+    return item.getEnchantmentLevel(BukkitAdapters.toBukkit(enchantment));
+  }
+
+  @Override
+  public @NotNull Map<Enchantment, Integer> enchantments() {
+    Map<org.bukkit.enchantments.Enchantment, Integer> bMap = item.getEnchantments();
+    Map<Enchantment, Integer> result = new HashMap<>();
+    bMap.forEach((bEnch, level) -> result.put(BukkitAdapters.adapt(bEnch), level));
+    return Map.copyOf(result);
+  }
+
+  @Override
+  public void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+    org.bukkit.enchantments.Enchantment bEnch = BukkitAdapters.toBukkit(enchantment);
+    if (ignoreLevelRestriction) {
+      item.addUnsafeEnchantment(bEnch, level);
+    } else {
+      item.addEnchantment(bEnch, level);
+    }
+  }
+
+  @Override
+  public int removeEnchant(@NotNull Enchantment enchantment) {
+    org.bukkit.enchantments.Enchantment bEnch = BukkitAdapters.toBukkit(enchantment);
+    int level = item.getEnchantmentLevel(bEnch);
+    if (level > 0) {
+      item.removeEnchantment(bEnch);
+    }
+    return level;
   }
 
   @Override

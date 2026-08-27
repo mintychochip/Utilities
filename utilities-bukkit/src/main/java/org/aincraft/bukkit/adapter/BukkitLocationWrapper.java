@@ -3,9 +3,9 @@ package org.aincraft.bukkit.adapter;
 import java.util.Objects;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
+import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
-
 public class BukkitLocationWrapper implements Location {
 
   private final org.bukkit.Location bukkitLocation;
@@ -80,6 +80,24 @@ public class BukkitLocationWrapper implements Location {
   @Override
   public int blockZ() {
     return bukkitLocation.getBlockZ();
+  }
+  @Override
+  public @NotNull Location toHighestLocation() {
+    return toHighestLocation(HeightMap.WORLD_SURFACE);
+  }
+
+  @Override
+  public @NotNull Location toHighestLocation(@NotNull HeightMap heightMap) {
+    org.bukkit.HeightMap bHeightMap = BukkitAdapters.toBukkit(heightMap);
+    org.bukkit.World bWorld = bukkitLocation.getWorld();
+    if (bWorld == null) {
+      throw new IllegalStateException("Bukkit Location has no world");
+    }
+    org.bukkit.block.Block highest = bWorld.getHighestBlockAt(bukkitLocation, bHeightMap);
+    org.bukkit.Location bHighestLoc = highest.getLocation();
+    bHighestLoc.setYaw(bukkitLocation.getYaw());
+    bHighestLoc.setPitch(bukkitLocation.getPitch());
+    return BukkitAdapters.adapt(bHighestLoc);
   }
 
   @Override

@@ -14,6 +14,7 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.Difficulty;
 import org.aincraft.common.world.Environment;
+import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
@@ -156,6 +157,23 @@ public class BukkitWorldWrapper implements World {
     org.bukkit.Particle bParticle = BukkitAdapters.toBukkit(particle);
     org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
     world.spawnParticle(bParticle, bLoc, count, offsetX, offsetY, offsetZ, extra);
+  }
+
+  @Override
+  public @NotNull Block getHighestBlockAt(int x, int z) {
+    return BukkitAdapters.adapt(world.getHighestBlockAt(x, z));
+  }
+
+  @Override
+  public @NotNull Block getHighestBlockAt(@NotNull Location location) {
+    return BukkitAdapters.adapt(world.getHighestBlockAt(BukkitAdapters.toBukkit(location)));
+  }
+
+  @Override
+  public @NotNull Block getHighestBlockAt(int x, int z, @NotNull HeightMap heightMap) {
+    org.bukkit.HeightMap bHeightMap = BukkitAdapters.toBukkit(heightMap);
+    org.bukkit.block.Block bBlock = world.getHighestBlockAt(x, z, bHeightMap);
+    return BukkitAdapters.adapt(bBlock);
   }
   @Override
   public boolean equals(Object o) {

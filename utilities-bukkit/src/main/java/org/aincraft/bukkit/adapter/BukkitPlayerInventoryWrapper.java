@@ -127,6 +127,8 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
       case FEET -> boots();
       case HAND -> itemInMainHand();
       case OFF_HAND -> itemInOffHand();
+      case BODY, SADDLE -> throw new UnsupportedOperationException(
+          "EquipmentSlot." + slot + " is not supported for PlayerInventory on Spigot");
     };
   }
 
@@ -139,6 +141,8 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
       case FEET -> setBoots(item);
       case HAND -> setItemInMainHand(item);
       case OFF_HAND -> setItemInOffHand(item);
+      case BODY, SADDLE -> throw new UnsupportedOperationException(
+          "EquipmentSlot." + slot + " is not supported for PlayerInventory on Spigot");
     }
   }
 

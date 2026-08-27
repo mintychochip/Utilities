@@ -4,9 +4,9 @@ import java.util.Objects;
 import net.minestom.server.coordinate.Pos;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
+import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
-
 public class MinestomLocationWrapper implements Location {
 
   private final Pos pos;
@@ -67,6 +67,17 @@ public class MinestomLocationWrapper implements Location {
   @Override
   public int blockZ() {
     return pos.blockZ();
+  }
+  @Override
+  public @NotNull Location toHighestLocation() {
+    return toHighestLocation(HeightMap.WORLD_SURFACE);
+  }
+
+  @Override
+  public @NotNull Location toHighestLocation(@NotNull HeightMap heightMap) {
+    org.aincraft.common.world.Block highest = world.getHighestBlockAt(blockX(), blockZ(), heightMap);
+    // Return location at highest block with original yaw/pitch
+    return new MinestomLocationWrapper(world, new Pos(highest.x(), highest.y(), highest.z(), yaw(), pitch()));
   }
 
   @Override

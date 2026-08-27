@@ -1,11 +1,12 @@
 package org.aincraft.registry;
 
 import com.google.common.base.Preconditions;
-import java.util.HashMap;
-import java.util.Map;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 final class SimpleRegistryImpl<T extends Keyed> implements Registry<T> {
 

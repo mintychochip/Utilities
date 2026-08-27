@@ -2,7 +2,6 @@ package org.aincraft.minestom.adapter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.UUID;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -14,6 +13,8 @@ import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
 
 class MinestomAdaptersCoordinateTest {
 

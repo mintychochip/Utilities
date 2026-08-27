@@ -1,8 +1,6 @@
 package org.aincraft.common.datacomponent.item.blocksattacks;
 
-/**
- * Common contract for an item damage function, mirroring Paper's {@code ItemDamageFunction}.
- */
+/** Common contract for an item damage function, mirroring Paper's {@code ItemDamageFunction}. */
 public interface ItemDamageFunction {
 
   float threshold();

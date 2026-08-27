@@ -10,5 +10,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface MapItemColor {
 
-  @NotNull TextColor color();
+  @NotNull
+  TextColor color();
 }

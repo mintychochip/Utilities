@@ -10,5 +10,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface DyedItemColor {
 
-  @NotNull TextColor color();
+  @NotNull
+  TextColor color();
 }

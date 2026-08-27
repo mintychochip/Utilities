@@ -1,9 +1,5 @@
 package org.aincraft.common.inventory;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.attribute.AttributeModifier;
@@ -11,13 +7,20 @@ import org.aincraft.common.effect.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public interface ItemMeta {
 
-  @Nullable Component displayName();
+  @Nullable
+  Component displayName();
 
   void setDisplayName(@Nullable Component name);
 
-  @Nullable List<Component> lore();
+  @Nullable
+  List<Component> lore();
 
   void setLore(@Nullable List<Component> lore);
 
@@ -33,7 +36,8 @@ public interface ItemMeta {
 
   void setCustomModelData(int data);
 
-  @NotNull Map<Enchantment, Integer> enchantments();
+  @NotNull
+  Map<Enchantment, Integer> enchantments();
 
   boolean hasEnchant(@NotNull Enchantment enchantment);
 
@@ -43,9 +47,11 @@ public interface ItemMeta {
 
   void removeEnchant(@NotNull Enchantment enchantment);
 
-  @NotNull Map<Key, Collection<AttributeModifier>> attributeModifiers();
+  @NotNull
+  Map<Key, Collection<AttributeModifier>> attributeModifiers();
 
-  @Nullable Collection<AttributeModifier> getAttributeModifiers(@NotNull Key attribute);
+  @Nullable
+  Collection<AttributeModifier> getAttributeModifiers(@NotNull Key attribute);
 
   boolean hasAttributeModifiers();
 
@@ -63,9 +69,11 @@ public interface ItemMeta {
 
   void resetData(@NotNull DataComponentType<?> type);
 
-  @NotNull Set<DataComponentType<?>> dataComponentTypes();
+  @NotNull
+  Set<DataComponentType<?>> dataComponentTypes();
 
-  @NotNull Set<ItemFlag> itemFlags();
+  @NotNull
+  Set<ItemFlag> itemFlags();
 
   boolean hasItemFlag(@NotNull ItemFlag flag);
 

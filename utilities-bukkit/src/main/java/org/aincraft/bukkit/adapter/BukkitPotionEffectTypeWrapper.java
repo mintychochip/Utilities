@@ -4,7 +4,6 @@ import net.kyori.adventure.key.Key;
 import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.PotionEffectType;
 import org.aincraft.common.effect.PotionEffectTypeCategory;
-import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitPotionEffectTypeWrapper implements PotionEffectType {

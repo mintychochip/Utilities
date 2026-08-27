@@ -1,12 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -20,6 +13,14 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class BukkitItemMetaWrapper implements ItemMeta {
 
@@ -35,23 +36,33 @@ public class BukkitItemMetaWrapper implements ItemMeta {
 
   @Override
   public @Nullable Component displayName() {
-    return meta.hasDisplayName() ? LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()) : null;
+    return meta.hasDisplayName()
+        ? LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName())
+        : null;
   }
 
   @Override
   public void setDisplayName(@Nullable Component name) {
-    meta.setDisplayName(name != null ? LegacyComponentSerializer.legacySection().serialize(name) : null);
+    meta.setDisplayName(
+        name != null ? LegacyComponentSerializer.legacySection().serialize(name) : null);
   }
 
   @Override
   public @Nullable List<Component> lore() {
     List<String> bLore = meta.getLore();
-    return bLore != null ? bLore.stream().<Component>map(LegacyComponentSerializer.legacySection()::deserialize).toList() : null;
+    return bLore != null
+        ? bLore.stream()
+            .<Component>map(LegacyComponentSerializer.legacySection()::deserialize)
+            .toList()
+        : null;
   }
 
   @Override
   public void setLore(@Nullable List<Component> lore) {
-    meta.setLore(lore != null ? lore.stream().map(LegacyComponentSerializer.legacySection()::serialize).toList() : null);
+    meta.setLore(
+        lore != null
+            ? lore.stream().map(LegacyComponentSerializer.legacySection()::serialize).toList()
+            : null);
   }
 
   @Override
@@ -87,39 +98,73 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   @Override
   public @NotNull Map<Enchantment, Integer> enchantments() {
     Map<Enchantment, Integer> result = new HashMap<>();
-    for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+    for (Map.Entry<org.bukkit.enchantments.Enchantment, Integer> entry :
+        meta.getEnchants().entrySet()) {
       org.bukkit.enchantments.Enchantment bEnch = entry.getKey();
       Key key = Key.key(bEnch.getKey().getNamespace(), bEnch.getKey().getKey());
-      result.put(new Enchantment() {
-        @Override public Key key() { return key; }
-        @Override public int maxLevel() { return bEnch.getMaxLevel(); }
-        @Override public int startLevel() { return bEnch.getStartLevel(); }
-        @Override public boolean isCursed() { return bEnch.isCursed(); }
-        @Override public boolean isTreasure() { return bEnch.isTreasure(); }
-        @Override public boolean conflictsWith(@NotNull Enchantment other) { return bEnch.conflictsWith(BukkitAdapters.toBukkit(other)); }
-        @Override public boolean canEnchant(@NotNull ItemStack item) { return bEnch.canEnchantItem(BukkitAdapters.toBukkit(item)); }
-      }, entry.getValue());
+      result.put(
+          new Enchantment() {
+            @Override
+            public Key key() {
+              return key;
+            }
+
+            @Override
+            public int maxLevel() {
+              return bEnch.getMaxLevel();
+            }
+
+            @Override
+            public int startLevel() {
+              return bEnch.getStartLevel();
+            }
+
+            @Override
+            public boolean isCursed() {
+              return bEnch.isCursed();
+            }
+
+            @Override
+            public boolean isTreasure() {
+              return bEnch.isTreasure();
+            }
+
+            @Override
+            public boolean conflictsWith(@NotNull Enchantment other) {
+              return bEnch.conflictsWith(BukkitAdapters.toBukkit(other));
+            }
+
+            @Override
+            public boolean canEnchant(@NotNull ItemStack item) {
+              return bEnch.canEnchantItem(BukkitAdapters.toBukkit(item));
+            }
+          },
+          entry.getValue());
     }
     return result;
   }
 
   @Override
   public boolean hasEnchant(@NotNull Enchantment enchantment) {
-    NamespacedKey nKey = new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
+    NamespacedKey nKey =
+        new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
     org.bukkit.enchantments.Enchantment bEnch = org.bukkit.enchantments.Enchantment.getByKey(nKey);
     return bEnch != null && meta.hasEnchant(bEnch);
   }
 
   @Override
   public int enchantLevel(@NotNull Enchantment enchantment) {
-    NamespacedKey nKey = new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
+    NamespacedKey nKey =
+        new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
     org.bukkit.enchantments.Enchantment bEnch = org.bukkit.enchantments.Enchantment.getByKey(nKey);
     return bEnch != null ? meta.getEnchantLevel(bEnch) : 0;
   }
 
   @Override
-  public void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
-    NamespacedKey nKey = new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
+  public void addEnchant(
+      @NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+    NamespacedKey nKey =
+        new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
     org.bukkit.enchantments.Enchantment bEnch = org.bukkit.enchantments.Enchantment.getByKey(nKey);
     if (bEnch != null) {
       meta.addEnchant(bEnch, level, ignoreLevelRestriction);
@@ -128,7 +173,8 @@ public class BukkitItemMetaWrapper implements ItemMeta {
 
   @Override
   public void removeEnchant(@NotNull Enchantment enchantment) {
-    NamespacedKey nKey = new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
+    NamespacedKey nKey =
+        new NamespacedKey(enchantment.key().namespace(), enchantment.key().value());
     org.bukkit.enchantments.Enchantment bEnch = org.bukkit.enchantments.Enchantment.getByKey(nKey);
     if (bEnch != null) {
       meta.removeEnchant(bEnch);
@@ -138,7 +184,9 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   @Override
   public @NotNull Map<Key, Collection<AttributeModifier>> attributeModifiers() {
     Map<Key, Collection<AttributeModifier>> result = new HashMap<>();
-    com.google.common.collect.Multimap<org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier> bModifiers = meta.getAttributeModifiers();
+    com.google.common.collect.Multimap<
+            org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier>
+        bModifiers = meta.getAttributeModifiers();
     if (bModifiers != null) {
       for (org.bukkit.attribute.Attribute bAttr : bModifiers.keySet()) {
         Key cAttr = BukkitAdapters.adapt(bAttr);
@@ -162,7 +210,8 @@ public class BukkitItemMetaWrapper implements ItemMeta {
 
   @Override
   public void addAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier) {
-    meta.addAttributeModifier(BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
+    meta.addAttributeModifier(
+        BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
   }
 
   @Override
@@ -172,10 +221,12 @@ public class BukkitItemMetaWrapper implements ItemMeta {
 
   @Override
   public void removeAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier) {
-    meta.removeAttributeModifier(BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
+    meta.removeAttributeModifier(
+        BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
   }
 
-  private static <T> @Nullable PersistentDataType<?, ?> resolveDataType(@NotNull Class<T> typeClass) {
+  private static <T> @Nullable PersistentDataType<?, ?> resolveDataType(
+      @NotNull Class<T> typeClass) {
     if (typeClass == String.class) return PersistentDataType.STRING;
     if (typeClass == Integer.class || typeClass == int.class) return PersistentDataType.INTEGER;
     if (typeClass == Long.class || typeClass == long.class) return PersistentDataType.LONG;
@@ -195,7 +246,8 @@ public class BukkitItemMetaWrapper implements ItemMeta {
     NamespacedKey nKey = new NamespacedKey(type.key().namespace(), type.key().value());
     PersistentDataType<?, ?> pType = resolveDataType(type.type());
     if (pType == null) {
-      throw new UnsupportedOperationException("Unsupported DataComponentType value type: " + type.type().getName());
+      throw new UnsupportedOperationException(
+          "Unsupported DataComponentType value type: " + type.type().getName());
     }
     return hasPdcData(nKey, pType);
   }
@@ -216,7 +268,8 @@ public class BukkitItemMetaWrapper implements ItemMeta {
     }
     PersistentDataType<?, ?> pType = resolveDataType(clazz);
     if (pType == null) {
-      throw new UnsupportedOperationException("Unsupported DataComponentType value type: " + clazz.getName());
+      throw new UnsupportedOperationException(
+          "Unsupported DataComponentType value type: " + clazz.getName());
     }
     return (T) getPdcData(nKey, (PersistentDataType<Object, Object>) pType);
   }
@@ -235,12 +288,14 @@ public class BukkitItemMetaWrapper implements ItemMeta {
     }
     Class<T> clazz = type.type();
     if (clazz == Boolean.class || clazz == boolean.class) {
-      meta.getPersistentDataContainer().set(nKey, PersistentDataType.BYTE, (byte) (((Boolean) value) ? 1 : 0));
+      meta.getPersistentDataContainer()
+          .set(nKey, PersistentDataType.BYTE, (byte) (((Boolean) value) ? 1 : 0));
       return;
     }
     PersistentDataType<?, ?> pType = resolveDataType(clazz);
     if (pType == null) {
-      throw new UnsupportedOperationException("Unsupported DataComponentType value type: " + clazz.getName());
+      throw new UnsupportedOperationException(
+          "Unsupported DataComponentType value type: " + clazz.getName());
     }
     setPdcData(nKey, (PersistentDataType<Object, Object>) pType, value);
   }
@@ -260,10 +315,18 @@ public class BukkitItemMetaWrapper implements ItemMeta {
     Set<DataComponentType<?>> result = new HashSet<>();
     for (NamespacedKey key : meta.getPersistentDataContainer().getKeys()) {
       Key cKey = Key.key(key.getNamespace(), key.getKey());
-      result.add(new DataComponentType<Object>() {
-        @Override public @NotNull Key key() { return cKey; }
-        @Override public @NotNull Class<Object> type() { return Object.class; }
-      });
+      result.add(
+          new DataComponentType<Object>() {
+            @Override
+            public @NotNull Key key() {
+              return cKey;
+            }
+
+            @Override
+            public @NotNull Class<Object> type() {
+              return Object.class;
+            }
+          });
     }
     return result;
   }
@@ -284,12 +347,18 @@ public class BukkitItemMetaWrapper implements ItemMeta {
 
   @Override
   public void addItemFlags(@NotNull ItemFlag... flags) {
-    meta.addItemFlags(java.util.Arrays.stream(flags).map(BukkitItemMetaWrapper::toBukkit).toArray(org.bukkit.inventory.ItemFlag[]::new));
+    meta.addItemFlags(
+        java.util.Arrays.stream(flags)
+            .map(BukkitItemMetaWrapper::toBukkit)
+            .toArray(org.bukkit.inventory.ItemFlag[]::new));
   }
 
   @Override
   public void removeItemFlags(@NotNull ItemFlag... flags) {
-    meta.removeItemFlags(java.util.Arrays.stream(flags).map(BukkitItemMetaWrapper::toBukkit).toArray(org.bukkit.inventory.ItemFlag[]::new));
+    meta.removeItemFlags(
+        java.util.Arrays.stream(flags)
+            .map(BukkitItemMetaWrapper::toBukkit)
+            .toArray(org.bukkit.inventory.ItemFlag[]::new));
   }
 
   private static ItemFlag adapt(@NotNull org.bukkit.inventory.ItemFlag flag) {

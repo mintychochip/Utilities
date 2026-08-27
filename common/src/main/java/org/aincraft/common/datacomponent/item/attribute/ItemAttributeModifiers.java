@@ -1,15 +1,16 @@
 package org.aincraft.common.datacomponent.item.attribute;
 
-import java.util.List;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.datacomponent.item.EquipmentSlotGroup;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * Common contract for the attribute modifiers attached to an item.
  *
- * <p>Mirrors Paper's {@code ItemAttributeModifiers}.</p>
+ * <p>Mirrors Paper's {@code ItemAttributeModifiers}.
  */
 public interface ItemAttributeModifiers {
 
@@ -24,7 +25,7 @@ public interface ItemAttributeModifiers {
   /**
    * Common contract for a single attribute modifier entry.
    *
-   * <p>Mirrors Paper's {@code ItemAttributeModifiers.Entry}.</p>
+   * <p>Mirrors Paper's {@code ItemAttributeModifiers.Entry}.
    */
   interface Entry {
 

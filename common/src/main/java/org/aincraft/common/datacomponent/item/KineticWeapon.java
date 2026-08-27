@@ -3,7 +3,8 @@ package org.aincraft.common.datacomponent.item;
 import net.kyori.adventure.key.Key;
 
 /**
- * Common contract for the {@code KineticWeapon} data component, mirroring Paper's {@code KineticWeapon}.
+ * Common contract for the {@code KineticWeapon} data component, mirroring Paper's {@code
+ * KineticWeapon}.
  */
 public interface KineticWeapon {
 
@@ -26,7 +27,8 @@ public interface KineticWeapon {
   Key hitSound();
 
   /**
-   * Common contract for a kinetic-weapon condition, mirroring Paper's {@code KineticWeapon.Condition}.
+   * Common contract for a kinetic-weapon condition, mirroring Paper's {@code
+   * KineticWeapon.Condition}.
    */
   interface Condition {
 

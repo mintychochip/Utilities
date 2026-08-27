@@ -1,11 +1,12 @@
 package org.aincraft.common.datacomponent.item;
 
-import java.util.List;
 import org.aincraft.common.datacomponent.text.Filtered;
 
+import java.util.List;
+
 /**
- * Common contract for writable book content, mirroring Paper's
- * {@code WritableBookContent} without depending on Bukkit.
+ * Common contract for writable book content, mirroring Paper's {@code WritableBookContent} without
+ * depending on Bukkit.
  */
 public interface WritableBookContent {
 

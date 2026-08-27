@@ -1,6 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
@@ -11,6 +10,9 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 public class BukkitBlockWrapper implements Block {
 
   private final org.bukkit.block.Block block;
@@ -107,11 +109,15 @@ public class BukkitBlockWrapper implements Block {
   public void setBiome(@NotNull Key biome) {
     block.setBiome(BukkitAdapters.toBukkitBiome(biome));
   }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Block that)) return false;
-    return x() == that.x() && y() == that.y() && z() == that.z() && Objects.equals(world(), that.world());
+    return x() == that.x()
+        && y() == that.y()
+        && z() == that.z()
+        && Objects.equals(world(), that.world());
   }
 
   @Override
@@ -121,6 +127,16 @@ public class BukkitBlockWrapper implements Block {
 
   @Override
   public String toString() {
-    return "BukkitBlockWrapper{world=" + world().name() + ", x=" + x() + ", y=" + y() + ", z=" + z() + ", type=" + type() + "}";
+    return "BukkitBlockWrapper{world="
+        + world().name()
+        + ", x="
+        + x()
+        + ", y="
+        + y()
+        + ", z="
+        + z()
+        + ", type="
+        + type()
+        + "}";
   }
 }

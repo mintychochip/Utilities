@@ -1,12 +1,13 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.WorldBorder;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class MinestomWorldBorderWrapper implements org.aincraft.common.world.WorldBorder {
 
@@ -45,8 +46,7 @@ public class MinestomWorldBorderWrapper implements org.aincraft.common.world.Wor
   }
 
   @Override
-  public void setDamageBuffer(double buffer) {
-  }
+  public void setDamageBuffer(double buffer) {}
 
   @Override
   public double damageAmount() {
@@ -54,8 +54,7 @@ public class MinestomWorldBorderWrapper implements org.aincraft.common.world.Wor
   }
 
   @Override
-  public void setDamageAmount(double amount) {
-  }
+  public void setDamageAmount(double amount) {}
 
   @Override
   public int warningTime() {

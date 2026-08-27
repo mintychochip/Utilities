@@ -1,8 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import org.aincraft.common.inventory.Inventory;
 import org.aincraft.common.inventory.InventoryHolder;
 import org.aincraft.common.inventory.InventoryType;
@@ -11,6 +8,10 @@ import org.aincraft.common.inventory.ItemType;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class BukkitInventoryWrapper implements Inventory {
 

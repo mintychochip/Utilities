@@ -8,34 +8,29 @@ import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.LivingEntity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.inventory.EntityEquipment;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.quality.Strictness;
 import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class BukkitEntityStateTest {
 
-  @Mock
-  org.bukkit.World bukkitWorld;
+  @Mock org.bukkit.World bukkitWorld;
 
-  @Mock
-  org.bukkit.entity.LivingEntity bukkitLiving;
+  @Mock org.bukkit.entity.LivingEntity bukkitLiving;
 
-  @Mock
-  org.bukkit.entity.Player bukkitPlayer;
+  @Mock org.bukkit.entity.Player bukkitPlayer;
 
-  @Mock
-  org.bukkit.inventory.EntityEquipment bukkitEquipment;
+  @Mock org.bukkit.inventory.EntityEquipment bukkitEquipment;
 
   @Test
   void testEntityVelocityAndRotation() {
@@ -51,8 +46,8 @@ class BukkitEntityStateTest {
     assertEquals(3.0, velocity.z(), 1e-6);
 
     entity.setVelocity(new Vector3d(4, 5, 6));
-    verify(bukkitLiving).setVelocity(argThat(v ->
-        v.getX() == 4.0 && v.getY() == 5.0 && v.getZ() == 6.0));
+    verify(bukkitLiving)
+        .setVelocity(argThat(v -> v.getX() == 4.0 && v.getY() == 5.0 && v.getZ() == 6.0));
 
     entity.setRotation(90.0f, 45.0f);
     verify(bukkitLiving).setRotation(90.0f, 45.0f);
@@ -105,7 +100,8 @@ class BukkitEntityStateTest {
     EntityEquipment equipment = entity.equipment();
     assertNotNull(equipment);
 
-    org.bukkit.inventory.ItemStack helmet = new org.bukkit.inventory.ItemStack(org.bukkit.Material.DIAMOND_HELMET);
+    org.bukkit.inventory.ItemStack helmet =
+        new org.bukkit.inventory.ItemStack(org.bukkit.Material.DIAMOND_HELMET);
     when(bukkitEquipment.getItem(EquipmentSlot.HEAD)).thenReturn(helmet);
 
     assertNotNull(equipment.helmet());
@@ -141,7 +137,8 @@ class BukkitEntityStateTest {
     Player player = BukkitAdapters.adapt(bukkitPlayer);
 
     when(bukkitPlayer.getDisplayName()).thenReturn("§bDisplay");
-    assertEquals("Display", ((net.kyori.adventure.text.TextComponent) player.displayName()).content());
+    assertEquals(
+        "Display", ((net.kyori.adventure.text.TextComponent) player.displayName()).content());
 
     player.displayName(Component.text("NewName"));
     verify(bukkitPlayer).setDisplayName("NewName");

@@ -1,6 +1,5 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
 import net.minestom.server.coordinate.Point;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.entity.Entity;
@@ -9,6 +8,8 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class MinestomRayTraceResultWrapper implements RayTraceResult {
 

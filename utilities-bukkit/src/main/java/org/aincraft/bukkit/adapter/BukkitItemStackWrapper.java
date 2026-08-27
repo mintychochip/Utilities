@@ -1,10 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.inventory.ItemMeta;
@@ -13,6 +8,12 @@ import org.aincraft.common.inventory.ItemType;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class BukkitItemStackWrapper implements ItemStack {
 
@@ -140,7 +141,8 @@ public class BukkitItemStackWrapper implements ItemStack {
   }
 
   @Override
-  public void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+  public void addEnchant(
+      @NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
     org.bukkit.enchantments.Enchantment bEnch = BukkitAdapters.toBukkit(enchantment);
     if (ignoreLevelRestriction) {
       item.addUnsafeEnchantment(bEnch, level);

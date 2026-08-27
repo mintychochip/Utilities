@@ -1,8 +1,9 @@
 package org.aincraft.common.world;
 
-import java.util.Collection;
 import org.aincraft.common.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 public interface Chunk {
 
@@ -10,9 +11,11 @@ public interface Chunk {
 
   int z();
 
-  @NotNull World world();
+  @NotNull
+  World world();
 
-  @NotNull Block getBlock(int x, int y, int z);
+  @NotNull
+  Block getBlock(int x, int y, int z);
 
   boolean isLoaded();
 
@@ -28,5 +31,6 @@ public interface Chunk {
     return (((long) x()) << 32) | (z() & 0xFFFFFFFFL);
   }
 
-  @NotNull Collection<? extends Entity> entities();
+  @NotNull
+  Collection<? extends Entity> entities();
 }

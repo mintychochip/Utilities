@@ -1,6 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.Position;
@@ -8,6 +7,8 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class BukkitRayTraceResultWrapper implements RayTraceResult {
 

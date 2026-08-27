@@ -1,14 +1,14 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.inventory.EquipmentSlot;
 import org.aincraft.common.inventory.ItemStack;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class BukkitEntityEquipmentWrapper implements EntityEquipment {
 
@@ -112,7 +112,8 @@ public class BukkitEntityEquipmentWrapper implements EntityEquipment {
     return item == null || item.getType() == org.bukkit.Material.AIR;
   }
 
-  private @NotNull Collection<@NotNull ItemStack> adaptArray(@Nullable org.bukkit.inventory.ItemStack[] items) {
+  private @NotNull Collection<@NotNull ItemStack> adaptArray(
+      @Nullable org.bukkit.inventory.ItemStack[] items) {
     List<ItemStack> result = new ArrayList<>();
     if (items != null) {
       for (org.bukkit.inventory.ItemStack item : items) {
@@ -136,7 +137,8 @@ public class BukkitEntityEquipmentWrapper implements EntityEquipment {
     };
   }
 
-  private static org.bukkit.inventory.EquipmentSlot toBukkitReflective(@NotNull EquipmentSlot slot) {
+  private static org.bukkit.inventory.EquipmentSlot toBukkitReflective(
+      @NotNull EquipmentSlot slot) {
     try {
       return org.bukkit.inventory.EquipmentSlot.valueOf(slot.name());
     } catch (IllegalArgumentException e) {

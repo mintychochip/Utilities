@@ -1,6 +1,5 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
 import net.kyori.adventure.sound.Sound;
@@ -12,7 +11,10 @@ import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.world.GameMode;
 import org.jetbrains.annotations.NotNull;
 
-public class MinestomPlayerWrapper extends MinestomLivingEntityWrapper implements Player, ForwardingAudience.Single {
+import java.util.Objects;
+
+public class MinestomPlayerWrapper extends MinestomLivingEntityWrapper
+    implements Player, ForwardingAudience.Single {
 
   private final net.minestom.server.entity.Player player;
   private final PlayerInventory inventory;
@@ -100,12 +102,13 @@ public class MinestomPlayerWrapper extends MinestomLivingEntityWrapper implement
   @Override
   public void setGameMode(@NotNull GameMode gameMode) {
     Objects.requireNonNull(gameMode, "gameMode cannot be null");
-    net.minestom.server.entity.GameMode mMode = switch (gameMode) {
-      case SURVIVAL -> net.minestom.server.entity.GameMode.SURVIVAL;
-      case CREATIVE -> net.minestom.server.entity.GameMode.CREATIVE;
-      case ADVENTURE -> net.minestom.server.entity.GameMode.ADVENTURE;
-      case SPECTATOR -> net.minestom.server.entity.GameMode.SPECTATOR;
-    };
+    net.minestom.server.entity.GameMode mMode =
+        switch (gameMode) {
+          case SURVIVAL -> net.minestom.server.entity.GameMode.SURVIVAL;
+          case CREATIVE -> net.minestom.server.entity.GameMode.CREATIVE;
+          case ADVENTURE -> net.minestom.server.entity.GameMode.ADVENTURE;
+          case SPECTATOR -> net.minestom.server.entity.GameMode.SPECTATOR;
+        };
     player.setGameMode(mMode);
   }
 
@@ -223,6 +226,4 @@ public class MinestomPlayerWrapper extends MinestomLivingEntityWrapper implement
   public void displayName(@NotNull net.kyori.adventure.text.Component displayName) {
     throw new UnsupportedOperationException();
   }
-
-
 }

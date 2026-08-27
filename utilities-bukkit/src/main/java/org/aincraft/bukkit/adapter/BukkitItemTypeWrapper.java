@@ -1,10 +1,11 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.inventory.ItemType;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitItemTypeWrapper implements ItemType {
 

@@ -1,12 +1,13 @@
 package org.aincraft.common.datacomponent.item;
 
-import java.util.List;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.datacomponent.text.Filtered;
 
+import java.util.List;
+
 /**
- * Common contract for written book content, mirroring Paper's
- * {@code WrittenBookContent} without depending on Bukkit.
+ * Common contract for written book content, mirroring Paper's {@code WrittenBookContent} without
+ * depending on Bukkit.
  */
 public interface WrittenBookContent {
 

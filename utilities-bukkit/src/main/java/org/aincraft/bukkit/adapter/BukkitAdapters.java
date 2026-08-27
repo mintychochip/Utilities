@@ -1,6 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
@@ -10,11 +11,14 @@ import org.aincraft.common.effect.Enchantment;
 import org.aincraft.common.effect.Particle;
 import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.PotionEffectType;
-import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.entity.Entity;
+import org.aincraft.common.entity.EntityType;
 import org.aincraft.common.entity.LivingEntity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.inventory.Inventory;
+import org.aincraft.common.inventory.InventoryHolder;
+import org.aincraft.common.inventory.InventoryType;
+import org.aincraft.common.inventory.InventoryView;
 import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.ItemType;
 import org.aincraft.common.inventory.PlayerInventory;
@@ -22,27 +26,21 @@ import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
 import org.aincraft.common.server.CommandSender;
-import org.aincraft.common.server.ConsoleCommandSender;
+import org.aincraft.common.server.OfflinePlayer;
 import org.aincraft.common.server.Server;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
+import org.aincraft.common.world.GameMode;
 import org.aincraft.common.world.HeightMap;
+import org.aincraft.common.world.RayTraceResult;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
-import org.aincraft.common.inventory.InventoryType;
-import org.aincraft.common.world.GameMode;
-import org.aincraft.common.server.OfflinePlayer;
-import org.aincraft.common.inventory.InventoryView;
-import org.aincraft.common.inventory.InventoryHolder;
-import org.aincraft.common.entity.EntityType;
-import org.aincraft.common.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3dc;
-
 
 public final class BukkitAdapters {
 
@@ -56,7 +54,8 @@ public final class BukkitAdapters {
     if (location instanceof BukkitLocationWrapper wrapper) {
       return wrapper.getBukkitLocation();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Location implementation: " + location.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Location implementation: " + location.getClass().getName());
   }
 
   public static @NotNull Position adapt(@NotNull Vector vector) {
@@ -67,7 +66,8 @@ public final class BukkitAdapters {
     if (position instanceof BukkitPositionWrapper wrapper) {
       return wrapper.getBukkitVector();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Position implementation: " + position.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Position implementation: " + position.getClass().getName());
   }
 
   public static @NotNull Vector toBukkit(@NotNull Vector3dc vector) {
@@ -77,7 +77,6 @@ public final class BukkitAdapters {
     return new Vector(vector.x(), vector.y(), vector.z());
   }
 
-
   public static @NotNull BoundingBox adapt(@NotNull org.bukkit.util.BoundingBox box) {
     return new BukkitBoundingBoxWrapper(box);
   }
@@ -86,7 +85,8 @@ public final class BukkitAdapters {
     if (box instanceof BukkitBoundingBoxWrapper wrapper) {
       return wrapper.getBukkitBoundingBox();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign BoundingBox implementation: " + box.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign BoundingBox implementation: " + box.getClass().getName());
   }
 
   public static @NotNull Block adapt(@NotNull org.bukkit.block.Block block) {
@@ -97,7 +97,8 @@ public final class BukkitAdapters {
     if (block instanceof BukkitBlockWrapper wrapper) {
       return wrapper.getBukkitBlock();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Block implementation: " + block.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Block implementation: " + block.getClass().getName());
   }
 
   public static @NotNull Chunk adapt(@NotNull org.bukkit.Chunk chunk) {
@@ -108,7 +109,8 @@ public final class BukkitAdapters {
     if (chunk instanceof BukkitChunkWrapper wrapper) {
       return wrapper.getBukkitChunk();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Chunk implementation: " + chunk.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Chunk implementation: " + chunk.getClass().getName());
   }
 
   public static @NotNull World adapt(@NotNull org.bukkit.World world) {
@@ -119,7 +121,8 @@ public final class BukkitAdapters {
     if (world instanceof BukkitWorldWrapper wrapper) {
       return wrapper.getBukkitWorld();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign World implementation: " + world.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign World implementation: " + world.getClass().getName());
   }
 
   public static @NotNull WorldBorder adapt(@NotNull org.bukkit.WorldBorder worldBorder) {
@@ -130,7 +133,8 @@ public final class BukkitAdapters {
     if (worldBorder instanceof BukkitWorldBorderWrapper wrapper) {
       return wrapper.getBukkitWorldBorder();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign WorldBorder implementation: " + worldBorder.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign WorldBorder implementation: " + worldBorder.getClass().getName());
   }
 
   public static @NotNull Entity adapt(@NotNull org.bukkit.entity.Entity entity) {
@@ -147,7 +151,8 @@ public final class BukkitAdapters {
     if (entity instanceof BukkitEntityWrapper wrapper) {
       return wrapper.getBukkitEntity();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Entity implementation: " + entity.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Entity implementation: " + entity.getClass().getName());
   }
 
   public static @NotNull LivingEntity adapt(@NotNull org.bukkit.entity.LivingEntity entity) {
@@ -161,7 +166,8 @@ public final class BukkitAdapters {
     if (entity instanceof BukkitLivingEntityWrapper wrapper) {
       return wrapper.getBukkitLivingEntity();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign LivingEntity implementation: " + entity.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign LivingEntity implementation: " + entity.getClass().getName());
   }
 
   public static @NotNull Player adapt(@NotNull org.bukkit.entity.Player player) {
@@ -172,7 +178,8 @@ public final class BukkitAdapters {
     if (player instanceof BukkitPlayerWrapper wrapper) {
       return wrapper.getBukkitPlayer();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Player implementation: " + player.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Player implementation: " + player.getClass().getName());
   }
 
   public static @NotNull ItemStack adapt(@NotNull org.bukkit.inventory.ItemStack item) {
@@ -183,7 +190,8 @@ public final class BukkitAdapters {
     if (item instanceof BukkitItemStackWrapper wrapper) {
       return wrapper.getBukkitItemStack();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign ItemStack implementation: " + item.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign ItemStack implementation: " + item.getClass().getName());
   }
 
   public static @NotNull ItemType adapt(@NotNull Material material) {
@@ -194,7 +202,8 @@ public final class BukkitAdapters {
     if (itemType instanceof BukkitItemTypeWrapper wrapper) {
       return wrapper.getBukkitMaterial();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign ItemType implementation: " + itemType.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign ItemType implementation: " + itemType.getClass().getName());
   }
 
   public static @NotNull Inventory adapt(@NotNull org.bukkit.inventory.Inventory inventory) {
@@ -208,18 +217,22 @@ public final class BukkitAdapters {
     if (inventory instanceof BukkitInventoryWrapper wrapper) {
       return wrapper.getBukkitInventory();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Inventory implementation: " + inventory.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Inventory implementation: " + inventory.getClass().getName());
   }
 
-  public static @NotNull PlayerInventory adapt(@NotNull org.bukkit.inventory.PlayerInventory inventory) {
+  public static @NotNull PlayerInventory adapt(
+      @NotNull org.bukkit.inventory.PlayerInventory inventory) {
     return new BukkitPlayerInventoryWrapper(inventory);
   }
 
-  public static @NotNull org.bukkit.inventory.PlayerInventory toBukkit(@NotNull PlayerInventory inventory) {
+  public static @NotNull org.bukkit.inventory.PlayerInventory toBukkit(
+      @NotNull PlayerInventory inventory) {
     if (inventory instanceof BukkitPlayerInventoryWrapper wrapper) {
       return wrapper.getBukkitPlayerInventory();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign PlayerInventory implementation: " + inventory.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign PlayerInventory implementation: " + inventory.getClass().getName());
   }
 
   public static @NotNull Server adapt(@NotNull org.bukkit.Server server) {
@@ -230,7 +243,8 @@ public final class BukkitAdapters {
     if (server instanceof BukkitServerWrapper wrapper) {
       return wrapper.getBukkitServer();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Server implementation: " + server.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Server implementation: " + server.getClass().getName());
   }
 
   public static @NotNull CommandSender adapt(@NotNull org.bukkit.command.CommandSender sender) {
@@ -250,7 +264,8 @@ public final class BukkitAdapters {
     if (sender instanceof BukkitCommandSenderWrapper wrapper) {
       return wrapper.getBukkitCommandSender();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign CommandSender implementation: " + sender.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign CommandSender implementation: " + sender.getClass().getName());
   }
 
   public static @NotNull BlockFace adapt(@NotNull org.bukkit.block.BlockFace face) {
@@ -309,7 +324,8 @@ public final class BukkitAdapters {
     if (blockType instanceof BukkitBlockTypeWrapper wrapper) {
       return wrapper.getBukkitMaterial();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign BlockType implementation: " + blockType.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign BlockType implementation: " + blockType.getClass().getName());
   }
 
   public static @NotNull BlockState adapt(@NotNull BlockData blockData) {
@@ -320,7 +336,8 @@ public final class BukkitAdapters {
     if (blockState instanceof BukkitBlockStateWrapper wrapper) {
       return wrapper.getBukkitBlockData();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign BlockState implementation: " + blockState.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign BlockState implementation: " + blockState.getClass().getName());
   }
 
   public static @NotNull Key adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
@@ -331,7 +348,8 @@ public final class BukkitAdapters {
     if (attribute instanceof BukkitAttributeWrapper wrapper) {
       return wrapper.getBukkitAttribute();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Attribute implementation: " + attribute.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Attribute implementation: " + attribute.getClass().getName());
   }
 
   public static @NotNull Key adapt(@NotNull org.bukkit.block.Biome biome) {
@@ -342,43 +360,53 @@ public final class BukkitAdapters {
     if (biome instanceof BukkitBiomeWrapper wrapper) {
       return wrapper.getBukkitBiome();
     }
-    org.bukkit.block.Biome bBiome = org.bukkit.Registry.BIOME.get(NamespacedKey.fromString(biome.asString()));
+    org.bukkit.block.Biome bBiome =
+        org.bukkit.Registry.BIOME.get(NamespacedKey.fromString(biome.asString()));
     if (bBiome == null) {
       throw new IllegalArgumentException("Cannot resolve Biome for key: " + biome.asString());
     }
     return bBiome;
   }
 
-  public static @NotNull AttributeModifier adapt(@NotNull org.bukkit.attribute.AttributeModifier modifier) {
+  public static @NotNull AttributeModifier adapt(
+      @NotNull org.bukkit.attribute.AttributeModifier modifier) {
     return new BukkitAttributeModifierWrapper(modifier);
   }
 
-  public static @NotNull org.bukkit.attribute.AttributeModifier toBukkit(@NotNull AttributeModifier modifier) {
+  public static @NotNull org.bukkit.attribute.AttributeModifier toBukkit(
+      @NotNull AttributeModifier modifier) {
     if (modifier instanceof BukkitAttributeModifierWrapper wrapper) {
       return wrapper.getBukkitAttributeModifier();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign AttributeModifier implementation: " + modifier.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign AttributeModifier implementation: " + modifier.getClass().getName());
   }
 
-  public static @NotNull AttributeInstance adapt(@NotNull org.bukkit.attribute.AttributeInstance instance) {
+  public static @NotNull AttributeInstance adapt(
+      @NotNull org.bukkit.attribute.AttributeInstance instance) {
     return new BukkitAttributeInstanceWrapper(instance);
   }
 
-  public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(@NotNull AttributeInstance instance) {
+  public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(
+      @NotNull AttributeInstance instance) {
     if (instance instanceof BukkitAttributeInstanceWrapper wrapper) {
       return wrapper.getBukkitAttributeInstance();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign AttributeInstance implementation: " + instance.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign AttributeInstance implementation: " + instance.getClass().getName());
   }
+
   public static @NotNull PotionEffectType adapt(@NotNull org.bukkit.potion.PotionEffectType type) {
     return new BukkitPotionEffectTypeWrapper(type);
   }
 
-  public static @NotNull org.bukkit.potion.PotionEffectType toBukkit(@NotNull PotionEffectType type) {
+  public static @NotNull org.bukkit.potion.PotionEffectType toBukkit(
+      @NotNull PotionEffectType type) {
     if (type instanceof BukkitPotionEffectTypeWrapper wrapper) {
       return wrapper.getBukkitPotionEffectType();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign PotionEffectType implementation: " + type.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign PotionEffectType implementation: " + type.getClass().getName());
   }
 
   public static @NotNull PotionEffect adapt(@NotNull org.bukkit.potion.PotionEffect effect) {
@@ -389,7 +417,8 @@ public final class BukkitAdapters {
     if (effect instanceof BukkitPotionEffectWrapper wrapper) {
       return wrapper.getBukkitPotionEffect();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign PotionEffect implementation: " + effect.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign PotionEffect implementation: " + effect.getClass().getName());
   }
 
   public static @NotNull Sound.Type adapt(@NotNull org.bukkit.Sound sound) {
@@ -400,7 +429,8 @@ public final class BukkitAdapters {
     if (sound instanceof BukkitSoundWrapper wrapper) {
       return wrapper.getBukkitSound();
     }
-    org.bukkit.Sound bSound = org.bukkit.Registry.SOUNDS.get(NamespacedKey.fromString(sound.key().asString()));
+    org.bukkit.Sound bSound =
+        org.bukkit.Registry.SOUNDS.get(NamespacedKey.fromString(sound.key().asString()));
     if (bSound == null) {
       throw new IllegalArgumentException("Cannot resolve Sound for key: " + sound.key());
     }
@@ -415,24 +445,30 @@ public final class BukkitAdapters {
     if (particle instanceof BukkitParticleWrapper wrapper) {
       return wrapper.getBukkitParticle();
     }
-    org.bukkit.Particle bParticle = org.bukkit.Registry.PARTICLE_TYPE.get(NamespacedKey.fromString(particle.asString()));
+    org.bukkit.Particle bParticle =
+        org.bukkit.Registry.PARTICLE_TYPE.get(NamespacedKey.fromString(particle.asString()));
     if (bParticle == null) {
       throw new IllegalArgumentException("Cannot resolve Particle for key: " + particle.asString());
     }
     return bParticle;
   }
 
-  public static @NotNull Enchantment adapt(@NotNull org.bukkit.enchantments.Enchantment enchantment) {
+  public static @NotNull Enchantment adapt(
+      @NotNull org.bukkit.enchantments.Enchantment enchantment) {
     return new BukkitEnchantmentWrapper(enchantment);
   }
 
-  public static @NotNull org.bukkit.enchantments.Enchantment toBukkit(@NotNull Enchantment enchantment) {
+  public static @NotNull org.bukkit.enchantments.Enchantment toBukkit(
+      @NotNull Enchantment enchantment) {
     if (enchantment instanceof BukkitEnchantmentWrapper wrapper) {
       return wrapper.getBukkitEnchantment();
     }
-    org.bukkit.enchantments.Enchantment bEnchantment = org.bukkit.enchantments.Enchantment.getByKey(NamespacedKey.fromString(enchantment.key().asString()));
+    org.bukkit.enchantments.Enchantment bEnchantment =
+        org.bukkit.enchantments.Enchantment.getByKey(
+            NamespacedKey.fromString(enchantment.key().asString()));
     if (bEnchantment == null) {
-      throw new IllegalArgumentException("Cannot resolve Enchantment for key: " + enchantment.key());
+      throw new IllegalArgumentException(
+          "Cannot resolve Enchantment for key: " + enchantment.key());
     }
     return bEnchantment;
   }
@@ -445,9 +481,12 @@ public final class BukkitAdapters {
     if (entityType instanceof BukkitEntityTypeWrapper wrapper) {
       return wrapper.getBukkitEntityType();
     }
-    org.bukkit.entity.EntityType bType = org.bukkit.entity.EntityType.fromName(entityType.key().value());
+    org.bukkit.entity.EntityType bType =
+        org.bukkit.entity.EntityType.fromName(entityType.key().value());
     if (bType == null) {
-      bType = org.bukkit.Registry.ENTITY_TYPE.get(NamespacedKey.fromString(entityType.key().asString()));
+      bType =
+          org.bukkit.Registry.ENTITY_TYPE.get(
+              NamespacedKey.fromString(entityType.key().asString()));
     }
     if (bType == null) {
       throw new IllegalArgumentException("Cannot resolve EntityType for key: " + entityType.key());
@@ -455,23 +494,28 @@ public final class BukkitAdapters {
     return bType;
   }
 
-  public static @NotNull InventoryType adapt(@NotNull org.bukkit.event.inventory.InventoryType inventoryType) {
+  public static @NotNull InventoryType adapt(
+      @NotNull org.bukkit.event.inventory.InventoryType inventoryType) {
     return InventoryType.valueOf(inventoryType.name());
   }
 
-  public static @NotNull org.bukkit.event.inventory.InventoryType toBukkit(@NotNull InventoryType inventoryType) {
+  public static @NotNull org.bukkit.event.inventory.InventoryType toBukkit(
+      @NotNull InventoryType inventoryType) {
     return org.bukkit.event.inventory.InventoryType.valueOf(inventoryType.name());
   }
 
-  public static @NotNull InventoryHolder adapt(@NotNull org.bukkit.inventory.InventoryHolder holder) {
+  public static @NotNull InventoryHolder adapt(
+      @NotNull org.bukkit.inventory.InventoryHolder holder) {
     return new BukkitInventoryHolderWrapper(holder);
   }
 
-  public static @NotNull org.bukkit.inventory.InventoryHolder toBukkit(@NotNull InventoryHolder holder) {
+  public static @NotNull org.bukkit.inventory.InventoryHolder toBukkit(
+      @NotNull InventoryHolder holder) {
     if (holder instanceof BukkitInventoryHolderWrapper wrapper) {
       return wrapper.getBukkitInventoryHolder();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign InventoryHolder implementation: " + holder.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign InventoryHolder implementation: " + holder.getClass().getName());
   }
 
   public static @NotNull GameMode adapt(@NotNull org.bukkit.GameMode gameMode) {
@@ -500,7 +544,8 @@ public final class BukkitAdapters {
     if (player instanceof BukkitOfflinePlayerWrapper wrapper) {
       return wrapper.getBukkitOfflinePlayer();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign OfflinePlayer implementation: " + player.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign OfflinePlayer implementation: " + player.getClass().getName());
   }
 
   public static @NotNull InventoryView adapt(@NotNull org.bukkit.inventory.InventoryView view) {
@@ -511,34 +556,42 @@ public final class BukkitAdapters {
     if (view instanceof BukkitInventoryViewWrapper wrapper) {
       return wrapper.getBukkitInventoryView();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign InventoryView implementation: " + view.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign InventoryView implementation: " + view.getClass().getName());
   }
 
   public static @NotNull RayTraceResult adapt(@NotNull org.bukkit.util.RayTraceResult result) {
     return new BukkitRayTraceResultWrapper(result);
   }
 
-  public static @NotNull org.aincraft.common.entity.ProjectileSource adapt(@NotNull org.bukkit.projectiles.ProjectileSource source) {
+  public static @NotNull org.aincraft.common.entity.ProjectileSource adapt(
+      @NotNull org.bukkit.projectiles.ProjectileSource source) {
     return new BukkitProjectileSourceWrapper(source);
   }
 
-  public static @NotNull org.bukkit.projectiles.ProjectileSource toBukkit(@NotNull org.aincraft.common.entity.ProjectileSource source) {
+  public static @NotNull org.bukkit.projectiles.ProjectileSource toBukkit(
+      @NotNull org.aincraft.common.entity.ProjectileSource source) {
     if (source instanceof BukkitProjectileSourceWrapper wrapper) {
       return wrapper.getBukkitProjectileSource();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign ProjectileSource implementation: " + source.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign ProjectileSource implementation: " + source.getClass().getName());
   }
 
-  public static @NotNull org.aincraft.common.entity.Projectile adapt(@NotNull org.bukkit.entity.Projectile projectile) {
+  public static @NotNull org.aincraft.common.entity.Projectile adapt(
+      @NotNull org.bukkit.entity.Projectile projectile) {
     return new BukkitProjectileWrapper(projectile);
   }
 
-  public static @NotNull org.bukkit.entity.Projectile toBukkit(@NotNull org.aincraft.common.entity.Projectile projectile) {
+  public static @NotNull org.bukkit.entity.Projectile toBukkit(
+      @NotNull org.aincraft.common.entity.Projectile projectile) {
     if (projectile instanceof BukkitProjectileWrapper wrapper) {
       return wrapper.getBukkitProjectile();
     }
-    throw new IllegalArgumentException("Cannot unwrap foreign Projectile implementation: " + projectile.getClass().getName());
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Projectile implementation: " + projectile.getClass().getName());
   }
+
   public static @NotNull HeightMap adapt(@NotNull org.bukkit.HeightMap heightMap) {
     return HeightMap.valueOf(heightMap.name());
   }

@@ -2,9 +2,7 @@ package org.aincraft.common.datacomponent.item;
 
 import net.kyori.adventure.key.Key;
 
-/**
- * Common contract for use cooldown, mirroring Paper's {@code UseCooldown}.
- */
+/** Common contract for use cooldown, mirroring Paper's {@code UseCooldown}. */
 public interface UseCooldown {
 
   float seconds();

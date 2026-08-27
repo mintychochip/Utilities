@@ -4,9 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Factory utilities for {@link AttributeModifierDisplay} values.
- */
+/** Factory utilities for {@link AttributeModifierDisplay} values. */
 public final class AttributeModifierDisplays {
 
   private AttributeModifierDisplays() {
@@ -44,8 +42,7 @@ public final class AttributeModifierDisplays {
   static final class Default implements AttributeModifierDisplay {
     private static final Default INSTANCE = new Default();
 
-    private Default() {
-    }
+    private Default() {}
 
     @Override
     public @NotNull Type type() {
@@ -61,8 +58,7 @@ public final class AttributeModifierDisplays {
   static final class Hidden implements AttributeModifierDisplay {
     private static final Hidden INSTANCE = new Hidden();
 
-    private Hidden() {
-    }
+    private Hidden() {}
 
     @Override
     public @NotNull Type type() {

@@ -2,8 +2,9 @@ package org.aincraft.db;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.aincraft.db.ConnectionSource.MongoConnectionSource;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class MongoConnectionSourceImpl implements MongoConnectionSource {
 

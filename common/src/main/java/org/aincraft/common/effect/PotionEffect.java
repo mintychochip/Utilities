@@ -4,7 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PotionEffect {
 
-  @NotNull PotionEffectType type();
+  @NotNull
+  PotionEffectType type();
 
   int duration();
 
@@ -18,7 +19,9 @@ public interface PotionEffect {
 
   boolean isInfinite();
 
-  @NotNull PotionEffect withDuration(int duration);
+  @NotNull
+  PotionEffect withDuration(int duration);
 
-  @NotNull PotionEffect withAmplifier(int amplifier);
+  @NotNull
+  PotionEffect withAmplifier(int amplifier);
 }

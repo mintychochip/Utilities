@@ -4,7 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 public interface BlockState {
 
-  @NotNull BlockType type();
+  @NotNull
+  BlockType type();
 
-  @NotNull String asString();
+  @NotNull
+  String asString();
 }

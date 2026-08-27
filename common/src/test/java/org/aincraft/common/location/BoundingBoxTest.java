@@ -1,27 +1,63 @@
 package org.aincraft.common.location;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BoundingBoxTest {
 
-  private static BoundingBox createBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+  private static BoundingBox createBox(
+      double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
     return new BoundingBox() {
-      @Override public double minX() { return minX; }
-      @Override public double minY() { return minY; }
-      @Override public double minZ() { return minZ; }
-      @Override public double maxX() { return maxX; }
-      @Override public double maxY() { return maxY; }
-      @Override public double maxZ() { return maxZ; }
+      @Override
+      public double minX() {
+        return minX;
+      }
+
+      @Override
+      public double minY() {
+        return minY;
+      }
+
+      @Override
+      public double minZ() {
+        return minZ;
+      }
+
+      @Override
+      public double maxX() {
+        return maxX;
+      }
+
+      @Override
+      public double maxY() {
+        return maxY;
+      }
+
+      @Override
+      public double maxZ() {
+        return maxZ;
+      }
     };
   }
 
   private static Position createPos(double x, double y, double z) {
     return new Position() {
-      @Override public double x() { return x; }
-      @Override public double y() { return y; }
-      @Override public double z() { return z; }
+      @Override
+      public double x() {
+        return x;
+      }
+
+      @Override
+      public double y() {
+        return y;
+      }
+
+      @Override
+      public double z() {
+        return z;
+      }
     };
   }
 
@@ -63,17 +99,55 @@ class BoundingBoxTest {
 
   @Test
   void testExpandSymmetricDelegation() {
-    BoundingBox base = new BoundingBox() {
-      @Override public double minX() { return 0; }
-      @Override public double minY() { return 0; }
-      @Override public double minZ() { return 0; }
-      @Override public double maxX() { return 1; }
-      @Override public double maxY() { return 1; }
-      @Override public double maxZ() { return 1; }
-      @Override public @NotNull BoundingBox expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ) {
-        return createBox(minX() - negativeX, minY() - negativeY, minZ() - negativeZ, maxX() + positiveX, maxY() + positiveY, maxZ() + positiveZ);
-      }
-    };
+    BoundingBox base =
+        new BoundingBox() {
+          @Override
+          public double minX() {
+            return 0;
+          }
+
+          @Override
+          public double minY() {
+            return 0;
+          }
+
+          @Override
+          public double minZ() {
+            return 0;
+          }
+
+          @Override
+          public double maxX() {
+            return 1;
+          }
+
+          @Override
+          public double maxY() {
+            return 1;
+          }
+
+          @Override
+          public double maxZ() {
+            return 1;
+          }
+
+          @Override
+          public @NotNull BoundingBox expand(
+              double negativeX,
+              double negativeY,
+              double negativeZ,
+              double positiveX,
+              double positiveY,
+              double positiveZ) {
+            return createBox(
+                minX() - negativeX,
+                minY() - negativeY,
+                minZ() - negativeZ,
+                maxX() + positiveX,
+                maxY() + positiveY,
+                maxZ() + positiveZ);
+          }
+        };
     BoundingBox expanded = base.expand(1, 0, 0);
     assertEquals(-1.0, expanded.minX(), 1e-9);
     assertEquals(2.0, expanded.maxX(), 1e-9);

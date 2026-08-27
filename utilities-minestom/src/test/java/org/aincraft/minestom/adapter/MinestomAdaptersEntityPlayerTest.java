@@ -2,7 +2,6 @@ package org.aincraft.minestom.adapter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -17,6 +16,8 @@ import org.aincraft.common.entity.Entity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 class MinestomAdaptersEntityPlayerTest {
 
   @BeforeAll
@@ -29,10 +30,16 @@ class MinestomAdaptersEntityPlayerTest {
     Instance instance = new InstanceContainer(UUID.randomUUID(), DimensionType.OVERWORLD);
     UUID uuid = UUID.randomUUID();
     GameProfile profile = new GameProfile(uuid, "Steve");
-    PlayerConnection conn = new PlayerConnection() {
-      @Override public void sendPacket(net.minestom.server.network.packet.server.SendablePacket packet) {}
-      @Override public java.net.SocketAddress getRemoteAddress() { return new java.net.InetSocketAddress("127.0.0.1", 25565); }
-    };
+    PlayerConnection conn =
+        new PlayerConnection() {
+          @Override
+          public void sendPacket(net.minestom.server.network.packet.server.SendablePacket packet) {}
+
+          @Override
+          public java.net.SocketAddress getRemoteAddress() {
+            return new java.net.InetSocketAddress("127.0.0.1", 25565);
+          }
+        };
     Player minestomPlayer = new Player(conn, profile);
     minestomPlayer.setInstance(instance, new Pos(0, 64, 0));
 

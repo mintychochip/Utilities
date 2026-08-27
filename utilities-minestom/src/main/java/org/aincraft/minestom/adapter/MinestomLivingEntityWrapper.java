@@ -1,24 +1,25 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.UUID;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.LivingEntity;
-import net.kyori.adventure.key.Key;
 import net.minestom.server.entity.attribute.Attribute;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.effect.PotionEffect;
-import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.effect.PotionEffectType;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implements org.aincraft.common.entity.LivingEntity {
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.UUID;
+
+public class MinestomLivingEntityWrapper extends MinestomEntityWrapper
+    implements org.aincraft.common.entity.LivingEntity {
 
   private final LivingEntity livingEntity;
 
@@ -94,16 +95,13 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
       }
 
       @Override
-      public void addModifier(@NotNull AttributeModifier modifier) {
-      }
+      public void addModifier(@NotNull AttributeModifier modifier) {}
 
       @Override
-      public void removeModifier(@NotNull AttributeModifier modifier) {
-      }
+      public void removeModifier(@NotNull AttributeModifier modifier) {}
 
       @Override
-      public void removeModifier(@NotNull UUID id) {
-      }
+      public void removeModifier(@NotNull UUID id) {}
 
       @Override
       public @Nullable AttributeModifier getModifier(@NotNull UUID id) {
@@ -134,8 +132,7 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
   }
 
   @Override
-  public void setTarget(@Nullable org.aincraft.common.entity.LivingEntity target) {
-  }
+  public void setTarget(@Nullable org.aincraft.common.entity.LivingEntity target) {}
 
   @Override
   public boolean isGliding() {
@@ -158,12 +155,10 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
   }
 
   @Override
-  public void addPotionEffect(@NotNull PotionEffect effect) {
-  }
+  public void addPotionEffect(@NotNull PotionEffect effect) {}
 
   @Override
-  public void removePotionEffect(@NotNull PotionEffectType type) {
-  }
+  public void removePotionEffect(@NotNull PotionEffectType type) {}
 
   @Override
   public boolean hasPotionEffect(@NotNull PotionEffectType type) {
@@ -201,7 +196,8 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
   }
 
   @Override
-  public @org.jetbrains.annotations.Nullable org.aincraft.common.effect.PotionEffect potionEffect(@NotNull org.aincraft.common.effect.PotionEffectType type) {
+  public @org.jetbrains.annotations.Nullable org.aincraft.common.effect.PotionEffect potionEffect(
+      @NotNull org.aincraft.common.effect.PotionEffectType type) {
     return null;
   }
 
@@ -226,8 +222,8 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper implement
   }
 
   @Override
-  public boolean addPotionEffect(@NotNull org.aincraft.common.effect.PotionEffect effect, boolean force) {
+  public boolean addPotionEffect(
+      @NotNull org.aincraft.common.effect.PotionEffect effect, boolean force) {
     throw new UnsupportedOperationException();
   }
-
 }

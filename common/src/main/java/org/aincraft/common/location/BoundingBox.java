@@ -5,6 +5,7 @@ import org.aincraft.common.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3dc;
+
 public interface BoundingBox {
 
   double minX();
@@ -48,9 +49,7 @@ public interface BoundingBox {
   }
 
   default boolean contains(double x, double y, double z) {
-    return x >= minX() && x <= maxX()
-        && y >= minY() && y <= maxY()
-        && z >= minZ() && z <= maxZ();
+    return x >= minX() && x <= maxX() && y >= minY() && y <= maxY() && z >= minZ() && z <= maxZ();
   }
 
   default boolean contains(@NotNull Position position) {
@@ -58,18 +57,30 @@ public interface BoundingBox {
   }
 
   default boolean contains(@NotNull BoundingBox other) {
-    return other.minX() >= minX() && other.maxX() <= maxX()
-        && other.minY() >= minY() && other.maxY() <= maxY()
-        && other.minZ() >= minZ() && other.maxZ() <= maxZ();
+    return other.minX() >= minX()
+        && other.maxX() <= maxX()
+        && other.minY() >= minY()
+        && other.maxY() <= maxY()
+        && other.minZ() >= minZ()
+        && other.maxZ() <= maxZ();
   }
 
   default boolean intersects(@NotNull BoundingBox other) {
-    return minX() <= other.maxX() && maxX() >= other.minX()
-        && minY() <= other.maxY() && maxY() >= other.minY()
-        && minZ() <= other.maxZ() && maxZ() >= other.minZ();
+    return minX() <= other.maxX()
+        && maxX() >= other.minX()
+        && minY() <= other.maxY()
+        && maxY() >= other.minY()
+        && minZ() <= other.maxZ()
+        && maxZ() >= other.minZ();
   }
 
-  default @NotNull BoundingBox expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ) {
+  default @NotNull BoundingBox expand(
+      double negativeX,
+      double negativeY,
+      double negativeZ,
+      double positiveX,
+      double positiveY,
+      double positiveZ) {
     throw new UnsupportedOperationException("expand");
   }
 
@@ -97,7 +108,8 @@ public interface BoundingBox {
     throw new UnsupportedOperationException("intersection");
   }
 
-  default @Nullable RayTraceResult rayTrace(@NotNull Vector3dc origin, @NotNull Vector3dc direction, double maxDistance) {
+  default @Nullable RayTraceResult rayTrace(
+      @NotNull Vector3dc origin, @NotNull Vector3dc direction, double maxDistance) {
     throw new UnsupportedOperationException("rayTrace");
   }
 }

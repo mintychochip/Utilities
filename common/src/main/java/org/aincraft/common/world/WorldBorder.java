@@ -9,7 +9,8 @@ public interface WorldBorder {
 
   void setSize(double size);
 
-  @NotNull Location center();
+  @NotNull
+  Location center();
 
   void setCenter(@NotNull Location center);
 

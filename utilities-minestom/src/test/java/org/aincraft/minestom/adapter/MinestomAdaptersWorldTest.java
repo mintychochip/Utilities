@@ -2,7 +2,6 @@ package org.aincraft.minestom.adapter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
@@ -11,6 +10,8 @@ import net.minestom.server.world.DimensionType;
 import org.aincraft.common.world.World;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
 
 class MinestomAdaptersWorldTest {
 

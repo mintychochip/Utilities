@@ -1,8 +1,6 @@
 package org.aincraft.common.effect;
 
-/**
- * Classification for potion effect types.
- */
+/** Classification for potion effect types. */
 public enum PotionEffectTypeCategory {
   BENEFICIAL,
   HARMFUL,

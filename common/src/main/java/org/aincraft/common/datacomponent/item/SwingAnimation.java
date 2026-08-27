@@ -1,7 +1,8 @@
 package org.aincraft.common.datacomponent.item;
 
 /**
- * Common contract for the {@code SwingAnimation} data component, mirroring Paper's {@code SwingAnimation}.
+ * Common contract for the {@code SwingAnimation} data component, mirroring Paper's {@code
+ * SwingAnimation}.
  */
 public interface SwingAnimation {
 

@@ -5,17 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.aincraft.math.RandomSelector;
+import org.aincraft.math.RandomSelector.UniformRandomSelector;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
+
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import org.aincraft.math.RandomSelector;
-import org.aincraft.math.RandomSelector.UniformRandomSelector;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 class MathOnlyConsumerTest {
 
@@ -45,15 +47,9 @@ class MathOnlyConsumerTest {
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     assertNotNull(compiler, "JDK java compiler required");
     ByteArrayOutputStream errors = new ByteArrayOutputStream();
-    int code = compiler.run(
-        null,
-        null,
-        errors,
-        "-classpath",
-        mathJar,
-        "-d",
-        out.toString(),
-        src.toString());
+    int code =
+        compiler.run(
+            null, null, errors, "-classpath", mathJar, "-d", out.toString(), src.toString());
     String diagnostic = errors.toString(StandardCharsets.UTF_8);
     assertNotEquals(0, code, "db import should fail against math-only classpath: " + diagnostic);
     assertTrue(

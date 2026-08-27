@@ -1,21 +1,26 @@
 package org.aincraft.common.server;
 
-import java.util.UUID;
 import net.kyori.adventure.identity.Identified;
 import org.aincraft.common.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public interface OfflinePlayer extends Identified {
 
-  @NotNull UUID uniqueId();
-  @Nullable String name();
+  @NotNull
+  UUID uniqueId();
+
+  @Nullable
+  String name();
 
   boolean hasPlayedBefore();
 
   boolean isOnline();
 
-  @Nullable Player player();
+  @Nullable
+  Player player();
 
   long lastPlayed();
 

@@ -1,11 +1,12 @@
 package org.aincraft.math;
 
 import com.google.common.base.Preconditions;
+import org.aincraft.math.RandomSelector.WeightedRandomSelector;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.random.RandomGenerator;
-import org.aincraft.math.RandomSelector.WeightedRandomSelector;
 
 final class WeightedRandomSelectorImpl<T> implements WeightedRandomSelector<T> {
 

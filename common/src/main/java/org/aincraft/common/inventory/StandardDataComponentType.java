@@ -4,9 +4,8 @@ import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Immutable, metadata-only descriptor for a data component.
- * These objects carry only the key and value type; they do not wrap or back
- * any server object and may therefore live in {@code :common}.
+ * Immutable, metadata-only descriptor for a data component. These objects carry only the key and
+ * value type; they do not wrap or back any server object and may therefore live in {@code :common}.
  */
 public class StandardDataComponentType<T> implements DataComponentType<T> {
 
@@ -35,8 +34,7 @@ public class StandardDataComponentType<T> implements DataComponentType<T> {
 
   @Override
   public boolean equals(Object o) {
-    return this == o || (o instanceof DataComponentType<?> that
-        && key.equals(that.key()));
+    return this == o || (o instanceof DataComponentType<?> that && key.equals(that.key()));
   }
 
   @Override

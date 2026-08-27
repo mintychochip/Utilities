@@ -1,12 +1,13 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Collection;
-import java.util.Objects;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Objects;
 
 public class MinestomChunkWrapper implements Chunk {
 
@@ -37,7 +38,8 @@ public class MinestomChunkWrapper implements Chunk {
 
   @Override
   public @NotNull Block getBlock(int x, int y, int z) {
-    return MinestomAdapters.adapt(chunk.getInstance(), (this.x() << 4) + (x & 15), y, (this.z() << 4) + (z & 15));
+    return MinestomAdapters.adapt(
+        chunk.getInstance(), (this.x() << 4) + (x & 15), y, (this.z() << 4) + (z & 15));
   }
 
   @Override
@@ -68,7 +70,8 @@ public class MinestomChunkWrapper implements Chunk {
   @Override
   public @NotNull Collection<? extends Entity> entities() {
     return chunk.getInstance().getEntities().stream()
-        .filter(e -> (e.getPosition().blockX() >> 4) == x() && (e.getPosition().blockZ() >> 4) == z())
+        .filter(
+            e -> (e.getPosition().blockX() >> 4) == x() && (e.getPosition().blockZ() >> 4) == z())
         .map(MinestomAdapters::adapt)
         .toList();
   }

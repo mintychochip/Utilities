@@ -12,12 +12,11 @@ final class RegistryAccessAccessor {
   @NotNull
   static RegistryAccess getRegistryAccess(@NotNull Plugin plugin) {
     ServicesManager servicesManager = Bukkit.getServicesManager();
-    RegisteredServiceProvider<RegistryAccess> registration = servicesManager.getRegistration(
-        RegistryAccess.class);
+    RegisteredServiceProvider<RegistryAccess> registration =
+        servicesManager.getRegistration(RegistryAccess.class);
     if (registration == null) {
       RegistryAccess access = new RegistryAccessImpl();
-      servicesManager.register(RegistryAccess.class, access, plugin,
-          ServicePriority.Highest);
+      servicesManager.register(RegistryAccess.class, access, plugin, ServicePriority.Highest);
       return access;
     }
     return registration.getProvider();

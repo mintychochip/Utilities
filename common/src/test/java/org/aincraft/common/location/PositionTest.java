@@ -10,9 +10,20 @@ class PositionTest {
 
   private static Position createPosition(double x, double y, double z) {
     return new Position() {
-      @Override public double x() { return x; }
-      @Override public double y() { return y; }
-      @Override public double z() { return z; }
+      @Override
+      public double x() {
+        return x;
+      }
+
+      @Override
+      public double y() {
+        return y;
+      }
+
+      @Override
+      public double z() {
+        return z;
+      }
     };
   }
 

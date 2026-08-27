@@ -1,8 +1,9 @@
 package org.aincraft.config;
 
+import org.bukkit.plugin.Plugin;
+
 import java.io.File;
 import java.nio.file.Path;
-import org.bukkit.plugin.Plugin;
 
 public class FolderYamlConfigurationImpl {
 
@@ -22,5 +23,4 @@ public class FolderYamlConfigurationImpl {
       }
     }
   }
-
 }

@@ -8,9 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Location {
 
-  @NotNull World world();
+  @NotNull
+  World world();
 
-  @NotNull Position position();
+  @NotNull
+  Position position();
 
   float yaw();
 

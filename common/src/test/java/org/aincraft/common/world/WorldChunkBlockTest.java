@@ -1,15 +1,14 @@
 package org.aincraft.common.world;
 
-import java.util.Collection;
-import java.util.UUID;
+import static org.junit.jupiter.api.Assertions.*;
+
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.block.BlockFace;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.effect.Particle;
-import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.location.BoundingBox;
@@ -19,23 +18,51 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Collection;
+import java.util.UUID;
 
 class WorldChunkBlockTest {
 
   private static Position createPos(double x, double y, double z) {
     return new Position() {
-      @Override public double x() { return x; }
-      @Override public double y() { return y; }
-      @Override public double z() { return z; }
+      @Override
+      public double x() {
+        return x;
+      }
+
+      @Override
+      public double y() {
+        return y;
+      }
+
+      @Override
+      public double z() {
+        return z;
+      }
     };
   }
+
   private static Location createLoc(World world, Position position) {
     return new Location() {
-      @Override public World world() { return world; }
-      @Override public Position position() { return position; }
-      @Override public float yaw() { return 0f; }
-      @Override public float pitch() { return 0f; }
+      @Override
+      public World world() {
+        return world;
+      }
+
+      @Override
+      public Position position() {
+        return position;
+      }
+
+      @Override
+      public float yaw() {
+        return 0f;
+      }
+
+      @Override
+      public float pitch() {
+        return 0f;
+      }
     };
   }
 
@@ -60,76 +87,290 @@ class WorldChunkBlockTest {
     Key worldKey = Key.key("minecraft", "overworld");
     Key stoneKey = Key.key("minecraft", "stone");
     BlockType stoneType = () -> stoneKey;
-    BlockState stoneState = new BlockState() {
-      @Override public BlockType type() { return stoneType; }
-      @Override public String asString() { return "minecraft:stone"; }
-    };
+    BlockState stoneState =
+        new BlockState() {
+          @Override
+          public BlockType type() {
+            return stoneType;
+          }
 
-    World world = new World() {
-      @Override public UUID uid() { return uid; }
-      @Override public String name() { return "overworld"; }
-      @Override public Key key() { return worldKey; }
-      @Override public int minHeight() { return -64; }
-      @Override public int maxHeight() { return 320; }
-      @Override public WorldBorder worldBorder() { return null; }
-      @Override public Environment environment() { return Environment.NORMAL; }
-      @Override public Difficulty difficulty() { return Difficulty.NORMAL; }
-      @Override public long time() { return 6000L; }
-      @Override public long fullTime() { return 18000L; }
-      @Override public Collection<? extends Player> players() { return java.util.List.of(); }
-      @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
-      @Override public Collection<? extends Chunk> loadedChunks() { return java.util.List.of(); }
-      @Override public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch) { throw new UnsupportedOperationException(); }
-      @Override public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) { throw new UnsupportedOperationException(); }
-      @Override public boolean isChunkLoaded(int chunkX, int chunkZ) { return chunkX == 0 && chunkZ == 0; }
-      @Override
-      public Chunk getChunkAt(int chunkX, int chunkZ) {
-        World currentWorld = this;
-        return new Chunk() {
-          @Override public int x() { return chunkX; }
-          @Override public int z() { return chunkZ; }
-          @Override public World world() { return currentWorld; }
-          @Override public boolean isLoaded() { return true; }
-          @Override public boolean load() { return true; }
-          @Override public boolean load(boolean generate) { return true; }
-          @Override public boolean unload() { return true; }
-          @Override public boolean unload(boolean save) { return true; }
-          @Override public Collection<? extends Entity> entities() { return java.util.List.of(); }
-          @Override public Block getBlock(int x, int y, int z) { return getBlockAt(x, y, z); }
+          @Override
+          public String asString() {
+            return "minecraft:stone";
+          }
         };
-      }
 
-      @Override
-      public Block getBlockAt(int x, int y, int z) {
-        World currentWorld = this;
-        return new Block() {
-          @Override public int x() { return x; }
-          @Override public int y() { return y; }
-          @Override public int z() { return z; }
-          @Override public World world() { return currentWorld; }
-          @Override public Chunk chunk() { return getChunkAt(x >> 4, z >> 4); }
-          @Override public Location location() { return createLoc(currentWorld, createPos(x, y, z)); }
-          @Override public Position position() { return createPos(x, y, z); }
-          @Override public BlockType type() { return stoneType; }
-          @Override public BlockState state() { return stoneState; }
-          @Override public boolean isEmpty() { return false; }
-          @Override public boolean isLiquid() { return false; }
-          @Override public boolean isSolid() { return true; }
-          @Override public boolean isAir() { return false; }
-          @Override public boolean isPassable() { return false; }
-          @Override public BoundingBox boundingBox() { return new BoundingBox() {
-            @Override public double minX() { return x; }
-            @Override public double minY() { return y; }
-            @Override public double minZ() { return z; }
-            @Override public double maxX() { return x + 1; }
-            @Override public double maxY() { return y + 1; }
-            @Override public double maxZ() { return z + 1; }
-          }; }
-          @Override public Key biome() { throw new UnsupportedOperationException(); }
-          @Override public void setBiome(@NotNull Key biome) { throw new UnsupportedOperationException(); }
+    World world =
+        new World() {
+          @Override
+          public UUID uid() {
+            return uid;
+          }
+
+          @Override
+          public String name() {
+            return "overworld";
+          }
+
+          @Override
+          public Key key() {
+            return worldKey;
+          }
+
+          @Override
+          public int minHeight() {
+            return -64;
+          }
+
+          @Override
+          public int maxHeight() {
+            return 320;
+          }
+
+          @Override
+          public WorldBorder worldBorder() {
+            return null;
+          }
+
+          @Override
+          public Environment environment() {
+            return Environment.NORMAL;
+          }
+
+          @Override
+          public Difficulty difficulty() {
+            return Difficulty.NORMAL;
+          }
+
+          @Override
+          public long time() {
+            return 6000L;
+          }
+
+          @Override
+          public long fullTime() {
+            return 18000L;
+          }
+
+          @Override
+          public Collection<? extends Player> players() {
+            return java.util.List.of();
+          }
+
+          @Override
+          public Collection<? extends Entity> entities() {
+            return java.util.List.of();
+          }
+
+          @Override
+          public Collection<? extends Chunk> loadedChunks() {
+            return java.util.List.of();
+          }
+
+          @Override
+          public void playSound(
+              @NotNull Location location,
+              @NotNull Sound.Type sound,
+              @Nullable Sound.Source source,
+              float volume,
+              float pitch) {
+            throw new UnsupportedOperationException();
+          }
+
+          @Override
+          public void spawnParticle(
+              @NotNull Particle particle,
+              @NotNull Location location,
+              int count,
+              double offsetX,
+              double offsetY,
+              double offsetZ,
+              double extra) {
+            throw new UnsupportedOperationException();
+          }
+
+          @Override
+          public boolean isChunkLoaded(int chunkX, int chunkZ) {
+            return chunkX == 0 && chunkZ == 0;
+          }
+
+          @Override
+          public Chunk getChunkAt(int chunkX, int chunkZ) {
+            World currentWorld = this;
+            return new Chunk() {
+              @Override
+              public int x() {
+                return chunkX;
+              }
+
+              @Override
+              public int z() {
+                return chunkZ;
+              }
+
+              @Override
+              public World world() {
+                return currentWorld;
+              }
+
+              @Override
+              public boolean isLoaded() {
+                return true;
+              }
+
+              @Override
+              public boolean load() {
+                return true;
+              }
+
+              @Override
+              public boolean load(boolean generate) {
+                return true;
+              }
+
+              @Override
+              public boolean unload() {
+                return true;
+              }
+
+              @Override
+              public boolean unload(boolean save) {
+                return true;
+              }
+
+              @Override
+              public Collection<? extends Entity> entities() {
+                return java.util.List.of();
+              }
+
+              @Override
+              public Block getBlock(int x, int y, int z) {
+                return getBlockAt(x, y, z);
+              }
+            };
+          }
+
+          @Override
+          public Block getBlockAt(int x, int y, int z) {
+            World currentWorld = this;
+            return new Block() {
+              @Override
+              public int x() {
+                return x;
+              }
+
+              @Override
+              public int y() {
+                return y;
+              }
+
+              @Override
+              public int z() {
+                return z;
+              }
+
+              @Override
+              public World world() {
+                return currentWorld;
+              }
+
+              @Override
+              public Chunk chunk() {
+                return getChunkAt(x >> 4, z >> 4);
+              }
+
+              @Override
+              public Location location() {
+                return createLoc(currentWorld, createPos(x, y, z));
+              }
+
+              @Override
+              public Position position() {
+                return createPos(x, y, z);
+              }
+
+              @Override
+              public BlockType type() {
+                return stoneType;
+              }
+
+              @Override
+              public BlockState state() {
+                return stoneState;
+              }
+
+              @Override
+              public boolean isEmpty() {
+                return false;
+              }
+
+              @Override
+              public boolean isLiquid() {
+                return false;
+              }
+
+              @Override
+              public boolean isSolid() {
+                return true;
+              }
+
+              @Override
+              public boolean isAir() {
+                return false;
+              }
+
+              @Override
+              public boolean isPassable() {
+                return false;
+              }
+
+              @Override
+              public BoundingBox boundingBox() {
+                return new BoundingBox() {
+                  @Override
+                  public double minX() {
+                    return x;
+                  }
+
+                  @Override
+                  public double minY() {
+                    return y;
+                  }
+
+                  @Override
+                  public double minZ() {
+                    return z;
+                  }
+
+                  @Override
+                  public double maxX() {
+                    return x + 1;
+                  }
+
+                  @Override
+                  public double maxY() {
+                    return y + 1;
+                  }
+
+                  @Override
+                  public double maxZ() {
+                    return z + 1;
+                  }
+                };
+              }
+
+              @Override
+              public Key biome() {
+                throw new UnsupportedOperationException();
+              }
+
+              @Override
+              public void setBiome(@NotNull Key biome) {
+                throw new UnsupportedOperationException();
+              }
+            };
+          }
         };
-      }
-    };
 
     assertEquals(uid, world.uid());
     assertEquals("overworld", world.name());

@@ -1,8 +1,9 @@
 package org.aincraft.math.consumer;
 
-import java.util.Random;
 import org.aincraft.math.RandomSelector;
 import org.aincraft.math.RandomSelector.UniformRandomSelector;
+
+import java.util.Random;
 
 public final class MathConsumerMain {
 

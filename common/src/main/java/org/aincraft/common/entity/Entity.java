@@ -1,8 +1,5 @@
 package org.aincraft.common.entity;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.key.Key;
@@ -15,13 +12,23 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3dc;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
 public interface Entity extends Keyed, Identified, Nameable {
 
-  @NotNull UUID uniqueId();
+  @NotNull
+  UUID uniqueId();
 
-  @NotNull World world();
-  @NotNull Location location();
-  @NotNull Position position();
+  @NotNull
+  World world();
+
+  @NotNull
+  Location location();
+
+  @NotNull
+  Position position();
 
   default double x() {
     return position().x();
@@ -41,15 +48,18 @@ public interface Entity extends Keyed, Identified, Nameable {
 
   void setRotation(float yaw, float pitch);
 
-  @NotNull Key type();
+  @NotNull
+  Key type();
 
   boolean isValid();
 
   boolean isDead();
 
-  @NotNull BoundingBox boundingBox();
+  @NotNull
+  BoundingBox boundingBox();
 
-  @NotNull Vector3dc velocity();
+  @NotNull
+  Vector3dc velocity();
 
   void setVelocity(@NotNull Vector3dc velocity);
 
@@ -57,9 +67,11 @@ public interface Entity extends Keyed, Identified, Nameable {
 
   void teleport(@NotNull Location targetLocation);
 
-  @NotNull Collection<? extends Entity> nearbyEntities(double x, double y, double z);
+  @NotNull
+  Collection<? extends Entity> nearbyEntities(double x, double y, double z);
 
-  @NotNull List<? extends Entity> passengers();
+  @NotNull
+  List<? extends Entity> passengers();
 
   boolean addPassenger(@NotNull Entity passenger);
 
@@ -71,7 +83,8 @@ public interface Entity extends Keyed, Identified, Nameable {
 
   boolean leaveVehicle();
 
-  @Nullable Entity vehicle();
+  @Nullable
+  Entity vehicle();
 
   boolean isGlowing();
 

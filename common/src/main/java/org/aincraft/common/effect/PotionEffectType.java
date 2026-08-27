@@ -5,11 +5,14 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PotionEffectType extends Keyed {
 
-  @NotNull String name();
+  @NotNull
+  String name();
 
   boolean isInstant();
 
-  @NotNull PotionEffectTypeCategory category();
+  @NotNull
+  PotionEffectTypeCategory category();
 
-  @NotNull PotionEffect createEffect(int duration, int amplifier);
+  @NotNull
+  PotionEffect createEffect(int duration, int amplifier);
 }

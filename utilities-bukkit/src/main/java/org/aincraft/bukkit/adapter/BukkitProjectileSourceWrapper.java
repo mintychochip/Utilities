@@ -1,9 +1,10 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.entity.Projectile;
 import org.aincraft.common.entity.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitProjectileSourceWrapper implements ProjectileSource {
 
@@ -19,27 +20,49 @@ public class BukkitProjectileSourceWrapper implements ProjectileSource {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends Projectile> @NotNull T launchProjectile(@NotNull Class<? extends T> projectileClass) {
+  public <T extends Projectile> @NotNull T launchProjectile(
+      @NotNull Class<? extends T> projectileClass) {
     Objects.requireNonNull(projectileClass, "projectileClass");
     Class<? extends org.bukkit.entity.Projectile> bukkitClass = resolveBukkitClass(projectileClass);
     org.bukkit.entity.Projectile bProjectile = source.launchProjectile(bukkitClass);
     Projectile wrapped = BukkitAdapters.adapt(bProjectile);
     if (!projectileClass.isInstance(wrapped)) {
       throw new IllegalStateException(
-          "Launched projectile " + bProjectile.getType() + " (" + bProjectile.getClass().getSimpleName()
-              + ") is not an instance of requested " + projectileClass.getName());
+          "Launched projectile "
+              + bProjectile.getType()
+              + " ("
+              + bProjectile.getClass().getSimpleName()
+              + ") is not an instance of requested "
+              + projectileClass.getName());
     }
     return (T) wrapped;
   }
 
-  private static final java.util.Set<String> SUPPORTED_PROJECTILES = java.util.Set.of(
-      "Arrow", "SpectralArrow", "Trident", "Snowball", "Egg", "EnderPearl",
-      "Fireball", "SmallFireball", "LargeFireball", "DragonFireball", "WitherSkull",
-      "ShulkerBullet", "LlamaSpit", "ThrownPotion", "ExperienceBottle",
-      "FishingHook", "WindCharge", "BreezeWindCharge", "Projectile");
+  private static final java.util.Set<String> SUPPORTED_PROJECTILES =
+      java.util.Set.of(
+          "Arrow",
+          "SpectralArrow",
+          "Trident",
+          "Snowball",
+          "Egg",
+          "EnderPearl",
+          "Fireball",
+          "SmallFireball",
+          "LargeFireball",
+          "DragonFireball",
+          "WitherSkull",
+          "ShulkerBullet",
+          "LlamaSpit",
+          "ThrownPotion",
+          "ExperienceBottle",
+          "FishingHook",
+          "WindCharge",
+          "BreezeWindCharge",
+          "Projectile");
 
   @SuppressWarnings("unchecked")
-  private static Class<? extends org.bukkit.entity.Projectile> resolveBukkitClass(Class<? extends Projectile> commonClass) {
+  private static Class<? extends org.bukkit.entity.Projectile> resolveBukkitClass(
+      Class<? extends Projectile> commonClass) {
     String simple = commonClass.getSimpleName();
     if (!SUPPORTED_PROJECTILES.contains(simple) && commonClass != Projectile.class) {
       for (Class<?> iface : commonClass.getInterfaces()) {
@@ -50,8 +73,10 @@ public class BukkitProjectileSourceWrapper implements ProjectileSource {
       }
       if (!SUPPORTED_PROJECTILES.contains(simple)) {
         throw new IllegalArgumentException(
-            "Unsupported projectile type " + commonClass.getName()
-                + "; supported common names: " + SUPPORTED_PROJECTILES
+            "Unsupported projectile type "
+                + commonClass.getName()
+                + "; supported common names: "
+                + SUPPORTED_PROJECTILES
                 + " (map to org.bukkit.entity.*)");
       }
     }
@@ -66,7 +91,10 @@ public class BukkitProjectileSourceWrapper implements ProjectileSource {
     } catch (ClassNotFoundException ignored) {
     }
     throw new IllegalArgumentException(
-        "Cannot resolve Bukkit projectile class for common type " + commonClass.getName()
-            + " (tried org.bukkit.entity." + simple + ")");
+        "Cannot resolve Bukkit projectile class for common type "
+            + commonClass.getName()
+            + " (tried org.bukkit.entity."
+            + simple
+            + ")");
   }
 }

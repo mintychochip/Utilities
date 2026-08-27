@@ -53,19 +53,27 @@ public class BukkitPotionEffectWrapper implements PotionEffect {
 
   @Override
   public @NotNull PotionEffect withDuration(int duration) {
-    org.bukkit.potion.PotionEffect bEffect = new org.bukkit.potion.PotionEffect(
-        effect.getType(), duration, effect.getAmplifier(),
-        effect.isAmbient(), effect.hasParticles(), effect.hasIcon()
-    );
+    org.bukkit.potion.PotionEffect bEffect =
+        new org.bukkit.potion.PotionEffect(
+            effect.getType(),
+            duration,
+            effect.getAmplifier(),
+            effect.isAmbient(),
+            effect.hasParticles(),
+            effect.hasIcon());
     return new BukkitPotionEffectWrapper(bEffect);
   }
 
   @Override
   public @NotNull PotionEffect withAmplifier(int amplifier) {
-    org.bukkit.potion.PotionEffect bEffect = new org.bukkit.potion.PotionEffect(
-        effect.getType(), effect.getDuration(), amplifier,
-        effect.isAmbient(), effect.hasParticles(), effect.hasIcon()
-    );
+    org.bukkit.potion.PotionEffect bEffect =
+        new org.bukkit.potion.PotionEffect(
+            effect.getType(),
+            effect.getDuration(),
+            amplifier,
+            effect.isAmbient(),
+            effect.hasParticles(),
+            effect.hasIcon());
     return new BukkitPotionEffectWrapper(bEffect);
   }
 }

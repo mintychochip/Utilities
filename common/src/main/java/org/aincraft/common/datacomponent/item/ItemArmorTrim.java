@@ -2,9 +2,7 @@ package org.aincraft.common.datacomponent.item;
 
 import net.kyori.adventure.key.Key;
 
-/**
- * Common contract for item armor trim, mirroring Paper's {@code ItemArmorTrim}.
- */
+/** Common contract for item armor trim, mirroring Paper's {@code ItemArmorTrim}. */
 public interface ItemArmorTrim {
 
   Key material();

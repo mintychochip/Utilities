@@ -14,5 +14,4 @@ public class PaperCommandSenderWrapper extends BukkitCommandSenderWrapper {
   public void sendMessage(@NotNull Component message) {
     getBukkitCommandSender().sendMessage(message);
   }
-
 }

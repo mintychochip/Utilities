@@ -1,9 +1,6 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.Component;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
@@ -12,6 +9,9 @@ import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class MinestomEntityWrapper implements Entity {
 
@@ -69,12 +69,12 @@ public class MinestomEntityWrapper implements Entity {
   public @NotNull BoundingBox boundingBox() {
     return MinestomAdapters.adapt(entity.getBoundingBox());
   }
+
   @Override
   public @NotNull Vector3dc velocity() {
     net.minestom.server.coordinate.Vec vel = entity.getVelocity();
     return new Vector3d(vel.x(), vel.y(), vel.z());
   }
-
 
   @Override
   public boolean isOnGround() {
@@ -135,9 +135,9 @@ public class MinestomEntityWrapper implements Entity {
     throw new UnsupportedOperationException();
   }
 
-
   @Override
-  public @NotNull java.util.Collection<? extends org.aincraft.common.entity.Entity> nearbyEntities(double x, double y, double z) {
+  public @NotNull java.util.Collection<? extends org.aincraft.common.entity.Entity> nearbyEntities(
+      double x, double y, double z) {
     throw new UnsupportedOperationException();
   }
 
@@ -212,8 +212,8 @@ public class MinestomEntityWrapper implements Entity {
   }
 
   @Override
-  public void customName(@org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component name) {
+  public void customName(
+      @org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component name) {
     throw new UnsupportedOperationException();
   }
-
 }

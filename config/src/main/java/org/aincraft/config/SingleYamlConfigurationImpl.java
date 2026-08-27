@@ -1,10 +1,10 @@
 package org.aincraft.config;
 
 import com.google.common.base.Preconditions;
+import org.bukkit.plugin.Plugin;
+
 import java.io.File;
 import java.lang.reflect.Proxy;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 final class SingleYamlConfigurationImpl {
 
@@ -31,9 +31,10 @@ final class SingleYamlConfigurationImpl {
     String extension = split[1];
     Preconditions.checkArgument("yml".equals(extension) || "yaml".equals(extension));
     SingleYamlConfigurationImpl configuration = new SingleYamlConfigurationImpl(plugin, path);
-    return (org.aincraft.config.YamlConfiguration) Proxy.newProxyInstance(
-        plugin.getClass().getClassLoader(),
-        new Class[]{org.aincraft.config.YamlConfiguration.class},
-        (proxy, method, args) -> method.invoke(configuration.config, args));
+    return (org.aincraft.config.YamlConfiguration)
+        Proxy.newProxyInstance(
+            plugin.getClass().getClassLoader(),
+            new Class[] {org.aincraft.config.YamlConfiguration.class},
+            (proxy, method, args) -> method.invoke(configuration.config, args));
   }
 }

@@ -1,10 +1,11 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.block.BlockState;
 import org.aincraft.common.block.BlockType;
 import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitBlockStateWrapper implements BlockState {
 

@@ -1,14 +1,15 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
+import org.aincraft.common.inventory.EquipmentSlot;
 import org.aincraft.common.inventory.InventoryHolder;
 import org.aincraft.common.inventory.InventoryType;
 import org.aincraft.common.inventory.ItemStack;
-import org.aincraft.common.inventory.EquipmentSlot;
 import org.aincraft.common.inventory.PlayerInventory;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class MinestomPlayerInventoryWrapper implements PlayerInventory {
 
@@ -17,8 +18,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
 
   public MinestomPlayerInventoryWrapper(
       @NotNull net.minestom.server.inventory.PlayerInventory inventory,
-      @Nullable InventoryHolder holder
-  ) {
+      @Nullable InventoryHolder holder) {
     this.inventory = Objects.requireNonNull(inventory, "inventory cannot be null");
     this.holder = holder;
   }
@@ -43,8 +43,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setItem(int slot, @Nullable ItemStack item) {
-  }
+  public void setItem(int slot, @Nullable ItemStack item) {}
 
   @Override
   public @Nullable ItemStack[] contents() {
@@ -52,8 +51,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setContents(@NotNull ItemStack[] items) {
-  }
+  public void setContents(@NotNull ItemStack[] items) {}
 
   @Override
   public void clear() {
@@ -81,8 +79,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setHelmet(@Nullable ItemStack helmet) {
-  }
+  public void setHelmet(@Nullable ItemStack helmet) {}
 
   @Override
   public @Nullable ItemStack chestplate() {
@@ -90,8 +87,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setChestplate(@Nullable ItemStack chestplate) {
-  }
+  public void setChestplate(@Nullable ItemStack chestplate) {}
 
   @Override
   public @Nullable ItemStack leggings() {
@@ -99,8 +95,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setLeggings(@Nullable ItemStack leggings) {
-  }
+  public void setLeggings(@Nullable ItemStack leggings) {}
 
   @Override
   public @Nullable ItemStack boots() {
@@ -108,8 +103,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setBoots(@Nullable ItemStack boots) {
-  }
+  public void setBoots(@Nullable ItemStack boots) {}
 
   @Override
   public @Nullable ItemStack itemInMainHand() {
@@ -117,8 +111,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setItemInMainHand(@Nullable ItemStack item) {
-  }
+  public void setItemInMainHand(@Nullable ItemStack item) {}
 
   @Override
   public @Nullable ItemStack itemInOffHand() {
@@ -126,8 +119,7 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setItemInOffHand(@Nullable ItemStack item) {
-  }
+  public void setItemInOffHand(@Nullable ItemStack item) {}
 
   @Override
   public int heldItemSlot() {
@@ -150,27 +142,32 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   }
 
   @Override
-  public void setItem(@NotNull EquipmentSlot slot, @org.jetbrains.annotations.Nullable ItemStack item) {
+  public void setItem(
+      @NotNull EquipmentSlot slot, @org.jetbrains.annotations.Nullable ItemStack item) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> armorContents() {
+  public @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack>
+      armorContents() {
     return java.util.Collections.emptyList();
   }
 
   @Override
-  public void setArmorContents(@NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> items) {
+  public void setArmorContents(
+      @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> items) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> extraContents() {
+  public @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack>
+      extraContents() {
     return java.util.Collections.emptyList();
   }
 
   @Override
-  public void setExtraContents(@NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> items) {
+  public void setExtraContents(
+      @NotNull java.util.Collection<@org.jetbrains.annotations.Nullable ItemStack> items) {
     throw new UnsupportedOperationException();
   }
 
@@ -208,5 +205,4 @@ public class MinestomPlayerInventoryWrapper implements PlayerInventory {
   public int firstEmpty() {
     throw new UnsupportedOperationException();
   }
-
 }

@@ -6,7 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface CommandSender extends Audience, Identified {
 
-  @NotNull String name();
+  @NotNull
+  String name();
 
   boolean hasPermission(@NotNull String permission);
 

@@ -1,9 +1,10 @@
 package org.aincraft.db;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.aincraft.db.ConnectionSource.SQLConnectionSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-import org.aincraft.db.ConnectionSource.SQLConnectionSource;
 
 public final class HikariSourceImpl implements SQLConnectionSource {
 

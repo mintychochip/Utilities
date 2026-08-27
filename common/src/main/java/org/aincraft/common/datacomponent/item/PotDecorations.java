@@ -1,11 +1,12 @@
 package org.aincraft.common.datacomponent.item;
 
-import java.util.List;
 import org.aincraft.common.inventory.ItemStack;
 
+import java.util.List;
+
 /**
- * Common contract for decorated pot contents, mirroring Paper's
- * {@code io.papermc.paper.datacomponent.item.PotDecorations}.
+ * Common contract for decorated pot contents, mirroring Paper's {@code
+ * io.papermc.paper.datacomponent.item.PotDecorations}.
  */
 public interface PotDecorations {
 

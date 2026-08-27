@@ -1,9 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.aincraft.common.effect.Particle;
@@ -19,6 +15,12 @@ import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
+
 public class BukkitWorldWrapper implements World {
 
   private final org.bukkit.World world;
@@ -108,52 +110,59 @@ public class BukkitWorldWrapper implements World {
 
   @Override
   public @NotNull Collection<? extends Player> players() {
-    return world.getPlayers().stream()
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return world.getPlayers().stream().map(BukkitAdapters::adapt).toList();
   }
 
   @Override
   public @NotNull Collection<? extends Entity> entities() {
-    return world.getEntities().stream()
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return world.getEntities().stream().map(BukkitAdapters::adapt).toList();
   }
 
   @Override
   public @NotNull Collection<? extends Chunk> loadedChunks() {
-    return Arrays.stream(world.getLoadedChunks())
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return Arrays.stream(world.getLoadedChunks()).map(BukkitAdapters::adapt).toList();
   }
 
   @Override
-  public void playSound(@NotNull Location location, @NotNull Sound.Type sound, @Nullable Sound.Source source, float volume, float pitch) {
+  public void playSound(
+      @NotNull Location location,
+      @NotNull Sound.Type sound,
+      @Nullable Sound.Source source,
+      float volume,
+      float pitch) {
     org.bukkit.Sound bSound = BukkitAdapters.toBukkit(sound);
     org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
     if (source == null) {
       world.playSound(bLoc, bSound, volume, pitch);
     } else {
-      String bukkitCategoryName = switch (source) {
-        case MASTER -> "MASTER";
-        case MUSIC -> "MUSIC";
-        case RECORD -> "RECORDS";
-        case WEATHER -> "WEATHER";
-        case BLOCK -> "BLOCKS";
-        case HOSTILE -> "HOSTILE";
-        case NEUTRAL -> "NEUTRAL";
-        case PLAYER -> "PLAYERS";
-        case AMBIENT -> "AMBIENT";
-        case VOICE -> "VOICE";
-        default -> source.name();
-      };
-      world.playSound(bLoc, bSound, org.bukkit.SoundCategory.valueOf(bukkitCategoryName), volume, pitch);
+      String bukkitCategoryName =
+          switch (source) {
+            case MASTER -> "MASTER";
+            case MUSIC -> "MUSIC";
+            case RECORD -> "RECORDS";
+            case WEATHER -> "WEATHER";
+            case BLOCK -> "BLOCKS";
+            case HOSTILE -> "HOSTILE";
+            case NEUTRAL -> "NEUTRAL";
+            case PLAYER -> "PLAYERS";
+            case AMBIENT -> "AMBIENT";
+            case VOICE -> "VOICE";
+            default -> source.name();
+          };
+      world.playSound(
+          bLoc, bSound, org.bukkit.SoundCategory.valueOf(bukkitCategoryName), volume, pitch);
     }
   }
 
   @Override
-  public void spawnParticle(@NotNull Particle particle, @NotNull Location location, int count,
-                            double offsetX, double offsetY, double offsetZ, double extra) {
+  public void spawnParticle(
+      @NotNull Particle particle,
+      @NotNull Location location,
+      int count,
+      double offsetX,
+      double offsetY,
+      double offsetZ,
+      double extra) {
     org.bukkit.Particle bParticle = BukkitAdapters.toBukkit(particle);
     org.bukkit.Location bLoc = BukkitAdapters.toBukkit(location);
     world.spawnParticle(bParticle, bLoc, count, offsetX, offsetY, offsetZ, extra);
@@ -175,6 +184,7 @@ public class BukkitWorldWrapper implements World {
     org.bukkit.block.Block bBlock = world.getHighestBlockAt(x, z, bHeightMap);
     return BukkitAdapters.adapt(bBlock);
   }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

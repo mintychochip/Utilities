@@ -1,7 +1,7 @@
 package org.aincraft.common.effect;
 
-import org.aincraft.common.inventory.ItemStack;
 import net.kyori.adventure.key.Keyed;
+import org.aincraft.common.inventory.ItemStack;
 
 public interface Enchantment extends Keyed {
 

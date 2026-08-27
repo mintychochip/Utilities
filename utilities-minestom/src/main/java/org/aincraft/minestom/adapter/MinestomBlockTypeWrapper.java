@@ -1,9 +1,10 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class MinestomBlockTypeWrapper implements BlockType {
 

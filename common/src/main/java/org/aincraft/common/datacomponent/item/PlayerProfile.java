@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Common contract for a player profile, mirroring
- * {@code com.destroystokyo.paper.profile.PlayerProfile}.
+ * Common contract for a player profile, mirroring {@code
+ * com.destroystokyo.paper.profile.PlayerProfile}.
  */
 public interface PlayerProfile {
 
@@ -16,8 +16,8 @@ public interface PlayerProfile {
   Set<Property> properties();
 
   /**
-   * Common contract for a profile property, mirroring
-   * {@code com.destroystokyo.paper.profile.ProfileProperty}.
+   * Common contract for a profile property, mirroring {@code
+   * com.destroystokyo.paper.profile.ProfileProperty}.
    */
   interface Property {
 

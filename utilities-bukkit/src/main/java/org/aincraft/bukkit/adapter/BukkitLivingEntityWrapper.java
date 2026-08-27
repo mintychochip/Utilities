@@ -1,8 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.effect.PotionEffect;
@@ -13,6 +10,10 @@ import org.aincraft.common.inventory.EntityEquipment;
 import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements LivingEntity {
 
@@ -39,7 +40,8 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
 
   @Override
   public double maxHealth() {
-    org.bukkit.attribute.AttributeInstance attr = livingEntity.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
+    org.bukkit.attribute.AttributeInstance attr =
+        livingEntity.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH);
     return attr != null ? attr.getValue() : 20.0;
   }
 
@@ -99,7 +101,8 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
   @Override
   public void setTarget(@Nullable LivingEntity target) {
     if (livingEntity instanceof org.bukkit.entity.Mob mob) {
-      mob.setTarget(target != null ? (org.bukkit.entity.LivingEntity) BukkitAdapters.toBukkit(target) : null);
+      mob.setTarget(
+          target != null ? (org.bukkit.entity.LivingEntity) BukkitAdapters.toBukkit(target) : null);
     }
   }
 
@@ -150,7 +153,8 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
 
   @Override
   public @Nullable PotionEffect potionEffect(@NotNull PotionEffectType type) {
-    org.bukkit.potion.PotionEffect bEffect = livingEntity.getPotionEffect(BukkitAdapters.toBukkit(type));
+    org.bukkit.potion.PotionEffect bEffect =
+        livingEntity.getPotionEffect(BukkitAdapters.toBukkit(type));
     return bEffect != null ? BukkitAdapters.adapt(bEffect) : null;
   }
 
@@ -176,9 +180,10 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
   @Override
   public boolean clearActivePotionEffects() {
     boolean changed = false;
-    for (org.bukkit.potion.PotionEffectType type : livingEntity.getActivePotionEffects().stream()
-        .map(org.bukkit.potion.PotionEffect::getType)
-        .toList()) {
+    for (org.bukkit.potion.PotionEffectType type :
+        livingEntity.getActivePotionEffects().stream()
+            .map(org.bukkit.potion.PotionEffect::getType)
+            .toList()) {
       livingEntity.removePotionEffect(type);
       changed = true;
     }

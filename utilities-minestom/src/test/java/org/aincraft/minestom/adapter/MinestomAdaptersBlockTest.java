@@ -2,7 +2,6 @@ package org.aincraft.minestom.adapter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.UUID;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.InstanceContainer;
@@ -14,6 +13,8 @@ import org.aincraft.common.block.BlockType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 class MinestomAdaptersBlockTest {
 
   @BeforeAll
@@ -23,19 +24,33 @@ class MinestomAdaptersBlockTest {
 
   @Test
   void testBlockFaceMapping() {
-    assertEquals(net.minestom.server.instance.block.BlockFace.BOTTOM, MinestomAdapters.toMinestom(BlockFace.DOWN));
-    assertEquals(net.minestom.server.instance.block.BlockFace.TOP, MinestomAdapters.toMinestom(BlockFace.UP));
-    assertEquals(net.minestom.server.instance.block.BlockFace.NORTH, MinestomAdapters.toMinestom(BlockFace.NORTH));
-    assertEquals(net.minestom.server.instance.block.BlockFace.SOUTH, MinestomAdapters.toMinestom(BlockFace.SOUTH));
-    assertEquals(net.minestom.server.instance.block.BlockFace.WEST, MinestomAdapters.toMinestom(BlockFace.WEST));
-    assertEquals(net.minestom.server.instance.block.BlockFace.EAST, MinestomAdapters.toMinestom(BlockFace.EAST));
+    assertEquals(
+        net.minestom.server.instance.block.BlockFace.BOTTOM,
+        MinestomAdapters.toMinestom(BlockFace.DOWN));
+    assertEquals(
+        net.minestom.server.instance.block.BlockFace.TOP,
+        MinestomAdapters.toMinestom(BlockFace.UP));
+    assertEquals(
+        net.minestom.server.instance.block.BlockFace.NORTH,
+        MinestomAdapters.toMinestom(BlockFace.NORTH));
+    assertEquals(
+        net.minestom.server.instance.block.BlockFace.SOUTH,
+        MinestomAdapters.toMinestom(BlockFace.SOUTH));
+    assertEquals(
+        net.minestom.server.instance.block.BlockFace.WEST,
+        MinestomAdapters.toMinestom(BlockFace.WEST));
+    assertEquals(
+        net.minestom.server.instance.block.BlockFace.EAST,
+        MinestomAdapters.toMinestom(BlockFace.EAST));
 
-    for (net.minestom.server.instance.block.BlockFace minestomFace : net.minestom.server.instance.block.BlockFace.values()) {
+    for (net.minestom.server.instance.block.BlockFace minestomFace :
+        net.minestom.server.instance.block.BlockFace.values()) {
       BlockFace face = MinestomAdapters.adapt(minestomFace);
       assertEquals(minestomFace, MinestomAdapters.toMinestom(face));
     }
 
-    assertThrows(IllegalArgumentException.class, () -> MinestomAdapters.toMinestom(BlockFace.NORTH_EAST));
+    assertThrows(
+        IllegalArgumentException.class, () -> MinestomAdapters.toMinestom(BlockFace.NORTH_EAST));
     assertThrows(IllegalArgumentException.class, () -> MinestomAdapters.toMinestom(BlockFace.SELF));
   }
 

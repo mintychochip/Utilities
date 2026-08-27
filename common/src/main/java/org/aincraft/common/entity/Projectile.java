@@ -4,7 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Projectile extends Entity {
 
-  @Nullable ProjectileSource shooter();
+  @Nullable
+  ProjectileSource shooter();
 
   void setShooter(@Nullable ProjectileSource shooter);
 

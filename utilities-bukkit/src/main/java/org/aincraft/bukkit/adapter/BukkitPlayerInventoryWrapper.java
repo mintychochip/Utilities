@@ -1,15 +1,17 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.aincraft.common.inventory.EquipmentSlot;
 import org.aincraft.common.inventory.ItemStack;
 import org.aincraft.common.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper implements PlayerInventory {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper
+    implements PlayerInventory {
 
   private final org.bukkit.inventory.PlayerInventory inventory;
 
@@ -25,7 +27,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
   @Override
   public @Nullable ItemStack helmet() {
     org.bukkit.inventory.ItemStack item = inventory.getHelmet();
-    return item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null;
+    return item != null && item.getType() != org.bukkit.Material.AIR
+        ? BukkitAdapters.adapt(item)
+        : null;
   }
 
   @Override
@@ -36,7 +40,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
   @Override
   public @Nullable ItemStack chestplate() {
     org.bukkit.inventory.ItemStack item = inventory.getChestplate();
-    return item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null;
+    return item != null && item.getType() != org.bukkit.Material.AIR
+        ? BukkitAdapters.adapt(item)
+        : null;
   }
 
   @Override
@@ -47,7 +53,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
   @Override
   public @Nullable ItemStack leggings() {
     org.bukkit.inventory.ItemStack item = inventory.getLeggings();
-    return item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null;
+    return item != null && item.getType() != org.bukkit.Material.AIR
+        ? BukkitAdapters.adapt(item)
+        : null;
   }
 
   @Override
@@ -58,7 +66,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
   @Override
   public @Nullable ItemStack boots() {
     org.bukkit.inventory.ItemStack item = inventory.getBoots();
-    return item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null;
+    return item != null && item.getType() != org.bukkit.Material.AIR
+        ? BukkitAdapters.adapt(item)
+        : null;
   }
 
   @Override
@@ -69,7 +79,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
   @Override
   public @Nullable ItemStack itemInMainHand() {
     org.bukkit.inventory.ItemStack item = inventory.getItemInMainHand();
-    return item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null;
+    return item != null && item.getType() != org.bukkit.Material.AIR
+        ? BukkitAdapters.adapt(item)
+        : null;
   }
 
   @Override
@@ -80,7 +92,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
   @Override
   public @Nullable ItemStack itemInOffHand() {
     org.bukkit.inventory.ItemStack item = inventory.getItemInOffHand();
-    return item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null;
+    return item != null && item.getType() != org.bukkit.Material.AIR
+        ? BukkitAdapters.adapt(item)
+        : null;
   }
 
   @Override
@@ -127,8 +141,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
       case FEET -> boots();
       case HAND -> itemInMainHand();
       case OFF_HAND -> itemInOffHand();
-      case BODY, SADDLE -> throw new UnsupportedOperationException(
-          "EquipmentSlot." + slot + " is not supported for PlayerInventory on Spigot");
+      case BODY, SADDLE ->
+          throw new UnsupportedOperationException(
+              "EquipmentSlot." + slot + " is not supported for PlayerInventory on Spigot");
     };
   }
 
@@ -141,8 +156,9 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
       case FEET -> setBoots(item);
       case HAND -> setItemInMainHand(item);
       case OFF_HAND -> setItemInOffHand(item);
-      case BODY, SADDLE -> throw new UnsupportedOperationException(
-          "EquipmentSlot." + slot + " is not supported for PlayerInventory on Spigot");
+      case BODY, SADDLE ->
+          throw new UnsupportedOperationException(
+              "EquipmentSlot." + slot + " is not supported for PlayerInventory on Spigot");
     }
   }
 
@@ -156,11 +172,15 @@ public class BukkitPlayerInventoryWrapper extends BukkitInventoryWrapper impleme
     inventory.setHeldItemSlot(slot);
   }
 
-  private @NotNull Collection<@Nullable ItemStack> adaptArray(org.bukkit.inventory.ItemStack[] items) {
+  private @NotNull Collection<@Nullable ItemStack> adaptArray(
+      org.bukkit.inventory.ItemStack[] items) {
     List<ItemStack> result = new ArrayList<>();
     if (items != null) {
       for (org.bukkit.inventory.ItemStack item : items) {
-        result.add(item != null && item.getType() != org.bukkit.Material.AIR ? BukkitAdapters.adapt(item) : null);
+        result.add(
+            item != null && item.getType() != org.bukkit.Material.AIR
+                ? BukkitAdapters.adapt(item)
+                : null);
       }
     }
     return result;

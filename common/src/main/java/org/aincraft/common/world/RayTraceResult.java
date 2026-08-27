@@ -8,11 +8,15 @@ import org.jetbrains.annotations.Nullable;
 
 public interface RayTraceResult {
 
-  @NotNull Position hitPosition();
+  @NotNull
+  Position hitPosition();
 
-  @Nullable Block hitBlock();
+  @Nullable
+  Block hitBlock();
 
-  @Nullable BlockFace hitBlockFace();
+  @Nullable
+  BlockFace hitBlockFace();
 
-  @Nullable Entity hitEntity();
+  @Nullable
+  Entity hitEntity();
 }

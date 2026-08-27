@@ -1,44 +1,54 @@
 package org.aincraft.common.inventory;
 
-import java.util.List;
-import java.util.Map;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.effect.Enchantment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
+
 public interface ItemStack {
 
-  @NotNull ItemType type();
+  @NotNull
+  ItemType type();
 
   int amount();
 
   void setAmount(int amount);
 
-  @Nullable Component displayName();
+  @Nullable
+  Component displayName();
 
-  @Nullable List<Component> lore();
+  @Nullable
+  List<Component> lore();
 
   boolean hasItemMeta();
 
-  @Nullable ItemMeta meta();
+  @Nullable
+  ItemMeta meta();
 
   void setMeta(@Nullable ItemMeta meta);
 
   boolean isSimilar(@Nullable ItemStack other);
+
   boolean isEmpty();
 
-  @NotNull ItemStack clone();
+  @NotNull
+  ItemStack clone();
 
   int maxStackSize();
 
   boolean editMeta(@NotNull java.util.function.Consumer<ItemMeta> consumer);
 
-  @NotNull ItemStack asOne();
+  @NotNull
+  ItemStack asOne();
 
-  @NotNull ItemStack asQuantity(int amount);
+  @NotNull
+  ItemStack asQuantity(int amount);
 
-  @NotNull ItemStack withAmount(int amount);
+  @NotNull
+  ItemStack withAmount(int amount);
 
   default boolean hasEnchant(@NotNull Enchantment enchantment) {
     throw new UnsupportedOperationException();
@@ -52,7 +62,8 @@ public interface ItemStack {
     throw new UnsupportedOperationException();
   }
 
-  default void addEnchant(@NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+  default void addEnchant(
+      @NotNull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
     throw new UnsupportedOperationException();
   }
 

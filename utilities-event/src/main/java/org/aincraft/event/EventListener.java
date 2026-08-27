@@ -11,5 +11,5 @@ import org.jetbrains.annotations.ApiStatus.AvailableSince;
 @AvailableSince("2.0.0")
 public interface EventListener<E extends Event> {
 
-    void handle(E event) throws Exception;
+  void handle(E event) throws Exception;
 }

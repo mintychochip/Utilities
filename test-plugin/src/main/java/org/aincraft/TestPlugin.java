@@ -1,8 +1,5 @@
 package org.aincraft;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import org.aincraft.config.YamlConfiguration;
 import org.aincraft.db.ConnectionSource;
 import org.aincraft.db.DatabaseType;
@@ -10,6 +7,10 @@ import org.aincraft.db.paper.ConnectionSourceFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class TestPlugin extends JavaPlugin {
 
@@ -41,7 +42,8 @@ public class TestPlugin extends JavaPlugin {
   }
 
   private ConfigurationSection createDefaultDatabaseSection() {
-    org.bukkit.configuration.file.YamlConfiguration c = new org.bukkit.configuration.file.YamlConfiguration();
+    org.bukkit.configuration.file.YamlConfiguration c =
+        new org.bukkit.configuration.file.YamlConfiguration();
     c.set("path", "smoke.db");
     return c;
   }

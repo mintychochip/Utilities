@@ -2,8 +2,6 @@ package org.aincraft.minestom.adapter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.UUID;
-import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -25,6 +23,8 @@ import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
 
 class MinestomAdaptersTest {
 
@@ -58,7 +58,8 @@ class MinestomAdaptersTest {
     Vec backVec = MinestomAdapters.toMinestomVec(p);
     assertEquals(vec, backVec);
 
-    net.minestom.server.collision.BoundingBox mBox = new net.minestom.server.collision.BoundingBox(1.0, 2.0, 3.0);
+    net.minestom.server.collision.BoundingBox mBox =
+        new net.minestom.server.collision.BoundingBox(1.0, 2.0, 3.0);
     BoundingBox box = MinestomAdapters.adapt(mBox);
     assertEquals(mBox.minX(), box.minX(), 1e-6);
     assertEquals(mBox.maxX(), box.maxX(), 1e-6);
@@ -77,8 +78,11 @@ class MinestomAdaptersTest {
     BlockState state = MinestomAdapters.adaptState(diamond);
     assertSame(diamond, MinestomAdapters.toMinestom(state));
 
-    assertEquals(BlockFace.UP, MinestomAdapters.adapt(net.minestom.server.instance.block.BlockFace.TOP));
-    assertEquals(BlockFace.DOWN, MinestomAdapters.adapt(net.minestom.server.instance.block.BlockFace.BOTTOM));
+    assertEquals(
+        BlockFace.UP, MinestomAdapters.adapt(net.minestom.server.instance.block.BlockFace.TOP));
+    assertEquals(
+        BlockFace.DOWN,
+        MinestomAdapters.adapt(net.minestom.server.instance.block.BlockFace.BOTTOM));
   }
 
   @Test
@@ -104,10 +108,16 @@ class MinestomAdaptersTest {
     Instance instance = new InstanceContainer(UUID.randomUUID(), DimensionType.OVERWORLD);
     UUID uuid = UUID.randomUUID();
     GameProfile profile = new GameProfile(uuid, "Alex");
-    PlayerConnection conn = new PlayerConnection() {
-      @Override public void sendPacket(net.minestom.server.network.packet.server.SendablePacket packet) {}
-      @Override public java.net.SocketAddress getRemoteAddress() { return new java.net.InetSocketAddress("127.0.0.1", 25565); }
-    };
+    PlayerConnection conn =
+        new PlayerConnection() {
+          @Override
+          public void sendPacket(net.minestom.server.network.packet.server.SendablePacket packet) {}
+
+          @Override
+          public java.net.SocketAddress getRemoteAddress() {
+            return new java.net.InetSocketAddress("127.0.0.1", 25565);
+          }
+        };
     Player minestomPlayer = new Player(conn, profile);
     minestomPlayer.setInstance(instance, new Pos(0, 64, 0));
 
@@ -119,26 +129,44 @@ class MinestomAdaptersTest {
 
   @Test
   void testNullChecks() {
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((Instance) null, new Pos(0, 0, 0)));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt(new InstanceContainer(UUID.randomUUID(), DimensionType.OVERWORLD), null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.adapt((Instance) null, new Pos(0, 0, 0)));
+    assertThrows(
+        NullPointerException.class,
+        () ->
+            MinestomAdapters.adapt(
+                new InstanceContainer(UUID.randomUUID(), DimensionType.OVERWORLD), null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestomPos(null));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((net.minestom.server.coordinate.Point) null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.adapt((net.minestom.server.coordinate.Point) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestomVec(null));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((net.minestom.server.collision.BoundingBox) null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.adapt((net.minestom.server.collision.BoundingBox) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((BoundingBox) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((Instance) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((World) null));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((net.minestom.server.instance.Chunk) null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.adapt((net.minestom.server.instance.Chunk) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((Chunk) null));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((net.minestom.server.entity.Entity) null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.adapt((net.minestom.server.entity.Entity) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((Entity) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((Player) null));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((org.aincraft.common.entity.Player) null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.toMinestom((org.aincraft.common.entity.Player) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((Block) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((BlockType) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adaptState((Block) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((BlockState) null));
-    assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((net.minestom.server.instance.block.BlockFace) null));
+    assertThrows(
+        NullPointerException.class,
+        () -> MinestomAdapters.adapt((net.minestom.server.instance.block.BlockFace) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((BlockFace) null));
   }
 }

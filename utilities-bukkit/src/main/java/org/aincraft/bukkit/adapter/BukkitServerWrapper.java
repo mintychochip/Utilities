@@ -1,8 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -10,9 +7,12 @@ import org.aincraft.common.entity.Player;
 import org.aincraft.common.server.ConsoleCommandSender;
 import org.aincraft.common.server.Server;
 import org.aincraft.common.world.World;
-import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
 
 public class BukkitServerWrapper implements Server {
 
@@ -53,27 +53,25 @@ public class BukkitServerWrapper implements Server {
 
   @Override
   public @NotNull Collection<? extends Player> onlinePlayers() {
-    return server.getOnlinePlayers().stream()
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return server.getOnlinePlayers().stream().map(BukkitAdapters::adapt).toList();
   }
 
   @Override
   public @NotNull Collection<? extends World> worlds() {
-    return server.getWorlds().stream()
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return server.getWorlds().stream().map(BukkitAdapters::adapt).toList();
   }
 
   @Override
   public @Nullable World world(@NotNull Key key) {
     for (org.bukkit.World bWorld : server.getWorlds()) {
-      if (bWorld.getKey().getNamespace().equals(key.namespace()) && bWorld.getKey().getKey().equals(key.value())) {
+      if (bWorld.getKey().getNamespace().equals(key.namespace())
+          && bWorld.getKey().getKey().equals(key.value())) {
         return BukkitAdapters.adapt(bWorld);
       }
     }
     return null;
   }
+
   public @Nullable World world(@NotNull String name) {
     org.bukkit.World bWorld = server.getWorld(name);
     return bWorld != null ? BukkitAdapters.adapt(bWorld) : null;

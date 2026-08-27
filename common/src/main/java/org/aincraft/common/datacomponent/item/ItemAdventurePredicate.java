@@ -1,10 +1,12 @@
 package org.aincraft.common.datacomponent.item;
 
-import java.util.List;
 import org.aincraft.common.datacomponent.block.BlockPredicate;
 
+import java.util.List;
+
 /**
- * Common contract for an item adventure predicate, mirroring Paper's {@code ItemAdventurePredicate}.
+ * Common contract for an item adventure predicate, mirroring Paper's {@code
+ * ItemAdventurePredicate}.
  */
 public interface ItemAdventurePredicate {
 

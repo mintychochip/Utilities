@@ -1,11 +1,12 @@
 package org.aincraft.common.datacomponent.item;
 
-import java.util.List;
 import net.kyori.adventure.text.format.TextColor;
 
+import java.util.List;
+
 /**
- * Common contract for a single firework explosion, mirroring Bukkit's
- * {@code org.bukkit.FireworkEffect}.
+ * Common contract for a single firework explosion, mirroring Bukkit's {@code
+ * org.bukkit.FireworkEffect}.
  */
 public interface FireworkEffect {
 

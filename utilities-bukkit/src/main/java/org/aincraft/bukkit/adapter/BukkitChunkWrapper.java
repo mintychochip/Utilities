@@ -1,13 +1,14 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
 import org.aincraft.common.entity.Entity;
 import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 
 public class BukkitChunkWrapper implements Chunk {
 
@@ -68,9 +69,7 @@ public class BukkitChunkWrapper implements Chunk {
 
   @Override
   public @NotNull Collection<? extends Entity> entities() {
-    return Arrays.stream(chunk.getEntities())
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return Arrays.stream(chunk.getEntities()).map(BukkitAdapters::adapt).toList();
   }
 
   @Override

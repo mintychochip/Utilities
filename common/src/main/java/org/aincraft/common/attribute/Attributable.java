@@ -6,7 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Attributable {
 
-  @Nullable AttributeInstance getAttribute(@NotNull Key attribute);
+  @Nullable
+  AttributeInstance getAttribute(@NotNull Key attribute);
 
   default double getAttributeValue(@NotNull Key attribute) {
     AttributeInstance inst = getAttribute(attribute);

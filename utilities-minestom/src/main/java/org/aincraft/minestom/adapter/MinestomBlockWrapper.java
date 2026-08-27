@@ -1,10 +1,9 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.Instance;
 import org.aincraft.common.block.BlockState;
-import net.kyori.adventure.key.Key;
 import org.aincraft.common.block.BlockType;
 import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
@@ -13,6 +12,8 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class MinestomBlockWrapper implements Block {
 
@@ -135,6 +136,16 @@ public class MinestomBlockWrapper implements Block {
 
   @Override
   public String toString() {
-    return "MinestomBlockWrapper{world=" + world().name() + ", x=" + x + ", y=" + y + ", z=" + z + ", block=" + getMinestomBlock().name() + "}";
+    return "MinestomBlockWrapper{world="
+        + world().name()
+        + ", x="
+        + x
+        + ", y="
+        + y
+        + ", z="
+        + z
+        + ", block="
+        + getMinestomBlock().name()
+        + "}";
   }
 }

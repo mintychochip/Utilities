@@ -1,7 +1,8 @@
 package org.aincraft.common.datacomponent.item;
 
 /**
- * Common contract for the {@code AttackRange} data component, mirroring Paper's {@code AttackRange}.
+ * Common contract for the {@code AttackRange} data component, mirroring Paper's {@code
+ * AttackRange}.
  */
 public interface AttackRange {
 

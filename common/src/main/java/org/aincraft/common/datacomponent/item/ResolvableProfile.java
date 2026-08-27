@@ -3,8 +3,8 @@ package org.aincraft.common.datacomponent.item;
 import net.kyori.adventure.key.Key;
 
 /**
- * Common contract for a resolvable player profile, mirroring Paper's
- * {@code io.papermc.paper.datacomponent.item.ResolvableProfile}.
+ * Common contract for a resolvable player profile, mirroring Paper's {@code
+ * io.papermc.paper.datacomponent.item.ResolvableProfile}.
  */
 public interface ResolvableProfile extends PlayerProfile {
 
@@ -13,8 +13,8 @@ public interface ResolvableProfile extends PlayerProfile {
   SkinPatch skinPatch();
 
   /**
-   * Common contract for the skin patch of a resolvable profile, mirroring
-   * {@code io.papermc.paper.datacomponent.item.ResolvableProfile.SkinPatch}.
+   * Common contract for the skin patch of a resolvable profile, mirroring {@code
+   * io.papermc.paper.datacomponent.item.ResolvableProfile.SkinPatch}.
    */
   interface SkinPatch {
 

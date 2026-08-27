@@ -1,12 +1,13 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.identity.Identity;
 import org.aincraft.common.entity.Player;
 import org.aincraft.common.server.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class BukkitOfflinePlayerWrapper implements OfflinePlayer {
 

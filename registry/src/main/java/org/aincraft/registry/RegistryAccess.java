@@ -11,6 +11,7 @@ public sealed interface RegistryAccess permits RegistryAccessImpl {
   static RegistryAccess registryAccess(@NotNull Plugin plugin) {
     return RegistryAccessAccessor.getRegistryAccess(plugin);
   }
+
   <T extends Keyed> Registry<T> getRegistry(RegistryAccessKey<T> registryKey);
 
   <T extends Keyed> void addRegistry(RegistryAccessKey<T> key, Registry<T> registry);
@@ -18,7 +19,7 @@ public sealed interface RegistryAccess permits RegistryAccessImpl {
   interface RegistryAccessKey<T extends Keyed> {
 
     static <T extends Keyed> RegistryAccessKey<T> create(Plugin plugin, String key) {
-      return () -> new NamespacedKey(plugin,key);
+      return () -> new NamespacedKey(plugin, key);
     }
 
     Key getKey();

@@ -4,5 +4,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface InventoryHolder {
 
-  @Nullable Inventory inventory();
+  @Nullable
+  Inventory inventory();
 }

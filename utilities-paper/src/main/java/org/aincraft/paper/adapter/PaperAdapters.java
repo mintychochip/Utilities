@@ -1,7 +1,7 @@
 package org.aincraft.paper.adapter;
 
-import org.aincraft.bukkit.adapter.BukkitAdapters;
 import net.kyori.adventure.key.Key;
+import org.aincraft.bukkit.adapter.BukkitAdapters;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.block.BlockFace;
@@ -146,11 +146,13 @@ public final class PaperAdapters {
     return BukkitAdapters.toBukkit(inventory);
   }
 
-  public static @NotNull PlayerInventory adapt(@NotNull org.bukkit.inventory.PlayerInventory inventory) {
+  public static @NotNull PlayerInventory adapt(
+      @NotNull org.bukkit.inventory.PlayerInventory inventory) {
     return BukkitAdapters.adapt(inventory);
   }
 
-  public static @NotNull org.bukkit.inventory.PlayerInventory toBukkit(@NotNull PlayerInventory inventory) {
+  public static @NotNull org.bukkit.inventory.PlayerInventory toBukkit(
+      @NotNull PlayerInventory inventory) {
     return BukkitAdapters.toBukkit(inventory);
   }
 
@@ -201,19 +203,23 @@ public final class PaperAdapters {
     return BukkitAdapters.toBukkit(attribute);
   }
 
-  public static @NotNull AttributeModifier adapt(@NotNull org.bukkit.attribute.AttributeModifier modifier) {
+  public static @NotNull AttributeModifier adapt(
+      @NotNull org.bukkit.attribute.AttributeModifier modifier) {
     return BukkitAdapters.adapt(modifier);
   }
 
-  public static @NotNull org.bukkit.attribute.AttributeModifier toBukkit(@NotNull AttributeModifier modifier) {
+  public static @NotNull org.bukkit.attribute.AttributeModifier toBukkit(
+      @NotNull AttributeModifier modifier) {
     return BukkitAdapters.toBukkit(modifier);
   }
 
-  public static @NotNull AttributeInstance adapt(@NotNull org.bukkit.attribute.AttributeInstance instance) {
+  public static @NotNull AttributeInstance adapt(
+      @NotNull org.bukkit.attribute.AttributeInstance instance) {
     return BukkitAdapters.adapt(instance);
   }
 
-  public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(@NotNull AttributeInstance instance) {
+  public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(
+      @NotNull AttributeInstance instance) {
     return BukkitAdapters.toBukkit(instance);
   }
 }

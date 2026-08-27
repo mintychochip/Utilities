@@ -2,6 +2,7 @@ package org.aincraft.db;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
+
 import java.sql.Connection;
 
 public interface ConnectionSource extends AutoCloseable {

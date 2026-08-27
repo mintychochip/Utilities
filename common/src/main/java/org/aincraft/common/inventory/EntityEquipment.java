@@ -1,40 +1,49 @@
 package org.aincraft.common.inventory;
 
-import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 public interface EntityEquipment {
 
-  @Nullable ItemStack get(@NotNull EquipmentSlot slot);
+  @Nullable
+  ItemStack get(@NotNull EquipmentSlot slot);
 
   void set(@NotNull EquipmentSlot slot, @Nullable ItemStack item);
 
-  @NotNull Collection<@NotNull ItemStack> armorContents();
+  @NotNull
+  Collection<@NotNull ItemStack> armorContents();
 
   void setArmorContents(@NotNull Collection<@Nullable ItemStack> items);
 
-  @Nullable ItemStack helmet();
+  @Nullable
+  ItemStack helmet();
 
   void setHelmet(@Nullable ItemStack item);
 
-  @Nullable ItemStack chestplate();
+  @Nullable
+  ItemStack chestplate();
 
   void setChestplate(@Nullable ItemStack item);
 
-  @Nullable ItemStack leggings();
+  @Nullable
+  ItemStack leggings();
 
   void setLeggings(@Nullable ItemStack item);
 
-  @Nullable ItemStack boots();
+  @Nullable
+  ItemStack boots();
 
   void setBoots(@Nullable ItemStack item);
 
-  @Nullable ItemStack itemInMainHand();
+  @Nullable
+  ItemStack itemInMainHand();
 
   void setItemInMainHand(@Nullable ItemStack item);
 
-  @Nullable ItemStack itemInOffHand();
+  @Nullable
+  ItemStack itemInOffHand();
 
   void setItemInOffHand(@Nullable ItemStack item);
 }

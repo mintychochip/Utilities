@@ -1,10 +1,11 @@
 package org.aincraft.math;
 
 import com.google.common.base.Preconditions;
+import org.aincraft.math.RandomSelector.UniformRandomSelector;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.random.RandomGenerator;
-import org.aincraft.math.RandomSelector.UniformRandomSelector;
 
 final class UniformRandomSelectorImpl<T> implements UniformRandomSelector<T> {
 
@@ -12,7 +13,7 @@ final class UniformRandomSelectorImpl<T> implements UniformRandomSelector<T> {
 
   @Override
   public T getObject(RandomGenerator randomGenerator) throws IllegalStateException {
-    Preconditions.checkState(!objects.isEmpty(),"no elements to select from");
+    Preconditions.checkState(!objects.isEmpty(), "no elements to select from");
     int index = randomGenerator.nextInt(this.objects.size());
     return objects.get(index);
   }

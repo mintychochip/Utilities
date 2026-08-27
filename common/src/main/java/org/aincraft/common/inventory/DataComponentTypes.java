@@ -1,10 +1,5 @@
 package org.aincraft.common.inventory;
 
-import java.lang.Boolean;
-import java.lang.Float;
-import java.lang.Integer;
-import java.util.List;
-import java.util.Set;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.aincraft.common.datacomponent.item.AttackRange;
@@ -54,9 +49,10 @@ import org.aincraft.common.datacomponent.item.attribute.ItemAttributeModifiers;
 import org.aincraft.common.datacomponent.potion.PotionContents;
 import org.aincraft.common.datacomponent.potion.SuspiciousStewEffects;
 
-/**
- * Standard data component descriptors from the Paper {@code DataComponentTypes} registry.
- */
+import java.util.List;
+import java.util.Set;
+
+/** Standard data component descriptors from the Paper {@code DataComponentTypes} registry. */
 public final class DataComponentTypes {
 
   public static final DataComponentType.Valued<Integer> MAX_STACK_SIZE =
@@ -78,7 +74,8 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "custom_name"), Component.class);
 
   public static final DataComponentType.Valued<Float> MINIMUM_ATTACK_CHARGE =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "minimum_attack_charge"), Float.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "minimum_attack_charge"), Float.class);
 
   public static final DataComponentType.Valued<Key> DAMAGE_TYPE =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "damage_type"), Key.class);
@@ -96,28 +93,35 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "rarity"), ItemRarity.class);
 
   public static final DataComponentType.Valued<ItemEnchantments> ENCHANTMENTS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "enchantments"), ItemEnchantments.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "enchantments"), ItemEnchantments.class);
 
   public static final DataComponentType.Valued<ItemAdventurePredicate> CAN_PLACE_ON =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "can_place_on"), ItemAdventurePredicate.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "can_place_on"), ItemAdventurePredicate.class);
 
   public static final DataComponentType.Valued<ItemAdventurePredicate> CAN_BREAK =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "can_break"), ItemAdventurePredicate.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "can_break"), ItemAdventurePredicate.class);
 
   public static final DataComponentType.Valued<ItemAttributeModifiers> ATTRIBUTE_MODIFIERS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "attribute_modifiers"), ItemAttributeModifiers.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "attribute_modifiers"), ItemAttributeModifiers.class);
 
   public static final DataComponentType.Valued<CustomModelData> CUSTOM_MODEL_DATA =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "custom_model_data"), CustomModelData.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "custom_model_data"), CustomModelData.class);
 
   public static final DataComponentType.Valued<TooltipDisplay> TOOLTIP_DISPLAY =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "tooltip_display"), TooltipDisplay.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "tooltip_display"), TooltipDisplay.class);
 
   public static final DataComponentType.Valued<Integer> REPAIR_COST =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "repair_cost"), Integer.class);
 
   public static final DataComponentType.Valued<Boolean> ENCHANTMENT_GLINT_OVERRIDE =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "enchantment_glint_override"), Boolean.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "enchantment_glint_override"), Boolean.class);
 
   public static final DataComponentType.NonValued INTANGIBLE_PROJECTILE =
       new StandardNonValuedDataComponentType(Key.key("minecraft", "intangible_projectile"));
@@ -129,13 +133,16 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "consumable"), Consumable.class);
 
   public static final DataComponentType.Valued<UseRemainder> USE_REMAINDER =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "use_remainder"), UseRemainder.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "use_remainder"), UseRemainder.class);
 
   public static final DataComponentType.Valued<UseCooldown> USE_COOLDOWN =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "use_cooldown"), UseCooldown.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "use_cooldown"), UseCooldown.class);
 
   public static final DataComponentType.Valued<DamageResistant> DAMAGE_RESISTANT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "damage_resistant"), DamageResistant.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "damage_resistant"), DamageResistant.class);
 
   public static final DataComponentType.Valued<Tool> TOOL =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "tool"), Tool.class);
@@ -159,31 +166,39 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "tooltip_style"), Key.class);
 
   public static final DataComponentType.Valued<DeathProtection> DEATH_PROTECTION =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "death_protection"), DeathProtection.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "death_protection"), DeathProtection.class);
 
   public static final DataComponentType.Valued<BlocksAttacks> BLOCKS_ATTACKS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "blocks_attacks"), BlocksAttacks.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "blocks_attacks"), BlocksAttacks.class);
 
   public static final DataComponentType.Valued<PiercingWeapon> PIERCING_WEAPON =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "piercing_weapon"), PiercingWeapon.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "piercing_weapon"), PiercingWeapon.class);
 
   public static final DataComponentType.Valued<KineticWeapon> KINETIC_WEAPON =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "kinetic_weapon"), KineticWeapon.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "kinetic_weapon"), KineticWeapon.class);
 
   public static final DataComponentType.Valued<AttackRange> ATTACK_RANGE =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "attack_range"), AttackRange.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "attack_range"), AttackRange.class);
 
   public static final DataComponentType.Valued<SwingAnimation> SWING_ANIMATION =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "swing_animation"), SwingAnimation.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "swing_animation"), SwingAnimation.class);
 
   public static final DataComponentType.Valued<ItemEnchantments> STORED_ENCHANTMENTS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "stored_enchantments"), ItemEnchantments.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "stored_enchantments"), ItemEnchantments.class);
 
   public static final DataComponentType.Valued<DyeColor> DYE =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "dye"), DyeColor.class);
 
   public static final DataComponentType.Valued<DyedItemColor> DYED_COLOR =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "dyed_color"), DyedItemColor.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "dyed_color"), DyedItemColor.class);
 
   public static final DataComponentType.Valued<MapItemColor> MAP_COLOR =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "map_color"), MapItemColor.class);
@@ -192,31 +207,40 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "map_id"), MapId.class);
 
   public static final DataComponentType.Valued<MapDecorations> MAP_DECORATIONS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "map_decorations"), MapDecorations.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "map_decorations"), MapDecorations.class);
 
   public static final DataComponentType.Valued<MapPostProcessing> MAP_POST_PROCESSING =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "map_post_processing"), MapPostProcessing.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "map_post_processing"), MapPostProcessing.class);
 
   public static final DataComponentType.Valued<ChargedProjectiles> CHARGED_PROJECTILES =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "charged_projectiles"), ChargedProjectiles.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "charged_projectiles"), ChargedProjectiles.class);
 
   public static final DataComponentType.Valued<BundleContents> BUNDLE_CONTENTS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "bundle_contents"), BundleContents.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "bundle_contents"), BundleContents.class);
 
   public static final DataComponentType.Valued<PotionContents> POTION_CONTENTS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "potion_contents"), PotionContents.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "potion_contents"), PotionContents.class);
 
   public static final DataComponentType.Valued<Float> POTION_DURATION_SCALE =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "potion_duration_scale"), Float.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "potion_duration_scale"), Float.class);
 
   public static final DataComponentType.Valued<SuspiciousStewEffects> SUSPICIOUS_STEW_EFFECTS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "suspicious_stew_effects"), SuspiciousStewEffects.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "suspicious_stew_effects"), SuspiciousStewEffects.class);
 
   public static final DataComponentType.Valued<WritableBookContent> WRITABLE_BOOK_CONTENT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "writable_book_content"), WritableBookContent.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "writable_book_content"), WritableBookContent.class);
 
   public static final DataComponentType.Valued<WrittenBookContent> WRITTEN_BOOK_CONTENT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "written_book_content"), WrittenBookContent.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "written_book_content"), WrittenBookContent.class);
 
   public static final DataComponentType.Valued<ItemArmorTrim> TRIM =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "trim"), ItemArmorTrim.class);
@@ -225,55 +249,68 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "instrument"), Key.class);
 
   public static final DataComponentType.Valued<Key> PROVIDES_TRIM_MATERIAL =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "provides_trim_material"), Key.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "provides_trim_material"), Key.class);
 
   public static final DataComponentType.Valued<OminousBottleAmplifier> OMINOUS_BOTTLE_AMPLIFIER =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "ominous_bottle_amplifier"), OminousBottleAmplifier.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "ominous_bottle_amplifier"), OminousBottleAmplifier.class);
 
   public static final DataComponentType.Valued<JukeboxPlayable> JUKEBOX_PLAYABLE =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "jukebox_playable"), JukeboxPlayable.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "jukebox_playable"), JukeboxPlayable.class);
 
   public static final DataComponentType.Valued<Set> PROVIDES_BANNER_PATTERNS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "provides_banner_patterns"), Set.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "provides_banner_patterns"), Set.class);
 
   public static final DataComponentType.Valued<List> RECIPES =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "recipes"), List.class);
 
   public static final DataComponentType.Valued<LodestoneTracker> LODESTONE_TRACKER =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "lodestone_tracker"), LodestoneTracker.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "lodestone_tracker"), LodestoneTracker.class);
 
   public static final DataComponentType.Valued<FireworkEffect> FIREWORK_EXPLOSION =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "firework_explosion"), FireworkEffect.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "firework_explosion"), FireworkEffect.class);
 
   public static final DataComponentType.Valued<Fireworks> FIREWORKS =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "fireworks"), Fireworks.class);
 
   public static final DataComponentType.Valued<ResolvableProfile> PROFILE =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "profile"), ResolvableProfile.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "profile"), ResolvableProfile.class);
 
   public static final DataComponentType.Valued<Key> NOTE_BLOCK_SOUND =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "note_block_sound"), Key.class);
 
   public static final DataComponentType.Valued<BannerPatternLayers> BANNER_PATTERNS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "banner_patterns"), BannerPatternLayers.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "banner_patterns"), BannerPatternLayers.class);
 
   public static final DataComponentType.Valued<DyeColor> BASE_COLOR =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "base_color"), DyeColor.class);
 
   public static final DataComponentType.Valued<PotDecorations> POT_DECORATIONS =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "pot_decorations"), PotDecorations.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "pot_decorations"), PotDecorations.class);
 
   public static final DataComponentType.Valued<ItemContainerContents> CONTAINER =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "container"), ItemContainerContents.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "container"), ItemContainerContents.class);
 
   public static final DataComponentType.Valued<BlockItemDataProperties> BLOCK_DATA =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "block_data"), BlockItemDataProperties.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "block_data"), BlockItemDataProperties.class);
 
   public static final DataComponentType.Valued<SulfurCubeContent> SULFUR_CUBE_CONTENT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "sulfur_cube_content"), SulfurCubeContent.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "sulfur_cube_content"), SulfurCubeContent.class);
 
   public static final DataComponentType.Valued<SeededContainerLoot> CONTAINER_LOOT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "container_loot"), SeededContainerLoot.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "container_loot"), SeededContainerLoot.class);
 
   public static final DataComponentType.Valued<Key> BREAK_SOUND =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "break_sound"), Key.class);
@@ -300,13 +337,16 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "parrot_variant"), Key.class);
 
   public static final DataComponentType.Valued<Key> TROPICAL_FISH_PATTERN =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "tropical_fish_pattern"), Key.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "tropical_fish_pattern"), Key.class);
 
   public static final DataComponentType.Valued<DyeColor> TROPICAL_FISH_BASE_COLOR =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "tropical_fish_base_color"), DyeColor.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "tropical_fish_base_color"), DyeColor.class);
 
   public static final DataComponentType.Valued<DyeColor> TROPICAL_FISH_PATTERN_COLOR =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "tropical_fish_pattern_color"), DyeColor.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "tropical_fish_pattern_color"), DyeColor.class);
 
   public static final DataComponentType.Valued<Key> MOOSHROOM_VARIANT =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "mooshroom_variant"), Key.class);
@@ -330,7 +370,8 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "chicken_variant"), Key.class);
 
   public static final DataComponentType.Valued<Key> CHICKEN_SOUND_VARIANT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "chicken_sound_variant"), Key.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "chicken_sound_variant"), Key.class);
 
   public static final DataComponentType.Valued<Key> FROG_VARIANT =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "frog_variant"), Key.class);
@@ -348,7 +389,8 @@ public final class DataComponentTypes {
       new StandardValuedDataComponentType<>(Key.key("minecraft", "axolotl_variant"), Key.class);
 
   public static final DataComponentType.Valued<Key> ZOMBIE_NAUTILUS_VARIANT =
-      new StandardValuedDataComponentType<>(Key.key("minecraft", "zombie_nautilus_variant"), Key.class);
+      new StandardValuedDataComponentType<>(
+          Key.key("minecraft", "zombie_nautilus_variant"), Key.class);
 
   public static final DataComponentType.Valued<Key> CAT_VARIANT =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "cat_variant"), Key.class);
@@ -365,9 +407,7 @@ public final class DataComponentTypes {
   public static final DataComponentType.Valued<DyeColor> SHULKER_COLOR =
       new StandardValuedDataComponentType<>(Key.key("minecraft", "shulker_color"), DyeColor.class);
 
-  /**
-   * Common item rarity enum.
-   */
+  /** Common item rarity enum. */
   public enum ItemRarity {
     COMMON,
     UNCOMMON,
@@ -375,9 +415,7 @@ public final class DataComponentTypes {
     EPIC
   }
 
-  /**
-   * Common dye color enum.
-   */
+  /** Common dye color enum. */
   public enum DyeColor {
     WHITE,
     ORANGE,
@@ -397,9 +435,7 @@ public final class DataComponentTypes {
     BLACK
   }
 
-  /**
-   * Common map post processing mode.
-   */
+  /** Common map post processing mode. */
   public enum MapPostProcessing {
     LOCK,
     SCALE

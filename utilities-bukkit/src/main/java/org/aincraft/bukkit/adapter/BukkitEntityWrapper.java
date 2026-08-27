@@ -1,10 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -19,6 +14,12 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
 public class BukkitEntityWrapper implements Entity {
 
   private final org.bukkit.entity.Entity entity;
@@ -26,7 +27,8 @@ public class BukkitEntityWrapper implements Entity {
 
   public BukkitEntityWrapper(@NotNull org.bukkit.entity.Entity entity) {
     this.entity = Objects.requireNonNull(entity, "entity cannot be null");
-    this.typeKey = Key.key(entity.getType().getKey().getNamespace(), entity.getType().getKey().getKey());
+    this.typeKey =
+        Key.key(entity.getType().getKey().getNamespace(), entity.getType().getKey().getKey());
   }
 
   public @NotNull org.bukkit.entity.Entity getBukkitEntity() {
@@ -87,6 +89,7 @@ public class BukkitEntityWrapper implements Entity {
   public @NotNull BoundingBox boundingBox() {
     return BukkitAdapters.adapt(entity.getBoundingBox());
   }
+
   @Override
   public @NotNull Vector3dc velocity() {
     org.bukkit.util.Vector vec = entity.getVelocity();
@@ -195,7 +198,8 @@ public class BukkitEntityWrapper implements Entity {
 
   @Override
   public void customName(@Nullable Component name) {
-    entity.setCustomName(name != null ? LegacyComponentSerializer.legacySection().serialize(name) : null);
+    entity.setCustomName(
+        name != null ? LegacyComponentSerializer.legacySection().serialize(name) : null);
   }
 
   @Override

@@ -1,13 +1,14 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeInstance;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
 
 public class BukkitAttributeInstanceWrapper implements AttributeInstance {
 
@@ -43,9 +44,7 @@ public class BukkitAttributeInstanceWrapper implements AttributeInstance {
 
   @Override
   public @NotNull Collection<? extends AttributeModifier> modifiers() {
-    return instance.getModifiers().stream()
-        .map(BukkitAdapters::adapt)
-        .toList();
+    return instance.getModifiers().stream().map(BukkitAdapters::adapt).toList();
   }
 
   @Override

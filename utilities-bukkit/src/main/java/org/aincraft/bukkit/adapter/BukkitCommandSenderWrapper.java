@@ -1,11 +1,12 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.aincraft.common.server.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitCommandSenderWrapper implements CommandSender {
 

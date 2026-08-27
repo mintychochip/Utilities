@@ -1,14 +1,16 @@
 package org.aincraft.common.attribute;
 
-import java.util.Collection;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.UUID;
+
 public interface AttributeInstance {
 
-  @NotNull Key attribute();
+  @NotNull
+  Key attribute();
 
   double baseValue();
 
@@ -16,7 +18,8 @@ public interface AttributeInstance {
 
   double value();
 
-  @NotNull Collection<? extends AttributeModifier> modifiers();
+  @NotNull
+  Collection<? extends AttributeModifier> modifiers();
 
   void addModifier(@NotNull AttributeModifier modifier);
 
@@ -24,5 +27,6 @@ public interface AttributeInstance {
 
   void removeModifier(@NotNull UUID id);
 
-  @Nullable AttributeModifier getModifier(@NotNull UUID id);
+  @Nullable
+  AttributeModifier getModifier(@NotNull UUID id);
 }

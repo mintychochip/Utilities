@@ -3,8 +3,8 @@ package org.aincraft.common.datacomponent.potion;
 import net.kyori.adventure.key.Key;
 
 /**
- * Common contract for a potion effect, mirroring {@code org.bukkit.potion.PotionEffect}
- * without depending on Bukkit.
+ * Common contract for a potion effect, mirroring {@code org.bukkit.potion.PotionEffect} without
+ * depending on Bukkit.
  */
 public interface PotionEffect {
 

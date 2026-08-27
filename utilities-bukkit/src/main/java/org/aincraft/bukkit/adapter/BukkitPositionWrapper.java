@@ -1,9 +1,10 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.location.Position;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitPositionWrapper implements Position {
 

@@ -1,8 +1,5 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.ForwardingAudience;
 import net.kyori.adventure.key.Key;
@@ -21,6 +18,11 @@ import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.aincraft.common.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Objects;
+import java.util.UUID;
+
 public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
 
   private final Instance instance;
@@ -111,23 +113,17 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
 
   @Override
   public @NotNull Collection<? extends Player> players() {
-    return instance.getPlayers().stream()
-        .map(MinestomAdapters::adapt)
-        .toList();
+    return instance.getPlayers().stream().map(MinestomAdapters::adapt).toList();
   }
 
   @Override
   public @NotNull Collection<? extends Entity> entities() {
-    return instance.getEntities().stream()
-        .map(MinestomAdapters::adapt)
-        .toList();
+    return instance.getEntities().stream().map(MinestomAdapters::adapt).toList();
   }
 
   @Override
   public @NotNull Collection<? extends Chunk> loadedChunks() {
-    return instance.getChunks().stream()
-        .map(MinestomAdapters::adapt)
-        .toList();
+    return instance.getChunks().stream().map(MinestomAdapters::adapt).toList();
   }
 
   @Override
@@ -183,12 +179,24 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
   }
 
   @Override
-  public void playSound(@NotNull org.aincraft.common.location.Location location, @NotNull Sound.Type sound, @org.jetbrains.annotations.Nullable Sound.Source source, float volume, float pitch) {
+  public void playSound(
+      @NotNull org.aincraft.common.location.Location location,
+      @NotNull Sound.Type sound,
+      @org.jetbrains.annotations.Nullable Sound.Source source,
+      float volume,
+      float pitch) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void spawnParticle(@NotNull org.aincraft.common.effect.Particle particle, @NotNull org.aincraft.common.location.Location location, int count, double offsetX, double offsetY, double offsetZ, double extra) {
+  public void spawnParticle(
+      @NotNull org.aincraft.common.effect.Particle particle,
+      @NotNull org.aincraft.common.location.Location location,
+      int count,
+      double offsetX,
+      double offsetY,
+      double offsetZ,
+      double extra) {
     throw new UnsupportedOperationException();
   }
 
@@ -204,8 +212,10 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
 
   @Override
   public @NotNull Block getHighestBlockAt(int x, int z, @NotNull HeightMap heightMap) {
-    boolean motionBlocking = heightMap == HeightMap.MOTION_BLOCKING || heightMap == HeightMap.MOTION_BLOCKING_NO_LEAVES;
-    boolean oceanFloor = heightMap == HeightMap.OCEAN_FLOOR || heightMap == HeightMap.OCEAN_FLOOR_WG;
+    boolean motionBlocking =
+        heightMap == HeightMap.MOTION_BLOCKING || heightMap == HeightMap.MOTION_BLOCKING_NO_LEAVES;
+    boolean oceanFloor =
+        heightMap == HeightMap.OCEAN_FLOOR || heightMap == HeightMap.OCEAN_FLOOR_WG;
     for (int y = maxHeight() - 1; y >= minHeight(); y--) {
       net.minestom.server.instance.block.Block b = instance.getBlock(x, y, z);
       boolean matches;
@@ -224,7 +234,8 @@ public class MinestomWorldWrapper implements World, ForwardingAudience.Single {
   }
 
   @Override
-  public @NotNull Block getHighestBlockAt(@NotNull org.aincraft.common.location.Location location, @NotNull HeightMap heightMap) {
+  public @NotNull Block getHighestBlockAt(
+      @NotNull org.aincraft.common.location.Location location, @NotNull HeightMap heightMap) {
     return getHighestBlockAt(location.blockX(), location.blockZ(), heightMap);
   }
 }

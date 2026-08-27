@@ -9,9 +9,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.connection.ClusterSettings;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.Collections;
 import org.aincraft.db.ConnectionException;
 import org.aincraft.db.ConnectionSource;
 import org.aincraft.db.DatabaseType;
@@ -20,6 +17,10 @@ import org.aincraft.db.MongoConnectionSourceImpl;
 import org.aincraft.db.SQLiteConnectionSource;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.Collections;
 
 public final class ConnectionSourceFactoryImpl implements ConnectionSourceFactory {
 
@@ -36,11 +37,11 @@ public final class ConnectionSourceFactoryImpl implements ConnectionSourceFactor
     Preconditions.checkNotNull(type, "missing required parameter: type");
     Preconditions.checkNotNull(configuration, "missing required parameter: configuration");
     return switch (type) {
-      case MYSQL, POSTGRES -> new HikariSourceImpl(
-          new HikariDataSource(parseHikariConfig(configuration)), type);
+      case MYSQL, POSTGRES ->
+          new HikariSourceImpl(new HikariDataSource(parseHikariConfig(configuration)), type);
       case SQLITE -> sqlite(configuration);
-      case MONGO -> new MongoConnectionSourceImpl(
-          MongoClients.create(parseClientSettings(configuration)));
+      case MONGO ->
+          new MongoConnectionSourceImpl(MongoClients.create(parseClientSettings(configuration)));
     };
   }
 
@@ -105,20 +106,15 @@ public final class ConnectionSourceFactoryImpl implements ConnectionSourceFactor
     String password = configuration.getString("password");
     String authDb = configuration.getString("auth-database", "admin");
     if (uri != null && !uri.isEmpty()) {
-      return MongoClientSettings.builder()
-          .applyConnectionString(new ConnectionString(uri))
-          .build();
+      return MongoClientSettings.builder().applyConnectionString(new ConnectionString(uri)).build();
     }
     MongoClientSettings.Builder builder = MongoClientSettings.builder();
-    builder.applyToClusterSettings((ClusterSettings.Builder cluster) ->
-        cluster.hosts(Collections.singletonList(new ServerAddress(host, port)))
-    );
+    builder.applyToClusterSettings(
+        (ClusterSettings.Builder cluster) ->
+            cluster.hosts(Collections.singletonList(new ServerAddress(host, port))));
     if (username != null && !username.isEmpty() && password != null) {
-      MongoCredential credential = MongoCredential.createCredential(
-          username,
-          authDb,
-          password.toCharArray()
-      );
+      MongoCredential credential =
+          MongoCredential.createCredential(username, authDb, password.toCharArray());
       builder.credential(credential);
     }
     return builder.build();

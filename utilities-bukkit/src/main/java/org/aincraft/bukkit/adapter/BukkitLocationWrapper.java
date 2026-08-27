@@ -1,11 +1,13 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
 import org.aincraft.common.world.HeightMap;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 public class BukkitLocationWrapper implements Location {
 
   private final org.bukkit.Location bukkitLocation;
@@ -81,6 +83,7 @@ public class BukkitLocationWrapper implements Location {
   public int blockZ() {
     return bukkitLocation.getBlockZ();
   }
+
   @Override
   public @NotNull Location toHighestLocation() {
     return toHighestLocation(HeightMap.WORLD_SURFACE);
@@ -119,6 +122,18 @@ public class BukkitLocationWrapper implements Location {
 
   @Override
   public String toString() {
-    return "BukkitLocationWrapper{world=" + world + ", x=" + x() + ", y=" + y() + ", z=" + z() + ", yaw=" + yaw() + ", pitch=" + pitch() + "}";
+    return "BukkitLocationWrapper{world="
+        + world
+        + ", x="
+        + x()
+        + ", y="
+        + y()
+        + ", z="
+        + z()
+        + ", yaw="
+        + yaw()
+        + ", pitch="
+        + pitch()
+        + "}";
   }
 }

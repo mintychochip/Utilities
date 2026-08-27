@@ -1,6 +1,5 @@
 package org.aincraft.common.entity;
 
-import java.util.Collection;
 import org.aincraft.common.attribute.Attributable;
 import org.aincraft.common.effect.PotionEffect;
 import org.aincraft.common.effect.PotionEffectType;
@@ -9,15 +8,19 @@ import org.aincraft.common.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 public interface LivingEntity extends Damageable, Attributable {
 
   double eyeHeight();
 
-  @NotNull Location eyeLocation();
+  @NotNull
+  Location eyeLocation();
 
   boolean hasLineOfSight(@NotNull Entity other);
 
-  @Nullable LivingEntity target();
+  @Nullable
+  LivingEntity target();
 
   void setTarget(@Nullable LivingEntity target);
 
@@ -31,7 +34,8 @@ public interface LivingEntity extends Damageable, Attributable {
 
   void setInvisible(boolean invisible);
 
-  @NotNull EntityEquipment equipment();
+  @NotNull
+  EntityEquipment equipment();
 
   void attack(@NotNull Entity target);
 
@@ -39,9 +43,11 @@ public interface LivingEntity extends Damageable, Attributable {
 
   void swingOffHand();
 
-  @Nullable PotionEffect potionEffect(@NotNull PotionEffectType type);
+  @Nullable
+  PotionEffect potionEffect(@NotNull PotionEffectType type);
 
-  @NotNull Collection<? extends PotionEffect> activePotionEffects();
+  @NotNull
+  Collection<? extends PotionEffect> activePotionEffects();
 
   void addPotionEffect(@NotNull PotionEffect effect);
 

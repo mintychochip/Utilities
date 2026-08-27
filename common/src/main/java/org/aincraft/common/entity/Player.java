@@ -10,14 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Player extends LivingEntity, Audience, InventoryHolder, CommandSender {
 
-  @NotNull String username();
+  @NotNull
+  String username();
 
   @Override
   default @NotNull String name() {
     return username();
   }
 
-  @NotNull Component displayName();
+  @NotNull
+  Component displayName();
 
   void displayName(@NotNull Component displayName);
 
@@ -41,7 +43,8 @@ public interface Player extends LivingEntity, Audience, InventoryHolder, Command
 
   void setExp(float exp);
 
-  @NotNull GameMode gameMode();
+  @NotNull
+  GameMode gameMode();
 
   void setGameMode(@NotNull GameMode gameMode);
 
@@ -62,7 +65,8 @@ public interface Player extends LivingEntity, Audience, InventoryHolder, Command
   void setAllowFlight(boolean allow);
 
   @Override
-  @NotNull PlayerInventory inventory();
+  @NotNull
+  PlayerInventory inventory();
 
   void kick(@NotNull Component reason);
 }

@@ -1,6 +1,5 @@
 package org.aincraft.minestom.adapter;
 
-import java.util.Objects;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -17,6 +16,8 @@ import org.aincraft.common.world.Block;
 import org.aincraft.common.world.Chunk;
 import org.aincraft.common.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public final class MinestomAdapters {
 
@@ -48,13 +49,11 @@ public final class MinestomAdapters {
     return new MinestomBoundingBoxWrapper(box);
   }
 
-  public static @NotNull net.minestom.server.collision.BoundingBox toMinestom(@NotNull BoundingBox box) {
+  public static @NotNull net.minestom.server.collision.BoundingBox toMinestom(
+      @NotNull BoundingBox box) {
     Objects.requireNonNull(box, "box cannot be null");
     return new net.minestom.server.collision.BoundingBox(
-        box.maxX() - box.minX(),
-        box.maxY() - box.minY(),
-        box.maxZ() - box.minZ()
-    );
+        box.maxX() - box.minX(), box.maxY() - box.minY(), box.maxZ() - box.minZ());
   }
 
   public static @NotNull World adapt(@NotNull Instance instance) {
@@ -119,7 +118,8 @@ public final class MinestomAdapters {
     return new MinestomBlockTypeWrapper(block);
   }
 
-  public static @NotNull net.minestom.server.instance.block.Block toMinestom(@NotNull BlockType blockType) {
+  public static @NotNull net.minestom.server.instance.block.Block toMinestom(
+      @NotNull BlockType blockType) {
     Objects.requireNonNull(blockType, "blockType cannot be null");
     net.minestom.server.instance.block.Block block =
         net.minestom.server.instance.block.Block.fromKey(blockType.key());
@@ -129,12 +129,14 @@ public final class MinestomAdapters {
     return block;
   }
 
-  public static @NotNull BlockState adaptState(@NotNull net.minestom.server.instance.block.Block block) {
+  public static @NotNull BlockState adaptState(
+      @NotNull net.minestom.server.instance.block.Block block) {
     Objects.requireNonNull(block, "block cannot be null");
     return new MinestomBlockStateWrapper(block);
   }
 
-  public static @NotNull net.minestom.server.instance.block.Block toMinestom(@NotNull BlockState blockState) {
+  public static @NotNull net.minestom.server.instance.block.Block toMinestom(
+      @NotNull BlockState blockState) {
     Objects.requireNonNull(blockState, "blockState cannot be null");
     net.minestom.server.instance.block.Block block =
         net.minestom.server.instance.block.Block.fromState(blockState.asString());
@@ -144,7 +146,8 @@ public final class MinestomAdapters {
     return block;
   }
 
-  public static @NotNull BlockFace adapt(@NotNull net.minestom.server.instance.block.BlockFace face) {
+  public static @NotNull BlockFace adapt(
+      @NotNull net.minestom.server.instance.block.BlockFace face) {
     Objects.requireNonNull(face, "face cannot be null");
     return switch (face) {
       case BOTTOM -> BlockFace.DOWN;
@@ -156,7 +159,8 @@ public final class MinestomAdapters {
     };
   }
 
-  public static @NotNull net.minestom.server.instance.block.BlockFace toMinestom(@NotNull BlockFace face) {
+  public static @NotNull net.minestom.server.instance.block.BlockFace toMinestom(
+      @NotNull BlockFace face) {
     Objects.requireNonNull(face, "face cannot be null");
     return switch (face) {
       case DOWN -> net.minestom.server.instance.block.BlockFace.BOTTOM;
@@ -165,7 +169,9 @@ public final class MinestomAdapters {
       case SOUTH -> net.minestom.server.instance.block.BlockFace.SOUTH;
       case WEST -> net.minestom.server.instance.block.BlockFace.WEST;
       case EAST -> net.minestom.server.instance.block.BlockFace.EAST;
-      default -> throw new IllegalArgumentException("Minestom does not support 2D/compound block faces: " + face);
+      default ->
+          throw new IllegalArgumentException(
+              "Minestom does not support 2D/compound block faces: " + face);
     };
   }
 }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Common contract for a group of {@link EquipmentSlot}s.
  *
- * <p>Mirrors {@code org.bukkit.inventory.EquipmentSlotGroup} without any Bukkit types.</p>
+ * <p>Mirrors {@code org.bukkit.inventory.EquipmentSlotGroup} without any Bukkit types.
  */
 public interface EquipmentSlotGroup {
 
@@ -20,8 +20,8 @@ public interface EquipmentSlotGroup {
   boolean test(@NotNull EquipmentSlot slot);
 
   /**
-   * Returns a representative example slot for this group, or {@code null} if the group
-   * does not correspond to a concrete common slot.
+   * Returns a representative example slot for this group, or {@code null} if the group does not
+   * correspond to a concrete common slot.
    *
    * @return a representative equipment slot, or {@code null}
    */

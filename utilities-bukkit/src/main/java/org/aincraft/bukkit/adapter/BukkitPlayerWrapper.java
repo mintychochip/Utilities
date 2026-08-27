@@ -30,7 +30,9 @@ public class BukkitPlayerWrapper extends BukkitLivingEntityWrapper implements Pl
   @Override
   public @NotNull Component displayName() {
     String name = player.getDisplayName();
-    return name != null ? LegacyComponentSerializer.legacySection().deserialize(name) : Component.text(username());
+    return name != null
+        ? LegacyComponentSerializer.legacySection().deserialize(name)
+        : Component.text(username());
   }
 
   @Override
@@ -100,12 +102,13 @@ public class BukkitPlayerWrapper extends BukkitLivingEntityWrapper implements Pl
 
   @Override
   public void setGameMode(@NotNull GameMode gameMode) {
-    org.bukkit.GameMode bMode = switch (gameMode) {
-      case SURVIVAL -> org.bukkit.GameMode.SURVIVAL;
-      case CREATIVE -> org.bukkit.GameMode.CREATIVE;
-      case ADVENTURE -> org.bukkit.GameMode.ADVENTURE;
-      case SPECTATOR -> org.bukkit.GameMode.SPECTATOR;
-    };
+    org.bukkit.GameMode bMode =
+        switch (gameMode) {
+          case SURVIVAL -> org.bukkit.GameMode.SURVIVAL;
+          case CREATIVE -> org.bukkit.GameMode.CREATIVE;
+          case ADVENTURE -> org.bukkit.GameMode.ADVENTURE;
+          case SPECTATOR -> org.bukkit.GameMode.SPECTATOR;
+        };
     player.setGameMode(bMode);
   }
 

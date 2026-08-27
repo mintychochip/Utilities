@@ -8,6 +8,7 @@ import org.aincraft.common.location.BoundingBox;
 import org.aincraft.common.location.Location;
 import org.aincraft.common.location.Position;
 import org.jetbrains.annotations.NotNull;
+
 public interface Block {
 
   int x();
@@ -16,15 +17,23 @@ public interface Block {
 
   int z();
 
-  @NotNull World world();
+  @NotNull
+  World world();
 
-  @NotNull Chunk chunk();
-  @NotNull Location location();
-  @NotNull Position position();
+  @NotNull
+  Chunk chunk();
 
-  @NotNull BlockType type();
+  @NotNull
+  Location location();
 
-  @NotNull BlockState state();
+  @NotNull
+  Position position();
+
+  @NotNull
+  BlockType type();
+
+  @NotNull
+  BlockState state();
 
   default @NotNull Key key() {
     return type().key();
@@ -52,9 +61,11 @@ public interface Block {
 
   boolean isPassable();
 
-  @NotNull BoundingBox boundingBox();
+  @NotNull
+  BoundingBox boundingBox();
 
-  @NotNull Key biome();
+  @NotNull
+  Key biome();
 
   void setBiome(@NotNull Key biome);
 }

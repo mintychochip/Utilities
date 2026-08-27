@@ -1,13 +1,15 @@
 package org.aincraft.common.datacomponent.item;
 
-import java.util.List;
-import java.util.Set;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.datacomponent.item.blocksattacks.DamageReduction;
 import org.aincraft.common.datacomponent.item.blocksattacks.ItemDamageFunction;
 
+import java.util.List;
+import java.util.Set;
+
 /**
- * Common contract for the {@code BlocksAttacks} data component, mirroring Paper's {@code BlocksAttacks}.
+ * Common contract for the {@code BlocksAttacks} data component, mirroring Paper's {@code
+ * BlocksAttacks}.
  */
 public interface BlocksAttacks {
 

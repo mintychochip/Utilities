@@ -2,6 +2,8 @@ package org.aincraft.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.aincraft.db.ConnectionSource.SQLConnectionSource;
+
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -9,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.Scanner;
-import org.aincraft.db.ConnectionSource.SQLConnectionSource;
 
 public final class SQLiteConnectionSource implements SQLConnectionSource {
 
@@ -40,8 +41,7 @@ public final class SQLiteConnectionSource implements SQLConnectionSource {
       Class.forName("org.sqlite.JDBC");
     } catch (ClassNotFoundException e) {
       throw new ConnectionException(
-          "SQLite driver not found on the runtime classpath; the server must provide it",
-          e);
+          "SQLite driver not found on the runtime classpath; the server must provide it", e);
     }
     HikariConfig config = new HikariConfig();
     config.setJdbcUrl("jdbc:sqlite:" + databaseFile.toAbsolutePath());

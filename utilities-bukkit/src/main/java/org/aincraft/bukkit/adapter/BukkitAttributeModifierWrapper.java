@@ -1,14 +1,15 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
 import net.kyori.adventure.key.Key;
 import org.aincraft.common.attribute.AttributeModifier;
 import org.aincraft.common.inventory.EquipmentSlot;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
 
 public class BukkitAttributeModifierWrapper implements AttributeModifier {
 
@@ -18,9 +19,10 @@ public class BukkitAttributeModifierWrapper implements AttributeModifier {
   public BukkitAttributeModifierWrapper(@NotNull org.bukkit.attribute.AttributeModifier modifier) {
     this.modifier = Objects.requireNonNull(modifier, "modifier cannot be null");
     NamespacedKey nKey = modifier.getKey();
-    this.key = nKey != null
-        ? Key.key(nKey.getNamespace(), nKey.getKey())
-        : Key.key("minecraft", modifier.getName().toLowerCase(Locale.ROOT));
+    this.key =
+        nKey != null
+            ? Key.key(nKey.getNamespace(), nKey.getKey())
+            : Key.key("minecraft", modifier.getName().toLowerCase(Locale.ROOT));
   }
 
   public @NotNull org.bukkit.attribute.AttributeModifier getBukkitAttributeModifier() {
@@ -84,6 +86,14 @@ public class BukkitAttributeModifierWrapper implements AttributeModifier {
 
   @Override
   public String toString() {
-    return "BukkitAttributeModifierWrapper{key=" + key + ", id=" + id() + ", name=" + name() + ", amount=" + amount() + "}";
+    return "BukkitAttributeModifierWrapper{key="
+        + key
+        + ", id="
+        + id()
+        + ", name="
+        + name()
+        + ", amount="
+        + amount()
+        + "}";
   }
 }

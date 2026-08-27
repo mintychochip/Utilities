@@ -1,8 +1,9 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Objects;
 import org.aincraft.common.location.BoundingBox;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitBoundingBoxWrapper implements BoundingBox {
 
@@ -53,16 +54,27 @@ public class BukkitBoundingBoxWrapper implements BoundingBox {
 
   @Override
   public boolean intersects(@NotNull BoundingBox other) {
-    return minX() <= other.maxX() && maxX() >= other.minX()
-        && minY() <= other.maxY() && maxY() >= other.minY()
-        && minZ() <= other.maxZ() && maxZ() >= other.minZ();
+    return minX() <= other.maxX()
+        && maxX() >= other.minX()
+        && minY() <= other.maxY()
+        && maxY() >= other.minY()
+        && minZ() <= other.maxZ()
+        && maxZ() >= other.minZ();
   }
+
   @Override
-  public @NotNull BoundingBox expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ) {
+  public @NotNull BoundingBox expand(
+      double negativeX,
+      double negativeY,
+      double negativeZ,
+      double positiveX,
+      double positiveY,
+      double positiveZ) {
     org.bukkit.util.BoundingBox expanded = boundingBox.clone();
     expanded.expand(negativeX, negativeY, negativeZ, positiveX, positiveY, positiveZ);
     return new BukkitBoundingBoxWrapper(expanded);
   }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -82,6 +94,18 @@ public class BukkitBoundingBoxWrapper implements BoundingBox {
 
   @Override
   public String toString() {
-    return "BukkitBoundingBoxWrapper{" + minX() + "," + minY() + "," + minZ() + " -> " + maxX() + "," + maxY() + "," + maxZ() + "}";
+    return "BukkitBoundingBoxWrapper{"
+        + minX()
+        + ","
+        + minY()
+        + ","
+        + minZ()
+        + " -> "
+        + maxX()
+        + ","
+        + maxY()
+        + ","
+        + maxZ()
+        + "}";
   }
 }

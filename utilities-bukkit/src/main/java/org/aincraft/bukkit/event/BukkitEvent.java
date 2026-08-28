@@ -1,7 +1,8 @@
 package org.aincraft.bukkit.event;
 
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /** Utility-bus envelope for a live Bukkit event. */
 public class BukkitEvent<E extends org.bukkit.event.Event> implements org.aincraft.api.event.Event {

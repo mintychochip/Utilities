@@ -1,11 +1,12 @@
 package org.aincraft.bukkit.event;
 
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /** Bukkit event envelope that forwards utility cancellation to the live source event. */
-public final class BukkitCancellableEvent<E extends org.bukkit.event.Event>
-    extends BukkitEvent<E> implements org.aincraft.api.event.Cancellable {
+public final class BukkitCancellableEvent<E extends org.bukkit.event.Event> extends BukkitEvent<E>
+    implements org.aincraft.api.event.Cancellable {
   private final org.bukkit.event.Cancellable cancellable;
 
   /** Creates a cancellable envelope from a Bukkit cancellable event. */

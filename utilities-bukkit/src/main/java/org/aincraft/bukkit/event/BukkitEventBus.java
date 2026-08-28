@@ -1,12 +1,5 @@
 package org.aincraft.bukkit.event;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import org.aincraft.api.event.Event;
 import org.aincraft.api.event.EventBus;
 import org.aincraft.api.event.EventListener;
@@ -19,6 +12,14 @@ import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 /** Bridges explicitly registered Bukkit events into a platform-neutral event bus. */
 public final class BukkitEventBus implements EventBus, AutoCloseable {
@@ -49,10 +50,9 @@ public final class BukkitEventBus implements EventBus, AutoCloseable {
   }
 
   /** Registers a Bukkit event at the requested Bukkit capture priority. */
-  public synchronized <E extends org.bukkit.event.Event> @NotNull BukkitEventRegistration<E>
-      registerBukkitEvent(
-          @NotNull Class<E> eventType,
-          @NotNull org.bukkit.event.EventPriority capturePriority) {
+  public synchronized <E extends org.bukkit.event.Event>
+      @NotNull BukkitEventRegistration<E> registerBukkitEvent(
+          @NotNull Class<E> eventType, @NotNull org.bukkit.event.EventPriority capturePriority) {
     Objects.requireNonNull(eventType, "eventType");
     Objects.requireNonNull(capturePriority, "capturePriority");
     if (closed) {
@@ -93,8 +93,7 @@ public final class BukkitEventBus implements EventBus, AutoCloseable {
 
   /** Subscribes to one Bukkit event type using normal utility-bus priority. */
   public <E extends org.bukkit.event.Event> @NotNull Subscription subscribeBukkitEvent(
-      @NotNull Class<E> eventType,
-      @NotNull EventListener<? super BukkitEvent<E>> listener) {
+      @NotNull Class<E> eventType, @NotNull EventListener<? super BukkitEvent<E>> listener) {
     return subscribeBukkitEvent(eventType, EventPriority.NORMAL, false, null, listener);
   }
 

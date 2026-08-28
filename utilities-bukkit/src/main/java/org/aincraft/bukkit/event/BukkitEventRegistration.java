@@ -1,10 +1,11 @@
 package org.aincraft.bukkit.event;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Handle for one event type registered with Bukkit by a {@link BukkitEventBus}. */
 public final class BukkitEventRegistration<E extends org.bukkit.event.Event>

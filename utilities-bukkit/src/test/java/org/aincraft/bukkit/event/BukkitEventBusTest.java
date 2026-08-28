@@ -17,26 +17,27 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.CompletableFuture;
 import org.aincraft.api.event.Cancellable;
 import org.aincraft.api.event.EventBus;
-import org.aincraft.api.event.EventPriority;
 import org.aincraft.api.event.EventListener;
+import org.aincraft.api.event.EventPriority;
 import org.aincraft.api.event.Subscription;
 import org.aincraft.event.EventBuses;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
-import org.bukkit.plugin.EventExecutor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 class BukkitEventBusTest {
   private final Plugin plugin = mock(Plugin.class);
@@ -82,8 +83,7 @@ class BukkitEventBusTest {
           ((Cancellable) event).setCancelled(true);
           calls.add("cancel");
         });
-    delegate.subscribe(
-        BukkitEvent.class, EventPriority.HIGH, true, event -> calls.add("ignored"));
+    delegate.subscribe(BukkitEvent.class, EventPriority.HIGH, true, event -> calls.add("ignored"));
     bus.registerBukkitEvent(TestCancellableEvent.class);
 
     EventExecutor executor = captureExecutor(TestCancellableEvent.class, EventPriority.LOWEST);
@@ -196,8 +196,7 @@ class BukkitEventBusTest {
     }
     assertEquals(0, delegate.postCalls);
     assertEquals(0, delegate.subscribeCalls);
-    assertThrows(
-        IllegalStateException.class, () -> bus.registerBukkitEvent(TestEvent.class));
+    assertThrows(IllegalStateException.class, () -> bus.registerBukkitEvent(TestEvent.class));
   }
 
   @Test

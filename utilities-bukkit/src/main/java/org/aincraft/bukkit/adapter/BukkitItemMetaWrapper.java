@@ -9,6 +9,8 @@ import org.aincraft.api.domain.inventory.DataComponentType;
 import org.aincraft.api.domain.inventory.ItemFlag;
 import org.aincraft.api.domain.inventory.ItemMeta;
 import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
+import org.aincraft.bukkit.persistence.BukkitPersistentDataContainer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -423,6 +425,11 @@ public class BukkitItemMetaWrapper implements ItemMeta {
         java.util.Arrays.stream(flags)
             .map(BukkitItemMetaWrapper::toBukkit)
             .toArray(org.bukkit.inventory.ItemFlag[]::new));
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    return new BukkitPersistentDataContainer(meta.getPersistentDataContainer());
   }
 
   private static ItemFlag adapt(@NotNull org.bukkit.inventory.ItemFlag flag) {

@@ -5,7 +5,9 @@ import org.aincraft.api.domain.entity.Entity;
 import org.aincraft.api.domain.location.BoundingBox;
 import org.aincraft.api.domain.location.Location;
 import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
 import org.aincraft.api.domain.world.World;
+import org.aincraft.minestom.persistence.MinestomPersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -257,5 +259,10 @@ public class MinestomEntityWrapper implements Entity {
   public void customName(
       @org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component name) {
     entity.setCustomName(name);
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    return new MinestomPersistentDataContainer(entity.tagHandler());
   }
 }

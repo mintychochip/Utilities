@@ -1,7 +1,10 @@
 package org.aincraft.minestom.adapter;
 
+import org.aincraft.api.Capability;
+import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.block.BlockState;
 import org.aincraft.api.domain.block.TileBlockState;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
 import org.aincraft.api.domain.world.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,5 +72,10 @@ public final class MinestomTileBlockStateWrapper implements TileBlockState {
   @Override
   public boolean isPlaced() {
     return instance.getBlock(x, y, z) != null;
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
   }
 }

@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.aincraft.api.Capability;
 import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,32 @@ public interface ItemStack {
   int maxStackSize();
 
   boolean editMeta(@NotNull java.util.function.Consumer<ItemMeta> consumer);
+
+  /**
+   * Edits the persistent data on this item's {@link ItemMeta}.
+   *
+   * @param consumer the consumer to operate on the persistent data container
+   * @return true if the item had meta and the edit was applied
+   */
+  default boolean editPersistentData(
+      @NotNull java.util.function.Consumer<PersistentDataContainer> consumer) {
+    java.util.Objects.requireNonNull(consumer, "consumer cannot be null");
+    return editMeta(meta -> consumer.accept(meta.persistentData()));
+  }
+
+  /**
+   * Returns the persistent data container for this item's meta.
+   *
+   * @throws UnsupportedCapabilityException if this item has no meta
+   */
+  @NotNull
+  default PersistentDataContainer persistentData() {
+    ItemMeta meta = meta();
+    if (meta == null) {
+      throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
+    }
+    return meta.persistentData();
+  }
 
   @NotNull
   ItemStack asOne();

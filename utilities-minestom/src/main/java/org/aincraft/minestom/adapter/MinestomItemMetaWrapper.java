@@ -14,6 +14,8 @@ import org.aincraft.api.domain.inventory.DamageableItemMeta;
 import org.aincraft.api.domain.inventory.DataComponentType;
 import org.aincraft.api.domain.inventory.EquipmentSlot;
 import org.aincraft.api.domain.inventory.ItemFlag;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
+import org.aincraft.minestom.persistence.MinestomPersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -491,5 +493,10 @@ public final class MinestomItemMetaWrapper implements DamageableItemMeta {
     TooltipDisplay display = tooltipDisplay();
     for (ItemFlag flag : flags) display = display.without(hiddenComponent(flag));
     replace(owner.getMinestomItemStack().with(DataComponents.TOOLTIP_DISPLAY, display));
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    return new MinestomPersistentDataContainer(owner::getMinestomItemStack, owner::replace);
   }
 }

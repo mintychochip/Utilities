@@ -1,8 +1,12 @@
 package org.aincraft.bukkit.adapter;
 
+import org.aincraft.api.Capability;
+import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.block.BlockState;
 import org.aincraft.api.domain.block.TileBlockState;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
 import org.aincraft.api.domain.world.Block;
+import org.aincraft.bukkit.persistence.BukkitPersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -52,5 +56,13 @@ public final class BukkitTileBlockStateWrapper implements TileBlockState {
   @Override
   public boolean isPlaced() {
     return state.isPlaced();
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    if (!(state instanceof org.bukkit.block.TileState tileState)) {
+      throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
+    }
+    return new BukkitPersistentDataContainer(tileState.getPersistentDataContainer());
   }
 }

@@ -1,10 +1,16 @@
 package org.aincraft.bukkit.adapter;
 
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.aincraft.api.Capability;
+import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.effect.Enchantment;
 import org.aincraft.api.domain.inventory.ItemMeta;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.ItemType;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
+import org.aincraft.api.domain.persistence.PersistentDataType;
+import org.aincraft.bukkit.persistence.BukkitPersistentDataContainer;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class BukkitItemStackWrapper implements ItemStack {
@@ -165,6 +172,106 @@ public class BukkitItemStackWrapper implements ItemStack {
       item.removeEnchantment(bEnch);
     }
     return level;
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+    if (meta == null) {
+      throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
+    }
+    return new BukkitItemStackDataContainer(item);
+  }
+
+  /**
+   * A PDC view that re-applies the Bukkit ItemMeta after each write so the wrapped ItemStack is
+   * actually mutated (Bukkit ItemMeta is a copy, not a live view).
+   */
+  private static final class BukkitItemStackDataContainer implements PersistentDataContainer {
+    private final org.bukkit.inventory.ItemStack item;
+
+    BukkitItemStackDataContainer(org.bukkit.inventory.ItemStack item) {
+      this.item = item;
+    }
+
+    private @NotNull BukkitPersistentDataContainer current() {
+      org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+      if (meta == null) {
+        throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
+      }
+      return new BukkitPersistentDataContainer(meta.getPersistentDataContainer());
+    }
+
+    private void apply(@NotNull org.bukkit.inventory.meta.ItemMeta meta) {
+      item.setItemMeta(meta);
+    }
+
+    @Override
+    public <T> boolean has(@NotNull Key key, @NotNull PersistentDataType<T> type) {
+      return current().has(key, type);
+    }
+
+    @Override
+    public boolean has(@NotNull Key key) {
+      return current().has(key);
+    }
+
+    @Override
+    public <T> @Nullable T get(@NotNull Key key, @NotNull PersistentDataType<T> type) {
+      return current().get(key, type);
+    }
+
+    @Override
+    public <T> @NotNull T getOrDefault(
+        @NotNull Key key, @NotNull PersistentDataType<T> type, @NotNull T defaultValue) {
+      T value = get(key, type);
+      return value != null ? value : defaultValue;
+    }
+
+    @Override
+    public <T> void set(@NotNull Key key, @NotNull PersistentDataType<T> type, @NotNull T value) {
+      org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+      if (meta == null) {
+        throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
+      }
+      new BukkitPersistentDataContainer(meta.getPersistentDataContainer()).set(key, type, value);
+      apply(meta);
+    }
+
+    @Override
+    public void remove(@NotNull Key key) {
+      org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+      if (meta == null) {
+        throw new UnsupportedCapabilityException(Capability.PERSISTENT_DATA);
+      }
+      new BukkitPersistentDataContainer(meta.getPersistentDataContainer()).remove(key);
+      apply(meta);
+    }
+
+    @Override
+    public @NotNull Set<Key> keys() {
+      return current().keys();
+    }
+
+    @Override
+    public boolean isEmpty() {
+      return current().isEmpty();
+    }
+
+    @Override
+    public int size() {
+      return current().size();
+    }
+
+    @Override
+    public void copyTo(@NotNull PersistentDataContainer other) {
+      current().copyTo(other);
+    }
+
+    @Override
+    public void copyTo(@NotNull PersistentDataContainer other, boolean replace) {
+      current().copyTo(other, replace);
+    }
   }
 
   @Override

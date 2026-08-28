@@ -6,6 +6,7 @@ import org.aincraft.api.Capability;
 import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.attribute.AttributeModifier;
 import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.persistence.PersistentDataHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ItemMeta {
+public interface ItemMeta extends PersistentDataHolder {
 
   @Nullable
   Component displayName();

@@ -7,6 +7,7 @@ import net.kyori.adventure.key.Keyed;
 import org.aincraft.api.domain.location.BoundingBox;
 import org.aincraft.api.domain.location.Location;
 import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.persistence.PersistentDataHolder;
 import org.aincraft.api.domain.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-public interface Entity extends Keyed, Identified, Nameable {
+public interface Entity extends Keyed, Identified, Nameable, PersistentDataHolder {
 
   @NotNull
   UUID uniqueId();

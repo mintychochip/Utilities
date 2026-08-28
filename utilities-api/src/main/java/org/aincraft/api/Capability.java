@@ -58,6 +58,7 @@ public interface Capability {
   @NotNull Capability POTION_EFFECT_ATTRIBUTES = of("potion_effect_attributes");
   @NotNull Capability INVENTORY_VIEW = of("inventory_view");
   @NotNull Capability ITEM_DATA_COMPONENT = of("item_data_component");
+  @NotNull Capability PERSISTENT_DATA = of("persistent_data");
 
   static @NotNull Capability of(@NotNull String name) {
     return new Capability() {

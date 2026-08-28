@@ -7,7 +7,9 @@ import org.aincraft.api.domain.entity.Entity;
 import org.aincraft.api.domain.location.BoundingBox;
 import org.aincraft.api.domain.location.Location;
 import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.persistence.PersistentDataContainer;
 import org.aincraft.api.domain.world.World;
+import org.aincraft.bukkit.persistence.BukkitPersistentDataContainer;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -220,6 +222,11 @@ public class BukkitEntityWrapper implements Entity {
   @Override
   public void remove() {
     entity.remove();
+  }
+
+  @Override
+  public @NotNull PersistentDataContainer persistentData() {
+    return new BukkitPersistentDataContainer(entity.getPersistentDataContainer());
   }
 
   @Override

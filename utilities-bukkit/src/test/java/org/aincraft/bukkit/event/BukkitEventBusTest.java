@@ -373,6 +373,34 @@ class BukkitEventBusTest {
   }
 
   @Test
+  void failedTypedSubscriptionRollsBackOnlyNewBukkitRegistration() {
+    RecordingEventBus delegate = new RecordingEventBus();
+    IllegalStateException failure = new IllegalStateException("delegate rejected subscription");
+    delegate.subscribeFailure = failure;
+    BukkitEventBus bus = new BukkitEventBus(plugin, delegate);
+
+    try (var handlers = mockStatic(HandlerList.class)) {
+      assertThrows(
+          IllegalStateException.class,
+          () -> bus.subscribeBukkitEvent(TestEvent.class, event -> {}));
+      Listener failedListener = captureListener(TestEvent.class, EventPriority.LOWEST);
+      handlers.verify(() -> HandlerList.unregisterAll(failedListener), times(1));
+    }
+
+    delegate.subscribeFailure = null;
+    BukkitEventRegistration<TestEvent> replacement = bus.registerBukkitEvent(TestEvent.class);
+    assertTrue(replacement.isActive());
+    verify(pluginManager, times(2))
+        .registerEvent(
+            eq(TestEvent.class),
+            any(Listener.class),
+            eq(org.bukkit.event.EventPriority.LOWEST),
+            any(EventExecutor.class),
+            eq(plugin),
+            eq(false));
+  }
+
+  @Test
   void utilityEventsUseTheInjectedDelegateAndNeverEnterBukkit() {
     RecordingEventBus delegate = new RecordingEventBus();
     BukkitEventBus bus = new BukkitEventBus(plugin, delegate);
@@ -423,6 +451,7 @@ class BukkitEventBusTest {
     private final EventBus actual = EventBuses.create();
     private int registerCalls;
     private int unregisterCalls;
+    private RuntimeException subscribeFailure;
     private int subscribeCalls;
     private int unsubscribeCalls;
     private int postCalls;
@@ -445,6 +474,9 @@ class BukkitEventBusTest {
         Executor executor,
         EventListener<? super E> listener) {
       subscribeCalls++;
+      if (subscribeFailure != null) {
+        throw subscribeFailure;
+      }
       lastEventType = eventType;
       lastPriority = priority;
       lastIgnoreCancelled = ignoreCancelled;

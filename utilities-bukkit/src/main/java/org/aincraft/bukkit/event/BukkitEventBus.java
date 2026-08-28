@@ -125,19 +125,32 @@ public final class BukkitEventBus implements EventBus, AutoCloseable {
     Objects.requireNonNull(eventType, "eventType");
     Objects.requireNonNull(priority, "priority");
     Objects.requireNonNull(listener, "listener");
-    registerBukkitEvent(eventType);
-    return delegate.subscribe(
-        BukkitEvent.class,
-        priority,
-        ignoreCancelled,
-        executor,
-        envelope -> {
-          if (eventType.isInstance(envelope.event())) {
-            @SuppressWarnings("unchecked")
-            BukkitEvent<E> typedEnvelope = (BukkitEvent<E>) envelope;
-            listener.handle(typedEnvelope);
-          }
-        });
+    boolean alreadyRegistered =
+        registrations.containsKey(eventType) && registrations.get(eventType).isActive();
+    BukkitEventRegistration<E> registration = registerBukkitEvent(eventType);
+    try {
+      return delegate.subscribe(
+          BukkitEvent.class,
+          priority,
+          ignoreCancelled,
+          executor,
+          envelope -> {
+            if (eventType.isInstance(envelope.event())) {
+              @SuppressWarnings("unchecked")
+              BukkitEvent<E> typedEnvelope = (BukkitEvent<E>) envelope;
+              listener.handle(typedEnvelope);
+            }
+          });
+    } catch (RuntimeException | Error failure) {
+      if (!alreadyRegistered) {
+        try {
+          registration.unregister();
+        } catch (RuntimeException | Error cleanupFailure) {
+          failure.addSuppressed(cleanupFailure);
+        }
+      }
+      throw failure;
+    }
   }
 
   @Override

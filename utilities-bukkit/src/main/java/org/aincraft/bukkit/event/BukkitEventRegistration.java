@@ -5,8 +5,6 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Handle for one event type registered with Bukkit by a {@link BukkitEventBus}. */
 public final class BukkitEventRegistration<E extends org.bukkit.event.Event>
@@ -14,19 +12,28 @@ public final class BukkitEventRegistration<E extends org.bukkit.event.Event>
   private final Class<E> eventType;
   private final EventPriority capturePriority;
   private final Listener listener;
+  private final Object lifecycleLock;
   private final Runnable unregisterAction;
-  private final AtomicBoolean active = new AtomicBoolean(true);
-  private final AtomicBoolean unregistering = new AtomicBoolean();
-  private final CountDownLatch cleanupComplete = new CountDownLatch(1);
+  private volatile boolean active = true;
 
   BukkitEventRegistration(
       @NotNull Class<E> eventType,
       @NotNull EventPriority capturePriority,
       @NotNull Listener listener,
       @NotNull Runnable unregisterAction) {
+    this(eventType, capturePriority, listener, new Object(), unregisterAction);
+  }
+
+  BukkitEventRegistration(
+      @NotNull Class<E> eventType,
+      @NotNull EventPriority capturePriority,
+      @NotNull Listener listener,
+      @NotNull Object lifecycleLock,
+      @NotNull Runnable unregisterAction) {
     this.eventType = Objects.requireNonNull(eventType, "eventType");
     this.capturePriority = Objects.requireNonNull(capturePriority, "capturePriority");
     this.listener = Objects.requireNonNull(listener, "listener");
+    this.lifecycleLock = Objects.requireNonNull(lifecycleLock, "lifecycleLock");
     this.unregisterAction = Objects.requireNonNull(unregisterAction, "unregisterAction");
   }
 
@@ -39,31 +46,19 @@ public final class BukkitEventRegistration<E extends org.bukkit.event.Event>
   }
 
   public boolean isActive() {
-    return active.get();
+    return active;
   }
 
   public void unregister() {
-    if (unregistering.compareAndSet(false, true)) {
+    synchronized (lifecycleLock) {
+      if (!active) {
+        return;
+      }
       try {
         unregisterAction.run();
       } finally {
-        active.set(false);
-        cleanupComplete.countDown();
+        active = false;
       }
-      return;
-    }
-
-    boolean interrupted = false;
-    while (true) {
-      try {
-        cleanupComplete.await();
-        break;
-      } catch (InterruptedException exception) {
-        interrupted = true;
-      }
-    }
-    if (interrupted) {
-      Thread.currentThread().interrupt();
     }
   }
 

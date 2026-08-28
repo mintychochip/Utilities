@@ -86,6 +86,7 @@ public final class BukkitEventBus implements EventBus, AutoCloseable {
             eventType,
             capturePriority,
             listener,
+            this,
             () -> unregisterRegistration(eventType, listener));
     registrations.put(eventType, registration);
     return registration;

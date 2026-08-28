@@ -105,7 +105,7 @@ class BukkitEventBusTest {
   }
 
   @Test
-  void typedSubscriptionRegistersOnceAndFiltersByOriginalBukkitType() {
+  void typedSubscriptionRegistersOnceAndFiltersByOriginalBukkitType() throws Exception {
     EventBus delegate = EventBuses.create();
     BukkitEventBus bus = new BukkitEventBus(plugin, delegate);
     List<TestEvent> received = new ArrayList<>();
@@ -123,8 +123,10 @@ class BukkitEventBusTest {
             eq(plugin),
             eq(false));
 
+    EventExecutor executor = captureExecutor(TestEvent.class, EventPriority.LOWEST);
+    Listener listener = captureListener(TestEvent.class, EventPriority.LOWEST);
     TestEvent matching = new TestEvent();
-    delegate.post(new BukkitEvent<>(matching, TestEvent.class));
+    executor.execute(listener, matching);
     delegate.post(new BukkitEvent<>(new OtherEvent(), OtherEvent.class));
 
     assertEquals(List.of(matching), received);
@@ -183,26 +185,36 @@ class BukkitEventBusTest {
   }
 
   @Test
-  void replacementCannotInstallBeforePreviousListenerIsRemoved() {
+  void replacementWaitsForPreviousListenerRemoval() throws Exception {
     BukkitEventBus bus = new BukkitEventBus(plugin, EventBuses.create());
     BukkitEventRegistration<TestEvent> first = bus.registerBukkitEvent(TestEvent.class);
     Listener listener = captureListener(TestEvent.class, EventPriority.LOWEST);
-    AtomicReference<BukkitEventRegistration<TestEvent>> observed = new AtomicReference<>();
+    CountDownLatch replacementStarted = new CountDownLatch(1);
+    CountDownLatch replacementFinished = new CountDownLatch(1);
+    AtomicReference<BukkitEventRegistration<TestEvent>> replacement = new AtomicReference<>();
 
     try (var handlers = mockStatic(HandlerList.class)) {
       handlers
           .when(() -> HandlerList.unregisterAll(listener))
           .thenAnswer(
               invocation -> {
-                observed.set(bus.registerBukkitEvent(TestEvent.class));
+                Thread replacementThread =
+                    new Thread(
+                        () -> {
+                          replacementStarted.countDown();
+                          replacement.set(bus.registerBukkitEvent(TestEvent.class));
+                          replacementFinished.countDown();
+                        });
+                replacementThread.start();
+                assertTrue(replacementStarted.await(1, TimeUnit.SECONDS));
+                assertFalse(replacementFinished.await(100, TimeUnit.MILLISECONDS));
                 return null;
               });
       first.unregister();
     }
 
-    assertSame(first, observed.get());
-    BukkitEventRegistration<TestEvent> replacement = bus.registerBukkitEvent(TestEvent.class);
-    assertNotSame(first, replacement);
+    assertTrue(replacementFinished.await(1, TimeUnit.SECONDS));
+    assertNotSame(first, replacement.get());
     verify(pluginManager, times(2))
         .registerEvent(
             eq(TestEvent.class),
@@ -365,10 +377,28 @@ class BukkitEventBusTest {
     RecordingEventBus delegate = new RecordingEventBus();
     BukkitEventBus bus = new BukkitEventBus(plugin, delegate);
     UtilityEvent utilityEvent = new UtilityEvent();
+    Object registeredListener = new Object();
 
+    assertTrue(bus.register(registeredListener).isEmpty());
+    bus.unregister(registeredListener);
+    Subscription subscription = bus.subscribe(UtilityEvent.class, event -> {});
+    bus.unsubscribe(subscription);
     assertSame(utilityEvent, bus.post(utilityEvent));
+    assertSame(utilityEvent, bus.postAsync(utilityEvent).join());
+    Executor explicitExecutor = Runnable::run;
+    assertSame(utilityEvent, bus.postAsync(utilityEvent, explicitExecutor).join());
+
+    assertEquals(1, delegate.registerCalls);
+    assertSame(registeredListener, delegate.lastRegisteredInstance);
+    assertEquals(1, delegate.unregisterCalls);
+    assertSame(registeredListener, delegate.lastUnregisteredInstance);
+    assertEquals(1, delegate.subscribeCalls);
+    assertSame(subscription, delegate.lastSubscription);
+    assertEquals(1, delegate.unsubscribeCalls);
+    assertSame(subscription, delegate.lastUnsubscribedSubscription);
     assertEquals(1, delegate.postCalls);
-    assertEquals(0, delegate.subscribeCalls);
+    assertEquals(2, delegate.postAsyncCalls);
+    assertSame(explicitExecutor, delegate.lastAsyncExecutor);
     verifyNoInteractions(pluginManager);
   }
 
@@ -391,12 +421,20 @@ class BukkitEventBusTest {
 
   private static final class RecordingEventBus implements EventBus {
     private final EventBus actual = EventBuses.create();
-    private int postCalls;
+    private int registerCalls;
+    private int unregisterCalls;
     private int subscribeCalls;
+    private int unsubscribeCalls;
+    private int postCalls;
+    private int postAsyncCalls;
+    private Object lastRegisteredInstance;
+    private Object lastUnregisteredInstance;
+    private Subscription lastUnsubscribedSubscription;
     private Class<? extends org.aincraft.api.event.Event> lastEventType;
     private EventPriority lastPriority;
     private boolean lastIgnoreCancelled;
     private Executor lastExecutor;
+    private Executor lastAsyncExecutor;
     private Subscription lastSubscription;
 
     @Override
@@ -415,30 +453,33 @@ class BukkitEventBusTest {
       return lastSubscription;
     }
 
-    @Override
     public List<Subscription> register(Object instance) {
+      registerCalls++;
+      lastRegisteredInstance = instance;
       return actual.register(instance);
     }
 
-    @Override
     public void unregister(Object instance) {
+      unregisterCalls++;
+      lastUnregisteredInstance = instance;
       actual.unregister(instance);
     }
 
-    @Override
     public void unsubscribe(Subscription subscription) {
+      unsubscribeCalls++;
+      lastUnsubscribedSubscription = subscription;
       actual.unsubscribe(subscription);
     }
 
-    @Override
     public <E extends org.aincraft.api.event.Event> E post(E event) {
       postCalls++;
       return actual.post(event);
     }
 
-    @Override
     public <E extends org.aincraft.api.event.Event> CompletableFuture<E> postAsync(
         E event, Executor executor) {
+      postAsyncCalls++;
+      lastAsyncExecutor = executor;
       return actual.postAsync(event, executor);
     }
   }

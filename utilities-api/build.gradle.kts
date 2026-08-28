@@ -2,7 +2,6 @@ plugins {
     `java-library`
     `java-test-fixtures`
     `maven-publish`
-    alias(libs.plugins.nmcp)
 }
 
 extra["allowedAincraftPrefixes"] = listOf("org/aincraft/api/")
@@ -21,19 +20,6 @@ extra["paperFree"] = true
 
 apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
-nmcp {
-    publishAllPublicationsToCentralPortal {
-        username.set(
-            providers.gradleProperty("mavenCentralUsername")
-                .orElse(providers.environmentVariable("MAVEN_USERNAME"))
-        )
-        password.set(
-            providers.gradleProperty("mavenCentralPassword")
-                .orElse(providers.environmentVariable("MAVEN_PASSWORD"))
-        )
-        publishingType.set("AUTOMATIC")
-    }
-}
 
 dependencies {
     api(libs.annotations)

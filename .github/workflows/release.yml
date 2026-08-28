@@ -1,4 +1,4 @@
-name: Release
+name: Release verification
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - '[0-9]*.[0-9]*'
 
 jobs:
-  publish:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,13 +24,8 @@ jobs:
           VERSION="${TAG#v}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Building CalVer release version: $VERSION"
-      - name: Publish to Maven Central Portal
+      - name: Verify release build
         run: |
-          ./gradlew publishAllPublicationsToCentralPortal \
+          ./gradlew clean check \
             -Pversion="${{ steps.get_version.outputs.version }}" \
-            -PmavenCentralUsername="${{ secrets.MAVEN_USERNAME }}" \
-            -PmavenCentralPassword="${{ secrets.MAVEN_PASSWORD }}" \
             --no-daemon --stacktrace
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}

@@ -5,7 +5,6 @@ import java.util.jar.JarFile
 extensions.configure<JavaPluginExtension> {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     withSourcesJar()
-    withJavadocJar()
 }
 
 tasks.named<Test>("test") {

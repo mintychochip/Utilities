@@ -13,7 +13,6 @@ mockito = "5.14.2"
 joml = "1.10.5"
 spotless = "7.0.2"
 maven-publish-plugin = "0.34.0"
-nmcp = "1.0.0"
 shadow = "8.1.1"
 run-paper = "2.3.1"
 minestom = "2026.08.16-26.2"
@@ -38,7 +37,6 @@ minestom = { module = "net.minestom:minestom", version.ref = "minestom" }
 joml = { module = "org.joml:joml", version.ref = "joml" }
 [plugins]
 maven-publish-vanniktech = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }
-nmcp = { id = "com.gradleup.nmcp", version.ref = "nmcp" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

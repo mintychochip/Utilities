@@ -1,9 +1,23 @@
 plugins {
     `java-platform`
     `maven-publish`
+    alias(libs.plugins.nmcp)
 }
 
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
+nmcp {
+    publishAllPublicationsToCentralPortal {
+        username.set(
+            providers.gradleProperty("mavenCentralUsername")
+                .orElse(providers.environmentVariable("MAVEN_USERNAME"))
+        )
+        password.set(
+            providers.gradleProperty("mavenCentralPassword")
+                .orElse(providers.environmentVariable("MAVEN_PASSWORD"))
+        )
+        publishingType.set("AUTOMATIC")
+    }
+}
 
 dependencies {
     constraints {

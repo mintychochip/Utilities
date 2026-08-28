@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    alias(libs.plugins.nmcp)
 }
 
 extra["allowedAincraftPrefixes"] = listOf(
@@ -19,6 +20,19 @@ extra["forbiddenAincraftPrefixes"] = listOf(
 
 apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
+nmcp {
+    publishAllPublicationsToCentralPortal {
+        username.set(
+            providers.gradleProperty("mavenCentralUsername")
+                .orElse(providers.environmentVariable("MAVEN_USERNAME"))
+        )
+        password.set(
+            providers.gradleProperty("mavenCentralPassword")
+                .orElse(providers.environmentVariable("MAVEN_PASSWORD"))
+        )
+        publishingType.set("AUTOMATIC")
+    }
+}
 
 dependencies {
     api(project(":utilities-bukkit"))

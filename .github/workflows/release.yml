@@ -26,12 +26,18 @@ jobs:
         run: chmod +x gradlew
       - name: Extract CalVer version
         id: get_version
+        env:
+          MANUAL_VERSION: ${{ inputs.version }}
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             TAG="${GITHUB_REF#refs/tags/}"
             VERSION="${TAG#v}"
           else
-            VERSION="${{ inputs.version }}"
+            VERSION="$MANUAL_VERSION"
+          fi
+          if [[ ! "$VERSION" =~ ^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$ ]]; then
+            echo "Invalid CalVer version: $VERSION" >&2
+            exit 1
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Building CalVer release version: $VERSION"

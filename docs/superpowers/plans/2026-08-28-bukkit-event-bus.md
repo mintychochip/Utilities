@@ -36,7 +36,7 @@
   - `public class BukkitEvent<E extends org.bukkit.event.Event> implements org.aincraft.api.event.Event` with `BukkitEvent(E event)`, `E event()`, and `Class<E> eventType()`.
 - Package-visible constructor `BukkitEvent(E event, Class<E> eventType)` lets the bus preserve the registered source type.
 - `public final class BukkitEventRegistration<E extends org.bukkit.event.Event> implements AutoCloseable` with `Class<E> eventType()`, `org.bukkit.event.EventPriority capturePriority()`, `boolean isActive()`, `void unregister()`, and idempotent `close()`.
-- Package-visible registration constructor: `BukkitEventRegistration(Class<E>, org.bukkit.event.EventPriority, Listener, Runnable unregisterAction)`. The handle owns an `AtomicBoolean`; it invokes `unregisterAction` only after the first successful active-to-inactive transition.
+- Package-visible constructors: `BukkitEventRegistration(Class<E>, org.bukkit.event.EventPriority, Listener, Runnable unregisterAction)` for standalone handles, plus the same signature with an `Object lifecycleLock` before the callback for bus-owned handles. A handle keeps `active` true until its cleanup callback returns and serializes unregister/close calls on that lock.
 
 - [ ] **Step 1: Write failing envelope and registration tests**
 
@@ -88,7 +88,7 @@ In `BukkitEvent`, require both constructor arguments with `Objects.requireNonNul
 
 In `BukkitCancellableEvent`, call the package-visible base constructor, verify `event instanceof org.bukkit.event.Cancellable`, retain that interface reference, and implement utility `Cancellable` by direct delegation. This class must not silently support non-cancellable sources.
 
-In `BukkitEventRegistration`, store the event type, capture priority, dedicated Bukkit `Listener`, `Runnable unregisterAction`, and an `AtomicBoolean` active flag. `unregister()` must invoke the callback only on the first successful active-to-inactive transition; `close()` calls `unregister()`.
+In `BukkitEventRegistration`, store the event type, capture priority, dedicated Bukkit `Listener`, lifecycle lock, cleanup callback, and a volatile active flag. `unregister()` must hold the lifecycle lock while running the callback, set inactive only in a `finally` block after callback completion, and make repeated/concurrent calls wait for or observe the completed cleanup.
 
 - [ ] **Step 4: Run the focused test to verify it passes**
 
@@ -223,7 +223,7 @@ void typedSubscriptionRegistersOnceAndFiltersByOriginalBukkitType() throws Excep
 }
 ```
 
-Also test: forwarding preserves the exact live source instance and registered type; non-cancellable source envelopes do not implement utility `Cancellable`; explicit capture priority is passed through; duplicate registration returns the same active handle and calls `registerEvent` once; a registration failure does not leave an active map entry; individual `unregister()` and bus `close()` call `HandlerList.unregisterAll` once per dedicated listener and never affect unrelated listeners; repeated close is harmless; utility `post`/`subscribe` calls reach an injected delegate; and a delegate utility event is not sent to Bukkit's plugin manager.
+Also test: forwarding preserves the exact live source instance and registered type; non-cancellable source envelopes do not implement utility `Cancellable`; explicit capture priority is passed through; duplicate registration returns the same active handle and calls `registerEvent` once; a registration failure does not leave an active map entry; delegate subscription failure rolls back only a newly created platform registration; individual `unregister()` and bus `close()` call `HandlerList.unregisterAll` once per dedicated listener and never affect unrelated listeners; repeated close is harmless; utility `post`/`subscribe` calls reach an injected delegate; every inherited `EventBus` operation, including both `postAsync` overloads, is delegated; and a delegate utility event is not sent to Bukkit's plugin manager.
 
 Use Mockito 5 static verification in a try-with-resources `MockedStatic<HandlerList>` for cleanup assertions. Capture each dedicated `Listener`, call the registration or bus close, verify `HandlerList.unregisterAll(capturedListener)` exactly once per handle, and verify repeated cleanup does not add calls. Do not use a fallback assertion that weakens the cleanup contract.
 
@@ -248,7 +248,7 @@ Store the plugin, injected delegate, a synchronized map keyed by Bukkit event cl
 
 The executor must defensively ignore events outside `eventType`, create `BukkitCancellableEvent` when the source implements Bukkit `Cancellable`, otherwise `BukkitEvent`, and call `delegate.post(envelope)` synchronously. Do not catch or reclassify delegate exceptions.
 
-The typed convenience method must null-check first, ensure `registerBukkitEvent(eventType)` is active, and subscribe to `BukkitEvent.class` on the delegate. Its listener invokes the typed listener only when `eventType.isInstance(envelope.event())`, casting the envelope only after that predicate. Pass through utility priority, `ignoreCancelled`, and executor options. The returned subscription is the delegate subscription and therefore reports `BukkitEvent.class`.
+The typed convenience method must null-check first, determine whether the event type already has an active registration, ensure `registerBukkitEvent(eventType)` is active, and subscribe to `BukkitEvent.class` on the delegate. Its listener invokes the typed listener only when `eventType.isInstance(envelope.event())`, casting the envelope only after that predicate. Pass through utility priority, `ignoreCancelled`, and executor options. If delegate subscription setup throws and this call created the platform registration, unregister that handle, attach any cleanup failure as suppressed, and rethrow the original failure; preserve an existing registration. The returned subscription is the delegate subscription and therefore reports `BukkitEvent.class`.
 
 Implement all `EventBus` methods as direct delegate calls, including `register(Object)`, `unregister(Object)`, `unsubscribe(Subscription)`, `post`, and both `postAsync` forms. `close()` must atomically mark the bus closed, snapshot and clear the map, then unregister each dedicated registration exactly once. It must not call delegate `unregister` or otherwise tear down injected utility listeners.
 
@@ -277,6 +277,7 @@ git commit -m "feat: bridge Bukkit events to utility bus"
 - Review: `utilities-bukkit/src/test/java/org/aincraft/bukkit/event/BukkitEventEnvelopeTest.java`
 - Review: `utilities-bukkit/src/test/java/org/aincraft/bukkit/event/BukkitEventBusTest.java`
 
+- Review: `.github/workflows/release.yml`
 **Interfaces:**
 - Consumes: the complete adapter from Tasks 1–2 and the approved design spec.
 - Produces: verified, formatted, package-isolated `:utilities-bukkit` event adapter with no changes to unrelated worktree files.

@@ -1,8 +1,8 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.attribute.AttributeModifier;
-import org.aincraft.common.inventory.EquipmentSlot;
+import org.aincraft.api.domain.attribute.AttributeModifier;
+import org.aincraft.api.domain.inventory.EquipmentSlot;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,6 +70,13 @@ public class BukkitAttributeModifierWrapper implements AttributeModifier {
       case OFF_HAND -> EquipmentSlot.OFF_HAND;
       default -> null;
     };
+  }
+
+  @Override
+  public @Nullable org.aincraft.api.domain.datacomponent.item.EquipmentSlotGroup slotGroup() {
+    org.bukkit.inventory.EquipmentSlotGroup bukkitGroup = modifier.getSlotGroup();
+    if (bukkitGroup == null) return null;
+    return new BukkitEquipmentSlotGroupWrapper(bukkitGroup);
   }
 
   @Override

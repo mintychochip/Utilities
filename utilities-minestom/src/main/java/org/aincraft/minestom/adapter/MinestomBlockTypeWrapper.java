@@ -1,23 +1,29 @@
 package org.aincraft.minestom.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.block.BlockType;
+import org.aincraft.api.domain.block.BlockType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class MinestomBlockTypeWrapper implements BlockType {
+public final class MinestomBlockTypeWrapper implements BlockType {
 
+  private final net.minestom.server.instance.block.Block block;
   private final Key key;
 
   public MinestomBlockTypeWrapper(@NotNull net.minestom.server.instance.block.Block block) {
-    Objects.requireNonNull(block, "block cannot be null");
+    this.block = Objects.requireNonNull(block, "block cannot be null");
     this.key = block.key();
   }
 
   @Override
   public @NotNull Key key() {
     return key;
+  }
+
+  @Override
+  public @NotNull String translationKey() {
+    return block.translationKey();
   }
 
   @Override

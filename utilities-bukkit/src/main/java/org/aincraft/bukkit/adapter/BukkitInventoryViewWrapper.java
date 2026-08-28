@@ -2,11 +2,11 @@ package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.inventory.Inventory;
-import org.aincraft.common.inventory.InventoryType;
-import org.aincraft.common.inventory.InventoryView;
-import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.inventory.Inventory;
+import org.aincraft.api.domain.inventory.InventoryType;
+import org.aincraft.api.domain.inventory.InventoryView;
+import org.aincraft.api.domain.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

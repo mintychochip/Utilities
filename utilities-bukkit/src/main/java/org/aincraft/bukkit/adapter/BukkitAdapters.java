@@ -2,39 +2,41 @@ package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.aincraft.common.attribute.AttributeInstance;
-import org.aincraft.common.attribute.AttributeModifier;
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.block.BlockState;
-import org.aincraft.common.block.BlockType;
-import org.aincraft.common.effect.Enchantment;
-import org.aincraft.common.effect.Particle;
-import org.aincraft.common.effect.PotionEffect;
-import org.aincraft.common.effect.PotionEffectType;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.entity.EntityType;
-import org.aincraft.common.entity.LivingEntity;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.inventory.Inventory;
-import org.aincraft.common.inventory.InventoryHolder;
-import org.aincraft.common.inventory.InventoryType;
-import org.aincraft.common.inventory.InventoryView;
-import org.aincraft.common.inventory.ItemStack;
-import org.aincraft.common.inventory.ItemType;
-import org.aincraft.common.inventory.PlayerInventory;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.server.CommandSender;
-import org.aincraft.common.server.OfflinePlayer;
-import org.aincraft.common.server.Server;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.Chunk;
-import org.aincraft.common.world.GameMode;
-import org.aincraft.common.world.HeightMap;
-import org.aincraft.common.world.RayTraceResult;
-import org.aincraft.common.world.World;
-import org.aincraft.common.world.WorldBorder;
+import org.aincraft.api.domain.attribute.AttributeInstance;
+import org.aincraft.api.domain.attribute.AttributeModifier;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.block.BlockState;
+import org.aincraft.api.domain.block.BlockType;
+import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.effect.Particle;
+import org.aincraft.api.domain.effect.PotionEffect;
+import org.aincraft.api.domain.effect.PotionEffectType;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.entity.EntityType;
+import org.aincraft.api.domain.entity.LivingEntity;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.inventory.Inventory;
+import org.aincraft.api.domain.inventory.InventoryHolder;
+import org.aincraft.api.domain.inventory.InventoryType;
+import org.aincraft.api.domain.inventory.InventoryView;
+import org.aincraft.api.domain.inventory.ItemMeta;
+import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.inventory.ItemType;
+import org.aincraft.api.domain.inventory.PlayerInventory;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.server.CommandSender;
+import org.aincraft.api.domain.server.OfflinePlayer;
+import org.aincraft.api.domain.server.Server;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.Chunk;
+import org.aincraft.api.domain.world.FluidCollisionMode;
+import org.aincraft.api.domain.world.GameMode;
+import org.aincraft.api.domain.world.HeightMap;
+import org.aincraft.api.domain.world.RayTraceResult;
+import org.aincraft.api.domain.world.World;
+import org.aincraft.api.domain.world.WorldBorder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.data.BlockData;
@@ -87,6 +89,16 @@ public final class BukkitAdapters {
     }
     throw new IllegalArgumentException(
         "Cannot unwrap foreign BoundingBox implementation: " + box.getClass().getName());
+  }
+
+  public static @NotNull org.aincraft.api.domain.block.VoxelShape adapt(
+      @NotNull org.bukkit.util.VoxelShape shape) {
+    return new BukkitVoxelShapeWrapper(shape);
+  }
+
+  public static @NotNull org.aincraft.api.domain.block.TileBlockState adapt(
+      @NotNull org.bukkit.block.BlockState state) {
+    return new BukkitTileBlockStateWrapper(state);
   }
 
   public static @NotNull Block adapt(@NotNull org.bukkit.block.Block block) {
@@ -192,6 +204,19 @@ public final class BukkitAdapters {
     }
     throw new IllegalArgumentException(
         "Cannot unwrap foreign ItemStack implementation: " + item.getClass().getName());
+  }
+
+  public static @NotNull ItemMeta adapt(@NotNull org.bukkit.inventory.meta.ItemMeta meta) {
+    if (meta instanceof org.bukkit.inventory.meta.Damageable damageable) {
+      return new BukkitDamageableItemMetaWrapper(damageable);
+    }
+    return new BukkitItemMetaWrapper(meta);
+  }
+
+  public static @NotNull org.bukkit.inventory.meta.ItemMeta toBukkit(@NotNull ItemMeta meta) {
+    if (meta instanceof BukkitItemMetaWrapper wrapper) return wrapper.getBukkitItemMeta();
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign ItemMeta implementation: " + meta.getClass().getName());
   }
 
   public static @NotNull ItemType adapt(@NotNull Material material) {
@@ -324,8 +349,14 @@ public final class BukkitAdapters {
     if (blockType instanceof BukkitBlockTypeWrapper wrapper) {
       return wrapper.getBukkitMaterial();
     }
-    throw new IllegalArgumentException(
-        "Cannot unwrap foreign BlockType implementation: " + blockType.getClass().getName());
+    Material mat = Material.matchMaterial(blockType.key().asString());
+    if (mat == null) {
+      mat = Material.matchMaterial(blockType.key().value());
+    }
+    if (mat != null) {
+      return mat;
+    }
+    throw new IllegalArgumentException("Cannot resolve Material for BlockType: " + blockType.key());
   }
 
   public static @NotNull BlockState adapt(@NotNull BlockData blockData) {
@@ -342,6 +373,25 @@ public final class BukkitAdapters {
 
   public static @NotNull Key adapt(@NotNull org.bukkit.attribute.Attribute attribute) {
     return new BukkitAttributeWrapper(attribute);
+  }
+
+  public static @NotNull org.aincraft.api.domain.attribute.Attribute adaptAttribute(
+      @NotNull org.bukkit.attribute.Attribute attribute) {
+    return (org.aincraft.api.domain.attribute.Attribute) adapt(attribute);
+  }
+
+  public static @NotNull org.bukkit.attribute.Attribute toBukkit(
+      @NotNull org.aincraft.api.domain.attribute.Attribute attribute) {
+    return toBukkit(attribute.key());
+  }
+
+  public static @NotNull org.aincraft.api.domain.attribute.AttributeRegistry attributeRegistry() {
+    return new BukkitAttributeRegistry();
+  }
+
+  public static @NotNull org.aincraft.api.domain.attribute.AttributeModifierFactory
+      attributeModifierFactory() {
+    return new BukkitAttributeModifierFactory();
   }
 
   public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Key attribute) {
@@ -425,10 +475,26 @@ public final class BukkitAdapters {
     return new BukkitSoundWrapper(sound);
   }
 
+  public static @NotNull org.aincraft.api.domain.effect.Sound adaptSound(
+      @NotNull org.bukkit.Sound sound) {
+    return new BukkitSoundWrapper(sound);
+  }
+
   public static @NotNull org.bukkit.Sound toBukkit(@NotNull Sound.Type sound) {
     if (sound instanceof BukkitSoundWrapper wrapper) {
       return wrapper.getBukkitSound();
     }
+    org.bukkit.Sound bSound =
+        org.bukkit.Registry.SOUNDS.get(NamespacedKey.fromString(sound.key().asString()));
+    if (bSound == null) {
+      throw new IllegalArgumentException("Cannot resolve Sound for key: " + sound.key());
+    }
+    return bSound;
+  }
+
+  public static @NotNull org.bukkit.Sound toBukkit(
+      @NotNull org.aincraft.api.domain.effect.Sound sound) {
+    if (sound instanceof BukkitSoundWrapper wrapper) return wrapper.getBukkitSound();
     org.bukkit.Sound bSound =
         org.bukkit.Registry.SOUNDS.get(NamespacedKey.fromString(sound.key().asString()));
     if (bSound == null) {
@@ -564,13 +630,13 @@ public final class BukkitAdapters {
     return new BukkitRayTraceResultWrapper(result);
   }
 
-  public static @NotNull org.aincraft.common.entity.ProjectileSource adapt(
+  public static @NotNull org.aincraft.api.domain.entity.ProjectileSource adapt(
       @NotNull org.bukkit.projectiles.ProjectileSource source) {
     return new BukkitProjectileSourceWrapper(source);
   }
 
   public static @NotNull org.bukkit.projectiles.ProjectileSource toBukkit(
-      @NotNull org.aincraft.common.entity.ProjectileSource source) {
+      @NotNull org.aincraft.api.domain.entity.ProjectileSource source) {
     if (source instanceof BukkitProjectileSourceWrapper wrapper) {
       return wrapper.getBukkitProjectileSource();
     }
@@ -578,13 +644,13 @@ public final class BukkitAdapters {
         "Cannot unwrap foreign ProjectileSource implementation: " + source.getClass().getName());
   }
 
-  public static @NotNull org.aincraft.common.entity.Projectile adapt(
+  public static @NotNull org.aincraft.api.domain.entity.Projectile adapt(
       @NotNull org.bukkit.entity.Projectile projectile) {
     return new BukkitProjectileWrapper(projectile);
   }
 
   public static @NotNull org.bukkit.entity.Projectile toBukkit(
-      @NotNull org.aincraft.common.entity.Projectile projectile) {
+      @NotNull org.aincraft.api.domain.entity.Projectile projectile) {
     if (projectile instanceof BukkitProjectileWrapper wrapper) {
       return wrapper.getBukkitProjectile();
     }
@@ -598,5 +664,13 @@ public final class BukkitAdapters {
 
   public static @NotNull org.bukkit.HeightMap toBukkit(@NotNull HeightMap heightMap) {
     return org.bukkit.HeightMap.valueOf(heightMap.name());
+  }
+
+  public static @NotNull org.bukkit.FluidCollisionMode toBukkit(@NotNull FluidCollisionMode mode) {
+    return switch (mode) {
+      case NEVER -> org.bukkit.FluidCollisionMode.NEVER;
+      case SOURCE_ONLY -> org.bukkit.FluidCollisionMode.SOURCE_ONLY;
+      case ALWAYS -> org.bukkit.FluidCollisionMode.ALWAYS;
+    };
   }
 }

@@ -4,12 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.server.Server;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.block.BlockState;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.server.Server;
+import org.aincraft.api.domain.world.World;
+import org.aincraft.bukkit.adapter.BukkitBlockStateWrapper;
+import org.aincraft.bukkit.adapter.BukkitItemStackWrapper;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.junit.jupiter.api.Test;
 
@@ -204,5 +210,147 @@ class PaperAdaptersTest {
 
     server.broadcast(Component.text("Global Announcement"));
     assertTrue(serverBroadcast.get());
+  }
+
+  @Test
+  void testPaperWorldBorderWrapper() {
+    AtomicBoolean resetCalled = new AtomicBoolean(false);
+
+    org.bukkit.WorldBorder bBorder =
+        (org.bukkit.WorldBorder)
+            Proxy.newProxyInstance(
+                org.bukkit.WorldBorder.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.WorldBorder.class},
+                (proxy, method, args) ->
+                    switch (method.getName()) {
+                      case "reset" -> {
+                        resetCalled.set(true);
+                        yield null;
+                      }
+                      default -> null;
+                    });
+
+    // verify reset() delegates to the underlying bukkit border
+    org.aincraft.api.domain.world.WorldBorder wrapper = new PaperWorldBorderWrapper(bBorder);
+    wrapper.reset();
+    assertTrue(resetCalled.get(), "reset() should delegate to the bukkit border");
+
+    // verify PaperAdapters.adapt(WorldBorder) returns PaperWorldBorderWrapper
+    assertTrue(
+        PaperAdapters.adapt(bBorder) instanceof PaperWorldBorderWrapper,
+        "PaperAdapters.adapt(WorldBorder) should return PaperWorldBorderWrapper");
+  }
+
+  @Test
+  void testPaperBlockWrapper() {
+    AtomicBoolean replaceableCalled = new AtomicBoolean(false);
+    AtomicBoolean collidableCalled = new AtomicBoolean(false);
+    AtomicBoolean buildableCalled = new AtomicBoolean(false);
+    AtomicBoolean burnableCalled = new AtomicBoolean(false);
+    AtomicBoolean suffocatingCalled = new AtomicBoolean(false);
+    AtomicBoolean breakCalled = new AtomicBoolean(false);
+    AtomicBoolean breakWithToolCalled = new AtomicBoolean(false);
+    AtomicBoolean canPlaceCalled = new AtomicBoolean(false);
+    org.bukkit.World[] bWorldHolder = new org.bukkit.World[1];
+    BlockData bData =
+        (BlockData)
+            Proxy.newProxyInstance(
+                BlockData.class.getClassLoader(),
+                new Class<?>[] {BlockData.class},
+                (proxy, method, args) ->
+                    switch (method.getName()) {
+                      case "getMaterial" -> Material.STONE;
+                      case "getAsString" -> "minecraft:stone";
+                      case "clone" -> proxy;
+                      case "hashCode" -> 1;
+                      case "equals" -> proxy == args[0];
+                      default -> null;
+                    });
+    BlockState state = new BukkitBlockStateWrapper(bData);
+    org.bukkit.inventory.ItemStack bTool = new org.bukkit.inventory.ItemStack() {};
+    ItemStack tool = new BukkitItemStackWrapper(bTool);
+
+    org.bukkit.block.Block bBlock =
+        (org.bukkit.block.Block)
+            Proxy.newProxyInstance(
+                org.bukkit.block.Block.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.block.Block.class},
+                (proxy, method, args) ->
+                    switch (method.getName()) {
+                      case "isReplaceable" -> {
+                        replaceableCalled.set(true);
+                        yield true;
+                      }
+                      case "isCollidable" -> {
+                        collidableCalled.set(true);
+                        yield true;
+                      }
+                      case "isBuildable" -> {
+                        buildableCalled.set(true);
+                        yield true;
+                      }
+                      case "isBurnable" -> {
+                        burnableCalled.set(true);
+                        yield true;
+                      }
+                      case "isSuffocating" -> {
+                        suffocatingCalled.set(true);
+                        yield true;
+                      }
+                      case "breakNaturally" -> {
+                        if (args != null && args.length == 1) {
+                          assertSame(bTool, args[0]);
+                          breakWithToolCalled.set(true);
+                        } else {
+                          assertTrue(args == null || args.length == 0);
+                        }
+                        breakCalled.set(true);
+                        yield true;
+                      }
+                      case "canPlace" -> {
+                        assertSame(bData, args[0]);
+                        canPlaceCalled.set(true);
+                        yield true;
+                      }
+                      case "getWorld" -> bWorldHolder[0];
+                      case "hashCode" -> 1;
+                      case "equals" -> proxy == args[0];
+                      default -> null;
+                    });
+
+    org.aincraft.api.domain.world.Block block = PaperAdapters.adapt(bBlock);
+    assertTrue(block instanceof PaperBlockWrapper);
+    assertTrue(block.isReplaceable());
+    assertTrue(replaceableCalled.get());
+    assertTrue(block.isCollidable());
+    assertTrue(block.isBuildable());
+    assertTrue(block.isBurnable());
+    assertTrue(block.isSuffocating());
+    assertTrue(collidableCalled.get());
+    assertTrue(buildableCalled.get());
+    assertTrue(burnableCalled.get());
+    assertTrue(suffocatingCalled.get());
+    assertTrue(block.breakNaturally());
+    assertTrue(block.canPlace(state));
+    assertTrue(block.breakNaturally(tool));
+    assertTrue(breakCalled.get());
+    assertTrue(canPlaceCalled.get());
+    assertTrue(breakWithToolCalled.get());
+
+    org.bukkit.World bWorld =
+        (org.bukkit.World)
+            Proxy.newProxyInstance(
+                org.bukkit.World.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.World.class},
+                (proxy, method, args) ->
+                    switch (method.getName()) {
+                      case "getKey" -> NamespacedKey.minecraft("world");
+                      case "getBlockAt" -> bBlock;
+                      default -> null;
+                    });
+    bWorldHolder[0] = bWorld;
+    assertTrue(block.world() instanceof PaperWorldWrapper);
+    World world = PaperAdapters.adapt(bWorld);
+    assertTrue(world.getBlockAt(1, 2, 3) instanceof PaperBlockWrapper);
   }
 }

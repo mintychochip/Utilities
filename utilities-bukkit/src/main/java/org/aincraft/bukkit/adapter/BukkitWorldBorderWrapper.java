@@ -1,7 +1,8 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.location.Location;
-import org.aincraft.common.world.WorldBorder;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.world.World;
+import org.aincraft.api.domain.world.WorldBorder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -76,6 +77,28 @@ public class BukkitWorldBorderWrapper implements WorldBorder {
   @Override
   public void setWarningDistance(int distance) {
     worldBorder.setWarningDistance(distance);
+  }
+
+  /** Spigot exposes the equivalent animation as setSize(double, long seconds). */
+  @Override
+  public void changeSize(double newSize, long seconds) {
+    worldBorder.setSize(newSize, seconds);
+  }
+
+  /**
+   * Border reset is Paper-only. Spigot's {@code org.bukkit.WorldBorder} has no analogue; throw the
+   * capability gap.
+   */
+  @Override
+  public void reset() {
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.WORLD_BORDER_ANIMATE,
+        "Spigot's org.bukkit.WorldBorder has no reset; use utilities-paper.");
+  }
+
+  @Override
+  public @NotNull World world() {
+    return BukkitAdapters.adapt(worldBorder.getWorld());
   }
 
   @Override

@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import net.kyori.adventure.text.Component;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.entity.LivingEntity;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.inventory.EntityEquipment;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.entity.LivingEntity;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.inventory.EntityEquipment;
 import org.bukkit.Location;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;

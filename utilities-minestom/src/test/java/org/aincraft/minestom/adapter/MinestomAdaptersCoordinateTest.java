@@ -8,9 +8,9 @@ import net.minestom.server.coordinate.Vec;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.world.DimensionType;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

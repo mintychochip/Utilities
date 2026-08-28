@@ -1,7 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.inventory.Inventory;
-import org.aincraft.common.inventory.InventoryHolder;
+import org.aincraft.api.domain.inventory.Inventory;
+import org.aincraft.api.domain.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

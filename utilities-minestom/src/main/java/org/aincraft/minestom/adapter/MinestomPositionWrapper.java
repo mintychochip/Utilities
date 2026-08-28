@@ -1,7 +1,7 @@
 package org.aincraft.minestom.adapter;
 
 import net.minestom.server.coordinate.Point;
-import org.aincraft.common.location.Position;
+import org.aincraft.api.domain.location.Position;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

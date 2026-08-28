@@ -1,7 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.entity.EntityType;
+import org.aincraft.api.domain.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitEntityTypeWrapper implements EntityType {

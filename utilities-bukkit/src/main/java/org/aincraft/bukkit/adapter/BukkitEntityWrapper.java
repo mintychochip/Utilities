@@ -3,11 +3,11 @@ package org.aincraft.bukkit.adapter;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.world.World;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,6 +73,21 @@ public class BukkitEntityWrapper implements Entity {
   @Override
   public @NotNull Key type() {
     return typeKey;
+  }
+
+  @Override
+  public double height() {
+    return entity.getHeight();
+  }
+
+  @Override
+  public double width() {
+    return entity.getWidth();
+  }
+
+  @Override
+  public int entityId() {
+    return entity.getEntityId();
   }
 
   @Override

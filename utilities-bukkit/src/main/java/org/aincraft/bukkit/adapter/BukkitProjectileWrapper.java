@@ -1,7 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.entity.Projectile;
-import org.aincraft.common.entity.ProjectileSource;
+import org.aincraft.api.domain.entity.Projectile;
+import org.aincraft.api.domain.entity.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,6 +1,6 @@
 package org.aincraft.minestom.adapter;
 
-import org.aincraft.common.location.BoundingBox;
+import org.aincraft.api.domain.location.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

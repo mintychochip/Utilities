@@ -1,6 +1,6 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.location.BoundingBox;
+import org.aincraft.api.domain.location.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -54,12 +54,7 @@ public class BukkitBoundingBoxWrapper implements BoundingBox {
 
   @Override
   public boolean intersects(@NotNull BoundingBox other) {
-    return minX() <= other.maxX()
-        && maxX() >= other.minX()
-        && minY() <= other.maxY()
-        && maxY() >= other.minY()
-        && minZ() <= other.maxZ()
-        && maxZ() >= other.minZ();
+    return boundingBox.overlaps(toBukkit(other));
   }
 
   @Override
@@ -73,6 +68,49 @@ public class BukkitBoundingBoxWrapper implements BoundingBox {
     org.bukkit.util.BoundingBox expanded = boundingBox.clone();
     expanded.expand(negativeX, negativeY, negativeZ, positiveX, positiveY, positiveZ);
     return new BukkitBoundingBoxWrapper(expanded);
+  }
+
+  @Override
+  public @NotNull BoundingBox expand(
+      @NotNull org.aincraft.api.domain.block.BlockFace face, double amount) {
+    return new BukkitBoundingBoxWrapper(
+        boundingBox.clone().expand(BukkitAdapters.toBukkit(face), amount));
+  }
+
+  @Override
+  public @NotNull BoundingBox shift(double dx, double dy, double dz) {
+    return new BukkitBoundingBoxWrapper(boundingBox.clone().shift(dx, dy, dz));
+  }
+
+  @Override
+  public @NotNull BoundingBox union(@NotNull BoundingBox other) {
+    return new BukkitBoundingBoxWrapper(boundingBox.clone().union(toBukkit(other)));
+  }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable BoundingBox intersection(@NotNull BoundingBox other) {
+    if (!intersects(other)) return null;
+    return new BukkitBoundingBoxWrapper(boundingBox.clone().intersection(toBukkit(other)));
+  }
+
+  @Override
+  public @org.jetbrains.annotations.Nullable org.aincraft.api.domain.world.RayTraceResult rayTrace(
+      @NotNull org.joml.Vector3dc origin,
+      @NotNull org.joml.Vector3dc direction,
+      double maxDistance) {
+    org.bukkit.util.RayTraceResult result =
+        boundingBox.rayTrace(
+            new org.bukkit.util.Vector(origin.x(), origin.y(), origin.z()),
+            new org.bukkit.util.Vector(direction.x(), direction.y(), direction.z()),
+            maxDistance);
+    return result == null ? null : BukkitAdapters.adapt(result);
+  }
+
+  private static org.bukkit.util.BoundingBox toBukkit(@NotNull BoundingBox box) {
+    return box instanceof BukkitBoundingBoxWrapper wrapper
+        ? wrapper.getBukkitBoundingBox()
+        : new org.bukkit.util.BoundingBox(
+            box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ());
   }
 
   @Override

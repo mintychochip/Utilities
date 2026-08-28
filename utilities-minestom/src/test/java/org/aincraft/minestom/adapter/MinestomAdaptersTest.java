@@ -12,15 +12,15 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.server.network.player.PlayerConnection;
 import net.minestom.server.world.DimensionType;
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.block.BlockState;
-import org.aincraft.common.block.BlockType;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.world.Chunk;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.block.BlockState;
+import org.aincraft.api.domain.block.BlockType;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.world.Chunk;
+import org.aincraft.api.domain.world.World;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -121,7 +121,7 @@ class MinestomAdaptersTest {
     Player minestomPlayer = new Player(conn, profile);
     minestomPlayer.setInstance(instance, new Pos(0, 64, 0));
 
-    org.aincraft.common.entity.Player player = MinestomAdapters.adapt(minestomPlayer);
+    org.aincraft.api.domain.entity.Player player = MinestomAdapters.adapt(minestomPlayer);
     assertEquals("Alex", player.username());
     assertSame(minestomPlayer, MinestomAdapters.toMinestom(player));
     assertSame(minestomPlayer, MinestomAdapters.toMinestom((Entity) player));
@@ -159,7 +159,7 @@ class MinestomAdaptersTest {
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((Player) null));
     assertThrows(
         NullPointerException.class,
-        () -> MinestomAdapters.toMinestom((org.aincraft.common.entity.Player) null));
+        () -> MinestomAdapters.toMinestom((org.aincraft.api.domain.entity.Player) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adapt((Block) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.toMinestom((BlockType) null));
     assertThrows(NullPointerException.class, () -> MinestomAdapters.adaptState((Block) null));

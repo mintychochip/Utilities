@@ -7,9 +7,9 @@ import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.world.DimensionType;
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.block.BlockState;
-import org.aincraft.common.block.BlockType;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.block.BlockState;
+import org.aincraft.api.domain.block.BlockType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -76,7 +76,7 @@ class MinestomAdaptersBlockTest {
     Instance instance = new InstanceContainer(UUID.randomUUID(), DimensionType.OVERWORLD);
     instance.setBlock(1, 2, 3, Block.OAK_LOG);
 
-    org.aincraft.common.world.Block block = MinestomAdapters.adapt(instance, 1, 2, 3);
+    org.aincraft.api.domain.world.Block block = MinestomAdapters.adapt(instance, 1, 2, 3);
     assertEquals(1, block.x());
     assertEquals(2, block.y());
     assertEquals(3, block.z());
@@ -88,12 +88,12 @@ class MinestomAdaptersBlockTest {
     assertFalse(block.isLiquid());
     assertFalse(block.isPassable());
 
-    org.aincraft.common.world.Block relative = block.relative(BlockFace.UP);
+    org.aincraft.api.domain.world.Block relative = block.relative(BlockFace.UP);
     assertEquals(1, relative.x());
     assertEquals(3, relative.y());
     assertEquals(3, relative.z());
 
-    org.aincraft.common.world.Block relativeDist = block.relative(BlockFace.NORTH, 2);
+    org.aincraft.api.domain.world.Block relativeDist = block.relative(BlockFace.NORTH, 2);
     assertEquals(1, relativeDist.x());
     assertEquals(2, relativeDist.y());
     assertEquals(1, relativeDist.z());

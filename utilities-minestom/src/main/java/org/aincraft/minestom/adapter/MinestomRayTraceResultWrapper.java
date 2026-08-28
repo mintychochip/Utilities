@@ -1,26 +1,40 @@
 package org.aincraft.minestom.adapter;
 
 import net.minestom.server.coordinate.Point;
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.RayTraceResult;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class MinestomRayTraceResultWrapper implements RayTraceResult {
+public final class MinestomRayTraceResultWrapper implements RayTraceResult {
 
   private final Position hitPosition;
+  private final Block hitBlock;
+  private final BlockFace hitBlockFace;
+  private final Entity hitEntity;
 
   public MinestomRayTraceResultWrapper(@NotNull Point hitPosition) {
-    this(MinestomAdapters.adapt(hitPosition));
+    this(MinestomAdapters.adapt(hitPosition), null, null, null);
   }
 
   public MinestomRayTraceResultWrapper(@NotNull Position hitPosition) {
+    this(hitPosition, null, null, null);
+  }
+
+  public MinestomRayTraceResultWrapper(
+      @NotNull Position hitPosition,
+      @Nullable Block hitBlock,
+      @Nullable BlockFace hitBlockFace,
+      @Nullable Entity hitEntity) {
     this.hitPosition = Objects.requireNonNull(hitPosition, "hitPosition cannot be null");
+    this.hitBlock = hitBlock;
+    this.hitBlockFace = hitBlockFace;
+    this.hitEntity = hitEntity;
   }
 
   @Override
@@ -30,17 +44,17 @@ public class MinestomRayTraceResultWrapper implements RayTraceResult {
 
   @Override
   public @Nullable Block hitBlock() {
-    return null;
+    return hitBlock;
   }
 
   @Override
   public @Nullable BlockFace hitBlockFace() {
-    return null;
+    return hitBlockFace;
   }
 
   @Override
   public @Nullable Entity hitEntity() {
-    return null;
+    return hitEntity;
   }
 
   @Override

@@ -1,8 +1,8 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.identity.Identity;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.server.OfflinePlayer;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.server.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -10,7 +10,13 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/test-plugin" />
-            <option value="$PROJECT_DIR$/utilities" />
+            <option value="$PROJECT_DIR$/utilities-api" />
+            <option value="$PROJECT_DIR$/utilities-bom" />
+            <option value="$PROJECT_DIR$/utilities-bukkit" />
+            <option value="$PROJECT_DIR$/utilities-common" />
+            <option value="$PROJECT_DIR$/utilities-db-sql" />
+            <option value="$PROJECT_DIR$/utilities-minestom" />
+            <option value="$PROJECT_DIR$/utilities-paper" />
           </set>
         </option>
       </GradleProjectSettings>

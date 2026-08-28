@@ -55,15 +55,11 @@ In `utilities-bom/build.gradle.kts`:
 ```kotlin
 dependencies {
     constraints {
-        api(project(":common"))
+        api(project(":utilities-api"))
+        api(project(":utilities-common"))
         api(project(":utilities-bukkit"))
         api(project(":utilities-paper"))
         api(project(":utilities-minestom"))
-        api(project(":config"))
-        api(project(":db-core"))
-        api(project(":db-paper"))
-        api(project(":math"))
-        api(project(":registry"))
     }
 }
 ```
@@ -92,7 +88,7 @@ apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 
 dependencies {
-    api(project(":common"))
+    api(project(":utilities-common"))
     compileOnly(libs.minestom)
 
     testImplementation(libs.minestom)

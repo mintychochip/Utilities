@@ -1,28 +1,32 @@
 package org.aincraft.paper.adapter;
 
 import net.kyori.adventure.key.Key;
+import org.aincraft.api.domain.attribute.Attribute;
+import org.aincraft.api.domain.attribute.AttributeInstance;
+import org.aincraft.api.domain.attribute.AttributeModifier;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.block.BlockState;
+import org.aincraft.api.domain.block.BlockType;
+import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.effect.PotionEffectType;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.entity.LivingEntity;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.inventory.Inventory;
+import org.aincraft.api.domain.inventory.InventoryView;
+import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.inventory.ItemType;
+import org.aincraft.api.domain.inventory.PlayerInventory;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.server.CommandSender;
+import org.aincraft.api.domain.server.Server;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.Chunk;
+import org.aincraft.api.domain.world.World;
+import org.aincraft.api.domain.world.WorldBorder;
 import org.aincraft.bukkit.adapter.BukkitAdapters;
-import org.aincraft.common.attribute.AttributeInstance;
-import org.aincraft.common.attribute.AttributeModifier;
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.block.BlockState;
-import org.aincraft.common.block.BlockType;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.entity.LivingEntity;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.inventory.Inventory;
-import org.aincraft.common.inventory.ItemStack;
-import org.aincraft.common.inventory.ItemType;
-import org.aincraft.common.inventory.PlayerInventory;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.server.CommandSender;
-import org.aincraft.common.server.Server;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.Chunk;
-import org.aincraft.common.world.World;
-import org.aincraft.common.world.WorldBorder;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
@@ -69,7 +73,7 @@ public final class PaperAdapters {
   }
 
   public static @NotNull Block adapt(@NotNull org.bukkit.block.Block block) {
-    return BukkitAdapters.adapt(block);
+    return new PaperBlockWrapper(block);
   }
 
   public static @NotNull org.bukkit.block.Block toBukkit(@NotNull Block block) {
@@ -89,16 +93,29 @@ public final class PaperAdapters {
   }
 
   public static @NotNull WorldBorder adapt(@NotNull org.bukkit.WorldBorder worldBorder) {
-    return BukkitAdapters.adapt(worldBorder);
+    return new PaperWorldBorderWrapper(worldBorder);
   }
 
   public static @NotNull org.bukkit.WorldBorder toBukkit(@NotNull WorldBorder worldBorder) {
     return BukkitAdapters.toBukkit(worldBorder);
   }
 
+  public static @NotNull org.aincraft.api.domain.entity.EntityType adapt(
+      @NotNull org.bukkit.entity.EntityType entityType) {
+    return new org.aincraft.bukkit.adapter.BukkitEntityTypeWrapper(entityType);
+  }
+
+  public static @NotNull org.bukkit.entity.EntityType toBukkit(
+      @NotNull org.aincraft.api.domain.entity.EntityType entityType) {
+    return BukkitAdapters.toBukkit(entityType);
+  }
+
   public static @NotNull Entity adapt(@NotNull org.bukkit.entity.Entity entity) {
     if (entity instanceof org.bukkit.entity.Player player) {
       return adapt(player);
+    }
+    if (entity instanceof org.bukkit.entity.LivingEntity living) {
+      return adapt(living);
     }
     return BukkitAdapters.adapt(entity);
   }
@@ -111,7 +128,7 @@ public final class PaperAdapters {
     if (entity instanceof org.bukkit.entity.Player player) {
       return adapt(player);
     }
-    return BukkitAdapters.adapt(entity);
+    return new PaperLivingEntityWrapper(entity);
   }
 
   public static @NotNull org.bukkit.entity.LivingEntity toBukkit(@NotNull LivingEntity entity) {
@@ -123,7 +140,19 @@ public final class PaperAdapters {
   }
 
   public static @NotNull ItemStack adapt(@NotNull org.bukkit.inventory.ItemStack item) {
-    return BukkitAdapters.adapt(item);
+    return new PaperItemStackWrapper(item);
+  }
+
+  public static @NotNull org.aincraft.api.domain.inventory.ItemMeta adapt(
+      @NotNull org.bukkit.inventory.meta.ItemMeta meta) {
+    return meta instanceof org.bukkit.inventory.meta.Damageable damageable
+        ? new PaperDamageableItemMetaWrapper(damageable)
+        : new PaperItemMetaWrapper(meta);
+  }
+
+  public static @NotNull org.bukkit.inventory.meta.ItemMeta toBukkit(
+      @NotNull org.aincraft.api.domain.inventory.ItemMeta meta) {
+    return BukkitAdapters.toBukkit(meta);
   }
 
   public static @NotNull org.bukkit.inventory.ItemStack toBukkit(@NotNull ItemStack item) {
@@ -138,8 +167,25 @@ public final class PaperAdapters {
     return BukkitAdapters.toBukkit(itemType);
   }
 
+  public static @NotNull Enchantment adapt(
+      @NotNull org.bukkit.enchantments.Enchantment enchantment) {
+    return new PaperEnchantmentWrapper(enchantment);
+  }
+
+  public static @NotNull PotionEffectType adapt(@NotNull org.bukkit.potion.PotionEffectType type) {
+    return new PaperPotionEffectTypeWrapper(type);
+  }
+
+  public static @NotNull org.aincraft.api.domain.effect.PotionEffect adapt(
+      @NotNull org.bukkit.potion.PotionEffect effect) {
+    return new PaperPotionEffectWrapper(effect);
+  }
+
   public static @NotNull Inventory adapt(@NotNull org.bukkit.inventory.Inventory inventory) {
-    return BukkitAdapters.adapt(inventory);
+    if (inventory instanceof org.bukkit.inventory.PlayerInventory playerInventory) {
+      return adapt(playerInventory);
+    }
+    return new PaperInventoryWrapper(inventory);
   }
 
   public static @NotNull org.bukkit.inventory.Inventory toBukkit(@NotNull Inventory inventory) {
@@ -148,12 +194,16 @@ public final class PaperAdapters {
 
   public static @NotNull PlayerInventory adapt(
       @NotNull org.bukkit.inventory.PlayerInventory inventory) {
-    return BukkitAdapters.adapt(inventory);
+    return new PaperPlayerInventoryWrapper(inventory);
   }
 
   public static @NotNull org.bukkit.inventory.PlayerInventory toBukkit(
       @NotNull PlayerInventory inventory) {
     return BukkitAdapters.toBukkit(inventory);
+  }
+
+  public static @NotNull InventoryView adapt(@NotNull org.bukkit.inventory.InventoryView view) {
+    return new PaperInventoryViewWrapper(view);
   }
 
   public static @NotNull org.bukkit.Server toBukkit(@NotNull Server server) {
@@ -169,6 +219,16 @@ public final class PaperAdapters {
 
   public static @NotNull org.bukkit.command.CommandSender toBukkit(@NotNull CommandSender sender) {
     return BukkitAdapters.toBukkit(sender);
+  }
+
+  public static @NotNull org.aincraft.api.domain.effect.Sound adaptSound(
+      @NotNull org.bukkit.Sound sound) {
+    return BukkitAdapters.adaptSound(sound);
+  }
+
+  public static @NotNull org.bukkit.Sound toBukkit(
+      @NotNull org.aincraft.api.domain.effect.Sound sound) {
+    return BukkitAdapters.toBukkit(sound);
   }
 
   public static @NotNull BlockFace adapt(@NotNull org.bukkit.block.BlockFace face) {
@@ -188,7 +248,17 @@ public final class PaperAdapters {
   }
 
   public static @NotNull BlockState adapt(@NotNull BlockData blockData) {
-    return BukkitAdapters.adapt(blockData);
+    return new PaperBlockStateWrapper(blockData);
+  }
+
+  public static @NotNull org.aincraft.api.domain.effect.Particle adapt(
+      @NotNull org.bukkit.Particle particle) {
+    return BukkitAdapters.adapt(particle);
+  }
+
+  public static @NotNull org.bukkit.Particle toBukkit(
+      @NotNull org.aincraft.api.domain.effect.Particle particle) {
+    return BukkitAdapters.toBukkit(particle);
   }
 
   public static @NotNull BlockData toBukkit(@NotNull BlockState blockState) {
@@ -199,7 +269,16 @@ public final class PaperAdapters {
     return BukkitAdapters.adapt(attribute);
   }
 
+  public static @NotNull Attribute adaptAttribute(
+      @NotNull org.bukkit.attribute.Attribute attribute) {
+    return BukkitAdapters.adaptAttribute(attribute);
+  }
+
   public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Key attribute) {
+    return BukkitAdapters.toBukkit(attribute);
+  }
+
+  public static @NotNull org.bukkit.attribute.Attribute toBukkit(@NotNull Attribute attribute) {
     return BukkitAdapters.toBukkit(attribute);
   }
 

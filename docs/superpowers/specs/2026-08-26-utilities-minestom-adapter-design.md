@@ -14,7 +14,7 @@ Minestom is a 100% async, multithreaded, zero-vanilla-code server implementation
 
 1. **`utilities-minestom` Module Creation**:
    - Pure Java 25 library module applying standard build conventions (`gradle/java-conventions.gradle.kts` and `gradle/publish-conventions.gradle.kts`).
-   - Compiles against `:common` (`api(project(":common"))`) and Minestom (`compileOnly(libs.minestom)`).
+   - Compiles against `:common` (`api(project(":utilities-common"))`) and Minestom (`compileOnly(libs.minestom)`).
    - Strict platform isolation: `extra["bukkitFree"] = true` and `extra["paperFree"] = true`, preventing Bukkit/Paper classes from leaking into the classpath or codebase.
    - Strict jar packaging isolation: `extra["allowedAincraftPrefixes"] = listOf("org/aincraft/minestom/")`.
 
@@ -102,7 +102,7 @@ apply(from = rootProject.file("gradle/java-conventions.gradle.kts"))
 apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 
 dependencies {
-    api(project(":common"))
+    api(project(":utilities-common"))
     compileOnly(libs.minestom)
 
     testImplementation(libs.minestom)

@@ -8,3 +8,16 @@ commands:
   hello:
     description: Sends a greeting message.
     usage: /hello
+  testplugin:
+    description: Executes domain and module tests.
+    usage: /testplugin [all|api|common|config|adapt]
+    aliases: [tpcheck, utiltest]
+  setblock:
+    description: Sets a block in the world and inspects it via domain API.
+    usage: /setblock <position> <material>
+  spawnmob:
+    description: Spawns an entity in the world and inspects it via domain API.
+    usage: /spawnmob <type> [<position>]
+  testparticle:
+    description: Spawns particles via domain World API.
+    usage: /testparticle <particle_name> [count] [<position>]

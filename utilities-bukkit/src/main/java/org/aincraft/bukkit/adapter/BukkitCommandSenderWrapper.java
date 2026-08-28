@@ -3,7 +3,8 @@ package org.aincraft.bukkit.adapter;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.aincraft.common.server.CommandSender;
+import org.aincraft.api.domain.server.CommandSender;
+import org.aincraft.api.domain.server.Server;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -38,6 +39,11 @@ public class BukkitCommandSenderWrapper implements CommandSender {
   @Override
   public void setOp(boolean op) {
     sender.setOp(op);
+  }
+
+  @Override
+  public @NotNull Server server() {
+    return BukkitAdapters.adapt(sender.getServer());
   }
 
   @Override

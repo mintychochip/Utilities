@@ -2,7 +2,8 @@
 paper = "26.2.build.119-stable"
 spigot = "1.21.4-R0.1-SNAPSHOT"
 hikari = "5.0.1"
-mongodb = "5.2.0"
+jdbi = "3.54.0"
+flyway = "11.19.1"
 junit = "5.11.3"
 sqlite = "3.45.3.0"
 guava = "33.4.8-jre"
@@ -21,7 +22,8 @@ minestom = "2026.08.16-26.2"
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
-mongodb-sync = { module = "org.mongodb:mongodb-driver-sync", version.ref = "mongodb" }
+jdbi-core = { module = "org.jdbi:jdbi3-core", version.ref = "jdbi" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }

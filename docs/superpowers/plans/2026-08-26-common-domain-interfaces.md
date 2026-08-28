@@ -547,7 +547,7 @@ git commit -m "feat(common): implement Entity and Player domain contracts"
 ### Task 5: Full Project Verification & Zero-Bukkit-Dependency Check
 
 **Files:**
-- Modify: `utilities/build.gradle.kts` (optional dependency `api(project(":common"))` if desired, or keep independent)
+- Modify: `utilities/build.gradle.kts` (optional dependency `api(project(":utilities-common"))` if desired, or keep independent)
 
 - [ ] **Step 1: Run comprehensive tests across the whole project**
 

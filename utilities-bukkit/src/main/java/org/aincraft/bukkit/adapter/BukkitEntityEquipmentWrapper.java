@@ -1,8 +1,8 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.inventory.EntityEquipment;
-import org.aincraft.common.inventory.EquipmentSlot;
-import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.api.domain.inventory.EntityEquipment;
+import org.aincraft.api.domain.inventory.EquipmentSlot;
+import org.aincraft.api.domain.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

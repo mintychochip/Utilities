@@ -1,9 +1,9 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.Chunk;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.Chunk;
+import org.aincraft.api.domain.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -65,6 +65,21 @@ public class BukkitChunkWrapper implements Chunk {
   @Override
   public boolean unload(boolean save) {
     return chunk.unload(save);
+  }
+
+  @Override
+  public boolean isGenerated() {
+    return chunk.isGenerated();
+  }
+
+  @Override
+  public boolean isForceLoaded() {
+    return chunk.isForceLoaded();
+  }
+
+  @Override
+  public void setForceLoaded(boolean forceLoaded) {
+    chunk.setForceLoaded(forceLoaded);
   }
 
   @Override

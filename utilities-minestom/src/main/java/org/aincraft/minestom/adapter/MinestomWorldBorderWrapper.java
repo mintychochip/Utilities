@@ -3,16 +3,18 @@ package org.aincraft.minestom.adapter;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.WorldBorder;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class MinestomWorldBorderWrapper implements org.aincraft.common.world.WorldBorder {
+public final class MinestomWorldBorderWrapper implements org.aincraft.api.domain.world.WorldBorder {
 
   private final Instance instance;
   private final World world;
+  private volatile double damageBuffer;
+  private volatile double damageAmount;
 
   public MinestomWorldBorderWrapper(@NotNull Instance instance, @NotNull World world) {
     this.instance = Objects.requireNonNull(instance, "instance cannot be null");
@@ -42,19 +44,25 @@ public class MinestomWorldBorderWrapper implements org.aincraft.common.world.Wor
 
   @Override
   public double damageBuffer() {
-    return 0.0;
+    return damageBuffer;
   }
 
   @Override
-  public void setDamageBuffer(double buffer) {}
+  public void setDamageBuffer(double buffer) {
+    if (buffer < 0.0) throw new IllegalArgumentException("Damage buffer cannot be negative");
+    damageBuffer = buffer;
+  }
 
   @Override
   public double damageAmount() {
-    return 0.0;
+    return damageAmount;
   }
 
   @Override
-  public void setDamageAmount(double amount) {}
+  public void setDamageAmount(double amount) {
+    if (amount < 0.0) throw new IllegalArgumentException("Damage amount cannot be negative");
+    damageAmount = amount;
+  }
 
   @Override
   public int warningTime() {
@@ -74,6 +82,24 @@ public class MinestomWorldBorderWrapper implements org.aincraft.common.world.Wor
   @Override
   public void setWarningDistance(int distance) {
     instance.setWorldBorder(instance.getWorldBorder().withWarningDistance(distance));
+  }
+
+  @Override
+  public void changeSize(double newSize, long seconds) {
+    if (seconds < 0) throw new IllegalArgumentException("Duration cannot be negative");
+    instance.setWorldBorder(instance.getWorldBorder().withDiameter(newSize), (double) seconds);
+  }
+
+  @Override
+  public void reset() {
+    instance.setWorldBorder(WorldBorder.DEFAULT_BORDER);
+    damageBuffer = 0.0;
+    damageAmount = 0.0;
+  }
+
+  @Override
+  public @NotNull World world() {
+    return world;
   }
 
   @Override

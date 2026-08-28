@@ -23,7 +23,7 @@ With pure domain-agnostic interfaces in `:common` (`World`, `Chunk`, `Block`, `E
      - `org.aincraft:registry`
 
 2. **`utilities-bukkit` (Bukkit Platform Adapter)**:
-   - Depends on `:common` via `api(project(":common"))`.
+   - Depends on `:common` via `api(project(":utilities-common"))`.
    - Compiles against Bukkit/Spigot API (`compileOnly(libs.spigot.api)`).
    - Adventure text bridge: uses `net.kyori:adventure-text-serializer-legacy` (`LegacyComponentSerializer.legacySection()`) to bridge Adventure `Audience` calls (`sendMessage`, `sendActionBar`, `showTitle`, `playSound`) to standard Bukkit API calls on non-Paper Bukkit servers.
    - Package: `org.aincraft.bukkit.adapter`.
@@ -103,14 +103,11 @@ apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 
 dependencies {
     constraints {
-        api(project(":common"))
+        api(project(":utilities-api"))
+        api(project(":utilities-common"))
         api(project(":utilities-bukkit"))
         api(project(":utilities-paper"))
-        api(project(":config"))
-        api(project(":db-core"))
-        api(project(":db-paper"))
-        api(project(":math"))
-        api(project(":registry"))
+        api(project(":utilities-minestom"))
     }
 }
 ```

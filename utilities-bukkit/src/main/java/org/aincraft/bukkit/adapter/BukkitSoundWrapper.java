@@ -4,7 +4,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitSoundWrapper implements Sound.Type {
+public class BukkitSoundWrapper implements Sound.Type, org.aincraft.api.domain.effect.Sound {
 
   private final org.bukkit.Sound sound;
 

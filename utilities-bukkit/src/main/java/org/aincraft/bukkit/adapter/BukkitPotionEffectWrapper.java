@@ -1,7 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.effect.PotionEffect;
-import org.aincraft.common.effect.PotionEffectType;
+import org.aincraft.api.domain.effect.PotionEffect;
+import org.aincraft.api.domain.effect.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitPotionEffectWrapper implements PotionEffect {

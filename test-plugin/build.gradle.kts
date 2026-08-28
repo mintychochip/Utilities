@@ -10,12 +10,15 @@ java {
 }
 
 dependencies {
-    implementation(project(":config"))
-    implementation(project(":db-paper"))
+    implementation(platform(project(":utilities-bom")))
+    implementation(project(":utilities-api"))
+    implementation(project(":utilities-paper"))
     compileOnly(libs.paper.api)
-    testImplementation(project(":config"))
-    testImplementation(project(":db-paper"))
-    testCompileOnly(libs.paper.api)
+
+    testImplementation(project(":utilities-paper"))
+    testImplementation(project(":utilities-minestom"))
+    testImplementation(libs.minestom)
+    testImplementation(libs.paper.api)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
 }

@@ -1,7 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.effect.Particle;
+import org.aincraft.api.domain.effect.Particle;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitParticleWrapper implements Particle {

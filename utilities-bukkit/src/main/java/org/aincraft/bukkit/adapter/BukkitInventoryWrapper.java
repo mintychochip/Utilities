@@ -1,11 +1,11 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.inventory.Inventory;
-import org.aincraft.common.inventory.InventoryHolder;
-import org.aincraft.common.inventory.InventoryType;
-import org.aincraft.common.inventory.ItemStack;
-import org.aincraft.common.inventory.ItemType;
-import org.aincraft.common.location.Location;
+import org.aincraft.api.domain.inventory.Inventory;
+import org.aincraft.api.domain.inventory.InventoryHolder;
+import org.aincraft.api.domain.inventory.InventoryType;
+import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.inventory.ItemType;
+import org.aincraft.api.domain.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

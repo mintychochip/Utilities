@@ -1,10 +1,10 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.RayTraceResult;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

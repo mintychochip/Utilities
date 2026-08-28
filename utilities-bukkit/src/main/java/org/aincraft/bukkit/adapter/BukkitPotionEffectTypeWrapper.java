@@ -1,9 +1,9 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.effect.PotionEffect;
-import org.aincraft.common.effect.PotionEffectType;
-import org.aincraft.common.effect.PotionEffectTypeCategory;
+import org.aincraft.api.domain.effect.PotionEffect;
+import org.aincraft.api.domain.effect.PotionEffectType;
+import org.aincraft.api.domain.effect.PotionEffectTypeCategory;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitPotionEffectTypeWrapper implements PotionEffectType {

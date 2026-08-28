@@ -1,11 +1,12 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
+import org.aincraft.api.domain.attribute.Attribute;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class BukkitAttributeWrapper implements Key {
+public class BukkitAttributeWrapper implements Key, Attribute {
 
   private final org.bukkit.attribute.Attribute attribute;
   private final Key key;
@@ -32,6 +33,31 @@ public class BukkitAttributeWrapper implements Key {
   @Override
   public @NotNull String value() {
     return key.value();
+  }
+
+  @Override
+  public @NotNull Key key() {
+    return key;
+  }
+
+  @Override
+  public double getDefaultValue() {
+    try {
+      return ((Number) attribute.getClass().getMethod("getDefaultValue").invoke(attribute))
+          .doubleValue();
+    } catch (ReflectiveOperationException | ClassCastException ignored) {
+      return 0.0;
+    }
+  }
+
+  @Override
+  public @NotNull Sentiment getSentiment() {
+    try {
+      Object sentiment = attribute.getClass().getMethod("getSentiment").invoke(attribute);
+      return Sentiment.valueOf(String.valueOf(sentiment));
+    } catch (ReflectiveOperationException | IllegalArgumentException ignored) {
+      return Sentiment.NEUTRAL;
+    }
   }
 
   @Override

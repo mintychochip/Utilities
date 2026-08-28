@@ -1,13 +1,13 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.attribute.AttributeInstance;
-import org.aincraft.common.effect.PotionEffect;
-import org.aincraft.common.effect.PotionEffectType;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.entity.LivingEntity;
-import org.aincraft.common.inventory.EntityEquipment;
-import org.aincraft.common.location.Location;
+import org.aincraft.api.domain.attribute.AttributeInstance;
+import org.aincraft.api.domain.effect.PotionEffect;
+import org.aincraft.api.domain.effect.PotionEffectType;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.entity.LivingEntity;
+import org.aincraft.api.domain.inventory.EntityEquipment;
+import org.aincraft.api.domain.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -203,9 +203,45 @@ public class BukkitLivingEntityWrapper extends BukkitEntityWrapper implements Li
   }
 
   @Override
+  public int remainingAir() {
+    return livingEntity.getRemainingAir();
+  }
+
+  @Override
+  public void setRemainingAir(int ticks) {
+    livingEntity.setRemainingAir(ticks);
+  }
+
+  @Override
+  public boolean hasAI() {
+    return livingEntity.hasAI();
+  }
+
+  @Override
+  public void setAI(boolean hasAi) {
+    livingEntity.setAI(hasAi);
+  }
+
+  @Override
   public @Nullable AttributeInstance getAttribute(@NotNull Key attribute) {
     org.bukkit.attribute.Attribute bAttr = BukkitAdapters.toBukkit(attribute);
     org.bukkit.attribute.AttributeInstance inst = livingEntity.getAttribute(bAttr);
     return inst != null ? new BukkitAttributeInstanceWrapper(inst) : null;
+  }
+
+  @Override
+  public void registerAttribute(@NotNull org.aincraft.api.domain.attribute.Attribute attribute) {
+    try {
+      livingEntity
+          .getClass()
+          .getMethod("registerAttribute", org.bukkit.attribute.Attribute.class)
+          .invoke(livingEntity, BukkitAdapters.toBukkit(attribute.key()));
+    } catch (NoSuchMethodException e) {
+      throw new org.aincraft.api.UnsupportedCapabilityException(
+          org.aincraft.api.Capability.ATTRIBUTE_MODIFIER,
+          "Spigot Attributable does not expose custom attribute registration.");
+    } catch (ReflectiveOperationException e) {
+      throw new IllegalStateException("Unable to register attribute", e);
+    }
   }
 }

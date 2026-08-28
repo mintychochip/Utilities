@@ -1,7 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.block.BlockType;
+import org.aincraft.api.domain.block.BlockType;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,6 +24,11 @@ public class BukkitBlockTypeWrapper implements BlockType {
   @Override
   public @NotNull Key key() {
     return key;
+  }
+
+  @Override
+  public @NotNull String translationKey() {
+    return material.getTranslationKey();
   }
 
   @Override

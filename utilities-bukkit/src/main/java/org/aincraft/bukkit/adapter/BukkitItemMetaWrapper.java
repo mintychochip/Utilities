@@ -3,12 +3,12 @@ package org.aincraft.bukkit.adapter;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.aincraft.common.attribute.AttributeModifier;
-import org.aincraft.common.effect.Enchantment;
-import org.aincraft.common.inventory.DataComponentType;
-import org.aincraft.common.inventory.ItemFlag;
-import org.aincraft.common.inventory.ItemMeta;
-import org.aincraft.common.inventory.ItemStack;
+import org.aincraft.api.domain.attribute.AttributeModifier;
+import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.inventory.DataComponentType;
+import org.aincraft.api.domain.inventory.ItemFlag;
+import org.aincraft.api.domain.inventory.ItemMeta;
+import org.aincraft.api.domain.inventory.ItemStack;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +45,24 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   public void setDisplayName(@Nullable Component name) {
     meta.setDisplayName(
         name != null ? LegacyComponentSerializer.legacySection().serialize(name) : null);
+  }
+
+  @Override
+  public @Nullable Component itemName() {
+    return meta.hasItemName()
+        ? LegacyComponentSerializer.legacySection().deserialize(meta.getItemName())
+        : null;
+  }
+
+  @Override
+  public void itemName(@Nullable Component name) {
+    meta.setItemName(
+        name != null ? LegacyComponentSerializer.legacySection().serialize(name) : null);
+  }
+
+  @Override
+  public boolean hasItemName() {
+    return meta.hasItemName();
   }
 
   @Override
@@ -223,6 +241,52 @@ public class BukkitItemMetaWrapper implements ItemMeta {
   public void removeAttributeModifier(@NotNull Key attribute, @NotNull AttributeModifier modifier) {
     meta.removeAttributeModifier(
         BukkitAdapters.toBukkit(attribute), BukkitAdapters.toBukkit(modifier));
+  }
+
+  @Override
+  public @Nullable Map<Key, Collection<AttributeModifier>> getAttributeModifiers(
+      @NotNull org.aincraft.api.domain.inventory.EquipmentSlot slot) {
+    org.bukkit.inventory.EquipmentSlot bSlot;
+    try {
+      bSlot = org.bukkit.inventory.EquipmentSlot.valueOf(slot.name());
+    } catch (IllegalArgumentException e) {
+      return Map.of();
+    }
+    com.google.common.collect.Multimap<
+            org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier>
+        bModifiers = meta.getAttributeModifiers(bSlot);
+    if (bModifiers == null) return Map.of();
+    Map<Key, Collection<AttributeModifier>> result = new HashMap<>();
+    for (org.bukkit.attribute.Attribute bAttr : bModifiers.keySet()) {
+      result.put(
+          BukkitAdapters.adapt(bAttr),
+          bModifiers.get(bAttr).stream().map(BukkitAdapters::adapt).toList());
+    }
+    return result;
+  }
+
+  @Override
+  public void setAttributeModifiers(@NotNull Map<Key, Collection<AttributeModifier>> modifiers) {
+    com.google.common.collect.Multimap<
+            org.bukkit.attribute.Attribute, org.bukkit.attribute.AttributeModifier>
+        bModifiers = com.google.common.collect.ArrayListMultimap.create();
+    for (Map.Entry<Key, Collection<AttributeModifier>> entry : modifiers.entrySet()) {
+      org.bukkit.attribute.Attribute bAttr = BukkitAdapters.toBukkit(entry.getKey());
+      for (AttributeModifier modifier : entry.getValue()) {
+        bModifiers.put(bAttr, BukkitAdapters.toBukkit(modifier));
+      }
+    }
+    meta.setAttributeModifiers(bModifiers);
+  }
+
+  @Override
+  public boolean removeAttributeModifier(
+      @NotNull org.aincraft.api.domain.inventory.EquipmentSlot slot) {
+    try {
+      return meta.removeAttributeModifier(org.bukkit.inventory.EquipmentSlot.valueOf(slot.name()));
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
   }
 
   private static <T> @Nullable PersistentDataType<?, ?> resolveDataType(

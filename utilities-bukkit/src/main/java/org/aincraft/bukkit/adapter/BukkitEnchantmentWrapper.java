@@ -1,8 +1,11 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.effect.Enchantment;
-import org.aincraft.common.inventory.ItemStack;
+import net.kyori.adventure.text.Component;
+import org.aincraft.api.Capability;
+import org.aincraft.api.UnsupportedCapabilityException;
+import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitEnchantmentWrapper implements Enchantment {
@@ -50,5 +53,16 @@ public class BukkitEnchantmentWrapper implements Enchantment {
   @Override
   public boolean canEnchant(@NotNull ItemStack item) {
     return enchantment.canEnchantItem(BukkitAdapters.toBukkit(item));
+  }
+
+  @Override
+  public @NotNull Component displayName(int level) {
+    return Component.text(enchantment.getName());
+  }
+
+  @Override
+  public @NotNull Component description() {
+    throw new UnsupportedCapabilityException(
+        Capability.ENCHANTMENT_METADATA, "Spigot Enchantment has no description metadata.");
   }
 }

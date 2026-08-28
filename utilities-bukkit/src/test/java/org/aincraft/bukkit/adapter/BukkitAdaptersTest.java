@@ -4,34 +4,39 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.aincraft.common.block.BlockFace;
-import org.aincraft.common.block.BlockState;
-import org.aincraft.common.block.BlockType;
-import org.aincraft.common.effect.Particle;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.entity.Player;
-import org.aincraft.common.inventory.DataComponentType;
-import org.aincraft.common.inventory.Inventory;
-import org.aincraft.common.inventory.ItemStack;
-import org.aincraft.common.inventory.ItemType;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.server.CommandSender;
-import org.aincraft.common.server.Server;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.Chunk;
-import org.aincraft.common.world.World;
-import org.aincraft.common.world.WorldBorder;
+import org.aincraft.api.domain.block.BlockFace;
+import org.aincraft.api.domain.block.BlockState;
+import org.aincraft.api.domain.block.BlockType;
+import org.aincraft.api.domain.effect.Particle;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.entity.LivingEntity;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.inventory.DataComponentType;
+import org.aincraft.api.domain.inventory.Inventory;
+import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.inventory.ItemType;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.server.CommandSender;
+import org.aincraft.api.domain.server.Server;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.Chunk;
+import org.aincraft.api.domain.world.HeightMap;
+import org.aincraft.api.domain.world.World;
+import org.aincraft.api.domain.world.WorldBorder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3dc;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -146,7 +151,7 @@ class BukkitAdaptersTest {
                       default -> null;
                     });
 
-    org.aincraft.common.inventory.ItemMeta meta1 = new BukkitItemMetaWrapper(bMeta);
+    org.aincraft.api.domain.inventory.ItemMeta meta1 = new BukkitItemMetaWrapper(bMeta);
     DataComponentType<String> stringType =
         createComponentType(Key.key("custom", "lore"), String.class);
     DataComponentType<Integer> intType =
@@ -170,7 +175,7 @@ class BukkitAdaptersTest {
     assertEquals(true, meta1.getData(boolType));
 
     // Verify it persists into a second wrapper created on the same Bukkit ItemMeta
-    org.aincraft.common.inventory.ItemMeta meta2 = new BukkitItemMetaWrapper(bMeta);
+    org.aincraft.api.domain.inventory.ItemMeta meta2 = new BukkitItemMetaWrapper(bMeta);
     assertTrue(meta2.hasData(stringType));
     assertEquals("Legendary Blade", meta2.getData(stringType));
     assertEquals(1001, meta2.getData(intType));
@@ -267,6 +272,83 @@ class BukkitAdaptersTest {
           public float pitch() {
             return 0;
           }
+
+          @Override
+          public long toBlockKey() {
+            return 0L;
+          }
+
+          @Override
+          public boolean isChunkLoaded() {
+            return false;
+          }
+
+          @Override
+          public @NotNull Collection<? extends Entity> nearbyEntities(double r) {
+            return List.of();
+          }
+
+          @Override
+          public @NotNull Collection<? extends Entity> nearbyEntities(
+              double x, double y, double z) {
+            return List.of();
+          }
+
+          @Override
+          public @NotNull Collection<? extends Player> nearbyPlayers(double r) {
+            return List.of();
+          }
+
+          @Override
+          public @NotNull Collection<? extends Player> nearbyPlayers(double x, double y, double z) {
+            return List.of();
+          }
+
+          @Override
+          public @NotNull Collection<? extends LivingEntity> nearbyLivingEntities(
+              double x, double y, double z) {
+            return List.of();
+          }
+
+          @Override
+          public @NotNull Vector3dc direction() {
+            return new org.joml.Vector3d(0, 0, 1);
+          }
+
+          @Override
+          public @NotNull Location withOffset(double dx, double dy, double dz) {
+            return this;
+          }
+
+          @Override
+          public @NotNull Location withOffset(@NotNull Vector3dc o) {
+            return this;
+          }
+
+          @Override
+          public @NotNull Location withRotation(float y, float p) {
+            return this;
+          }
+
+          @Override
+          public @NotNull Location toBlockLocation() {
+            return this;
+          }
+
+          @Override
+          public @NotNull Location toCenterLocation() {
+            return this;
+          }
+
+          @Override
+          public @NotNull Location toHighestLocation() {
+            return this;
+          }
+
+          @Override
+          public @NotNull Location toHighestLocation(@NotNull HeightMap h) {
+            return this;
+          }
         };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignLoc));
 
@@ -318,13 +400,13 @@ class BukkitAdaptersTest {
           }
 
           @Override
-          public org.aincraft.common.world.Environment environment() {
-            return org.aincraft.common.world.Environment.NORMAL;
+          public org.aincraft.api.domain.world.Environment environment() {
+            return org.aincraft.api.domain.world.Environment.NORMAL;
           }
 
           @Override
-          public org.aincraft.common.world.Difficulty difficulty() {
-            return org.aincraft.common.world.Difficulty.NORMAL;
+          public org.aincraft.api.domain.world.Difficulty difficulty() {
+            return org.aincraft.api.domain.world.Difficulty.NORMAL;
           }
 
           @Override
@@ -462,6 +544,64 @@ class BukkitAdaptersTest {
           public void setBiome(@NotNull Key biome) {
             throw new UnsupportedOperationException();
           }
+
+          @Override
+          public java.util.Collection<? extends org.aincraft.api.domain.inventory.ItemStack>
+              drops() {
+            return java.util.List.of();
+          }
+
+          @Override
+          public java.util.Collection<? extends org.aincraft.api.domain.inventory.ItemStack> drops(
+              org.aincraft.api.domain.inventory.ItemStack tool) {
+            return java.util.List.of();
+          }
+
+          @Override
+          public java.util.Collection<? extends org.aincraft.api.domain.inventory.ItemStack> drops(
+              org.aincraft.api.domain.inventory.ItemStack tool, Entity breaker) {
+            return java.util.List.of();
+          }
+
+          @Override
+          public boolean breakNaturally() {
+            return false;
+          }
+
+          @Override
+          public boolean breakNaturally(org.aincraft.api.domain.inventory.ItemStack tool) {
+            return false;
+          }
+
+          @Override
+          public boolean canPlace(BlockState state) {
+            return false;
+          }
+
+          @Override
+          public long blockKey() {
+            return 0L;
+          }
+
+          @Override
+          public float breakSpeed(Player player) {
+            return 1.0f;
+          }
+
+          @Override
+          public int lightFromBlocks() {
+            return 0;
+          }
+
+          @Override
+          public int lightFromSky() {
+            return 0;
+          }
+
+          @Override
+          public int lightLevel() {
+            return 0;
+          }
         };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignBlock));
 
@@ -516,6 +656,19 @@ class BukkitAdaptersTest {
           public java.util.Collection<? extends Entity> entities() {
             return java.util.List.of();
           }
+
+          @Override
+          public void setForceLoaded(boolean forceLoaded) {}
+
+          @Override
+          public boolean isForceLoaded() {
+            return false;
+          }
+
+          @Override
+          public boolean isGenerated() {
+            return true;
+          }
         };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignChunk));
 
@@ -528,6 +681,9 @@ class BukkitAdaptersTest {
 
           @Override
           public void setSize(double size) {}
+
+          @Override
+          public void changeSize(double size, long ticks) {}
 
           @Override
           public Location center() {
@@ -572,6 +728,14 @@ class BukkitAdaptersTest {
           @Override
           public boolean isInside(Location location) {
             return true;
+          }
+
+          @Override
+          public void reset() {}
+
+          @Override
+          public World world() {
+            return null;
           }
         };
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignBorder));
@@ -646,12 +810,12 @@ class BukkitAdaptersTest {
           }
 
           @Override
-          public org.aincraft.common.inventory.ItemMeta meta() {
+          public org.aincraft.api.domain.inventory.ItemMeta meta() {
             return null;
           }
 
           @Override
-          public void setMeta(org.aincraft.common.inventory.ItemMeta meta) {}
+          public void setMeta(org.aincraft.api.domain.inventory.ItemMeta meta) {}
 
           @Override
           public boolean isSimilar(ItemStack other) {
@@ -675,7 +839,7 @@ class BukkitAdaptersTest {
 
           @Override
           public boolean editMeta(
-              java.util.function.Consumer<org.aincraft.common.inventory.ItemMeta> consumer) {
+              java.util.function.Consumer<org.aincraft.api.domain.inventory.ItemMeta> consumer) {
             return false;
           }
 
@@ -704,8 +868,8 @@ class BukkitAdaptersTest {
           }
 
           @Override
-          public org.aincraft.common.inventory.InventoryType type() {
-            return org.aincraft.common.inventory.InventoryType.CHEST;
+          public org.aincraft.api.domain.inventory.InventoryType type() {
+            return org.aincraft.api.domain.inventory.InventoryType.CHEST;
           }
 
           @Override
@@ -735,7 +899,7 @@ class BukkitAdaptersTest {
           }
 
           @Override
-          public boolean contains(org.aincraft.common.inventory.ItemType type) {
+          public boolean contains(org.aincraft.api.domain.inventory.ItemType type) {
             return false;
           }
 
@@ -773,7 +937,7 @@ class BukkitAdaptersTest {
           }
 
           @Override
-          public org.aincraft.common.inventory.InventoryHolder holder() {
+          public org.aincraft.api.domain.inventory.InventoryHolder holder() {
             return null;
           }
         };
@@ -844,7 +1008,7 @@ class BukkitAdaptersTest {
           public void broadcast(net.kyori.adventure.text.Component message) {}
 
           @Override
-          public org.aincraft.common.server.ConsoleCommandSender consoleSender() {
+          public org.aincraft.api.domain.server.ConsoleCommandSender consoleSender() {
             return null;
           }
 
@@ -885,8 +1049,8 @@ class BukkitAdaptersTest {
     Key foreignAttr = Key.key("minecraft", "generic.max_health");
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreignAttr));
 
-    org.aincraft.common.attribute.AttributeModifier foreignMod =
-        new org.aincraft.common.attribute.AttributeModifier() {
+    org.aincraft.api.domain.attribute.AttributeModifier foreignMod =
+        new org.aincraft.api.domain.attribute.AttributeModifier() {
           @Override
           public Key key() {
             return Key.key("custom", "speed");
@@ -913,7 +1077,12 @@ class BukkitAdaptersTest {
           }
 
           @Override
-          public org.aincraft.common.inventory.EquipmentSlot slot() {
+          public org.aincraft.api.domain.inventory.EquipmentSlot slot() {
+            return null;
+          }
+
+          @Override
+          public org.aincraft.api.domain.datacomponent.item.EquipmentSlotGroup slotGroup() {
             return null;
           }
         };
@@ -944,11 +1113,11 @@ class BukkitAdaptersTest {
             5.0,
             org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER,
             org.bukkit.inventory.EquipmentSlotGroup.HEAD);
-    org.aincraft.common.attribute.AttributeModifier cMod = BukkitAdapters.adapt(bMod);
+    org.aincraft.api.domain.attribute.AttributeModifier cMod = BukkitAdapters.adapt(bMod);
     assertEquals(Key.key("minecraft", "test_mod"), cMod.key());
     assertEquals(5.0, cMod.amount());
     assertEquals(
-        org.aincraft.common.attribute.AttributeModifier.Operation.ADD_NUMBER, cMod.operation());
+        org.aincraft.api.domain.attribute.AttributeModifier.Operation.ADD_NUMBER, cMod.operation());
     assertEquals(bMod, BukkitAdapters.toBukkit(cMod));
   }
 }

@@ -1,8 +1,8 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.attribute.AttributeInstance;
-import org.aincraft.common.attribute.AttributeModifier;
+import org.aincraft.api.domain.attribute.AttributeInstance;
+import org.aincraft.api.domain.attribute.AttributeModifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +43,11 @@ public class BukkitAttributeInstanceWrapper implements AttributeInstance {
   }
 
   @Override
+  public double defaultValue() {
+    return instance.getDefaultValue();
+  }
+
+  @Override
   public @NotNull Collection<? extends AttributeModifier> modifiers() {
     return instance.getModifiers().stream().map(BukkitAdapters::adapt).toList();
   }
@@ -50,6 +55,22 @@ public class BukkitAttributeInstanceWrapper implements AttributeInstance {
   @Override
   public void addModifier(@NotNull AttributeModifier modifier) {
     instance.addModifier(BukkitAdapters.toBukkit(modifier));
+  }
+
+  @Override
+  public void addTransientModifier(@NotNull AttributeModifier modifier) {
+    try {
+      instance
+          .getClass()
+          .getMethod("addTransientModifier", org.bukkit.attribute.AttributeModifier.class)
+          .invoke(instance, BukkitAdapters.toBukkit(modifier));
+    } catch (NoSuchMethodException e) {
+      throw new org.aincraft.api.UnsupportedCapabilityException(
+          org.aincraft.api.Capability.ATTRIBUTE_MODIFIER,
+          "Spigot AttributeInstance has no addTransientModifier method.");
+    } catch (ReflectiveOperationException e) {
+      throw new IllegalStateException("Unable to invoke addTransientModifier", e);
+    }
   }
 
   @Override

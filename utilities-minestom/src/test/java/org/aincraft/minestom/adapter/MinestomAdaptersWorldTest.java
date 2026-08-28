@@ -7,7 +7,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.world.DimensionType;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.world.World;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

@@ -1,10 +1,10 @@
 package org.aincraft.bukkit.adapter;
 
 import net.kyori.adventure.text.Component;
-import org.aincraft.common.effect.Enchantment;
-import org.aincraft.common.inventory.ItemMeta;
-import org.aincraft.common.inventory.ItemStack;
-import org.aincraft.common.inventory.ItemType;
+import org.aincraft.api.domain.effect.Enchantment;
+import org.aincraft.api.domain.inventory.ItemMeta;
+import org.aincraft.api.domain.inventory.ItemStack;
+import org.aincraft.api.domain.inventory.ItemType;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,13 +60,18 @@ public class BukkitItemStackWrapper implements ItemStack {
   @Override
   public @Nullable ItemMeta meta() {
     org.bukkit.inventory.meta.ItemMeta bMeta = item.getItemMeta();
-    return bMeta != null ? new BukkitItemMetaWrapper(bMeta) : null;
+    return bMeta != null ? BukkitAdapters.adapt(bMeta) : null;
   }
 
   @Override
   public void setMeta(@Nullable ItemMeta meta) {
-    if (meta instanceof BukkitItemMetaWrapper wrapper) {
+    if (meta == null) {
+      item.setItemMeta(null);
+    } else if (meta instanceof BukkitItemMetaWrapper wrapper) {
       item.setItemMeta(wrapper.getBukkitItemMeta());
+    } else {
+      throw new IllegalArgumentException(
+          "ItemMeta is not backed by Bukkit: " + meta.getClass().getName());
     }
   }
 
@@ -97,12 +102,13 @@ public class BukkitItemStackWrapper implements ItemStack {
   @Override
   public boolean editMeta(@NotNull Consumer<ItemMeta> consumer) {
     org.bukkit.inventory.meta.ItemMeta bMeta = item.getItemMeta();
-    if (bMeta == null) {
-      return false;
-    }
-    BukkitItemMetaWrapper wrapper = new BukkitItemMetaWrapper(bMeta);
+    if (bMeta == null) return false;
+    ItemMeta wrapper = BukkitAdapters.adapt(bMeta);
     consumer.accept(wrapper);
-    return item.setItemMeta(bMeta);
+    return item.setItemMeta(
+        wrapper instanceof BukkitItemMetaWrapper bukkitWrapper
+            ? bukkitWrapper.getBukkitItemMeta()
+            : bMeta);
   }
 
   @Override

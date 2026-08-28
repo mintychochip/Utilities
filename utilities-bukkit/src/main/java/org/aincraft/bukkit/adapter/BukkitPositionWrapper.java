@@ -1,6 +1,6 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.location.Position;
+import org.aincraft.api.domain.location.Position;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 

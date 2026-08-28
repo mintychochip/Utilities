@@ -4,22 +4,19 @@ import net.kyori.adventure.key.Key;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.LivingEntity;
 import net.minestom.server.entity.attribute.Attribute;
-import org.aincraft.common.attribute.AttributeInstance;
-import org.aincraft.common.attribute.AttributeModifier;
-import org.aincraft.common.effect.PotionEffect;
-import org.aincraft.common.effect.PotionEffectType;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.location.Location;
+import org.aincraft.api.domain.attribute.AttributeInstance;
+import org.aincraft.api.domain.effect.PotionEffect;
+import org.aincraft.api.domain.effect.PotionEffectType;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.location.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Objects;
-import java.util.UUID;
 
 public class MinestomLivingEntityWrapper extends MinestomEntityWrapper
-    implements org.aincraft.common.entity.LivingEntity {
+    implements org.aincraft.api.domain.entity.LivingEntity {
 
   private final LivingEntity livingEntity;
 
@@ -48,66 +45,39 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper
   }
 
   @Override
+  public boolean isDead() {
+    return livingEntity.isDead();
+  }
+
+  @Override
   public void damage(double amount) {
-    throw new UnsupportedOperationException();
+    livingEntity.damage(
+        net.minestom.server.entity.damage.Damage.fromPosition(
+            net.minestom.server.registry.RegistryKey.unsafeOf(
+                net.kyori.adventure.key.Key.key("minecraft", "generic")),
+            livingEntity.getPosition(),
+            (float) amount));
   }
 
   @Override
   public void damage(double amount, @Nullable Entity source) {
-    throw new UnsupportedOperationException();
+    if (source == null) {
+      damage(amount);
+    } else {
+      livingEntity.damage(
+          net.minestom.server.entity.damage.Damage.fromEntity(
+              MinestomAdapters.toMinestom(source), (float) amount));
+    }
   }
 
   @Override
   public @Nullable AttributeInstance getAttribute(@NotNull Key attribute) {
     Objects.requireNonNull(attribute, "attribute cannot be null");
-    Attribute mAttr = Attribute.fromKey(attribute);
-    if (mAttr == null) {
-      return null;
-    }
-    net.minestom.server.entity.attribute.AttributeInstance inst = livingEntity.getAttribute(mAttr);
-    if (inst == null) {
-      return null;
-    }
-    return new AttributeInstance() {
-      @Override
-      public @NotNull Key attribute() {
-        return attribute;
-      }
-
-      @Override
-      public double baseValue() {
-        return inst.getBaseValue();
-      }
-
-      @Override
-      public void setBaseValue(double value) {
-        inst.setBaseValue(value);
-      }
-
-      @Override
-      public double value() {
-        return inst.getValue();
-      }
-
-      @Override
-      public @NotNull Collection<? extends AttributeModifier> modifiers() {
-        return Collections.emptyList();
-      }
-
-      @Override
-      public void addModifier(@NotNull AttributeModifier modifier) {}
-
-      @Override
-      public void removeModifier(@NotNull AttributeModifier modifier) {}
-
-      @Override
-      public void removeModifier(@NotNull UUID id) {}
-
-      @Override
-      public @Nullable AttributeModifier getModifier(@NotNull UUID id) {
-        return null;
-      }
-    };
+    Attribute minestomAttribute = Attribute.fromKey(attribute);
+    if (minestomAttribute == null) return null;
+    net.minestom.server.entity.attribute.AttributeInstance instance =
+        livingEntity.getAttribute(minestomAttribute);
+    return instance == null ? null : MinestomAdapters.adapt(instance);
   }
 
   @Override
@@ -123,107 +93,181 @@ public class MinestomLivingEntityWrapper extends MinestomEntityWrapper
 
   @Override
   public boolean hasLineOfSight(@NotNull Entity other) {
-    return true;
+    return livingEntity.hasLineOfSight(MinestomAdapters.toMinestom(other));
   }
 
   @Override
-  public @Nullable org.aincraft.common.entity.LivingEntity target() {
-    return null;
+  public @Nullable org.aincraft.api.domain.entity.LivingEntity target() {
+    if (!(livingEntity instanceof net.minestom.server.entity.EntityCreature creature)) return null;
+    net.minestom.server.entity.Entity target = creature.getTarget();
+    return target instanceof net.minestom.server.entity.LivingEntity living
+        ? (org.aincraft.api.domain.entity.LivingEntity) MinestomAdapters.adapt(living)
+        : null;
   }
 
   @Override
-  public void setTarget(@Nullable org.aincraft.common.entity.LivingEntity target) {}
+  public void setTarget(@Nullable org.aincraft.api.domain.entity.LivingEntity target) {
+    if (livingEntity instanceof net.minestom.server.entity.EntityCreature creature) {
+      creature.setTarget(target == null ? null : MinestomAdapters.toMinestom(target));
+    }
+  }
 
   @Override
   public boolean isGliding() {
-    return false;
+    return livingEntity.isFlyingWithElytra();
   }
 
   @Override
   public boolean isSwimming() {
-    return false;
+    return livingEntity.getPose() == net.minestom.server.entity.EntityPose.SWIMMING;
   }
 
   @Override
   public boolean isSleeping() {
-    return false;
+    return livingEntity.getPose() == net.minestom.server.entity.EntityPose.SLEEPING;
   }
 
   @Override
-  public @NotNull Collection<? extends PotionEffect> activePotionEffects() {
-    return Collections.emptyList();
+  public @NotNull org.aincraft.api.domain.inventory.EntityEquipment equipment() {
+    return new MinestomEntityEquipmentWrapper(livingEntity);
   }
 
   @Override
-  public void addPotionEffect(@NotNull PotionEffect effect) {}
-
-  @Override
-  public void removePotionEffect(@NotNull PotionEffectType type) {}
-
-  @Override
-  public boolean hasPotionEffect(@NotNull PotionEffectType type) {
-    return false;
-  }
-
-  @Override
-  public boolean isInvisible() {
-    return false;
-  }
-
-  @Override
-  public void setInvisible(boolean invisible) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public @NotNull org.aincraft.common.inventory.EntityEquipment equipment() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void attack(@NotNull org.aincraft.common.entity.Entity target) {
-    throw new UnsupportedOperationException();
+  public void attack(@NotNull org.aincraft.api.domain.entity.Entity target) {
+    net.minestom.server.entity.Entity minestomTarget = MinestomAdapters.toMinestom(target);
+    if (livingEntity instanceof net.minestom.server.entity.EntityCreature creature) {
+      creature.attack(minestomTarget);
+      return;
+    }
+    if (minestomTarget instanceof net.minestom.server.entity.LivingEntity targetLiving) {
+      targetLiving.damage(
+          net.minestom.server.entity.damage.Damage.fromEntity(
+              livingEntity, (float) livingEntity.getAttributeValue(Attribute.ATTACK_DAMAGE)));
+    } else {
+      throw new org.aincraft.api.UnsupportedCapabilityException(
+          org.aincraft.api.Capability.COMBAT,
+          "Minestom cannot apply living-entity attack damage to a non-living target.");
+    }
   }
 
   @Override
   public void swingMainHand() {
-    throw new UnsupportedOperationException();
+    livingEntity.swingMainHand();
   }
 
   @Override
   public void swingOffHand() {
-    throw new UnsupportedOperationException();
+    livingEntity.swingOffHand();
   }
 
   @Override
-  public @org.jetbrains.annotations.Nullable org.aincraft.common.effect.PotionEffect potionEffect(
-      @NotNull org.aincraft.common.effect.PotionEffectType type) {
+  public @Nullable org.aincraft.api.domain.effect.PotionEffect potionEffect(
+      @NotNull org.aincraft.api.domain.effect.PotionEffectType type) {
+    for (net.minestom.server.potion.TimedPotion active : livingEntity.getActiveEffects()) {
+      if (active.potion().effect().key().equals(type.key())) {
+        return MinestomAdapters.adapt(active.potion());
+      }
+    }
     return null;
   }
 
   @Override
+  public @NotNull Collection<? extends PotionEffect> activePotionEffects() {
+    return livingEntity.getActiveEffects().stream()
+        .map(active -> MinestomAdapters.adapt(active.potion()))
+        .toList();
+  }
+
+  @Override
+  public void addPotionEffect(@NotNull PotionEffect effect) {
+    livingEntity.addEffect(MinestomAdapters.toMinestom(effect));
+  }
+
+  @Override
+  public boolean addPotionEffect(@NotNull PotionEffect effect, boolean force) {
+    net.minestom.server.potion.Potion potion = MinestomAdapters.toMinestom(effect);
+    if (force) livingEntity.removeEffect(potion.effect());
+    livingEntity.addEffect(potion);
+    return hasPotionEffect(effect.type());
+  }
+
+  @Override
   public boolean clearActivePotionEffects() {
-    throw new UnsupportedOperationException();
+    boolean hadEffects = !livingEntity.getActiveEffects().isEmpty();
+    livingEntity.clearEffects();
+    return hadEffects;
+  }
+
+  @Override
+  public void removePotionEffect(@NotNull PotionEffectType type) {
+    livingEntity.removeEffect(MinestomAdapters.toMinestom(type));
+  }
+
+  @Override
+  public boolean hasPotionEffect(@NotNull PotionEffectType type) {
+    return potionEffect(type) != null;
+  }
+
+  @Override
+  public boolean isInvisible() {
+    return livingEntity.isInvisible();
+  }
+
+  @Override
+  public void setInvisible(boolean invisible) {
+    livingEntity.setInvisible(invisible);
   }
 
   @Override
   public double absorptionAmount() {
-    return 0;
+    if (livingEntity instanceof net.minestom.server.entity.Player player) {
+      return player.getAdditionalHearts();
+    }
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.DAMAGEABLE_ABSORPTION,
+        "Minestom living entities do not expose current absorption hearts.");
   }
 
   @Override
   public void setAbsorptionAmount(double amount) {
-    throw new UnsupportedOperationException();
+    if (livingEntity instanceof net.minestom.server.entity.Player player) {
+      player.setAdditionalHearts((float) Math.max(0.0, amount));
+      return;
+    }
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.DAMAGEABLE_ABSORPTION,
+        "Minestom living entities do not expose current absorption hearts.");
   }
 
   @Override
   public void kill() {
-    throw new UnsupportedOperationException();
+    livingEntity.kill();
   }
 
   @Override
-  public boolean addPotionEffect(
-      @NotNull org.aincraft.common.effect.PotionEffect effect, boolean force) {
-    throw new UnsupportedOperationException();
+  public int remainingAir() {
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.LIVING_AIR,
+        "Minestom does not expose Bukkit-style remaining-air state.");
+  }
+
+  @Override
+  public void setRemainingAir(int ticks) {
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.LIVING_AIR,
+        "Minestom does not expose Bukkit-style remaining-air state.");
+  }
+
+  @Override
+  public boolean hasAI() {
+    return livingEntity instanceof net.minestom.server.entity.EntityCreature creature
+        && !creature.getAIGroups().isEmpty();
+  }
+
+  @Override
+  public void setAI(boolean hasAi) {
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.LIVING_AI,
+        "Minestom AI groups cannot be enabled or disabled through its public API.");
   }
 }

@@ -1,15 +1,18 @@
 package org.aincraft.minestom.adapter;
 
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.world.Block;
-import org.aincraft.common.world.Chunk;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.world.Block;
+import org.aincraft.api.domain.world.Chunk;
+import org.aincraft.api.domain.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Objects;
 
-public class MinestomChunkWrapper implements Chunk {
+public final class MinestomChunkWrapper implements Chunk {
+
+  private static final java.util.Map<net.minestom.server.instance.Chunk, Boolean> FORCE_LOADED =
+      java.util.Collections.synchronizedMap(new java.util.WeakHashMap<>());
 
   private final net.minestom.server.instance.Chunk chunk;
 
@@ -49,29 +52,51 @@ public class MinestomChunkWrapper implements Chunk {
 
   @Override
   public boolean load() {
-    return chunk.isLoaded();
+    return load(true);
   }
 
   @Override
   public boolean load(boolean generate) {
-    return chunk.isLoaded();
+    if (chunk.isLoaded()) return true;
+    net.minestom.server.instance.Chunk loaded =
+        (generate
+                ? chunk.getInstance().loadChunk(x(), z())
+                : chunk.getInstance().loadOptionalChunk(x(), z()))
+            .join();
+    return loaded != null && loaded.isLoaded();
   }
 
   @Override
   public boolean unload() {
-    return false;
+    return unload(true);
   }
 
   @Override
   public boolean unload(boolean save) {
-    return false;
+    if (!chunk.isLoaded()) return false;
+    if (save) chunk.getInstance().saveChunkToStorage(chunk).join();
+    chunk.getInstance().unloadChunk(chunk);
+    return true;
+  }
+
+  @Override
+  public boolean isGenerated() {
+    return !chunk.shouldGenerate();
+  }
+
+  @Override
+  public boolean isForceLoaded() {
+    return FORCE_LOADED.getOrDefault(chunk, false);
+  }
+
+  @Override
+  public void setForceLoaded(boolean forceLoaded) {
+    FORCE_LOADED.put(chunk, forceLoaded);
   }
 
   @Override
   public @NotNull Collection<? extends Entity> entities() {
-    return chunk.getInstance().getEntities().stream()
-        .filter(
-            e -> (e.getPosition().blockX() >> 4) == x() && (e.getPosition().blockZ() >> 4) == z())
+    return chunk.getInstance().getChunkEntities(chunk).stream()
         .map(MinestomAdapters::adapt)
         .toList();
   }

@@ -1,11 +1,11 @@
 package org.aincraft.minestom.adapter;
 
 import net.kyori.adventure.key.Key;
-import org.aincraft.common.entity.Entity;
-import org.aincraft.common.location.BoundingBox;
-import org.aincraft.common.location.Location;
-import org.aincraft.common.location.Position;
-import org.aincraft.common.world.World;
+import org.aincraft.api.domain.entity.Entity;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
+import org.aincraft.api.domain.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -20,7 +20,7 @@ public class MinestomEntityWrapper implements Entity {
 
   public MinestomEntityWrapper(@NotNull net.minestom.server.entity.Entity entity) {
     this.entity = Objects.requireNonNull(entity, "entity cannot be null");
-    this.typeKey = Key.key(entity.getEntityType().name());
+    this.typeKey = entity.getEntityType().key();
   }
 
   public @NotNull net.minestom.server.entity.Entity getMinestomEntity() {
@@ -56,6 +56,21 @@ public class MinestomEntityWrapper implements Entity {
   }
 
   @Override
+  public double height() {
+    return entity.getBoundingBox().height();
+  }
+
+  @Override
+  public double width() {
+    return entity.getBoundingBox().width();
+  }
+
+  @Override
+  public int entityId() {
+    return entity.getEntityId();
+  }
+
+  @Override
   public boolean isValid() {
     return !entity.isRemoved();
   }
@@ -87,9 +102,9 @@ public class MinestomEntityWrapper implements Entity {
     net.minestom.server.coordinate.Pos targetPos = MinestomAdapters.toMinestomPos(targetLocation);
     if (targetLocation.world() instanceof MinestomWorldWrapper wrapper
         && wrapper.getMinestomInstance() != entity.getInstance()) {
-      entity.setInstance(wrapper.getMinestomInstance(), targetPos);
+      entity.setInstance(wrapper.getMinestomInstance(), targetPos).join();
     } else {
-      entity.teleport(targetPos);
+      entity.teleport(targetPos).join();
     }
   }
 
@@ -127,93 +142,120 @@ public class MinestomEntityWrapper implements Entity {
 
   @Override
   public void setRotation(float yaw, float pitch) {
-    throw new UnsupportedOperationException();
+    entity.setView(yaw, pitch);
   }
 
   @Override
   public void setVelocity(@NotNull Vector3dc velocity) {
-    throw new UnsupportedOperationException();
+    Objects.requireNonNull(velocity, "velocity cannot be null");
+    entity.setVelocity(
+        new net.minestom.server.coordinate.Vec(velocity.x(), velocity.y(), velocity.z()));
   }
 
   @Override
-  public @NotNull java.util.Collection<? extends org.aincraft.common.entity.Entity> nearbyEntities(
-      double x, double y, double z) {
-    throw new UnsupportedOperationException();
+  public @NotNull java.util.Collection<? extends org.aincraft.api.domain.entity.Entity>
+      nearbyEntities(double x, double y, double z) {
+    if (entity.getInstance() == null) return java.util.List.of();
+    double radius = Math.max(Math.abs(x), Math.max(Math.abs(y), Math.abs(z)));
+    return entity.getInstance().getNearbyEntities(entity.getPosition(), radius).stream()
+        .filter(
+            other ->
+                Math.abs(other.getPosition().x() - entity.getPosition().x()) <= Math.abs(x)
+                    && Math.abs(other.getPosition().y() - entity.getPosition().y()) <= Math.abs(y)
+                    && Math.abs(other.getPosition().z() - entity.getPosition().z()) <= Math.abs(z))
+        .map(MinestomAdapters::adapt)
+        .toList();
   }
 
   @Override
-  public @NotNull java.util.List<? extends org.aincraft.common.entity.Entity> passengers() {
-    throw new UnsupportedOperationException();
+  public @NotNull java.util.List<? extends org.aincraft.api.domain.entity.Entity> passengers() {
+    return entity.getPassengers().stream().map(MinestomAdapters::adapt).toList();
   }
 
   @Override
-  public boolean addPassenger(@NotNull org.aincraft.common.entity.Entity passenger) {
-    throw new UnsupportedOperationException();
+  public boolean addPassenger(@NotNull org.aincraft.api.domain.entity.Entity passenger) {
+    net.minestom.server.entity.Entity minestomPassenger = MinestomAdapters.toMinestom(passenger);
+    entity.addPassenger(minestomPassenger);
+    return entity.getPassengers().contains(minestomPassenger);
   }
 
   @Override
-  public boolean removePassenger(@NotNull org.aincraft.common.entity.Entity passenger) {
-    throw new UnsupportedOperationException();
+  public boolean removePassenger(@NotNull org.aincraft.api.domain.entity.Entity passenger) {
+    net.minestom.server.entity.Entity minestomPassenger = MinestomAdapters.toMinestom(passenger);
+    boolean wasPassenger = entity.getPassengers().contains(minestomPassenger);
+    entity.removePassenger(minestomPassenger);
+    return wasPassenger && !entity.getPassengers().contains(minestomPassenger);
   }
 
   @Override
   public boolean eject() {
-    throw new UnsupportedOperationException();
+    java.util.List<net.minestom.server.entity.Entity> current =
+        java.util.List.copyOf(entity.getPassengers());
+    current.forEach(entity::removePassenger);
+    return !current.isEmpty();
   }
 
   @Override
   public boolean isInsideVehicle() {
-    return false;
+    return entity.getVehicle() != null;
   }
 
   @Override
   public boolean leaveVehicle() {
-    throw new UnsupportedOperationException();
+    net.minestom.server.entity.Entity vehicle = entity.getVehicle();
+    if (vehicle == null) return false;
+    vehicle.removePassenger(entity);
+    return entity.getVehicle() == null;
   }
 
   @Override
-  public @org.jetbrains.annotations.Nullable org.aincraft.common.entity.Entity vehicle() {
-    return null;
+  public @org.jetbrains.annotations.Nullable org.aincraft.api.domain.entity.Entity vehicle() {
+    net.minestom.server.entity.Entity vehicle = entity.getVehicle();
+    return vehicle == null ? null : MinestomAdapters.adapt(vehicle);
   }
 
   @Override
   public boolean isGlowing() {
-    return false;
+    return entity.isGlowing();
   }
 
   @Override
   public void setGlowing(boolean glowing) {
-    throw new UnsupportedOperationException();
+    entity.setGlowing(glowing);
   }
 
   @Override
   public boolean isInvulnerable() {
-    return false;
+    return entity instanceof net.minestom.server.entity.LivingEntity living
+        ? living.isInvulnerable()
+        : false;
   }
 
   @Override
   public void setInvulnerable(boolean invulnerable) {
-    throw new UnsupportedOperationException();
+    if (entity instanceof net.minestom.server.entity.LivingEntity living) {
+      living.setInvulnerable(invulnerable);
+    }
   }
 
   @Override
   public boolean isCustomNameVisible() {
-    return false;
+    return entity.isCustomNameVisible();
   }
 
   @Override
   public void setCustomNameVisible(boolean visible) {
-    throw new UnsupportedOperationException();
+    entity.setCustomNameVisible(visible);
   }
 
   @Override
   public @org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component customName() {
-    return null;
+    return entity.getCustomName();
   }
 
   @Override
   public void customName(
       @org.jetbrains.annotations.Nullable net.kyori.adventure.text.Component name) {
-    throw new UnsupportedOperationException();
+    entity.setCustomName(name);
   }
 }

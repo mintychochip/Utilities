@@ -24,16 +24,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "utilities"
 
-include("common")
-include("config")
-include("db-core")
-include("db-paper")
-include("math")
-include("registry")
-include("math-consumer")
-include("utilities-bom")
+include("utilities-api")
+include("utilities-common")
+include("utilities-db-sql")
 include("utilities-bukkit")
 include("utilities-paper")
 include("utilities-minestom")
 include("test-plugin")
-include("utilities-event")
+include("utilities-bom")

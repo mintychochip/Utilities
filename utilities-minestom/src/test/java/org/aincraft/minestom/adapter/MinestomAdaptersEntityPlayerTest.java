@@ -12,7 +12,7 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.server.network.player.PlayerConnection;
 import net.minestom.server.world.DimensionType;
-import org.aincraft.common.entity.Entity;
+import org.aincraft.api.domain.entity.Entity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -43,14 +43,14 @@ class MinestomAdaptersEntityPlayerTest {
     Player minestomPlayer = new Player(conn, profile);
     minestomPlayer.setInstance(instance, new Pos(0, 64, 0));
 
-    org.aincraft.common.entity.Player player = MinestomAdapters.adapt(minestomPlayer);
+    org.aincraft.api.domain.entity.Player player = MinestomAdapters.adapt(minestomPlayer);
     assertEquals("Steve", player.username());
     assertEquals("Steve", player.name());
     assertEquals(uuid, player.uniqueId());
     assertNotNull(player.inventory());
-    assertEquals(org.aincraft.common.world.GameMode.SURVIVAL, player.gameMode());
+    assertEquals(org.aincraft.api.domain.world.GameMode.SURVIVAL, player.gameMode());
 
-    player.setGameMode(org.aincraft.common.world.GameMode.CREATIVE);
+    player.setGameMode(org.aincraft.api.domain.world.GameMode.CREATIVE);
     assertEquals(GameMode.CREATIVE, minestomPlayer.getGameMode());
 
     player.setFlying(true);

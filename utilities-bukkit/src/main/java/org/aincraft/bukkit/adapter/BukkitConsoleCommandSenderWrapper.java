@@ -1,6 +1,6 @@
 package org.aincraft.bukkit.adapter;
 
-import org.aincraft.common.server.ConsoleCommandSender;
+import org.aincraft.api.domain.server.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitConsoleCommandSenderWrapper extends BukkitCommandSenderWrapper

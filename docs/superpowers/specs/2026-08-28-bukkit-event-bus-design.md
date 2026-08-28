@@ -85,6 +85,7 @@ The bridge does not queue or clone events. A Bukkit async event remains on its o
 - Invalid Bukkit event classes are rejected by Bukkit's `PluginManager`; the adapter must not leave a partially active registration if registration fails.
 - Registration is inserted into the adapter's tracking map only after Bukkit registration succeeds.
 - Registration and close operations are synchronized per bus so concurrent registration cannot create duplicate platform handlers or leak a failed handle.
+- If injected delegate subscription setup fails, a newly created Bukkit registration is rolled back; an existing registration is preserved.
 - Utility listener failures retain `SimpleEventBus` behavior: one failure does not prevent later utility listeners. The adapter does not add a second exception-swallowing policy.
 - The adapter never calls `HandlerList.unregisterAll(plugin)` because that would remove unrelated event handlers owned by the plugin.
 

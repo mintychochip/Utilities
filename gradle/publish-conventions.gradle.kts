@@ -10,6 +10,23 @@ pluginManager.withPlugin("maven-publish") {
                 if (component != null) {
                     from(component)
                 }
+                pom {
+                    name.set("${project.group}:${project.name}")
+                    description.set("Cross-platform Minecraft utilities for ${project.name}.")
+                    url.set("https://github.com/mintychochip/Utilities")
+                    developers {
+                        developer {
+                            id.set("mintychochip")
+                            name.set("mintychochip")
+                            url.set("https://github.com/mintychochip")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/mintychochip/Utilities.git")
+                        developerConnection.set("scm:git:ssh://git@github.com/mintychochip/Utilities.git")
+                        url.set("https://github.com/mintychochip/Utilities")
+                    }
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Handle for one event type registered with Bukkit by a {@link BukkitEventBus}. */
@@ -15,6 +16,8 @@ public final class BukkitEventRegistration<E extends org.bukkit.event.Event>
   private final Listener listener;
   private final Runnable unregisterAction;
   private final AtomicBoolean active = new AtomicBoolean(true);
+  private final AtomicBoolean unregistering = new AtomicBoolean();
+  private final CountDownLatch cleanupComplete = new CountDownLatch(1);
 
   BukkitEventRegistration(
       @NotNull Class<E> eventType,
@@ -40,8 +43,27 @@ public final class BukkitEventRegistration<E extends org.bukkit.event.Event>
   }
 
   public void unregister() {
-    if (active.compareAndSet(true, false)) {
-      unregisterAction.run();
+    if (unregistering.compareAndSet(false, true)) {
+      try {
+        unregisterAction.run();
+      } finally {
+        active.set(false);
+        cleanupComplete.countDown();
+      }
+      return;
+    }
+
+    boolean interrupted = false;
+    while (true) {
+      try {
+        cleanupComplete.await();
+        break;
+      } catch (InterruptedException exception) {
+        interrupted = true;
+      }
+    }
+    if (interrupted) {
+      Thread.currentThread().interrupt();
     }
   }
 

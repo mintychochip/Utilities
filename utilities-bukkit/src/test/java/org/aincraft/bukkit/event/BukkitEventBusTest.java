@@ -3,6 +3,7 @@ package org.aincraft.bukkit.event;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,7 +38,10 @@ import org.mockito.ArgumentCaptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 class BukkitEventBusTest {
   private final Plugin plugin = mock(Plugin.class);
@@ -179,6 +183,37 @@ class BukkitEventBusTest {
   }
 
   @Test
+  void replacementCannotInstallBeforePreviousListenerIsRemoved() {
+    BukkitEventBus bus = new BukkitEventBus(plugin, EventBuses.create());
+    BukkitEventRegistration<TestEvent> first = bus.registerBukkitEvent(TestEvent.class);
+    Listener listener = captureListener(TestEvent.class, EventPriority.LOWEST);
+    AtomicReference<BukkitEventRegistration<TestEvent>> observed = new AtomicReference<>();
+
+    try (var handlers = mockStatic(HandlerList.class)) {
+      handlers
+          .when(() -> HandlerList.unregisterAll(listener))
+          .thenAnswer(
+              invocation -> {
+                observed.set(bus.registerBukkitEvent(TestEvent.class));
+                return null;
+              });
+      first.unregister();
+    }
+
+    assertSame(first, observed.get());
+    BukkitEventRegistration<TestEvent> replacement = bus.registerBukkitEvent(TestEvent.class);
+    assertNotSame(first, replacement);
+    verify(pluginManager, times(2))
+        .registerEvent(
+            eq(TestEvent.class),
+            any(Listener.class),
+            eq(org.bukkit.event.EventPriority.LOWEST),
+            any(EventExecutor.class),
+            eq(plugin),
+            eq(false));
+  }
+
+  @Test
   void closeCleansAllPlatformRegistrationsButLeavesDelegateUntouched() {
     RecordingEventBus delegate = new RecordingEventBus();
     BukkitEventBus bus = new BukkitEventBus(plugin, delegate);
@@ -225,6 +260,104 @@ class BukkitEventBusTest {
             any(EventExecutor.class),
             eq(plugin),
             eq(false));
+  }
+
+  @Test
+  void closeWaitsForTypedSubscriptionSetup() throws Exception {
+    CountDownLatch subscribeStarted = new CountDownLatch(1);
+    CountDownLatch allowSubscribe = new CountDownLatch(1);
+    BlockingSubscribeEventBus delegate =
+        new BlockingSubscribeEventBus(subscribeStarted, allowSubscribe);
+    BukkitEventBus bus = new BukkitEventBus(plugin, delegate);
+    AtomicReference<Subscription> result = new AtomicReference<>();
+    AtomicReference<Throwable> failure = new AtomicReference<>();
+
+    Thread subscribeThread =
+        new Thread(
+            () -> {
+              try {
+                result.set(bus.subscribeBukkitEvent(TestEvent.class, event -> {}));
+              } catch (Throwable throwable) {
+                failure.set(throwable);
+              }
+            });
+    subscribeThread.start();
+    assertTrue(subscribeStarted.await(1, TimeUnit.SECONDS));
+
+    CountDownLatch closeReturned = new CountDownLatch(1);
+    Thread closeThread =
+        new Thread(
+            () -> {
+              bus.close();
+              closeReturned.countDown();
+            });
+    closeThread.start();
+
+    boolean closeWasBlocked = !closeReturned.await(100, TimeUnit.MILLISECONDS);
+    allowSubscribe.countDown();
+    subscribeThread.join(1_000);
+    closeThread.join(1_000);
+
+    assertTrue(closeWasBlocked);
+    assertFalse(subscribeThread.isAlive());
+    assertFalse(closeThread.isAlive());
+    assertTrue(failure.get() == null, () -> "typed subscription failed: " + failure.get());
+    assertTrue(result.get() != null);
+  }
+
+  private static final class BlockingSubscribeEventBus implements EventBus {
+    private final EventBus actual = EventBuses.create();
+    private final CountDownLatch subscribeStarted;
+    private final CountDownLatch allowSubscribe;
+
+    private BlockingSubscribeEventBus(
+        CountDownLatch subscribeStarted, CountDownLatch allowSubscribe) {
+      this.subscribeStarted = subscribeStarted;
+      this.allowSubscribe = allowSubscribe;
+    }
+
+    @Override
+    public <E extends org.aincraft.api.event.Event> Subscription subscribe(
+        Class<E> eventType,
+        EventPriority priority,
+        boolean ignoreCancelled,
+        Executor executor,
+        EventListener<? super E> listener) {
+      subscribeStarted.countDown();
+      try {
+        allowSubscribe.await();
+      } catch (InterruptedException interrupted) {
+        Thread.currentThread().interrupt();
+        throw new AssertionError(interrupted);
+      }
+      return actual.subscribe(eventType, priority, ignoreCancelled, executor, listener);
+    }
+
+    @Override
+    public List<Subscription> register(Object instance) {
+      return actual.register(instance);
+    }
+
+    @Override
+    public void unregister(Object instance) {
+      actual.unregister(instance);
+    }
+
+    @Override
+    public void unsubscribe(Subscription subscription) {
+      actual.unsubscribe(subscription);
+    }
+
+    @Override
+    public <E extends org.aincraft.api.event.Event> E post(E event) {
+      return actual.post(event);
+    }
+
+    @Override
+    public <E extends org.aincraft.api.event.Event> CompletableFuture<E> postAsync(
+        E event, Executor executor) {
+      return actual.postAsync(event, executor);
+    }
   }
 
   @Test

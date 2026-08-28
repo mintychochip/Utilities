@@ -115,7 +115,7 @@ public final class BukkitEventBus implements EventBus, AutoCloseable {
   }
 
   /** Subscribes to one Bukkit event type with all utility-bus dispatch options. */
-  public <E extends org.bukkit.event.Event> @NotNull Subscription subscribeBukkitEvent(
+  public synchronized <E extends org.bukkit.event.Event> @NotNull Subscription subscribeBukkitEvent(
       @NotNull Class<E> eventType,
       @NotNull EventPriority priority,
       boolean ignoreCancelled,
@@ -210,9 +210,11 @@ public final class BukkitEventBus implements EventBus, AutoCloseable {
     synchronized (this) {
       BukkitEventRegistration<?> existing = registrations.get(eventType);
       if (existing != null && existing.listener() == listener) {
+        HandlerList.unregisterAll(listener);
         registrations.remove(eventType);
+        return;
       }
+      HandlerList.unregisterAll(listener);
     }
-    HandlerList.unregisterAll(listener);
   }
 }

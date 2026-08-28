@@ -14,6 +14,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class BukkitEventEnvelopeTest {
@@ -73,6 +76,40 @@ class BukkitEventEnvelopeTest {
     registration.close();
 
     assertEquals(1, unregisterCalls.get());
+    assertFalse(registration.isActive());
+  }
+
+  @Test
+  void registrationStaysActiveUntilCleanupCompletes() throws Exception {
+    CountDownLatch cleanupStarted = new CountDownLatch(1);
+    CountDownLatch allowCleanup = new CountDownLatch(1);
+    AtomicBoolean cleanupFinished = new AtomicBoolean();
+    BukkitEventRegistration<TestEvent> registration =
+        new BukkitEventRegistration<>(
+            TestEvent.class,
+            EventPriority.NORMAL,
+            new Listener() {},
+            () -> {
+              cleanupStarted.countDown();
+              try {
+                allowCleanup.await();
+              } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new AssertionError(interrupted);
+              }
+              cleanupFinished.set(true);
+            });
+
+    Thread unregisterThread = new Thread(registration::unregister);
+    unregisterThread.start();
+    assertTrue(cleanupStarted.await(1, TimeUnit.SECONDS));
+    assertTrue(registration.isActive());
+    assertFalse(cleanupFinished.get());
+
+    allowCleanup.countDown();
+    unregisterThread.join(1_000);
+
+    assertTrue(cleanupFinished.get());
     assertFalse(registration.isActive());
   }
 

@@ -23,6 +23,12 @@ import org.aincraft.api.domain.inventory.ItemMeta;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.ItemType;
 import org.aincraft.api.domain.inventory.PlayerInventory;
+import org.aincraft.api.domain.scoreboard.Criteria;
+import org.aincraft.api.domain.scoreboard.Objective;
+import org.aincraft.api.domain.scoreboard.Score;
+import org.aincraft.api.domain.scoreboard.Scoreboard;
+import org.aincraft.api.domain.scoreboard.ScoreboardManager;
+import org.aincraft.api.domain.scoreboard.Team;
 import org.aincraft.api.domain.location.BoundingBox;
 import org.aincraft.api.domain.location.Location;
 import org.aincraft.api.domain.location.Position;
@@ -672,5 +678,79 @@ public final class BukkitAdapters {
       case SOURCE_ONLY -> org.bukkit.FluidCollisionMode.SOURCE_ONLY;
       case ALWAYS -> org.bukkit.FluidCollisionMode.ALWAYS;
     };
+  }
+  public static @NotNull ScoreboardManager adapt(
+      @NotNull org.bukkit.scoreboard.ScoreboardManager manager) {
+    return new BukkitScoreboardManagerWrapper(manager);
+  }
+
+  public static @NotNull Scoreboard adapt(@NotNull org.bukkit.scoreboard.Scoreboard scoreboard) {
+    return new BukkitScoreboardWrapper(scoreboard);
+  }
+
+  public static @NotNull Objective adapt(@NotNull org.bukkit.scoreboard.Objective objective) {
+    return new BukkitObjectiveWrapper(objective);
+  }
+
+  public static @NotNull Score adapt(@NotNull org.bukkit.scoreboard.Score score) {
+    return new BukkitScoreWrapper(score);
+  }
+
+  public static @NotNull Team adapt(@NotNull org.bukkit.scoreboard.Team team) {
+    return new BukkitTeamWrapper(team);
+  }
+
+  public static @NotNull Criteria adapt(@NotNull org.bukkit.scoreboard.Criteria criteria) {
+    return new BukkitCriteriaWrapper(criteria);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.ScoreboardManager toBukkit(
+      @NotNull ScoreboardManager manager) {
+    if (manager instanceof BukkitScoreboardManagerWrapper wrapper) {
+      return wrapper.getBukkitScoreboardManager();
+    }
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign ScoreboardManager implementation: "
+            + manager.getClass().getName());
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Scoreboard toBukkit(
+      @NotNull Scoreboard scoreboard) {
+    if (scoreboard instanceof BukkitScoreboardWrapper wrapper) {
+      return wrapper.getBukkitScoreboard();
+    }
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Scoreboard implementation: " + scoreboard.getClass().getName());
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Objective toBukkit(@NotNull Objective objective) {
+    if (objective instanceof BukkitObjectiveWrapper wrapper) {
+      return wrapper.getBukkitObjective();
+    }
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Objective implementation: " + objective.getClass().getName());
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Score toBukkit(@NotNull Score score) {
+    if (score instanceof BukkitScoreWrapper wrapper) {
+      return wrapper.getBukkitScore();
+    }
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Score implementation: " + score.getClass().getName());
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Team toBukkit(@NotNull Team team) {
+    if (team instanceof BukkitTeamWrapper wrapper) {
+      return wrapper.getBukkitTeam();
+    }
+    throw new IllegalArgumentException(
+        "Cannot unwrap foreign Team implementation: " + team.getClass().getName());
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Criteria toBukkit(@NotNull Criteria criteria) {
+    if (criteria instanceof BukkitCriteriaWrapper wrapper) {
+      return wrapper.getBukkitCriteria();
+    }
+    return org.bukkit.scoreboard.Criteria.create(criteria.name());
   }
 }

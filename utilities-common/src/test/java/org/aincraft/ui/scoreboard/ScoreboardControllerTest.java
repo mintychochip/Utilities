@@ -7,21 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.aincraft.api.domain.entity.Entity;
 import org.aincraft.api.domain.entity.Player;
 import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.DisplaySlot;
@@ -34,6 +21,18 @@ import org.aincraft.api.domain.scoreboard.Team;
 import org.aincraft.api.domain.scoreboard.TeamOption;
 import org.aincraft.api.domain.scoreboard.TeamOptionStatus;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 class ScoreboardControllerTest {
 
@@ -138,11 +137,12 @@ class ScoreboardControllerTest {
         new ScoreboardController(new FakeScoreboardManager(), "sidebar");
 
     controller.refresh(
-        player,
-        viewer -> ScoreboardLayout.of(Component.text(viewer.uniqueId().toString())));
+        player, viewer -> ScoreboardLayout.of(Component.text(viewer.uniqueId().toString())));
 
     FakeScoreboard shown = (FakeScoreboard) currentScoreboard(player);
-    assertEquals(Component.text(player.uniqueId().toString()), shown.objectiveByName("sidebar").displayName());
+    assertEquals(
+        Component.text(player.uniqueId().toString()),
+        shown.objectiveByName("sidebar").displayName());
   }
 
   private static Scoreboard currentScoreboard(Player player) {
@@ -151,27 +151,26 @@ class ScoreboardControllerTest {
 
   private static Player player(UUID id, Scoreboard initial) {
     AtomicReference<Scoreboard> current = new AtomicReference<>(initial);
-    return
-        (Player)
-            Proxy.newProxyInstance(
-                Player.class.getClassLoader(),
-                new Class<?>[] {Player.class},
-                (proxy, method, args) -> {
-                  return switch (method.getName()) {
-                    case "uniqueId" -> id;
-                    case "scoreboard" -> {
-                      if (args == null) {
-                        yield current.get();
-                      }
-                      current.set((Scoreboard) args[0]);
-                      yield null;
-                    }
-                    case "equals" -> proxy == args[0];
-                    case "hashCode" -> System.identityHashCode(proxy);
-                    case "toString" -> "TestPlayer{" + id + "}";
-                    default -> defaultValue(method.getReturnType());
-                  };
-                });
+    return (Player)
+        Proxy.newProxyInstance(
+            Player.class.getClassLoader(),
+            new Class<?>[] {Player.class},
+            (proxy, method, args) -> {
+              return switch (method.getName()) {
+                case "uniqueId" -> id;
+                case "scoreboard" -> {
+                  if (args == null) {
+                    yield current.get();
+                  }
+                  current.set((Scoreboard) args[0]);
+                  yield null;
+                }
+                case "equals" -> proxy == args[0];
+                case "hashCode" -> System.identityHashCode(proxy);
+                case "toString" -> "TestPlayer{" + id + "}";
+                default -> defaultValue(method.getReturnType());
+              };
+            });
   }
 
   private static Object defaultValue(Class<?> type) {
@@ -246,7 +245,9 @@ class ScoreboardControllerTest {
     @Override
     public Set<String> entries() {
       Set<String> entries = new HashSet<>();
-      teams.values().stream().filter(team -> team.registered).forEach(team -> entries.addAll(team.entries));
+      teams.values().stream()
+          .filter(team -> team.registered)
+          .forEach(team -> entries.addAll(team.entries));
       return entries;
     }
 
@@ -284,8 +285,7 @@ class ScoreboardControllerTest {
     }
 
     @Override
-    public Objective registerObjective(
-        String name, Criteria criteria, Component displayName) {
+    public Objective registerObjective(String name, Criteria criteria, Component displayName) {
       return registerObjective(name, criteria, displayName, criteria.defaultRenderType());
     }
 

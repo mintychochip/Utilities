@@ -4,14 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import org.aincraft.api.Capability;
 import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.entity.Player;
 import org.aincraft.api.domain.server.Server;
 import org.junit.jupiter.api.Test;
+
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
 class ScoreboardContractsTest {
 
   @Test

@@ -1,34 +1,41 @@
 package org.aincraft.api.domain.scoreboard;
 
-import java.util.Set;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /** A group of scoreboard entries sharing display and collision properties. */
 public interface Team extends Audience {
 
-  @NotNull String name();
+  @NotNull
+  String name();
 
-  @NotNull Component displayName();
+  @NotNull
+  Component displayName();
 
   void displayName(@NotNull Component displayName);
 
-  @NotNull Component prefix();
+  @NotNull
+  Component prefix();
 
   void prefix(@NotNull Component prefix);
 
-  @NotNull Component suffix();
+  @NotNull
+  Component suffix();
 
   void suffix(@NotNull Component suffix);
 
-  @Nullable NamedTextColor color();
+  @Nullable
+  NamedTextColor color();
 
   void color(@Nullable NamedTextColor color);
 
-  @NotNull Set<String> entries();
+  @NotNull
+  Set<String> entries();
 
   int size();
 
@@ -46,11 +53,13 @@ public interface Team extends Audience {
 
   void setCanSeeFriendlyInvisibles(boolean enabled);
 
-  @NotNull TeamOptionStatus option(@NotNull TeamOption option);
+  @NotNull
+  TeamOptionStatus option(@NotNull TeamOption option);
 
   void setOption(@NotNull TeamOption option, @NotNull TeamOptionStatus status);
 
-  @Nullable Scoreboard scoreboard();
+  @Nullable
+  Scoreboard scoreboard();
 
   void unregister();
 }

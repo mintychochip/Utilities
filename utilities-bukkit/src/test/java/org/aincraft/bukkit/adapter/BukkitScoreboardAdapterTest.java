@@ -7,19 +7,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Proxy;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Proxy;
+
 class BukkitScoreboardAdapterTest {
 
   @Test
   void objectiveComponentUsesLegacySerializer() {
-    org.bukkit.scoreboard.Objective nativeObjective =
-        mock(org.bukkit.scoreboard.Objective.class);
+    org.bukkit.scoreboard.Objective nativeObjective = mock(org.bukkit.scoreboard.Objective.class);
     when(nativeObjective.getDisplayName()).thenReturn("§aTitle");
 
     Objective objective = new BukkitObjectiveWrapper(nativeObjective);
@@ -33,8 +33,7 @@ class BukkitScoreboardAdapterTest {
   void scoreboardMapsSidebarLookupAndWrapsObjective() {
     org.bukkit.scoreboard.Scoreboard nativeScoreboard =
         mock(org.bukkit.scoreboard.Scoreboard.class);
-    org.bukkit.scoreboard.Objective nativeObjective =
-        mock(org.bukkit.scoreboard.Objective.class);
+    org.bukkit.scoreboard.Objective nativeObjective = mock(org.bukkit.scoreboard.Objective.class);
     when(nativeScoreboard.getObjective(org.bukkit.scoreboard.DisplaySlot.SIDEBAR))
         .thenReturn(nativeObjective);
 

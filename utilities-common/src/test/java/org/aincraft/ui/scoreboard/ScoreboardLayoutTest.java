@@ -3,11 +3,12 @@ package org.aincraft.ui.scoreboard;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import net.kyori.adventure.text.Component;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
-import net.kyori.adventure.text.Component;
-import org.junit.jupiter.api.Test;
 
 class ScoreboardLayoutTest {
 

@@ -2,10 +2,10 @@ package org.aincraft.paper.adapter;
 
 import net.kyori.adventure.text.Component;
 import org.aincraft.api.domain.entity.Entity;
-import org.aincraft.api.domain.scoreboard.Criteria;
-import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.api.domain.inventory.Inventory;
 import org.aincraft.api.domain.inventory.InventoryHolder;
+import org.aincraft.api.domain.scoreboard.Criteria;
+import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.bukkit.adapter.BukkitServerWrapper;
 import org.jetbrains.annotations.NotNull;
 

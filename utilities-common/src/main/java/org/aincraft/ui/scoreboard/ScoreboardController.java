@@ -1,13 +1,5 @@
 package org.aincraft.ui.scoreboard;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Function;
 import net.kyori.adventure.text.Component;
 import org.aincraft.api.domain.entity.Player;
 import org.aincraft.api.domain.scoreboard.Criteria;
@@ -19,6 +11,15 @@ import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.api.domain.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Function;
+
 /** Renders immutable layouts as private per-player sidebars. */
 public final class ScoreboardController implements AutoCloseable {
 
@@ -29,8 +30,7 @@ public final class ScoreboardController implements AutoCloseable {
   private final Map<UUID, ViewerState> viewers = new HashMap<>();
   private boolean closed;
 
-  public ScoreboardController(
-      @NotNull ScoreboardManager manager, @NotNull String objectiveName) {
+  public ScoreboardController(@NotNull ScoreboardManager manager, @NotNull String objectiveName) {
     this.manager = Objects.requireNonNull(manager, "manager");
     this.objectiveName = Objects.requireNonNull(objectiveName, "objectiveName");
     if (objectiveName.isBlank()) {
@@ -84,7 +84,6 @@ public final class ScoreboardController implements AutoCloseable {
     return viewers.containsKey(uniqueId);
   }
 
-
   @Override
   public void close() {
     if (closed) {
@@ -99,7 +98,8 @@ public final class ScoreboardController implements AutoCloseable {
   }
 
   private ViewerState createState(Player player) {
-    Scoreboard previousScoreboard = Objects.requireNonNull(player.scoreboard(), "player scoreboard");
+    Scoreboard previousScoreboard =
+        Objects.requireNonNull(player.scoreboard(), "player scoreboard");
     Scoreboard scoreboard = manager.newScoreboard();
     Objective objective =
         scoreboard.registerObjective(

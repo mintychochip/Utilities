@@ -1,10 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.aincraft.api.domain.entity.Entity;
 import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.DisplaySlot;
 import org.aincraft.api.domain.scoreboard.Objective;
@@ -15,11 +12,13 @@ import org.aincraft.api.domain.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /** Spigot-backed scoreboard. */
 public class BukkitScoreboardWrapper implements Scoreboard {
 
-  private static final LegacyComponentSerializer LEGACY =
-      LegacyComponentSerializer.legacySection();
+  private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
 
   private final org.bukkit.scoreboard.Scoreboard scoreboard;
 
@@ -124,8 +123,7 @@ public class BukkitScoreboardWrapper implements Scoreboard {
     scoreboard.resetScores(entry);
   }
 
-  protected @NotNull Objective adaptObjective(
-      @NotNull org.bukkit.scoreboard.Objective objective) {
+  protected @NotNull Objective adaptObjective(@NotNull org.bukkit.scoreboard.Objective objective) {
     return new BukkitObjectiveWrapper(objective);
   }
 

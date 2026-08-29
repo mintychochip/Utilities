@@ -14,8 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /** Spigot-backed scoreboard objective. */
 public class BukkitObjectiveWrapper implements Objective {
 
-  private static final LegacyComponentSerializer LEGACY =
-      LegacyComponentSerializer.legacySection();
+  private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
 
   private final org.bukkit.scoreboard.Objective objective;
 

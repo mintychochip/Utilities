@@ -1,12 +1,13 @@
 package org.aincraft.ui.scoreboard;
 
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.NotNull;
 
 /** An immutable title and ordered set of sidebar lines. */
 public record ScoreboardLayout(@NotNull Component title, @NotNull List<ScoreboardLine> lines) {
@@ -17,7 +18,8 @@ public record ScoreboardLayout(@NotNull Component title, @NotNull List<Scoreboar
     Objects.requireNonNull(title, "title");
     Objects.requireNonNull(lines, "lines");
     if (lines.size() > MAX_LINES) {
-      throw new IllegalArgumentException("A sidebar cannot contain more than " + MAX_LINES + " lines");
+      throw new IllegalArgumentException(
+          "A sidebar cannot contain more than " + MAX_LINES + " lines");
     }
     List<ScoreboardLine> copy = List.copyOf(lines);
     Set<String> ids = new HashSet<>();

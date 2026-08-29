@@ -9,11 +9,14 @@ import org.jetbrains.annotations.Nullable;
 /** A score value for one entry on one objective. */
 public interface Score {
 
-  @NotNull String entry();
+  @NotNull
+  String entry();
 
-  @NotNull Objective objective();
+  @NotNull
+  Objective objective();
 
-  @Nullable Scoreboard scoreboard();
+  @Nullable
+  Scoreboard scoreboard();
 
   int score();
 

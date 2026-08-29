@@ -1,7 +1,8 @@
 package org.aincraft.api.domain.scoreboard;
 
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /** A scoreboard criteria, either built in or custom. */
 public interface Criteria {
@@ -10,7 +11,8 @@ public interface Criteria {
   @NotNull Criteria TRIGGER = of("trigger");
 
   /** Returns the native criteria identifier. */
-  @NotNull String name();
+  @NotNull
+  String name();
 
   /** Returns whether the server owns the score values for this criteria. */
   default boolean isReadOnly() {

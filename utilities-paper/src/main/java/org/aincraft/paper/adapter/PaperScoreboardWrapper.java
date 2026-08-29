@@ -2,7 +2,6 @@ package org.aincraft.paper.adapter;
 
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Score;
-import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.aincraft.api.domain.scoreboard.Team;
 import org.aincraft.bukkit.adapter.BukkitScoreboardWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +14,7 @@ public class PaperScoreboardWrapper extends BukkitScoreboardWrapper {
   }
 
   @Override
-  protected @NotNull Objective adaptObjective(
-      @NotNull org.bukkit.scoreboard.Objective objective) {
+  protected @NotNull Objective adaptObjective(@NotNull org.bukkit.scoreboard.Objective objective) {
     return new PaperObjectiveWrapper(objective);
   }
 

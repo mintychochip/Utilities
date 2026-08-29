@@ -3,13 +3,14 @@ package org.aincraft.paper.adapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-import java.lang.reflect.Proxy;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import net.kyori.adventure.text.Component;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Proxy;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 class PaperScoreboardAdapterTest {
 

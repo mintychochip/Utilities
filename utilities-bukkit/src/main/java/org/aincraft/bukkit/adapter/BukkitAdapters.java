@@ -23,15 +23,15 @@ import org.aincraft.api.domain.inventory.ItemMeta;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.ItemType;
 import org.aincraft.api.domain.inventory.PlayerInventory;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
 import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Score;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.api.domain.scoreboard.Team;
-import org.aincraft.api.domain.location.BoundingBox;
-import org.aincraft.api.domain.location.Location;
-import org.aincraft.api.domain.location.Position;
 import org.aincraft.api.domain.server.CommandSender;
 import org.aincraft.api.domain.server.OfflinePlayer;
 import org.aincraft.api.domain.server.Server;
@@ -679,6 +679,7 @@ public final class BukkitAdapters {
       case ALWAYS -> org.bukkit.FluidCollisionMode.ALWAYS;
     };
   }
+
   public static @NotNull ScoreboardManager adapt(
       @NotNull org.bukkit.scoreboard.ScoreboardManager manager) {
     return new BukkitScoreboardManagerWrapper(manager);
@@ -710,12 +711,10 @@ public final class BukkitAdapters {
       return wrapper.getBukkitScoreboardManager();
     }
     throw new IllegalArgumentException(
-        "Cannot unwrap foreign ScoreboardManager implementation: "
-            + manager.getClass().getName());
+        "Cannot unwrap foreign ScoreboardManager implementation: " + manager.getClass().getName());
   }
 
-  public static @NotNull org.bukkit.scoreboard.Scoreboard toBukkit(
-      @NotNull Scoreboard scoreboard) {
+  public static @NotNull org.bukkit.scoreboard.Scoreboard toBukkit(@NotNull Scoreboard scoreboard) {
     if (scoreboard instanceof BukkitScoreboardWrapper wrapper) {
       return wrapper.getBukkitScoreboard();
     }

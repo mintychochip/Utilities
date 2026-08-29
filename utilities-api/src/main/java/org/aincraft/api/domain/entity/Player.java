@@ -8,9 +8,9 @@ import org.aincraft.api.domain.inventory.InventoryView;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.PlayerInventory;
 import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.aincraft.api.domain.server.CommandSender;
 import org.aincraft.api.domain.world.GameMode;
-import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

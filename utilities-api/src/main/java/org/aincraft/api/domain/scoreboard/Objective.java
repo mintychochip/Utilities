@@ -9,29 +9,36 @@ import org.jetbrains.annotations.Nullable;
 /** An objective that tracks scores and may be displayed in one slot. */
 public interface Objective {
 
-  @NotNull String name();
+  @NotNull
+  String name();
 
-  @NotNull Criteria trackedCriteria();
+  @NotNull
+  Criteria trackedCriteria();
 
   boolean isModifiable();
 
-  @NotNull Component displayName();
+  @NotNull
+  Component displayName();
 
   void displayName(@NotNull Component displayName);
 
-  @Nullable Scoreboard scoreboard();
+  @Nullable
+  Scoreboard scoreboard();
 
   void unregister();
 
   void displaySlot(@Nullable DisplaySlot slot);
 
-  @Nullable DisplaySlot displaySlot();
+  @Nullable
+  DisplaySlot displaySlot();
 
   void renderType(@NotNull RenderType renderType);
 
-  @NotNull RenderType renderType();
+  @NotNull
+  RenderType renderType();
 
-  @NotNull Score score(@NotNull String entry);
+  @NotNull
+  Score score(@NotNull String entry);
 
   /** Returns whether Paper automatically updates displayed scores. */
   default boolean willAutoUpdateDisplay() {

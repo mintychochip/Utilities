@@ -1,6 +1,5 @@
 package org.aincraft.bukkit.adapter;
 
-import java.util.Set;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -11,11 +10,12 @@ import org.aincraft.api.domain.scoreboard.TeamOptionStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 /** Spigot-backed scoreboard team. */
 public class BukkitTeamWrapper implements Team {
 
-  private static final LegacyComponentSerializer LEGACY =
-      LegacyComponentSerializer.legacySection();
+  private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
 
   private final org.bukkit.scoreboard.Team team;
 

@@ -6,8 +6,10 @@ import org.jetbrains.annotations.NotNull;
 public interface ScoreboardManager {
 
   /** Returns the server's persistent main scoreboard. */
-  @NotNull Scoreboard mainScoreboard();
+  @NotNull
+  Scoreboard mainScoreboard();
 
   /** Creates a new scoreboard tracked while a reference is retained. */
-  @NotNull Scoreboard newScoreboard();
+  @NotNull
+  Scoreboard newScoreboard();
 }

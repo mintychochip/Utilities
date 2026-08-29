@@ -2,7 +2,6 @@ package org.aincraft.paper.adapter;
 
 import net.kyori.adventure.text.Component;
 import org.aincraft.api.domain.scoreboard.Objective;
-import org.aincraft.api.domain.scoreboard.Score;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.aincraft.bukkit.adapter.BukkitScoreWrapper;
 import org.jetbrains.annotations.NotNull;

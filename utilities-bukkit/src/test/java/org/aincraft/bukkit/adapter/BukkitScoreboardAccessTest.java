@@ -27,8 +27,7 @@ class BukkitScoreboardAccessTest {
     org.bukkit.entity.Player nativePlayer = mock(org.bukkit.entity.Player.class);
     when(nativePlayer.getType()).thenReturn(org.bukkit.entity.EntityType.PLAYER);
     org.bukkit.scoreboard.Scoreboard current = mock(org.bukkit.scoreboard.Scoreboard.class);
-    org.bukkit.scoreboard.Scoreboard replacement =
-        mock(org.bukkit.scoreboard.Scoreboard.class);
+    org.bukkit.scoreboard.Scoreboard replacement = mock(org.bukkit.scoreboard.Scoreboard.class);
     when(nativePlayer.getScoreboard()).thenReturn(current);
 
     org.aincraft.api.domain.entity.Player player = new BukkitPlayerWrapper(nativePlayer);

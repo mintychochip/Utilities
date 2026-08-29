@@ -17,15 +17,15 @@ import org.aincraft.api.domain.inventory.InventoryView;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.ItemType;
 import org.aincraft.api.domain.inventory.PlayerInventory;
+import org.aincraft.api.domain.location.BoundingBox;
+import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.location.Position;
 import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Score;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.api.domain.scoreboard.Team;
-import org.aincraft.api.domain.location.BoundingBox;
-import org.aincraft.api.domain.location.Location;
-import org.aincraft.api.domain.location.Position;
 import org.aincraft.api.domain.server.CommandSender;
 import org.aincraft.api.domain.server.Server;
 import org.aincraft.api.domain.world.Block;
@@ -307,6 +307,7 @@ public final class PaperAdapters {
       @NotNull AttributeInstance instance) {
     return BukkitAdapters.toBukkit(instance);
   }
+
   public static @NotNull ScoreboardManager adapt(
       @NotNull org.bukkit.scoreboard.ScoreboardManager manager) {
     return new PaperScoreboardManagerWrapper(manager);
@@ -337,8 +338,7 @@ public final class PaperAdapters {
     return BukkitAdapters.toBukkit(manager);
   }
 
-  public static @NotNull org.bukkit.scoreboard.Scoreboard toBukkit(
-      @NotNull Scoreboard scoreboard) {
+  public static @NotNull org.bukkit.scoreboard.Scoreboard toBukkit(@NotNull Scoreboard scoreboard) {
     return BukkitAdapters.toBukkit(scoreboard);
   }
 

@@ -17,8 +17,9 @@ tasks.named<Test>("test") {
 }
 
 dependencies {
-    add("testImplementation", platform("org.junit:junit-bom:5.11.3"))
+    add("testImplementation", platform("org.junit:junit-bom:6.1.3"))
     add("testImplementation", "org.junit.jupiter:junit-jupiter")
+    add("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
 }
 
 tasks.register("printCompileClasspath") {

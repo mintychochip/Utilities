@@ -22,6 +22,7 @@ paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 jdbi-core = { module = "org.jdbi:jdbi3-core", version.ref = "jdbi" }
+jdbi-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }

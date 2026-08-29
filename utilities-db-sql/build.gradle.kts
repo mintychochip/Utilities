@@ -22,6 +22,7 @@ apply(from = rootProject.file("gradle/publish-conventions.gradle.kts"))
 dependencies {
     api(libs.hikari)
     api(libs.jdbi.core)
+    api(libs.jdbi.sqlobject)
     implementation(libs.flyway.core)
 
     testImplementation(libs.sqlite.jdbc)

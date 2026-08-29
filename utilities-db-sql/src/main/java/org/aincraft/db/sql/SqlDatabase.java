@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -54,6 +55,7 @@ public final class SqlDatabase implements AutoCloseable {
     HikariDataSource dataSource = new HikariDataSource(hikariConfig);
     try {
       Jdbi jdbi = Jdbi.create(dataSource);
+      jdbi.installPlugin(new SqlObjectPlugin());
       SqlCapabilities capabilities = inspectCapabilities(jdbi);
       var flywayConfiguration = Flyway.configure().dataSource(dataSource);
       if (locations.length > 0) {

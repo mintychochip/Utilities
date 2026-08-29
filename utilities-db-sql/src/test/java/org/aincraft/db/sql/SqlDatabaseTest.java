@@ -179,12 +179,8 @@ class SqlDatabaseTest {
   void rejectsNullDaoTypesAndCallbacks() {
     try (SqlDatabase database = createDatabase()) {
       assertThrows(NullPointerException.class, () -> database.onDemand(null));
-      assertThrows(
-          NullPointerException.class,
-          () -> database.useTransaction(SmokeDao.class, null));
-      assertThrows(
-          NullPointerException.class,
-          () -> database.inTransaction(SmokeDao.class, null));
+      assertThrows(NullPointerException.class, () -> database.useTransaction(SmokeDao.class, null));
+      assertThrows(NullPointerException.class, () -> database.inTransaction(SmokeDao.class, null));
     }
   }
 

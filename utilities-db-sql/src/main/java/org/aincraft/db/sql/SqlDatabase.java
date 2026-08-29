@@ -86,8 +86,7 @@ public final class SqlDatabase implements AutoCloseable {
     jdbi.useTransaction(handle -> callback.accept(handle.attach(daoType)));
   }
 
-  public <D, R> R inTransaction(
-      Class<D> daoType, Function<? super D, ? extends R> callback) {
+  public <D, R> R inTransaction(Class<D> daoType, Function<? super D, ? extends R> callback) {
     Objects.requireNonNull(daoType, "daoType");
     Objects.requireNonNull(callback, "callback");
     return jdbi.inTransaction(handle -> callback.apply(handle.attach(daoType)));

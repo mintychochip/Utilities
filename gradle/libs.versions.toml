@@ -1,7 +1,7 @@
 [versions]
 paper = "26.2.build.119-stable"
 spigot = "1.21.4-R0.1-SNAPSHOT"
-hikari = "5.0.1"
+hikari = "7.1.0"
 jdbi = "3.54.0"
 flyway = "11.19.1"
 junit = "6.1.3"

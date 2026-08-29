@@ -1,6 +1,6 @@
 [versions]
 paper = "26.2.build.119-stable"
-spigot = "1.21.4-R0.1-SNAPSHOT"
+spigot = "26.2-R0.1-SNAPSHOT"
 hikari = "7.1.0"
 jdbi = "3.54.0"
 flyway = "11.19.1"

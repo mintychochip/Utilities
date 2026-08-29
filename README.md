@@ -4,7 +4,7 @@ A utilities library for Minecraft Paper plugins, published as tiered runtime art
 
 | Gradle project | Artifact | Package | Purpose |
 | `:utilities-api` | `org.aincraft:utilities-api` | `org.aincraft.api.domain` | Platform-agnostic API interfaces and contracts |
-| `:utilities-common` | `org.aincraft:utilities-common` | `org.aincraft.event`, `org.aincraft.math` | Shared event and domain-agnostic utilities |
+| `:utilities-common` | `org.aincraft:utilities-common` | `org.aincraft.event`, `org.aincraft.math`, `org.aincraft.ui.scoreboard` | Shared event, domain-agnostic, and scoreboard UI utilities |
 | `:utilities-db-sql` | `org.aincraft:utilities-db-sql` | `org.aincraft.db.sql` | Typed Jdbi SQL Object DAOs, Jdbi SQL access, HikariCP pooling, and Flyway migrations |
 | `:utilities-bukkit` | `org.aincraft:utilities-bukkit` | `org.aincraft.bukkit`, `org.aincraft.config`, `org.aincraft.registry` | Bukkit/Spigot runtime adapter |
 | `:utilities-paper` | `org.aincraft:utilities-paper` | `org.aincraft.paper` | Paper runtime adapter |
@@ -12,6 +12,52 @@ A utilities library for Minecraft Paper plugins, published as tiered runtime art
 | `:utilities-bom` | `org.aincraft:utilities-bom` | — | Bill of Materials for version alignment |
 
 Runtime adapters (`:utilities-bukkit`, `:utilities-paper`, `:utilities-minestom`) depend on `:utilities-common`, which in turn depends on `:utilities-api` for the platform-neutral contracts. SQL utilities are isolated in `:utilities-db-sql` so platform and API consumers do not inherit database dependencies.
+
+## Scoreboard API and UI
+
+The scoreboard contracts live in `:utilities-api` under
+`org.aincraft.api.domain.scoreboard`. `server.scoreboardManager()` exposes the platform
+scoreboard manager, and `player.scoreboard()` reads or assigns a player's current scoreboard.
+The Bukkit and Paper modules adapt those contracts to their native scoreboard APIs. Paper
+preserves Adventure components for objective and team text; the Bukkit adapter converts them to
+legacy text for platforms that only expose legacy scoreboard methods.
+
+`:utilities-common` provides `ScoreboardController` and immutable sidebar layouts. The controller
+creates one private scoreboard per viewer, supports at most 15 lines, keeps line IDs stable while
+layouts change, and restores each player's previous scoreboard when hidden or closed. It does not
+schedule updates; call it from the platform's valid server thread.
+
+```java
+import net.kyori.adventure.text.Component;
+import org.aincraft.api.domain.entity.Player;
+import org.aincraft.api.domain.server.Server;
+import org.aincraft.ui.scoreboard.ScoreboardController;
+import org.aincraft.ui.scoreboard.ScoreboardLayout;
+
+ScoreboardController sidebar =
+    new ScoreboardController(server.scoreboardManager(), "lobby_sidebar");
+
+sidebar.show(
+    player,
+    ScoreboardLayout.builder(Component.text("Lobby"))
+        .line("online", Component.text("Online: " + onlinePlayers))
+        .line("rank", Component.text("Rank: " + rank))
+        .build());
+
+sidebar.refresh(
+    player,
+    viewer -> ScoreboardLayout.builder(Component.text("Lobby"))
+        .line("online", Component.text("Online: " + onlinePlayers(viewer)))
+        .build());
+
+sidebar.hide(player);
+sidebar.close();
+```
+
+Use a stable, non-blank ID for each logical line. Reordering or changing a line with the same ID
+updates its existing native entry instead of allocating a new one. `ScoreboardLayout` defensively
+copies its lines and rejects duplicate IDs or more than 15 lines. There is no Minestom scoreboard
+adapter in this first portable API cut.
 
 ## Runtime Requirements
 

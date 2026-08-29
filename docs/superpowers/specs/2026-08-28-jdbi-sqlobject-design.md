@@ -1,7 +1,7 @@
 # Jdbi SQL Object DAO Layer — Design
 
 Date: 2026-08-28  
-Status: Design reviewed in chat; awaiting written-spec review
+Status: Approved
 
 ## Context
 
@@ -125,13 +125,18 @@ Successful callbacks commit. Runtime failures from the callback or DAO cause Jdb
 
 ### Streaming and handle-bound results
 
-Consumers must not use an on-demand DAO for a lazy `Stream`, `ResultIterator`, or other handle-bound result that outlives the DAO method. The on-demand handle is closed when the method returns. For streaming, consumers use the raw escape hatch and attach the DAO to a handle whose lifecycle they manage:
+Consumers must not use an on-demand DAO for a lazy `Stream`, `ResultIterator`, or other handle-bound result that outlives the DAO method. The on-demand handle is closed when the method returns. For streaming, consumers use the raw escape hatch and attach a DAO to a handle whose lifecycle they manage:
 
 ```java
+public interface StreamingUserDao {
+  @SqlQuery("SELECT value FROM users ORDER BY id")
+  Stream<String> streamValues();
+}
+
 try (Handle handle = database.jdbi().open()) {
-  UserDao users = handle.attach(UserDao.class);
-  try (Stream<User> stream = users.streamUsers()) {
-    stream.forEach(/* consume inside the handle scope */);
+  StreamingUserDao users = handle.attach(StreamingUserDao.class);
+  try (Stream<String> stream = users.streamValues()) {
+    stream.forEach(System.out::println);
   }
 }
 ```

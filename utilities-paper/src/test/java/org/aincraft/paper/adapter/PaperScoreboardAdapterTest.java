@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import net.kyori.adventure.text.Component;
+import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.Objective;
+import org.aincraft.api.domain.scoreboard.RenderType;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +45,66 @@ class PaperScoreboardAdapterTest {
     Scoreboard scoreboard = new PaperScoreboardWrapper(nativeScoreboard);
 
     assertInstanceOf(PaperObjectiveWrapper.class, scoreboard.objectives().iterator().next());
+  }
+
+  @Test
+  void paperScoreboardRegistersObjectivesWithAdventureComponents() {
+    AtomicReference<Component> displayName = new AtomicReference<>(Component.empty());
+    org.bukkit.scoreboard.Objective nativeObjective = objectiveProxy(displayName);
+    AtomicReference<Object[]> arguments = new AtomicReference<>();
+    org.bukkit.scoreboard.Criteria nativeCriteria =
+        (org.bukkit.scoreboard.Criteria)
+            Proxy.newProxyInstance(
+                org.bukkit.scoreboard.Criteria.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.scoreboard.Criteria.class},
+                (proxy, method, args) -> defaultValue(method.getReturnType()));
+    Criteria criteria = new org.aincraft.bukkit.adapter.BukkitCriteriaWrapper(nativeCriteria);
+    org.bukkit.scoreboard.Scoreboard nativeScoreboard =
+        (org.bukkit.scoreboard.Scoreboard)
+            Proxy.newProxyInstance(
+                org.bukkit.scoreboard.Scoreboard.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.scoreboard.Scoreboard.class},
+                (proxy, method, args) -> {
+                  if (method.getName().startsWith("registerNewObjective")) {
+                    arguments.set(args);
+                    return nativeObjective;
+                  }
+                  return defaultValue(method.getReturnType());
+                });
+
+    Scoreboard scoreboard = new PaperScoreboardWrapper(nativeScoreboard);
+
+    Objective objective =
+        scoreboard.registerObjective(
+            "sidebar", criteria, Component.text("Styled"), RenderType.INTEGER);
+
+    assertInstanceOf(PaperObjectiveWrapper.class, objective);
+    assertEquals(Component.text("Styled"), arguments.get()[2]);
+  }
+
+  @Test
+  void paperPlayerServerPreservesPaperServerWrapper() {
+    org.bukkit.Server nativeServer =
+        (org.bukkit.Server)
+            Proxy.newProxyInstance(
+                org.bukkit.Server.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.Server.class},
+                (proxy, method, args) -> defaultValue(method.getReturnType()));
+    org.bukkit.entity.Player nativePlayer =
+        (org.bukkit.entity.Player)
+            Proxy.newProxyInstance(
+                org.bukkit.entity.Player.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.entity.Player.class},
+                (proxy, method, args) ->
+                    switch (method.getName()) {
+                      case "getServer" -> nativeServer;
+                      case "getType" -> org.bukkit.entity.EntityType.PLAYER;
+                      default -> defaultValue(method.getReturnType());
+                    });
+
+    org.aincraft.api.domain.entity.Player player = new PaperPlayerWrapper(nativePlayer);
+
+    assertInstanceOf(PaperServerWrapper.class, player.server());
   }
 
   private static org.bukkit.scoreboard.Objective objectiveProxy(

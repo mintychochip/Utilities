@@ -1,6 +1,9 @@
 package org.aincraft.paper.adapter;
 
+import net.kyori.adventure.text.Component;
+import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.Objective;
+import org.aincraft.api.domain.scoreboard.RenderType;
 import org.aincraft.api.domain.scoreboard.Score;
 import org.aincraft.api.domain.scoreboard.Team;
 import org.aincraft.bukkit.adapter.BukkitScoreboardWrapper;
@@ -11,6 +14,32 @@ public class PaperScoreboardWrapper extends BukkitScoreboardWrapper {
 
   public PaperScoreboardWrapper(@NotNull org.bukkit.scoreboard.Scoreboard scoreboard) {
     super(scoreboard);
+  }
+
+  @Override
+  public @NotNull Objective registerObjective(
+      @NotNull String name, @NotNull Criteria criteria, @NotNull Component displayName) {
+    return registerObjective(name, criteria, displayName, criteria.defaultRenderType());
+  }
+
+  @Override
+  public @NotNull Objective registerObjective(
+      @NotNull String name,
+      @NotNull Criteria criteria,
+      @NotNull Component displayName,
+      @NotNull RenderType renderType) {
+    org.bukkit.scoreboard.Objective objective =
+        getBukkitScoreboard()
+            .registerNewObjective(
+                name, PaperAdapters.toBukkit(criteria), displayName, toBukkit(renderType));
+    return adaptObjective(objective);
+  }
+
+  private static org.bukkit.scoreboard.RenderType toBukkit(@NotNull RenderType renderType) {
+    return switch (renderType) {
+      case INTEGER -> org.bukkit.scoreboard.RenderType.INTEGER;
+      case HEARTS -> org.bukkit.scoreboard.RenderType.HEARTS;
+    };
   }
 
   @Override

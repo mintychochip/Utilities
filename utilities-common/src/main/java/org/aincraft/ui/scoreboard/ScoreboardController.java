@@ -79,6 +79,7 @@ public final class ScoreboardController implements AutoCloseable {
   }
 
   public boolean isShown(@NotNull Player player) {
+    ensureOpen();
     Objects.requireNonNull(player, "player");
     UUID uniqueId = Objects.requireNonNull(player.uniqueId(), "player uniqueId");
     return viewers.containsKey(uniqueId);

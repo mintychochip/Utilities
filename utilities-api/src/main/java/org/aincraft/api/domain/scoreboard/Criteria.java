@@ -7,8 +7,8 @@ import java.util.Objects;
 /** A scoreboard criteria, either built in or custom. */
 public interface Criteria {
 
-  @NotNull Criteria DUMMY = of("dummy");
-  @NotNull Criteria TRIGGER = of("trigger");
+  @NotNull Criteria DUMMY = new Value("dummy");
+  @NotNull Criteria TRIGGER = new Value("trigger", true);
 
   /** Returns the native criteria identifier. */
   @NotNull
@@ -34,12 +34,21 @@ public interface Criteria {
   }
 
   /** Basic criteria value used when no native criteria object is available. */
-  record Value(@NotNull String name) implements Criteria {
+  record Value(@NotNull String name, boolean readOnly) implements Criteria {
+    public Value(@NotNull String name) {
+      this(name, false);
+    }
+
     public Value {
       Objects.requireNonNull(name, "name");
       if (name.isBlank()) {
         throw new IllegalArgumentException("Criteria name must not be blank");
       }
+    }
+
+    @Override
+    public boolean isReadOnly() {
+      return readOnly;
     }
   }
 }

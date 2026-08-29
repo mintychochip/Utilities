@@ -29,6 +29,12 @@ class ScoreboardContractsTest {
   }
 
   @Test
+  void criteriaExposesReadOnlyTriggerContract() {
+    assertEquals("trigger", Criteria.TRIGGER.name());
+    assertTrue(Criteria.TRIGGER.isReadOnly());
+  }
+
+  @Test
   void serverAndPlayerDefaultsReportUnsupportedScoreboardCapability() {
     Server server = defaultMethodProxy(Server.class);
     Player player = defaultMethodProxy(Player.class);

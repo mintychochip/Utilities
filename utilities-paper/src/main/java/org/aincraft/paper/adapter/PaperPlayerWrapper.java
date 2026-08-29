@@ -3,6 +3,7 @@ package org.aincraft.paper.adapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
+import org.aincraft.api.domain.server.Server;
 import org.aincraft.bukkit.adapter.BukkitPlayerWrapper;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +11,11 @@ public class PaperPlayerWrapper extends BukkitPlayerWrapper {
 
   public PaperPlayerWrapper(@NotNull org.bukkit.entity.Player player) {
     super(player);
+  }
+
+  @Override
+  public @NotNull Server server() {
+    return PaperAdapters.adapt(getBukkitPlayer().getServer());
   }
 
   @Override

@@ -128,6 +128,7 @@ class ScoreboardControllerTest {
     assertThrows(
         IllegalStateException.class,
         () -> controller.update(player, ScoreboardLayout.of(Component.empty())));
+    assertThrows(IllegalStateException.class, () -> controller.isShown(player));
   }
 
   @Test

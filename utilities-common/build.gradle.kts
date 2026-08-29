@@ -6,6 +6,7 @@ plugins {
 extra["allowedAincraftPrefixes"] = listOf(
     "org/aincraft/event/",
     "org/aincraft/math/",
+    "org/aincraft/ui/",
 )
 extra["forbiddenAincraftPrefixes"] = listOf(
     "org/aincraft/api/",
@@ -35,4 +36,5 @@ dependencies {
     testImplementation(libs.adventure.key)
     testImplementation(libs.joml)
     testImplementation(libs.guava)
+    testImplementation(libs.mockito.core)
 }

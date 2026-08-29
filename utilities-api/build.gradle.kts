@@ -37,4 +37,5 @@ dependencies {
     testImplementation(libs.adventure.api)
     testImplementation(libs.adventure.key)
     testImplementation(libs.joml)
+    testImplementation(libs.mockito.core)
 }

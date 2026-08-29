@@ -9,6 +9,7 @@ import org.aincraft.api.domain.inventory.Inventory;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.PlayerInventory;
 import org.aincraft.api.domain.location.Location;
+import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.aincraft.api.domain.world.GameMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -159,6 +160,16 @@ public class BukkitPlayerWrapper extends BukkitLivingEntityWrapper implements Pl
   @Override
   public @NotNull PlayerInventory inventory() {
     return new BukkitPlayerInventoryWrapper(player.getInventory());
+  }
+
+  @Override
+  public @NotNull Scoreboard scoreboard() {
+    return BukkitAdapters.adapt(player.getScoreboard());
+  }
+
+  @Override
+  public void scoreboard(@NotNull Scoreboard scoreboard) {
+    player.setScoreboard(BukkitAdapters.toBukkit(scoreboard));
   }
 
   @Override

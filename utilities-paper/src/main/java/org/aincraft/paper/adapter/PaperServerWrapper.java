@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import org.aincraft.api.domain.entity.Entity;
 import org.aincraft.api.domain.inventory.Inventory;
 import org.aincraft.api.domain.inventory.InventoryHolder;
+import org.aincraft.api.domain.scoreboard.Criteria;
+import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.bukkit.adapter.BukkitServerWrapper;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,6 +70,16 @@ public class PaperServerWrapper extends BukkitServerWrapper {
   @Override
   public void sendMessage(@NotNull Component message) {
     getBukkitServer().sendMessage(message);
+  }
+
+  @Override
+  public @NotNull ScoreboardManager scoreboardManager() {
+    return PaperAdapters.adapt(getBukkitServer().getScoreboardManager());
+  }
+
+  @Override
+  public @NotNull Criteria scoreboardCriteria(@NotNull String name) {
+    return PaperAdapters.adapt(getBukkitServer().getScoreboardCriteria(name));
   }
 
   @Override

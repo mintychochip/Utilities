@@ -59,6 +59,7 @@ public interface Capability {
   @NotNull Capability INVENTORY_VIEW = of("inventory_view");
   @NotNull Capability ITEM_DATA_COMPONENT = of("item_data_component");
   @NotNull Capability PERSISTENT_DATA = of("persistent_data");
+  @NotNull Capability SCOREBOARD = of("scoreboard");
 
   static @NotNull Capability of(@NotNull String name) {
     return new Capability() {

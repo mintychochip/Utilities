@@ -11,6 +11,8 @@ import org.aincraft.api.domain.inventory.Inventory;
 import org.aincraft.api.domain.inventory.InventoryHolder;
 import org.aincraft.api.domain.inventory.InventoryType;
 import org.aincraft.api.domain.inventory.ItemFactory;
+import org.aincraft.api.domain.scoreboard.Criteria;
+import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.aincraft.api.domain.server.ConsoleCommandSender;
 import org.aincraft.api.domain.server.OfflinePlayer;
 import org.aincraft.api.domain.server.Server;
@@ -243,6 +245,16 @@ public class BukkitServerWrapper implements Server {
   @Override
   public @NotNull ItemFactory itemFactory() {
     return new BukkitItemFactoryWrapper(server.getItemFactory());
+  }
+
+  @Override
+  public @NotNull ScoreboardManager scoreboardManager() {
+    return BukkitAdapters.adapt(server.getScoreboardManager());
+  }
+
+  @Override
+  public @NotNull Criteria scoreboardCriteria(@NotNull String name) {
+    return BukkitAdapters.adapt(server.getScoreboardCriteria(name));
   }
 
   @Override

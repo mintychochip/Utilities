@@ -30,7 +30,7 @@ dependencies {
     testFixturesApi(libs.adventure.api)
     testFixturesApi(libs.adventure.key)
     testFixturesApi(libs.joml)
-    testFixturesApi(platform("org.junit:junit-bom:5.11.3"))
+    testFixturesApi(platform("org.junit:junit-bom:6.1.3"))
     testFixturesApi("org.junit.jupiter:junit-jupiter")
 
     testImplementation(libs.annotations)

@@ -50,7 +50,27 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3dc;
 
+import java.util.Set;
+
 public final class BukkitAdapters {
+
+  private static final Set<String> KNOWN_READ_ONLY_CRITERIA_NAMES =
+      Set.of(
+          "health",
+          "food",
+          "air",
+          "armor",
+          "xp",
+          "level",
+          "deathCount",
+          "playerKillCount",
+          "totalKillCount");
+
+  private static boolean isKnownReadOnlyCriteriaName(@NotNull String name) {
+    return KNOWN_READ_ONLY_CRITERIA_NAMES.contains(name)
+        || name.startsWith("teamkill.")
+        || name.startsWith("killedByTeam.");
+  }
 
   private BukkitAdapters() {}
 
@@ -750,6 +770,16 @@ public final class BukkitAdapters {
     if (criteria instanceof BukkitCriteriaWrapper wrapper) {
       return wrapper.getBukkitCriteria();
     }
-    return org.bukkit.scoreboard.Criteria.create(criteria.name());
+    String name = criteria.name();
+    if (!criteria.isReadOnly() && isKnownReadOnlyCriteriaName(name)) {
+      throw new IllegalArgumentException(
+          "Criteria name resolves to a native read-only criterion: " + name);
+    }
+    org.bukkit.scoreboard.Criteria nativeCriteria = org.bukkit.scoreboard.Criteria.create(name);
+    if (nativeCriteria.isReadOnly() != criteria.isReadOnly()) {
+      throw new IllegalArgumentException(
+          "Criteria name resolves to native criteria with different mutability: " + name);
+    }
+    return nativeCriteria;
   }
 }

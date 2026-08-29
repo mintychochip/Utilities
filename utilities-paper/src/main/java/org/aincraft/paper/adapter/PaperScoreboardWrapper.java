@@ -1,6 +1,7 @@
 package org.aincraft.paper.adapter;
 
 import net.kyori.adventure.text.Component;
+import org.aincraft.api.domain.entity.Entity;
 import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.RenderType;
@@ -9,11 +10,29 @@ import org.aincraft.api.domain.scoreboard.Team;
 import org.aincraft.bukkit.adapter.BukkitScoreboardWrapper;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /** Paper-backed scoreboard that keeps nested values on the Paper adapter path. */
 public class PaperScoreboardWrapper extends BukkitScoreboardWrapper {
 
   public PaperScoreboardWrapper(@NotNull org.bukkit.scoreboard.Scoreboard scoreboard) {
     super(scoreboard);
+  }
+
+  @Override
+  public @NotNull Set<? extends Score> scoresFor(@NotNull Entity entity) {
+    return getBukkitScoreboard()
+        .getScoresFor(org.aincraft.bukkit.adapter.BukkitAdapters.toBukkit(entity))
+        .stream()
+        .map(this::adaptScore)
+        .collect(Collectors.toUnmodifiableSet());
+  }
+
+  @Override
+  public void resetScoresFor(@NotNull Entity entity) {
+    getBukkitScoreboard()
+        .resetScoresFor(org.aincraft.bukkit.adapter.BukkitAdapters.toBukkit(entity));
   }
 
   @Override

@@ -26,6 +26,11 @@ public class PaperScoreWrapper extends BukkitScoreWrapper {
   }
 
   @Override
+  public void reset() {
+    getBukkitScore().resetScore();
+  }
+
+  @Override
   public @Nullable Component customName() {
     return getBukkitScore().customName();
   }

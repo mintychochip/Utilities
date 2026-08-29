@@ -1,6 +1,7 @@
 package org.aincraft.api.domain.scoreboard;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -29,9 +30,9 @@ class ScoreboardContractsTest {
   }
 
   @Test
-  void criteriaExposesReadOnlyTriggerContract() {
+  void criteriaExposesWritableTriggerContract() {
     assertEquals("trigger", Criteria.TRIGGER.name());
-    assertTrue(Criteria.TRIGGER.isReadOnly());
+    assertFalse(Criteria.TRIGGER.isReadOnly());
   }
 
   @Test

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 class ScoreboardControllerTest {
@@ -132,6 +133,54 @@ class ScoreboardControllerTest {
   }
 
   @Test
+  void hideCleansUpWhenPreviousScoreboardRestorationFails() {
+    FakeScoreboard previous = new FakeScoreboard();
+    AtomicBoolean restorationAttempted = new AtomicBoolean();
+    Player player = failingRestorePlayer(UUID.randomUUID(), previous, restorationAttempted);
+    ScoreboardController controller =
+        new ScoreboardController(new FakeScoreboardManager(), "sidebar");
+
+    controller.show(player, ScoreboardLayout.of(Component.empty()));
+    FakeScoreboard shown = (FakeScoreboard) currentScoreboard(player);
+    FakeObjective objective = shown.objectiveByName("sidebar");
+
+    assertThrows(IllegalStateException.class, () -> controller.hide(player));
+
+    assertTrue(restorationAttempted.get());
+    assertTrue(objective.unregistered);
+    assertFalse(controller.isShown(player));
+  }
+
+  @Test
+  void closeCleansEveryViewerAndClosesWhenRestorationFails() {
+    FakeScoreboard firstPrevious = new FakeScoreboard();
+    FakeScoreboard secondPrevious = new FakeScoreboard();
+    AtomicBoolean firstRestorationAttempted = new AtomicBoolean();
+    AtomicBoolean secondRestorationAttempted = new AtomicBoolean();
+    Player first =
+        failingRestorePlayer(UUID.randomUUID(), firstPrevious, firstRestorationAttempted);
+    Player second =
+        failingRestorePlayer(UUID.randomUUID(), secondPrevious, secondRestorationAttempted);
+    ScoreboardController controller =
+        new ScoreboardController(new FakeScoreboardManager(), "sidebar");
+
+    controller.show(first, ScoreboardLayout.of(Component.empty()));
+    controller.show(second, ScoreboardLayout.of(Component.empty()));
+    FakeObjective firstObjective =
+        ((FakeScoreboard) currentScoreboard(first)).objectiveByName("sidebar");
+    FakeObjective secondObjective =
+        ((FakeScoreboard) currentScoreboard(second)).objectiveByName("sidebar");
+
+    assertThrows(IllegalStateException.class, controller::close);
+
+    assertTrue(firstRestorationAttempted.get());
+    assertTrue(secondRestorationAttempted.get());
+    assertTrue(firstObjective.unregistered);
+    assertTrue(secondObjective.unregistered);
+    assertThrows(IllegalStateException.class, () -> controller.isShown(first));
+  }
+
+  @Test
   void refreshBuildsLayoutFromViewer() {
     Player player = player(UUID.randomUUID(), new FakeScoreboard());
     ScoreboardController controller =
@@ -169,6 +218,36 @@ class ScoreboardControllerTest {
                 case "equals" -> proxy == args[0];
                 case "hashCode" -> System.identityHashCode(proxy);
                 case "toString" -> "TestPlayer{" + id + "}";
+                default -> defaultValue(method.getReturnType());
+              };
+            });
+  }
+
+  private static Player failingRestorePlayer(
+      UUID id, Scoreboard initial, AtomicBoolean restorationAttempted) {
+    AtomicReference<Scoreboard> current = new AtomicReference<>(initial);
+    return (Player)
+        Proxy.newProxyInstance(
+            Player.class.getClassLoader(),
+            new Class<?>[] {Player.class},
+            (proxy, method, args) -> {
+              return switch (method.getName()) {
+                case "uniqueId" -> id;
+                case "scoreboard" -> {
+                  if (args == null) {
+                    yield current.get();
+                  }
+                  Scoreboard next = (Scoreboard) args[0];
+                  if (next == initial) {
+                    restorationAttempted.set(true);
+                    throw new IllegalStateException("restore failed");
+                  }
+                  current.set(next);
+                  yield null;
+                }
+                case "equals" -> proxy == args[0];
+                case "hashCode" -> System.identityHashCode(proxy);
+                case "toString" -> "FailingTestPlayer{" + id + "}";
                 default -> defaultValue(method.getReturnType());
               };
             });

@@ -2,6 +2,7 @@ package org.aincraft.paper.adapter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.kyori.adventure.text.Component;
 import org.aincraft.api.domain.scoreboard.Criteria;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Proxy;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 class PaperScoreboardAdapterTest {
@@ -105,6 +107,69 @@ class PaperScoreboardAdapterTest {
     org.aincraft.api.domain.entity.Player player = new PaperPlayerWrapper(nativePlayer);
 
     assertInstanceOf(PaperServerWrapper.class, player.server());
+  }
+
+  @Test
+  void paperScoreResetDelegatesToNativePerObjectiveOperation() {
+    AtomicBoolean reset = new AtomicBoolean();
+    org.bukkit.scoreboard.Score nativeScore =
+        (org.bukkit.scoreboard.Score)
+            Proxy.newProxyInstance(
+                org.bukkit.scoreboard.Score.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.scoreboard.Score.class},
+                (proxy, method, args) -> {
+                  if (method.getName().equals("resetScore")) {
+                    reset.set(true);
+                  }
+                  return defaultValue(method.getReturnType());
+                });
+
+    new PaperScoreWrapper(nativeScore).reset();
+
+    assertTrue(reset.get());
+  }
+
+  @Test
+  void paperScoreboardDelegatesEntityScoreOperations() {
+    AtomicBoolean reset = new AtomicBoolean();
+    org.bukkit.scoreboard.Score nativeScore =
+        (org.bukkit.scoreboard.Score)
+            Proxy.newProxyInstance(
+                org.bukkit.scoreboard.Score.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.scoreboard.Score.class},
+                (proxy, method, args) -> defaultValue(method.getReturnType()));
+    org.bukkit.entity.Entity nativeEntity =
+        (org.bukkit.entity.Entity)
+            Proxy.newProxyInstance(
+                org.bukkit.entity.Entity.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.entity.Entity.class},
+                (proxy, method, args) ->
+                    method.getName().equals("getType")
+                        ? org.bukkit.entity.EntityType.PLAYER
+                        : defaultValue(method.getReturnType()));
+    org.bukkit.scoreboard.Scoreboard nativeScoreboard =
+        (org.bukkit.scoreboard.Scoreboard)
+            Proxy.newProxyInstance(
+                org.bukkit.scoreboard.Scoreboard.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.scoreboard.Scoreboard.class},
+                (proxy, method, args) -> {
+                  if (method.getName().equals("getScoresFor")) {
+                    return Set.of(nativeScore);
+                  }
+                  if (method.getName().equals("resetScoresFor")) {
+                    reset.set(true);
+                  }
+                  return defaultValue(method.getReturnType());
+                });
+
+    org.aincraft.api.domain.entity.Entity entity =
+        org.aincraft.bukkit.adapter.BukkitAdapters.adapt(nativeEntity);
+    Scoreboard scoreboard = new PaperScoreboardWrapper(nativeScoreboard);
+
+    assertInstanceOf(PaperScoreWrapper.class, scoreboard.scoresFor(entity).iterator().next());
+    scoreboard.resetScoresFor(entity);
+
+    assertTrue(reset.get());
   }
 
   private static org.bukkit.scoreboard.Objective objectiveProxy(

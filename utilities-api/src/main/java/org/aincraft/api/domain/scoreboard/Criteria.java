@@ -8,7 +8,7 @@ import java.util.Objects;
 public interface Criteria {
 
   @NotNull Criteria DUMMY = new Value("dummy");
-  @NotNull Criteria TRIGGER = new Value("trigger", true);
+  @NotNull Criteria TRIGGER = new Value("trigger");
 
   /** Returns the native criteria identifier. */
   @NotNull

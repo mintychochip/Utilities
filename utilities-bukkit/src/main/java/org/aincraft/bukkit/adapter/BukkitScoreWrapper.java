@@ -1,5 +1,7 @@
 package org.aincraft.bukkit.adapter;
 
+import org.aincraft.api.Capability;
+import org.aincraft.api.UnsupportedCapabilityException;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Score;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
@@ -52,11 +54,8 @@ public class BukkitScoreWrapper implements Score {
 
   @Override
   public void reset() {
-    org.bukkit.scoreboard.Objective objective = score.getObjective();
-    org.bukkit.scoreboard.Scoreboard scoreboard = objective.getScoreboard();
-    if (scoreboard == null) {
-      throw new IllegalStateException("Cannot reset a score on an unregistered objective");
-    }
-    scoreboard.resetScores(score.getEntry());
+    throw new UnsupportedCapabilityException(
+        Capability.SCOREBOARD,
+        "Spigot cannot reset one objective score without clearing the entry from all objectives.");
   }
 }

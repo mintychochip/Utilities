@@ -74,8 +74,7 @@ public final class ScoreboardController implements AutoCloseable {
     if (state == null) {
       return;
     }
-    player.scoreboard(state.previousScoreboard);
-    cleanup(state);
+    restoreAndCleanup(state, player);
   }
 
   public boolean isShown(@NotNull Player player) {
@@ -90,12 +89,26 @@ public final class ScoreboardController implements AutoCloseable {
     if (closed) {
       return;
     }
-    for (ViewerState state : List.copyOf(viewers.values())) {
-      state.player.scoreboard(state.previousScoreboard);
-      cleanup(state);
+    RuntimeException failure = null;
+    try {
+      for (ViewerState state : List.copyOf(viewers.values())) {
+        try {
+          restoreAndCleanup(state, state.player);
+        } catch (RuntimeException exception) {
+          if (failure == null) {
+            failure = exception;
+          } else {
+            failure.addSuppressed(exception);
+          }
+        }
+      }
+    } finally {
+      viewers.clear();
+      closed = true;
     }
-    viewers.clear();
-    closed = true;
+    if (failure != null) {
+      throw failure;
+    }
   }
 
   private ViewerState createState(Player player) {
@@ -171,6 +184,27 @@ public final class ScoreboardController implements AutoCloseable {
     }
     state.lines.clear();
     state.objective.unregister();
+  }
+
+  private static void restoreAndCleanup(ViewerState state, Player player) {
+    RuntimeException failure = null;
+    try {
+      player.scoreboard(state.previousScoreboard);
+    } catch (RuntimeException exception) {
+      failure = exception;
+    }
+    try {
+      cleanup(state);
+    } catch (RuntimeException exception) {
+      if (failure == null) {
+        failure = exception;
+      } else {
+        failure.addSuppressed(exception);
+      }
+    }
+    if (failure != null) {
+      throw failure;
+    }
   }
 
   private void ensureOpen() {

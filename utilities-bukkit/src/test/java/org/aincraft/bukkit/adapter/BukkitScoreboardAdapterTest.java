@@ -9,6 +9,9 @@ import static org.mockito.Mockito.when;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.aincraft.api.Capability;
+import org.aincraft.api.UnsupportedCapabilityException;
+import org.aincraft.api.domain.scoreboard.Criteria;
 import org.aincraft.api.domain.scoreboard.Objective;
 import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.junit.jupiter.api.Test;
@@ -55,5 +58,27 @@ class BukkitScoreboardAdapterTest {
                 (proxy, method, args) -> null));
 
     assertThrows(IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(foreign));
+  }
+
+  @Test
+  void spigotScoreResetReportsUnsupportedObjectiveScopedOperation() {
+    org.bukkit.scoreboard.Score nativeScore =
+        (org.bukkit.scoreboard.Score)
+            Proxy.newProxyInstance(
+                org.bukkit.scoreboard.Score.class.getClassLoader(),
+                new Class<?>[] {org.bukkit.scoreboard.Score.class},
+                (proxy, method, args) -> null);
+
+    org.aincraft.api.domain.scoreboard.Score score = new BukkitScoreWrapper(nativeScore);
+
+    UnsupportedCapabilityException failure =
+        assertThrows(UnsupportedCapabilityException.class, score::reset);
+    assertEquals(Capability.SCOREBOARD, failure.capability());
+  }
+
+  @Test
+  void customCriteriaCannotShadowNativeReadOnlyCriteria() {
+    assertThrows(
+        IllegalArgumentException.class, () -> BukkitAdapters.toBukkit(Criteria.of("health")));
   }
 }

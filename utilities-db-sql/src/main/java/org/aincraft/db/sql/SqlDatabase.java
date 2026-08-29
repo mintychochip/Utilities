@@ -11,6 +11,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Owns a Hikari-backed Jdbi instance and an explicitly-run Flyway migration set.
@@ -71,6 +73,24 @@ public final class SqlDatabase implements AutoCloseable {
 
   public Jdbi jdbi() {
     return jdbi;
+  }
+
+  public <D> D onDemand(Class<D> daoType) {
+    Objects.requireNonNull(daoType, "daoType");
+    return jdbi.onDemand(daoType);
+  }
+
+  public <D> void useTransaction(Class<D> daoType, Consumer<? super D> callback) {
+    Objects.requireNonNull(daoType, "daoType");
+    Objects.requireNonNull(callback, "callback");
+    jdbi.useTransaction(handle -> callback.accept(handle.attach(daoType)));
+  }
+
+  public <D, R> R inTransaction(
+      Class<D> daoType, Function<? super D, ? extends R> callback) {
+    Objects.requireNonNull(daoType, "daoType");
+    Objects.requireNonNull(callback, "callback");
+    return jdbi.inTransaction(handle -> callback.apply(handle.attach(daoType)));
   }
 
   public SqlCapabilities capabilities() {

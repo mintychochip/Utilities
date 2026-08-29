@@ -17,6 +17,12 @@ import org.aincraft.api.domain.inventory.InventoryView;
 import org.aincraft.api.domain.inventory.ItemStack;
 import org.aincraft.api.domain.inventory.ItemType;
 import org.aincraft.api.domain.inventory.PlayerInventory;
+import org.aincraft.api.domain.scoreboard.Criteria;
+import org.aincraft.api.domain.scoreboard.Objective;
+import org.aincraft.api.domain.scoreboard.Score;
+import org.aincraft.api.domain.scoreboard.Scoreboard;
+import org.aincraft.api.domain.scoreboard.ScoreboardManager;
+import org.aincraft.api.domain.scoreboard.Team;
 import org.aincraft.api.domain.location.BoundingBox;
 import org.aincraft.api.domain.location.Location;
 import org.aincraft.api.domain.location.Position;
@@ -300,5 +306,55 @@ public final class PaperAdapters {
   public static @NotNull org.bukkit.attribute.AttributeInstance toBukkit(
       @NotNull AttributeInstance instance) {
     return BukkitAdapters.toBukkit(instance);
+  }
+  public static @NotNull ScoreboardManager adapt(
+      @NotNull org.bukkit.scoreboard.ScoreboardManager manager) {
+    return new PaperScoreboardManagerWrapper(manager);
+  }
+
+  public static @NotNull Scoreboard adapt(@NotNull org.bukkit.scoreboard.Scoreboard scoreboard) {
+    return new PaperScoreboardWrapper(scoreboard);
+  }
+
+  public static @NotNull Objective adapt(@NotNull org.bukkit.scoreboard.Objective objective) {
+    return new PaperObjectiveWrapper(objective);
+  }
+
+  public static @NotNull Score adapt(@NotNull org.bukkit.scoreboard.Score score) {
+    return new PaperScoreWrapper(score);
+  }
+
+  public static @NotNull Team adapt(@NotNull org.bukkit.scoreboard.Team team) {
+    return new PaperTeamWrapper(team);
+  }
+
+  public static @NotNull Criteria adapt(@NotNull org.bukkit.scoreboard.Criteria criteria) {
+    return new org.aincraft.bukkit.adapter.BukkitCriteriaWrapper(criteria);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.ScoreboardManager toBukkit(
+      @NotNull ScoreboardManager manager) {
+    return BukkitAdapters.toBukkit(manager);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Scoreboard toBukkit(
+      @NotNull Scoreboard scoreboard) {
+    return BukkitAdapters.toBukkit(scoreboard);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Objective toBukkit(@NotNull Objective objective) {
+    return BukkitAdapters.toBukkit(objective);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Score toBukkit(@NotNull Score score) {
+    return BukkitAdapters.toBukkit(score);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Team toBukkit(@NotNull Team team) {
+    return BukkitAdapters.toBukkit(team);
+  }
+
+  public static @NotNull org.bukkit.scoreboard.Criteria toBukkit(@NotNull Criteria criteria) {
+    return BukkitAdapters.toBukkit(criteria);
   }
 }

@@ -3,6 +3,7 @@ package org.aincraft.paper.adapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.aincraft.bukkit.adapter.BukkitPlayerWrapper;
+import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 public class PaperPlayerWrapper extends BukkitPlayerWrapper {
@@ -112,6 +113,16 @@ public class PaperPlayerWrapper extends BukkitPlayerWrapper {
   @Override
   public @NotNull org.aincraft.api.domain.inventory.PlayerInventory inventory() {
     return PaperAdapters.adapt(getBukkitPlayer().getInventory());
+  }
+
+  @Override
+  public @NotNull Scoreboard scoreboard() {
+    return PaperAdapters.adapt(getBukkitPlayer().getScoreboard());
+  }
+
+  @Override
+  public void scoreboard(@NotNull Scoreboard scoreboard) {
+    getBukkitPlayer().setScoreboard(PaperAdapters.toBukkit(scoreboard));
   }
 
   @Override

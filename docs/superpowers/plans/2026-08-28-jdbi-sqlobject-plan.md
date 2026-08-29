@@ -303,20 +303,19 @@ try (Handle handle = database.jdbi().open()) {
   try (Stream<String> stream = users.streamValues()) {
     stream.forEach(System.out::println);
   }
-}
 ```
 
 State that lazy streams and iterators must not be returned from an on-demand method and consumed after that method returns; use `jdbi().open()` and `Handle#attach` instead.
 
-- [ ] **Step 3: Run the module check**
+- [ ] **Step 3: Run a focused compile**
 
 Run:
 
 ```bash
-./gradlew :utilities-db-sql:check
+./gradlew :utilities-db-sql:compileJava
 ```
 
-Expected: SQL module tests, Spotless checks, jar isolation, and paper/bukkit-free checks pass. Do not run the full repository check until Task 4.
+Expected: `BUILD SUCCESSFUL`; the README-only changes do not disturb the SQL module's compilation. Do not run `check` until Task 4.
 
 - [ ] **Step 4: Commit the documentation**
 

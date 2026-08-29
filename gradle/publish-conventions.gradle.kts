@@ -8,5 +8,19 @@ pluginManager.withPlugin("maven-publish") {
                 }
             }
         }
+        repositories {
+            maven {
+                name = "utilitiesGitHubPackages"
+                url = uri("https://maven.pkg.github.com/mintychochip/Utilities")
+                val gprUser = providers.gradleProperty("gpr.user")
+                    .orElse(providers.environmentVariable("GITHUB_ACTOR"))
+                val gprKey = providers.gradleProperty("gpr.key")
+                    .orElse(providers.environmentVariable("GITHUB_TOKEN"))
+                credentials {
+                    username = gprUser.getOrElse("")
+                    password = gprKey.getOrElse("")
+                }
+            }
+        }
     }
 }

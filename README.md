@@ -21,6 +21,38 @@ Runtime adapters (`:utilities-bukkit`, `:utilities-paper`, `:utilities-minestom`
 - With no custom migration location, Flyway uses `classpath:db/migration`.
 - `SqlDatabase.capabilities()` reports runtime JDBC support for transactions, savepoints, batch updates, and transaction isolation levels.
 
+## Publishing
+
+Artifacts are published to GitHub Packages under `org.aincraft`:
+`https://maven.pkg.github.com/mintychochip/Utilities`. CI publishes
+automatically when a `vYYYY.MM.DD` (or bare `YYYY.MM.DD`) tag is pushed, or
+manually via the *Release* workflow with the `version` input and the
+`publish` checkbox.
+
+Local publish from a checkout:
+
+```bash
+GITHUB_ACTOR=<user> GITHUB_TOKEN=<token> ./gradlew clean check publish -Pversion=2026.08.28
+```
+
+requires a GitHub token with `packages:write` scope, or
+`gpr.user`/`gpr.key` in `~/.gradle/gradle.properties`. `publish` uploads to
+GitHub Packages while `publishToMavenLocal` installs into the local Maven
+repository.
+
+Consumers add the repository (see the Bags build for the exclusive-content
+pattern):
+
+```kotlin
+maven {
+    url = uri("https://maven.pkg.github.com/mintychochip/Utilities")
+    credentials {
+        username = ... // gpr.user or GITHUB_ACTOR
+        password = ... // gpr.key or GITHUB_TOKEN
+    }
+}
+```
+
 ## SQL Object DAOs
 
 Define SQL Object DAOs in the consumer application. SQL Object annotations and SQL remain

@@ -1,17 +1,26 @@
-name: Release verification
+name: Release
 
 on:
   push:
     tags:
-      - 'v[0-9]*.[0-9]*'
-      - '[0-9]*.[0-9]*'
+      - 'v[0-9]*.[0-9]*.[0-9]*'
+      - '[0-9]*.[0-9]*.[0-9]*'
   workflow_dispatch:
     inputs:
       version:
-        description: CalVer version used for manual verification
+        description: CalVer version to build and publish
         required: true
         default: '2026.08.27'
         type: string
+      publish:
+        description: Publish artifacts to GitHub Packages
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   verify:
@@ -46,3 +55,44 @@ jobs:
           ./gradlew clean check \
             -Pversion="${{ steps.get_version.outputs.version }}" \
             --no-daemon --stacktrace
+
+  publish:
+    needs: verify
+    # workflow_dispatch boolean inputs evaluate as booleans in `inputs`;
+    # both forms kept equivalent, false when unchecked.
+    if: github.event_name == 'push' || inputs.publish == true || inputs.publish == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+      - name: Extract CalVer version
+        id: get_version
+        env:
+          MANUAL_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+            VERSION="${TAG#v}"
+          else
+            VERSION="$MANUAL_VERSION"
+          fi
+          if [[ ! "$VERSION" =~ ^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$ ]]; then
+            echo "Invalid CalVer version: $VERSION" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Publishing CalVer release version: $VERSION"
+      - name: Publish to GitHub Packages
+        run: |
+          ./gradlew publish \
+            -Pversion="${{ steps.get_version.outputs.version }}" \
+            --no-daemon --stacktrace
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

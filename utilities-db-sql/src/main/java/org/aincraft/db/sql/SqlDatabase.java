@@ -4,12 +4,15 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Owns a Hikari-backed Jdbi instance and an explicitly-run Flyway migration set.
@@ -54,6 +57,7 @@ public final class SqlDatabase implements AutoCloseable {
     HikariDataSource dataSource = new HikariDataSource(hikariConfig);
     try {
       Jdbi jdbi = Jdbi.create(dataSource);
+      jdbi.installPlugin(new SqlObjectPlugin());
       SqlCapabilities capabilities = inspectCapabilities(jdbi);
       var flywayConfiguration = Flyway.configure().dataSource(dataSource);
       if (locations.length > 0) {
@@ -69,6 +73,23 @@ public final class SqlDatabase implements AutoCloseable {
 
   public Jdbi jdbi() {
     return jdbi;
+  }
+
+  public <D> D onDemand(Class<D> daoType) {
+    Objects.requireNonNull(daoType, "daoType");
+    return jdbi.onDemand(daoType);
+  }
+
+  public <D> void useTransaction(Class<D> daoType, Consumer<? super D> callback) {
+    Objects.requireNonNull(daoType, "daoType");
+    Objects.requireNonNull(callback, "callback");
+    jdbi.useTransaction(handle -> callback.accept(handle.attach(daoType)));
+  }
+
+  public <D, R> R inTransaction(Class<D> daoType, Function<? super D, ? extends R> callback) {
+    Objects.requireNonNull(daoType, "daoType");
+    Objects.requireNonNull(callback, "callback");
+    return jdbi.inTransaction(handle -> callback.apply(handle.attach(daoType)));
   }
 
   public SqlCapabilities capabilities() {

@@ -3,10 +3,14 @@ package org.aincraft.db.sql;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.zaxxer.hikari.HikariConfig;
 import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -17,6 +21,17 @@ import java.sql.DatabaseMetaData;
 class SqlDatabaseTest {
 
   @TempDir Path temporaryDirectory;
+
+  public interface SmokeDao {
+    @SqlUpdate("INSERT INTO smoke (id, value) VALUES (:id, :value)")
+    void insert(@Bind("id") long id, @Bind("value") String value);
+
+    @SqlQuery("SELECT value FROM smoke WHERE id = :id")
+    String findValue(@Bind("id") long id);
+
+    @SqlQuery("SELECT COUNT(*) FROM smoke")
+    long count();
+  }
 
   @Test
   void migratesQueriesAndReportsDriverCapabilities() throws Exception {
@@ -105,6 +120,67 @@ class SqlDatabaseTest {
                           .one());
       assertEquals(1L, committedCount);
       assertEquals(0L, rolledBackCount);
+    }
+  }
+
+  @Test
+  void exposesOnDemandSqlObjectDao() {
+    try (SqlDatabase database = createDatabase()) {
+      database.migrate();
+
+      SmokeDao dao = database.onDemand(SmokeDao.class);
+      dao.insert(1L, "on-demand");
+
+      assertEquals("on-demand", dao.findValue(1L));
+    }
+  }
+
+  @Test
+  void commitsTypedDaoTransactionAndReturnsResult() {
+    try (SqlDatabase database = createDatabase()) {
+      database.migrate();
+
+      long count =
+          database.inTransaction(
+              SmokeDao.class,
+              dao -> {
+                dao.insert(1L, "first");
+                dao.insert(2L, "second");
+                return dao.count();
+              });
+
+      assertEquals(2L, count);
+      assertEquals(2L, database.onDemand(SmokeDao.class).count());
+    }
+  }
+
+  @Test
+  void rollsBackTypedDaoTransactionWhenCallbackFails() {
+    try (SqlDatabase database = createDatabase()) {
+      database.migrate();
+
+      IllegalStateException failure =
+          assertThrows(
+              IllegalStateException.class,
+              () ->
+                  database.useTransaction(
+                      SmokeDao.class,
+                      dao -> {
+                        dao.insert(1L, "rolled-back");
+                        throw new IllegalStateException("force rollback");
+                      }));
+
+      assertEquals("force rollback", failure.getMessage());
+      assertEquals(0L, database.onDemand(SmokeDao.class).count());
+    }
+  }
+
+  @Test
+  void rejectsNullDaoTypesAndCallbacks() {
+    try (SqlDatabase database = createDatabase()) {
+      assertThrows(NullPointerException.class, () -> database.onDemand(null));
+      assertThrows(NullPointerException.class, () -> database.useTransaction(SmokeDao.class, null));
+      assertThrows(NullPointerException.class, () -> database.inTransaction(SmokeDao.class, null));
     }
   }
 

@@ -1,0 +1,43 @@
+package org.aincraft.api.domain.scoreboard;
+
+import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+
+/** A scoreboard criteria, either built in or custom. */
+public interface Criteria {
+
+  @NotNull Criteria DUMMY = of("dummy");
+  @NotNull Criteria TRIGGER = of("trigger");
+
+  /** Returns the native criteria identifier. */
+  @NotNull String name();
+
+  /** Returns whether the server owns the score values for this criteria. */
+  default boolean isReadOnly() {
+    return false;
+  }
+
+  /** Returns the native default rendering mode for this criteria. */
+  default @NotNull RenderType defaultRenderType() {
+    return RenderType.INTEGER;
+  }
+
+  /** Creates a writable custom criteria value. */
+  static @NotNull Criteria of(@NotNull String name) {
+    Objects.requireNonNull(name, "name");
+    if (name.isBlank()) {
+      throw new IllegalArgumentException("Criteria name must not be blank");
+    }
+    return new Value(name);
+  }
+
+  /** Basic criteria value used when no native criteria object is available. */
+  record Value(@NotNull String name) implements Criteria {
+    public Value {
+      Objects.requireNonNull(name, "name");
+      if (name.isBlank()) {
+        throw new IllegalArgumentException("Criteria name must not be blank");
+      }
+    }
+  }
+}

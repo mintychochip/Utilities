@@ -14,6 +14,8 @@ import org.aincraft.api.domain.inventory.ItemFactory;
 import org.aincraft.api.domain.world.GameMode;
 import org.aincraft.api.domain.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.aincraft.api.domain.scoreboard.Criteria;
+import org.aincraft.api.domain.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -146,5 +148,13 @@ public interface Server extends Audience {
 
   default @NotNull ItemFactory itemFactory() {
     throw new UnsupportedCapabilityException(Capability.CREATE_INVENTORY);
+  }
+
+  default @NotNull ScoreboardManager scoreboardManager() {
+    throw new UnsupportedCapabilityException(Capability.SCOREBOARD);
+  }
+
+  default @NotNull Criteria scoreboardCriteria(@NotNull String name) {
+    throw new UnsupportedCapabilityException(Capability.SCOREBOARD);
   }
 }

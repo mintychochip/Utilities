@@ -10,6 +10,7 @@ import org.aincraft.api.domain.inventory.PlayerInventory;
 import org.aincraft.api.domain.location.Location;
 import org.aincraft.api.domain.server.CommandSender;
 import org.aincraft.api.domain.world.GameMode;
+import org.aincraft.api.domain.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,6 +77,16 @@ public interface Player extends HumanEntity, Audience, InventoryHolder, CommandS
   @Override
   @NotNull
   PlayerInventory inventory();
+
+  default @NotNull Scoreboard scoreboard() {
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.SCOREBOARD);
+  }
+
+  default void scoreboard(@NotNull Scoreboard scoreboard) {
+    throw new org.aincraft.api.UnsupportedCapabilityException(
+        org.aincraft.api.Capability.SCOREBOARD);
+  }
 
   default @NotNull InventoryView openInventory() {
     throw new org.aincraft.api.UnsupportedCapabilityException(

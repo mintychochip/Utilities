@@ -15,7 +15,7 @@ spotless = "7.0.2"
 maven-publish-plugin = "0.34.0"
 shadow = "8.1.1"
 run-paper = "3.1.0"
-minestom = "2026.08.16-26.2"
+minestom = "2026.08.28-26.2"
 
 [libraries]
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
